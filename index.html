@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Upstream AI — Data Trust & Operator Intelligence for Small Water Utilities</title>
+<title>Upstream AI — AI That Protects Small Water Systems Before They Break</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
 
@@ -315,6 +315,46 @@
     font-size:18px; padding:2px 0; letter-spacing:0;
   }
 
+  
+    /* ══════════════════════════════════════
+       PERSONAS
+       ══════════════════════════════════════ */
+    .personas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 48px;
+    }
+    .persona-card {
+      border: 1px solid var(--light);
+      border-radius: 16px; padding: 32px;
+      transition: box-shadow .3s, transform .2s;
+      text-decoration: none; color: inherit;
+      display: block;
+    }
+    .persona-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-3px);
+    }
+    .persona-icon {
+      width: 48px; height: 48px;
+      background: rgba(46,134,171,0.08);
+      border-radius: 12px; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 20px;
+    }
+    .persona-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem; font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .persona-card p { font-size: 14px; color: var(--mid); line-height: 1.6; }
+    .persona-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 16px; font-size: 13px; font-weight: 500;
+      color: var(--sky); text-decoration: none;
+    }
+
+
   /* ═══════════════ PRICING ═══════════════ */
   .pricing-grid {
     display:grid; grid-template-columns:1fr 1fr 1fr;
@@ -618,10 +658,10 @@
   <ul class="nav-links">
     <li><a href="#how">How it works</a></li>
     <li><a href="#solve">Solutions</a></li>
+    <li><a href="about.html">About</a></li>
     <li><a href="security.html">Security</a></li>
-    <li><a href="#pricing">Pricing</a></li>
   </ul>
-  <button class="nav-cta">Talk to us</button>
+  <button class="nav-cta" onclick="openModal()">Contact us</button>
 </nav>
 
 <!-- HERO -->
@@ -630,10 +670,10 @@
     <div class="tag-dot"></div>
     <span>Now in early access — Colorado pilot utilities</span>
   </div>
-  <h1>Finally, <em>data you can trust.</em><br>Then, intelligence you can use.</h1>
-  <p>When you look at a sensor reading, know instantly if it's real or if the probe is dying. When an alarm triggers, understand if it's genuine or false. Built for 1–5 person utilities with no time for guesswork.</p>
+  <h1>AI that <em>protects</em> small water systems before they break.</h1>
+  <p>Upstream connects to your existing SCADA, learns what "normal" looks like, and alerts your team before pumps fail, pipes burst, or compliance deadlines slip. Built for utilities with 1–5 operators and no IT staff.</p>
   <div class="hero-actions">
-    <a href="#" class="btn-primary">Request early access →</a>
+    <a href="#" class="btn-primary" onclick="openModal(); return false;">Request early access →</a>
     <a href="#how" class="btn-secondary">See how it works</a>
   </div>
 </section>
@@ -823,31 +863,29 @@
   </div>
 </section>
 
- <!-- ══════════════════════════════════════
-         WHO IT'S FOR
-         ══════════════════════════════════════ -->
-    <section aria-labelledby="personas-title">
+ <!-- WHO IT'S FOR -->
+    <section class="section" id="personas" style="background:var(--bg);">
       <div class="section-inner">
         <p class="section-label">Who It's For</p>
-        <h2 class="section-title" id="personas-title">Built for small utility teams.</h2>
-        <p class="section-body">Whether you're an operator on the floor, a manager watching the budget, or a board member protecting the community — Upstream AI speaks your language.</p>
+        <h2 class="section-title" id="personas-title">Built for small utility teams.<br><em>Every role covered.</em></h2>
+        <p class="section-sub">Whether you're an operator on the floor, a manager watching the budget, or a board member protecting the community — Upstream AI speaks your language.</p>
 
-        <div class="personas-grid">
-          <a href="for-operators.html" class="persona-card" aria-label="Learn more: for water and wastewater operators">
+        <div class="personas-grid" style="margin-top:56px; border:1px solid var(--light); border-radius:16px; overflow:hidden; background:var(--white); gap:0;">
+          <a href="for-operators.html" class="persona-card" style="padding:40px 32px; border-right:1px solid var(--light); border-radius:0; border:none;">
             <div class="persona-icon" aria-hidden="true">🔧</div>
-            <h3>For Operators</h3>
+            <h3 style="font-size:20px; font-weight:600;">For Operators</h3>
             <p>Stop second-guessing your sensors. Know exactly which alarms to act on, and which to ignore — with the data to back you up.</p>
             <span class="persona-link" aria-hidden="true">Learn more →</span>
           </a>
-          <a href="for-managers.html" class="persona-card" aria-label="Learn more: for utility managers">
+          <a href="for-managers.html" class="persona-card" style="padding:40px 32px; border-right:1px solid var(--light); border-radius:0; border:none;">
             <div class="persona-icon" aria-hidden="true">📊</div>
-            <h3>For Managers</h3>
+            <h3 style="font-size:20px; font-weight:600;">For Managers</h3>
             <p>Justify maintenance budgets with data. Prevent the surprise failures that blow your budget and land you in a board meeting you didn't expect.</p>
             <span class="persona-link" aria-hidden="true">Learn more →</span>
           </a>
-          <a href="for-boards.html" class="persona-card" aria-label="Learn more: for board members">
+          <a href="for-boards.html" class="persona-card" style="padding:40px 32px; border-radius:0; border:none;">
             <div class="persona-icon" aria-hidden="true">🏛️</div>
-            <h3>For Board Members</h3>
+            <h3 style="font-size:20px; font-weight:600;">For Board Members</h3>
             <p>Demonstrate responsible stewardship. Know your infrastructure risk before the EPA does — and show your community you're ahead of it.</p>
             <span class="persona-link" aria-hidden="true">Learn more →</span>
           </a>
@@ -855,38 +893,33 @@
       </div>
     </section>
 
-<!-- PRICING -->
+<!-- WHAT WE OFFER -->
 <section class="section" id="pricing">
   <div class="section-inner">
-    <div class="section-label">Pricing</div>
+    <div class="section-label">What we offer</div>
     <h2 class="section-title">Two tiers.<br><em>Trust first, then intelligence.</em></h2>
     <p class="section-sub">Start with data you can trust. Upgrade to AI co-pilot when you're ready. No per-sensor fees. No hidden costs. Cancel anytime.</p>
 
-    <div class="pricing-grid">
+    <div class="pricing-grid" style="grid-template-columns:1fr 1fr; max-width:780px;">
       <div class="price-card">
         <div class="price-tier">Trust Foundation</div>
-        <div class="price-amount">$600</div>
-        <div class="price-period">per month · billed annually</div>
+        <h3 style="font-size:22px; font-weight:300; letter-spacing:-0.5px; margin-bottom:16px; line-height:1.3;">Build <em style="font-family:'Playfair Display',serif; font-style:italic; font-weight:700; color:var(--accent);">confidence</em> in your data</h3>
         <ul class="price-list">
           <li><span class="check">✓</span>Real-time data quality scoring (0-100%)</li>
           <li><span class="check">✓</span>Automated event documentation</li>
-          <li><span class="check">✓</span>Transparent calculations (click to see formula)</li>
+          <li><span class="check">✓</span>Transparent calculations — click to see the formula</li>
           <li><span class="check">✓</span>Intelligent exception alerts</li>
           <li><span class="check">✓</span>Full audit trails (who, what, when, why)</li>
           <li><span class="check">✓</span>Basic asset health dashboard</li>
           <li><span class="check">✓</span>Email + SMS support</li>
         </ul>
-        <div style="margin-top:16px; padding:12px; background:#f7f7f7; border-radius:6px; font-size:12px; color:#6b6b6b; line-height:1.6;">
-          <strong style="color:#0a0a0a;">Perfect for:</strong> Utilities that need to trust their data before adding AI predictions. Solves alarm fatigue and sensor uncertainty.
-        </div>
-        <button class="price-btn">Get started</button>
+        <button class="price-btn" onclick="openModal()" style="margin-top:20px;">Contact us →</button>
       </div>
 
       <div class="price-card featured">
-        <div class="price-badge">Most operators upgrade within 6 months</div>
+        <div class="price-badge">Most popular</div>
         <div class="price-tier">Operator Co-Pilot</div>
-        <div class="price-amount">$1,800</div>
-        <div class="price-period">per month · billed annually</div>
+        <h3 style="font-size:22px; font-weight:300; letter-spacing:-0.5px; margin-bottom:16px; line-height:1.3; color:#fff;">Add <em style="font-family:'Playfair Display',serif; font-style:italic; font-weight:700; color:var(--water);">predictive intelligence</em></h3>
         <ul class="price-list">
           <li><span class="check">✓</span>Everything in Trust Foundation</li>
           <li><span class="check">✓</span>Predictive alerts with confidence scores</li>
@@ -897,27 +930,7 @@
           <li><span class="check">✓</span>ROI & savings tracker</li>
           <li><span class="check">✓</span>Priority phone support</li>
         </ul>
-        <div style="margin-top:16px; padding:12px; background:#e8f4f8; border-radius:6px; font-size:12px; color:#1a5276; line-height:1.6;">
-          <strong style="color:#0a0a0a;">Perfect for:</strong> Utilities ready for AI assistance after establishing data trust. AI shows its work—you stay in control.
-        </div>
-        <button class="price-btn">Get started</button>
-      </div>
-
-      <div class="price-card">
-        <div class="price-tier">Add-On Services</div>
-        <div class="price-amount">Custom</div>
-        <div class="price-period">complementary offerings</div>
-        <ul class="price-list">
-          <li><span class="check">✓</span><strong>Energy Optimization:</strong> 30% of savings (no monthly fee)</li>
-          <li><span class="check">✓</span><strong>Managed Operations:</strong> $4,500-6,500/month</li>
-          <li><span class="check">✓</span><strong>Compliance Guarantee:</strong> +$800/month</li>
-          <li><span class="check">✓</span><strong>Grant Writing:</strong> 10% of funded amount</li>
-          <li><span class="check">✓</span><strong>Cooperative Platform:</strong> $500/utility/month</li>
-        </ul>
-        <div style="margin-top:16px; padding:12px; background:#f7f7f7; border-radius:6px; font-size:12px; color:#6b6b6b; line-height:1.6;">
-          <strong style="color:#0a0a0a;">Mix and match:</strong> Combine services based on your specific challenges. Talk to us about what you need.
-        </div>
-        <button class="price-btn">Contact sales</button>
+        <button class="price-btn" onclick="openModal()" style="margin-top:20px;">Contact us →</button>
       </div>
     </div>
   </div>
@@ -927,7 +940,7 @@
 <div class="cta-banner">
   <h2>Stop guessing.<br><em>Start trusting your data.</em></h2>
   <p>Join the Colorado utilities already using Upstream AI. Setup takes one afternoon. Data trust starts on day one. Intelligence builds over 30 days.</p>
-  <a href="#" class="btn-light">Request early access →</a>
+  <a href="#" class="btn-light" onclick="openModal(); return false;">Get in touch →</a>
 </div>
 
 <!-- FOOTER -->
@@ -935,33 +948,34 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <a href="index.html" class="nav-logo"><span class="upstream">Upstream</span> AI</a>
-      <p>Data trust and operator intelligence for small water utilities. Built by people who understand that operators need confidence in their decisions, not black-box algorithms.</p>
+      <p>AI that protects small water systems before they break. Built by people who understand that operators need confidence in their decisions, not black-box algorithms.</p>
     </div>
     <div>
       <h4>Product</h4>
       <ul>
         <li><a href="#how">How it works</a></li>
         <li><a href="#architecture">Platform</a></li>
-        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#pricing">What we offer</a></li>
         <li><a href="security.html">Security</a></li>
       </ul>
     </div>
     <div>
       <h4>Company</h4>
       <ul>
-        <li><a href="/about">About</a></li>
-        <li><a href="/careers">Careers</a></li>
-        <li><a href="/blog">Blog</a></li>
-        <li><a href="/press">Press</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="epa-finder.html">EPA Grant Finder</a></li>
       </ul>
     </div>
     <div>
-      <h4>Resources</h4>
+      <h4>Case Studies</h4>
       <ul>
-        <li><a href="/docs">Documentation</a></li>
-        <li><a href="/epa-finder">EPA grant finder</a></li>
-        <li><a href="mailto:hello@getupstream.ai">Contact</a></li>
-        <li><a href="security.html">Security Overview</a></li>
+        <li><a href="case-study-crestone.html">Crestone W&S District</a></li>
+        <li><a href="case-study-round-mountain.html">Round Mountain W&SD</a></li>
+      </ul>
+      <h4 style="margin-top:20px;">Connect</h4>
+      <ul>
+        <li><a href="mailto:hello@getupstream.ai">hello@getupstream.ai</a></li>
       </ul>
     </div>
   </div>
@@ -1039,12 +1053,12 @@
     <div class="form-success" id="successMessage">
       <div class="success-icon">✓</div>
       <h4>Thanks for your interest!</h4>
-      <p>We'll reach out within 24 hours to schedule a discovery call. In the meantime, feel free to email us at hello@getupstream.ai with any questions.</p>
+      <p>We'll reach out within 24 hours to schedule a discovery call. In the meantime, feel free to email us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7018151c1c1f30171504050003040215111d5e1119">[email&#160;protected]</a> with any questions.</p>
     </div>
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Open modal
 function openModal() {
   document.getElementById('earlyAccessModal').classList.add('active');
@@ -1126,16 +1140,4 @@ document.getElementById('earlyAccessForm').addEventListener('submit', async func
 });
 
 // Attach modal open to all CTAs
-document.addEventListener('DOMContentLoaded', function() {
-  const ctaButtons = document.querySelectorAll('.btn-primary, .nav-cta, .btn-light');
-  ctaButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-      openModal();
-    });
-  });
-});
-</script>
-
-</body>
-</html>
+document.addEventListener('DOMContentLoaded',

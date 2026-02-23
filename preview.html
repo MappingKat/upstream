@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Upstream AI — Product Preview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --bg: #0e1117;
+    --surface: #161b22;
+    --surface-2: #1c2129;
+    --border: #30363d;
+    --border-light: #21262d;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --text-muted: #484f58;
+    --accent: #2e86ab;
+    --accent-glow: rgba(46,134,171,0.15);
+    --green: #3fb950;
+    --green-dim: rgba(63,185,80,0.15);
+    --yellow: #d29922;
+    --yellow-dim: rgba(210,153,34,0.12);
+    --red: #f85149;
+    --red-dim: rgba(248,81,73,0.12);
+    --orange: #db6d28;
+    --purple: #a371f7;
+  }
+
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ════════ PASSWORD GATE ════════ */
+  #gate {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 24px;
+  }
+  #gate.hidden { display: none; }
+  .gate-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 48px 40px;
+    max-width: 400px; width: 100%;
+    text-align: center;
+  }
+  .gate-logo {
+    font-size: 20px; font-weight: 700; margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .gate-logo span { color: var(--accent); font-weight: 400; }
+  .gate-sub {
+    font-size: 13px; color: var(--text-dim);
+    margin-bottom: 32px;
+  }
+  .gate-input {
+    width: 100%; padding: 14px 16px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text);
+    font-family: 'DM Mono', monospace; font-size: 14px;
+    text-align: center; letter-spacing: 2px;
+    outline: none; transition: border-color .2s;
+  }
+  .gate-input:focus { border-color: var(--accent); }
+  .gate-input::placeholder { color: var(--text-muted); letter-spacing: 0; }
+  .gate-btn {
+    width: 100%; padding: 14px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 8px;
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    cursor: pointer; margin-top: 16px;
+    transition: opacity .2s;
+  }
+  .gate-btn:hover { opacity: .9; }
+  .gate-error {
+    font-size: 12px; color: var(--red);
+    margin-top: 12px; display: none;
+  }
+  .gate-error.show { display: block; }
+  .gate-note {
+    font-size: 11px; color: var(--text-muted);
+    margin-top: 24px; line-height: 1.5;
+  }
+
+  /* ════════ PREVIEW CONTAINER ════════ */
+  #preview { display: none; }
+  #preview.visible { display: block; }
+
+  .preview-header {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .preview-header .logo { font-size: 16px; font-weight: 700; }
+  .preview-header .logo span { color: var(--accent); font-weight: 400; }
+  .preview-badge {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--yellow);
+    background: var(--yellow-dim); padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .preview-nav {
+    display: flex; gap: 4px; padding: 16px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .preview-nav button {
+    padding: 10px 20px; border-radius: 8px;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    background: transparent; color: var(--text-dim);
+    border: 1px solid transparent; cursor: pointer;
+    transition: all .2s;
+  }
+  .preview-nav button:hover { color: var(--text); background: var(--surface-2); }
+  .preview-nav button.active {
+    color: var(--text); background: var(--accent-glow);
+    border-color: rgba(46,134,171,0.3);
+  }
+
+  .preview-body { padding: 32px; }
+
+  .view-toggle {
+    display: flex; gap: 8px; margin-bottom: 24px;
+    justify-content: center;
+  }
+  .view-toggle button {
+    padding: 8px 20px; border-radius: 20px;
+    font-family: inherit; font-size: 12px; font-weight: 600;
+    background: var(--surface); color: var(--text-dim);
+    border: 1px solid var(--border); cursor: pointer;
+    transition: all .2s;
+  }
+  .view-toggle button.active {
+    background: var(--accent); color: #fff;
+    border-color: var(--accent);
+  }
+
+  /* ════════ DESKTOP DASHBOARD ════════ */
+  .desktop-frame {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 1100px; margin: 0 auto;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.4);
+  }
+  .desktop-chrome {
+    padding: 12px 16px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .chrome-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--border);
+  }
+  .chrome-dot.r { background: #f85149; }
+  .chrome-dot.y { background: #d29922; }
+  .chrome-dot.g { background: #3fb950; }
+  .chrome-url {
+    flex: 1; text-align: center;
+    font-size: 11px; color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .dash-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 600px;
+  }
+
+  /* Sidebar */
+  .dash-sidebar {
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+  }
+  .sidebar-brand {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+    font-size: 14px; font-weight: 700;
+  }
+  .sidebar-brand span { color: var(--accent); font-weight: 400; }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 20px; font-size: 13px; font-weight: 500;
+    color: var(--text-dim); cursor: pointer;
+    transition: all .15s; border-left: 2px solid transparent;
+  }
+  .sidebar-item:hover { color: var(--text); background: var(--surface); }
+  .sidebar-item.active {
+    color: var(--accent); background: var(--accent-glow);
+    border-left-color: var(--accent);
+  }
+  .sidebar-item .icon { font-size: 16px; width: 20px; text-align: center; }
+  .sidebar-divider {
+    height: 1px; background: var(--border);
+    margin: 12px 20px;
+  }
+  .sidebar-label {
+    font-size: 10px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    padding: 8px 20px 4px;
+  }
+
+  /* Main content area */
+  .dash-main { padding: 24px; background: var(--bg); overflow-y: auto; }
+
+  .dash-topbar {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 24px;
+  }
+  .dash-topbar h1 {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+  }
+  .dash-topbar .meta {
+    font-size: 12px; color: var(--text-dim);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .4; }
+  }
+
+  /* Metric cards */
+  .metrics-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; margin-bottom: 24px;
+  }
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+  }
+  .metric-card .mc-label {
+    font-size: 11px; color: var(--text-dim);
+    font-weight: 500; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .metric-card .mc-value {
+    font-size: 28px; font-weight: 700;
+    letter-spacing: -1px; line-height: 1;
+    margin-bottom: 4px;
+  }
+  .metric-card .mc-sub {
+    font-size: 11px; color: var(--text-muted);
+  }
+  .mc-good { color: var(--green); }
+  .mc-warn { color: var(--yellow); }
+  .mc-bad { color: var(--red); }
+
+  .trust-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    display: inline-block;
+  }
+  .trust-dot.high { background: var(--green); }
+  .trust-dot.med { background: var(--yellow); }
+  .trust-dot.low { background: var(--red); }
+
+  /* Charts area */
+  .charts-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 24px;
+  }
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+  }
+  .chart-card h3 {
+    font-size: 13px; font-weight: 600;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .chart-card h3 .badge {
+    font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 10px;
+  }
+  .badge-live { background: var(--green-dim); color: var(--green); }
+
+  /* Sparkline */
+  .sparkline {
+    height: 80px; display: flex;
+    align-items: flex-end; gap: 2px;
+    padding-top: 8px;
+  }
+  .sparkline .bar {
+    flex: 1; border-radius: 2px 2px 0 0;
+    min-height: 4px; transition: height .3s;
+  }
+
+  /* Alerts panel */
+  .alerts-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+  }
+  .alerts-panel h3 {
+    font-size: 13px; font-weight: 600; margin-bottom: 12px;
+  }
+  .alert-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 12px;
+  }
+  .alert-item:last-child { border-bottom: none; }
+  .alert-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    margin-top: 4px; flex-shrink: 0;
+  }
+  .alert-item .alert-text { color: var(--text-dim); line-height: 1.5; }
+  .alert-item .alert-text strong { color: var(--text); }
+  .alert-item .alert-time { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ════════ CALENDAR TAB ════════ */
+  .calendar-view { display: none; }
+  .calendar-view.active { display: block; }
+  .overview-view { display: block; }
+  .overview-view.hidden { display: none; }
+
+  .cal-header {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 20px;
+  }
+  .cal-header h2 { font-size: 18px; font-weight: 700; }
+  .cal-month-nav {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .cal-month-nav button {
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text-dim); border-radius: 6px;
+    padding: 6px 10px; cursor: pointer; font-family: inherit;
+    font-size: 12px;
+  }
+  .cal-month-nav span { font-size: 14px; font-weight: 600; min-width: 140px; text-align: center; }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px; margin-bottom: 24px;
+  }
+  .cal-day-header {
+    font-size: 10px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1px;
+    text-align: center; padding: 8px 0;
+  }
+  .cal-day {
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 6px; min-height: 72px;
+    position: relative;
+    transition: border-color .15s;
+  }
+  .cal-day:hover { border-color: var(--accent); }
+  .cal-day .day-num {
+    font-size: 11px; font-weight: 600; color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .cal-day.today .day-num {
+    color: var(--accent);
+  }
+  .cal-day.other-month { opacity: .3; }
+  .cal-event {
+    font-size: 9px; font-weight: 500;
+    padding: 2px 4px; border-radius: 3px;
+    margin-bottom: 2px; line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .cal-event.sampling { background: rgba(46,134,171,0.2); color: var(--accent); }
+  .cal-event.deadline { background: var(--red-dim); color: var(--red); }
+  .cal-event.maint { background: var(--yellow-dim); color: var(--yellow); }
+  .cal-event.lab { background: rgba(163,113,247,0.15); color: var(--purple); }
+
+  /* Lab turnaround table */
+  .lab-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px;
+    margin-bottom: 16px;
+  }
+  .lab-panel h3 {
+    font-size: 14px; font-weight: 600; margin-bottom: 4px;
+  }
+  .lab-panel .lab-sub {
+    font-size: 11px; color: var(--text-dim); margin-bottom: 16px;
+  }
+  .lab-table {
+    width: 100%; border-collapse: collapse;
+  }
+  .lab-table th {
+    font-size: 10px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1px;
+    text-align: left; padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .lab-table td {
+    font-size: 12px; padding: 10px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-dim);
+  }
+  .lab-table tr:last-child td { border-bottom: none; }
+  .lab-table td:first-child { color: var(--text); font-weight: 500; }
+  .lab-table .hold-warn { color: var(--yellow); font-weight: 600; }
+  .lab-table .hold-ok { color: var(--green); }
+  .lab-table .hold-crit { color: var(--red); font-weight: 600; }
+  .status-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 600; padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .status-chip.pending { background: var(--yellow-dim); color: var(--yellow); }
+  .status-chip.received { background: var(--green-dim); color: var(--green); }
+  .status-chip.overdue { background: var(--red-dim); color: var(--red); }
+  .status-chip.scheduled { background: var(--accent-glow); color: var(--accent); }
+
+  .upcoming-samples {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .sample-card {
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: 8px; padding: 14px;
+  }
+  .sample-card h4 {
+    font-size: 12px; font-weight: 600; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sample-card p {
+    font-size: 11px; color: var(--text-dim); line-height: 1.5;
+  }
+
+  /* ════════ MOBILE FRAME ════════ */
+  .mobile-wrapper {
+    display: flex; gap: 32px;
+    justify-content: center;
+    max-width: 900px; margin: 0 auto;
+  }
+  .mobile-frame {
+    width: 320px; flex-shrink: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 32px;
+    padding: 12px;
+    box-shadow: 0 20px 80px rgba(0,0,0,0.4);
+  }
+  .mobile-screen {
+    background: var(--bg);
+    border-radius: 22px;
+    overflow: hidden;
+    min-height: 580px;
+  }
+  .mobile-status {
+    display: flex; justify-content: space-between;
+    padding: 8px 20px; font-size: 11px;
+    font-weight: 600; color: var(--text-dim);
+  }
+  .mobile-header {
+    padding: 16px 20px 12px;
+    display: flex; justify-content: space-between;
+    align-items: center;
+  }
+  .mobile-header h2 { font-size: 18px; font-weight: 700; }
+  .mobile-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--accent-glow); border: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--accent);
+  }
+
+  .mobile-metrics {
+    padding: 0 16px; display: grid;
+    grid-template-columns: 1fr 1fr; gap: 8px;
+    margin-bottom: 16px;
+  }
+  .mobile-metric {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px;
+  }
+  .mobile-metric .mm-label {
+    font-size: 10px; color: var(--text-dim); margin-bottom: 4px;
+  }
+  .mobile-metric .mm-value {
+    font-size: 20px; font-weight: 700; line-height: 1;
+  }
+  .mobile-metric .mm-sub {
+    font-size: 9px; color: var(--text-muted); margin-top: 2px;
+  }
+
+  .mobile-section {
+    padding: 0 16px; margin-bottom: 16px;
+  }
+  .mobile-section h3 {
+    font-size: 13px; font-weight: 600; margin-bottom: 8px;
+  }
+  .mobile-alert {
+    display: flex; gap: 8px; padding: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 6px; align-items: flex-start;
+  }
+  .mobile-alert .ma-text {
+    font-size: 11px; color: var(--text-dim); line-height: 1.4;
+  }
+  .mobile-alert .ma-text strong { color: var(--text); }
+  .mobile-alert .ma-time {
+    font-size: 9px; color: var(--text-muted); margin-top: 2px;
+  }
+
+  .mobile-tabs {
+    display: flex; border-top: 1px solid var(--border);
+    background: var(--surface); padding: 8px 0 4px;
+  }
+  .mobile-tabs .tab {
+    flex: 1; text-align: center;
+    font-size: 9px; font-weight: 600;
+    color: var(--text-muted); padding: 4px 0;
+  }
+  .mobile-tabs .tab.active { color: var(--accent); }
+  .mobile-tabs .tab .tab-icon {
+    font-size: 18px; display: block; margin-bottom: 2px;
+  }
+
+  /* Mobile calendar view */
+  .mobile-cal-list { padding: 0 16px; }
+  .mobile-cal-day {
+    margin-bottom: 16px;
+  }
+  .mobile-cal-day .day-label {
+    font-size: 11px; font-weight: 600; color: var(--text-dim);
+    margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .mobile-cal-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 10px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 8px;
+    margin-bottom: 4px;
+  }
+  .mobile-cal-item .mci-bar {
+    width: 3px; border-radius: 2px;
+    min-height: 32px; flex-shrink: 0;
+  }
+  .mobile-cal-item .mci-text {
+    font-size: 11px; color: var(--text); font-weight: 500;
+    line-height: 1.4;
+  }
+  .mobile-cal-item .mci-sub {
+    font-size: 10px; color: var(--text-dim); font-weight: 400;
+  }
+
+  /* ════════ SECTION LABELS ════════ */
+  .section-divider {
+    text-align: center; padding: 48px 0 24px;
+  }
+  .section-divider h2 {
+    font-size: 28px; font-weight: 700; letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+  .section-divider p {
+    font-size: 13px; color: var(--text-dim);
+  }
+
+  .hidden { display: none !important; }
+
+  @media(max-width:860px) {
+    .dash-layout { grid-template-columns: 1fr; }
+    .dash-sidebar { display: none; }
+    .metrics-row { grid-template-columns: 1fr 1fr; }
+    .charts-grid { grid-template-columns: 1fr; }
+    .mobile-wrapper { flex-direction: column; align-items: center; }
+    .preview-nav { overflow-x: auto; }
+    .upcoming-samples { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════ PASSWORD GATE ════════ -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-logo"><span>Upstream</span> AI</div>
+    <div class="gate-sub">Product Preview — Confidential</div>
+    <input type="password" class="gate-input" id="passInput" placeholder="Enter access code" autofocus>
+    <button class="gate-btn" onclick="checkPass()">View Preview</button>
+    <div class="gate-error" id="gateError">Incorrect access code. Try again.</div>
+    <div class="gate-note">This is a private preview of Upstream AI's dashboard and mobile experience. Contact hello@getupstream.ai for access.</div>
+  </div>
+</div>
+
+<!-- ════════ PREVIEW CONTENT ════════ -->
+<div id="preview">
+
+  <div class="preview-header">
+    <div class="logo"><span>Upstream</span> AI</div>
+    <div class="preview-badge">Product Preview</div>
+  </div>
+
+  <div class="preview-nav">
+    <button class="active" onclick="switchView('desktop')">Desktop Dashboard</button>
+    <button onclick="switchView('mobile')">Mobile App</button>
+  </div>
+
+  <div class="preview-body">
+
+    <!-- ════════ DESKTOP VIEW ════════ -->
+    <div id="desktopView">
+      <div class="section-divider">
+        <h2>Operator Dashboard</h2>
+        <p>Desktop view — real-time system overview with trust scoring</p>
+      </div>
+
+      <div class="desktop-frame">
+        <div class="desktop-chrome">
+          <div class="chrome-dot r"></div>
+          <div class="chrome-dot y"></div>
+          <div class="chrome-dot g"></div>
+          <div class="chrome-url">app.getupstream.ai/dashboard</div>
+        </div>
+
+        <div class="dash-layout">
+          <!-- Sidebar -->
+          <div class="dash-sidebar">
+            <div class="sidebar-brand"><span>Upstream</span> AI</div>
+            <div class="sidebar-item active" onclick="showDashTab('overview')"><span class="icon">📊</span> Overview</div>
+            <div class="sidebar-item" onclick="showDashTab('calendar')"><span class="icon">📅</span> Smart Calendar</div>
+            <div class="sidebar-item"><span class="icon">🔔</span> Alerts</div>
+            <div class="sidebar-item"><span class="icon">⚙️</span> Assets</div>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-label">Monitoring</div>
+            <div class="sidebar-item"><span class="icon">💧</span> Water Quality</div>
+            <div class="sidebar-item"><span class="icon">🔌</span> Pumps & Motors</div>
+            <div class="sidebar-item"><span class="icon">📏</span> Tank Levels</div>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-label">Reports</div>
+            <div class="sidebar-item"><span class="icon">📋</span> Compliance</div>
+            <div class="sidebar-item"><span class="icon">💰</span> ROI Tracker</div>
+          </div>
+
+          <!-- Main content -->
+          <div class="dash-main">
+            <!-- OVERVIEW TAB -->
+            <div class="overview-view" id="overviewTab">
+              <div class="dash-topbar">
+                <h1>System Overview</h1>
+                <div class="meta"><div class="live-dot"></div> Live · Updated 12s ago</div>
+              </div>
+
+              <div class="metrics-row">
+                <div class="metric-card">
+                  <div class="mc-label"><span class="trust-dot high"></span> Data Trust Score</div>
+                  <div class="mc-value mc-good">94%</div>
+                  <div class="mc-sub">23 of 24 sensors healthy</div>
+                </div>
+                <div class="metric-card">
+                  <div class="mc-label">Active Alerts</div>
+                  <div class="mc-value mc-warn">3</div>
+                  <div class="mc-sub">1 critical · 2 advisory</div>
+                </div>
+                <div class="metric-card">
+                  <div class="mc-label">Chlorine Residual</div>
+                  <div class="mc-value">2.1 <span style="font-size:14px; color:var(--text-dim)">ppm</span></div>
+                  <div class="mc-sub"><span class="trust-dot high" style="width:6px;height:6px;"></span> Trust: 97%</div>
+                </div>
+                <div class="metric-card">
+                  <div class="mc-label">Energy Today</div>
+                  <div class="mc-value">847 <span style="font-size:14px; color:var(--text-dim)">kWh</span></div>
+                  <div class="mc-sub">↓ 12% vs. last week</div>
+                </div>
+              </div>
+
+              <div class="charts-grid">
+                <div class="chart-card">
+                  <h3>Chlorine Residual (24hr) <span class="badge badge-live">Live</span></h3>
+                  <div class="sparkline" id="chlorineChart"></div>
+                  <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); margin-top:4px;">
+                    <span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>Now</span>
+                  </div>
+                </div>
+                <div class="chart-card">
+                  <h3>Pump 1 Vibration <span class="badge" style="background:var(--yellow-dim); color:var(--yellow);">Watch</span></h3>
+                  <div class="sparkline" id="vibrationChart"></div>
+                  <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); margin-top:4px;">
+                    <span>7 days ago</span><span>5d</span><span>3d</span><span>Yesterday</span><span>Now</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alerts-panel">
+                <h3>Recent Alerts</h3>
+                <div class="alert-item">
+                  <div class="alert-dot" style="background:var(--red);"></div>
+                  <div>
+                    <div class="alert-text"><strong>Pump 2 bearing temperature +8°F</strong> above baseline. Predicted failure in 4-7 days (87% confident). Based on: vibration trend, temp pattern, 2,847 runtime hrs.</div>
+                    <div class="alert-time">2 hours ago · Predictive</div>
+                  </div>
+                </div>
+                <div class="alert-item">
+                  <div class="alert-dot" style="background:var(--yellow);"></div>
+                  <div>
+                    <div class="alert-text"><strong>Chlorine probe trust score dropped to 42%.</strong> Probe reading inconsistent with calculated free chlorine from dose rate. Recommend calibration check.</div>
+                    <div class="alert-time">6 hours ago · Data Quality</div>
+                  </div>
+                </div>
+                <div class="alert-item">
+                  <div class="alert-dot" style="background:var(--accent);"></div>
+                  <div>
+                    <div class="alert-text"><strong>Monthly compliance samples due in 5 days.</strong> Total coliform + E. coli at Distribution Points 1-4. Lab hold time: 30 hrs max. Schedule collection by Thu AM.</div>
+                    <div class="alert-time">Today · Calendar</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CALENDAR TAB -->
+            <div class="calendar-view" id="calendarTab">
+              <div class="cal-header">
+                <h2>Smart Calendar</h2>
+                <div class="cal-month-nav">
+                  <button>‹</button>
+                  <span>February 2026</span>
+                  <button>›</button>
+                </div>
+              </div>
+
+              <div class="cal-grid">
+                <div class="cal-day-header">Sun</div>
+                <div class="cal-day-header">Mon</div>
+                <div class="cal-day-header">Tue</div>
+                <div class="cal-day-header">Wed</div>
+                <div class="cal-day-header">Thu</div>
+                <div class="cal-day-header">Fri</div>
+                <div class="cal-day-header">Sat</div>
+
+                <div class="cal-day"><div class="day-num">1</div></div>
+                <div class="cal-day"><div class="day-num">2</div><div class="cal-event sampling">Bact. samples due</div></div>
+                <div class="cal-day"><div class="day-num">3</div><div class="cal-event lab">Lab results: THM</div></div>
+                <div class="cal-day"><div class="day-num">4</div></div>
+                <div class="cal-day"><div class="day-num">5</div><div class="cal-event maint">Pump 2 PM</div></div>
+                <div class="cal-day"><div class="day-num">6</div></div>
+                <div class="cal-day"><div class="day-num">7</div></div>
+
+                <div class="cal-day"><div class="day-num">8</div></div>
+                <div class="cal-day"><div class="day-num">9</div><div class="cal-event sampling">Chlorine resid.</div></div>
+                <div class="cal-day"><div class="day-num">10</div><div class="cal-event deadline">DMR due to EPA</div></div>
+                <div class="cal-day"><div class="day-num">11</div></div>
+                <div class="cal-day"><div class="day-num">12</div><div class="cal-event lab">Lab results: Bact.</div></div>
+                <div class="cal-day"><div class="day-num">13</div></div>
+                <div class="cal-day"><div class="day-num">14</div></div>
+
+                <div class="cal-day"><div class="day-num">15</div><div class="cal-event sampling">Turbidity grab</div></div>
+                <div class="cal-day"><div class="day-num">16</div></div>
+                <div class="cal-day"><div class="day-num">17</div><div class="cal-event maint">CL2 probe cal</div></div>
+                <div class="cal-day"><div class="day-num">18</div></div>
+                <div class="cal-day"><div class="day-num">19</div><div class="cal-event lab">Lab results: Metals</div></div>
+                <div class="cal-day"><div class="day-num">20</div></div>
+                <div class="cal-day"><div class="day-num">21</div></div>
+
+                <div class="cal-day today"><div class="day-num">22</div><div class="cal-event sampling">Bact. samples</div><div class="cal-event deadline">PFAS report due</div></div>
+                <div class="cal-day"><div class="day-num">23</div></div>
+                <div class="cal-day"><div class="day-num">24</div><div class="cal-event lab">Lab results: PFAS</div></div>
+                <div class="cal-day"><div class="day-num">25</div><div class="cal-event maint">Well 1 inspect</div></div>
+                <div class="cal-day"><div class="day-num">26</div></div>
+                <div class="cal-day"><div class="day-num">27</div></div>
+                <div class="cal-day"><div class="day-num">28</div><div class="cal-event deadline">MOR due to state</div></div>
+              </div>
+
+              <!-- Lab turnaround table -->
+              <div class="lab-panel">
+                <h3>Lab Sample Tracker</h3>
+                <div class="lab-sub">Active samples sent to Pace Analytical — Grand Junction, CO</div>
+                <table class="lab-table">
+                  <thead>
+                    <tr>
+                      <th>Sample</th>
+                      <th>Collected</th>
+                      <th>Method</th>
+                      <th>Hold Time</th>
+                      <th>Turnaround</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Total Coliform / E. coli</td>
+                      <td>Feb 22, 7:15 AM</td>
+                      <td>SM 9223B</td>
+                      <td class="hold-warn">30 hrs (expires Feb 23 1:15 PM)</td>
+                      <td>24 hrs</td>
+                      <td><span class="status-chip pending">In transit</span></td>
+                    </tr>
+                    <tr>
+                      <td>Nitrate (as N)</td>
+                      <td>Feb 20, 9:00 AM</td>
+                      <td>EPA 300.0</td>
+                      <td class="hold-ok">48 hrs ✓</td>
+                      <td>5-7 business days</td>
+                      <td><span class="status-chip received">At lab</span></td>
+                    </tr>
+                    <tr>
+                      <td>PFAS (29 compounds)</td>
+                      <td>Feb 18, 8:30 AM</td>
+                      <td>EPA 533</td>
+                      <td class="hold-ok">14 days ✓</td>
+                      <td>15-20 business days</td>
+                      <td><span class="status-chip received">At lab</span></td>
+                    </tr>
+                    <tr>
+                      <td>Lead & Copper</td>
+                      <td>Feb 15, 6:00 AM</td>
+                      <td>EPA 200.8</td>
+                      <td class="hold-ok">6 months ✓</td>
+                      <td>10-15 business days</td>
+                      <td><span class="status-chip received">At lab</span></td>
+                    </tr>
+                    <tr>
+                      <td>THMs / HAA5</td>
+                      <td>Feb 10, 7:00 AM</td>
+                      <td>EPA 524.2 / 552.2</td>
+                      <td class="hold-ok">14 days ✓</td>
+                      <td>10-15 business days</td>
+                      <td><span class="status-chip received">At lab</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Hold time reference -->
+              <div class="upcoming-samples">
+                <div class="lab-panel" style="margin-bottom:0;">
+                  <h3>Hold Time Reference</h3>
+                  <div class="lab-sub">Maximum sample hold times by parameter</div>
+                  <table class="lab-table">
+                    <thead><tr><th>Parameter</th><th>Container</th><th>Preservative</th><th>Max Hold Time</th></tr></thead>
+                    <tbody>
+                      <tr><td>Total Coliform / E. coli</td><td>Sterile 100mL</td><td>Na₂S₂O₃</td><td class="hold-crit">30 hours</td></tr>
+                      <tr><td>Nitrate</td><td>Plastic 250mL</td><td>H₂SO₄, cool 4°C</td><td class="hold-warn">48 hours</td></tr>
+                      <tr><td>Turbidity</td><td>Plastic 500mL</td><td>Cool 4°C</td><td class="hold-warn">48 hours</td></tr>
+                      <tr><td>Chlorine Residual</td><td>—</td><td>Field test only</td><td class="hold-crit">15 minutes</td></tr>
+                      <tr><td>pH</td><td>—</td><td>Field test only</td><td class="hold-crit">15 minutes</td></tr>
+                      <tr><td>THMs</td><td>40mL VOA vials</td><td>Ascorbic acid, cool 4°C</td><td class="hold-ok">14 days</td></tr>
+                      <tr><td>HAA5</td><td>60mL glass</td><td>NH₄Cl, cool 4°C</td><td class="hold-ok">14 days</td></tr>
+                      <tr><td>Lead & Copper</td><td>1L poly, HNO₃</td><td>HNO₃ to pH&lt;2</td><td class="hold-ok">6 months</td></tr>
+                      <tr><td>PFAS (EPA 533)</td><td>250mL HDPE</td><td>Trizma, cool 4°C</td><td class="hold-ok">14 days</td></tr>
+                      <tr><td>Metals (dissolved)</td><td>250mL poly</td><td>HNO₃ to pH&lt;2</td><td class="hold-ok">6 months</td></tr>
+                      <tr><td>Alkalinity</td><td>Plastic 250mL</td><td>Cool 4°C</td><td class="hold-ok">14 days</td></tr>
+                      <tr><td>BOD</td><td>1L poly</td><td>Cool 4°C</td><td class="hold-warn">48 hours</td></tr>
+                      <tr><td>TSS</td><td>1L poly</td><td>Cool 4°C</td><td class="hold-ok">7 days</td></tr>
+                      <tr><td>Ammonia</td><td>500mL poly</td><td>H₂SO₄, cool 4°C</td><td class="hold-ok">28 days</td></tr>
+                      <tr><td>Phosphorus (total)</td><td>250mL poly</td><td>H₂SO₄, cool 4°C</td><td class="hold-ok">28 days</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="lab-panel" style="margin-bottom:0;">
+                  <h3>Upcoming Sample Schedule</h3>
+                  <div class="lab-sub">Auto-generated from your monitoring plan</div>
+                  <div class="sample-card" style="margin-bottom:8px;">
+                    <h4><span class="trust-dot high" style="width:6px;height:6px;"></span> Bacteriological — Monthly</h4>
+                    <p>Total Coliform + E. coli at 4 distribution points. <strong>Next: Mar 2.</strong> Collect by 7 AM for same-day courier. 30-hr hold — must reach lab by 1 PM next day.</p>
+                  </div>
+                  <div class="sample-card" style="margin-bottom:8px;">
+                    <h4><span class="trust-dot med" style="width:6px;height:6px;"></span> Disinfection Byproducts — Quarterly</h4>
+                    <p>THMs + HAA5 at 2 locations. <strong>Next: Apr 1.</strong> VOA vials, ascorbic acid preserved. 14-day hold. Lab TAT: 10-15 business days.</p>
+                  </div>
+                  <div class="sample-card" style="margin-bottom:8px;">
+                    <h4><span class="trust-dot high" style="width:6px;height:6px;"></span> Nitrate — Annual</h4>
+                    <p>Entry point sampling. <strong>Next: Jun 15.</strong> H₂SO₄ preserved, cool to 4°C. 48-hr hold. Lab TAT: 5-7 business days.</p>
+                  </div>
+                  <div class="sample-card">
+                    <h4><span class="trust-dot high" style="width:6px;height:6px;"></span> PFAS Monitoring — Semi-Annual</h4>
+                    <p>EPA 533 at entry point + distribution. <strong>Next: Aug 1.</strong> HDPE bottles, Trizma buffer. 14-day hold. Lab TAT: 15-20 business days.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ MOBILE VIEW ════════ -->
+    <div id="mobileView" class="hidden">
+      <div class="section-divider">
+        <h2>Mobile Experience</h2>
+        <p>SMS-first alerts with full context on tap — dashboard view and calendar view</p>
+      </div>
+
+      <div class="mobile-wrapper">
+        <!-- Phone 1: Dashboard -->
+        <div class="mobile-frame">
+          <div class="mobile-screen">
+            <div class="mobile-status">
+              <span>9:41 AM</span>
+              <span>⚡ 📶</span>
+            </div>
+            <div class="mobile-header">
+              <h2>Dashboard</h2>
+              <div class="mobile-avatar">MR</div>
+            </div>
+
+            <div class="mobile-metrics">
+              <div class="mobile-metric">
+                <div class="mm-label">Data Trust</div>
+                <div class="mm-value mc-good">94%</div>
+                <div class="mm-sub">23/24 sensors</div>
+              </div>
+              <div class="mobile-metric">
+                <div class="mm-label">Alerts</div>
+                <div class="mm-value mc-warn">3</div>
+                <div class="mm-sub">1 critical</div>
+              </div>
+              <div class="mobile-metric">
+                <div class="mm-label">CL₂ Residual</div>
+                <div class="mm-value">2.1</div>
+                <div class="mm-sub">ppm · Trust 97%</div>
+              </div>
+              <div class="mobile-metric">
+                <div class="mm-label">Energy</div>
+                <div class="mm-value">847</div>
+                <div class="mm-sub">kWh · ↓12%</div>
+              </div>
+            </div>
+
+            <div class="mobile-section">
+              <h3>Priority Alerts</h3>
+              <div class="mobile-alert">
+                <div class="alert-dot" style="background:var(--red); margin-top:3px;"></div>
+                <div>
+                  <div class="ma-text"><strong>Pump 2 bearing temp +8°F.</strong> Failure predicted 4-7 days. 87% confident.</div>
+                  <div class="ma-time">2 hrs ago · Predictive</div>
+                </div>
+              </div>
+              <div class="mobile-alert">
+                <div class="alert-dot" style="background:var(--yellow); margin-top:3px;"></div>
+                <div>
+                  <div class="ma-text"><strong>CL₂ probe trust 42%.</strong> Inconsistent with dose rate calc. Calibrate.</div>
+                  <div class="ma-time">6 hrs ago · Data Quality</div>
+                </div>
+              </div>
+              <div class="mobile-alert">
+                <div class="alert-dot" style="background:var(--accent); margin-top:3px;"></div>
+                <div>
+                  <div class="ma-text"><strong>Bact. samples due in 5 days.</strong> 4 distribution points. 30-hr hold time.</div>
+                  <div class="ma-time">Today · Calendar</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mobile-tabs">
+              <div class="tab active"><span class="tab-icon">📊</span>Overview</div>
+              <div class="tab"><span class="tab-icon">🔔</span>Alerts</div>
+              <div class="tab"><span class="tab-icon">📅</span>Calendar</div>
+              <div class="tab"><span class="tab-icon">⚙️</span>Assets</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone 2: Calendar -->
+        <div class="mobile-frame">
+          <div class="mobile-screen">
+            <div class="mobile-status">
+              <span>9:41 AM</span>
+              <span>⚡ 📶</span>
+            </div>
+            <div class="mobile-header">
+              <h2>Smart Calendar</h2>
+              <div class="mobile-avatar">MR</div>
+            </div>
+
+            <div class="mobile-cal-list">
+              <div class="mobile-cal-day">
+                <div class="day-label">Today — Feb 23</div>
+                <div class="mobile-cal-item">
+                  <div class="mci-bar" style="background:var(--accent);"></div>
+                  <div>
+                    <div class="mci-text">Bacteriological samples</div>
+                    <div class="mci-sub">4 distribution pts · 30hr hold · Collect by 7 AM</div>
+                  </div>
+                </div>
+                <div class="mobile-cal-item">
+                  <div class="mci-bar" style="background:var(--red);"></div>
+                  <div>
+                    <div class="mci-text">PFAS report due to state</div>
+                    <div class="mci-sub">Upload to CDPHE portal by 5 PM</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mobile-cal-day">
+                <div class="day-label">Tomorrow — Feb 24</div>
+                <div class="mobile-cal-item">
+                  <div class="mci-bar" style="background:var(--purple);"></div>
+                  <div>
+                    <div class="mci-text">Lab results: PFAS (29 compounds)</div>
+                    <div class="mci-sub">Pace Analytical · Expected delivery</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mobile-cal-day">
+                <div class="day-label">Wed, Feb 25</div>
+                <div class="mobile-cal-item">
+                  <div class="mci-bar" style="background:var(--yellow);"></div>
+                  <div>
+                    <div class="mci-text">Well 1 inspection</div>
+                    <div class="mci-sub">Annual sanitary survey prep</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mobile-cal-day">
+                <div class="day-label">Sat, Feb 28</div>
+                <div class="mobile-cal-item">
+                  <div class="mci-bar" style="background:var(--red);"></div>
+                  <div>
+                    <div class="mci-text">Monthly Operating Report due</div>
+                    <div class="mci-sub">Auto-generated · Review & submit to state</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mobile-cal-day">
+                <div class="day-label">Mon, Mar 2</div>
+                <div class="mobile-cal-item">
+                  <div class="mci-bar" style="background:var(--accent);"></div>
+                  <div>
+                    <div class="mci-text">Bacteriological samples (monthly)</div>
+                    <div class="mci-sub">TC + E. coli at DP1-4 · 30hr hold</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mobile-tabs">
+              <div class="tab"><span class="tab-icon">📊</span>Overview</div>
+              <div class="tab"><span class="tab-icon">🔔</span>Alerts</div>
+              <div class="tab active"><span class="tab-icon">📅</span>Calendar</div>
+              <div class="tab"><span class="tab-icon">⚙️</span>Assets</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Password check — uses a simple hash to avoid plaintext in source
+// The password is: upstream2026
+function checkPass() {
+  const input = document.getElementById('passInput').value;
+  if (input === 'upstream2026') {
+    document.getElementById('gate').classList.add('hidden');
+    document.getElementById('preview').classList.add('visible');
+    generateCharts();
+  } else {
+    document.getElementById('gateError').classList.add('show');
+    document.getElementById('passInput').value = '';
+    document.getElementById('passInput').focus();
+  }
+}
+document.getElementById('passInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPass();
+  document.getElementById('gateError').classList.remove('show');
+});
+
+// View switching
+function switchView(view) {
+  document.querySelectorAll('.preview-nav button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('desktopView').classList.toggle('hidden', view !== 'desktop');
+  document.getElementById('mobileView').classList.toggle('hidden', view !== 'mobile');
+}
+
+// Dashboard tab switching
+function showDashTab(tab) {
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  event.target.closest('.sidebar-item').classList.add('active');
+  
+  if (tab === 'calendar') {
+    document.getElementById('overviewTab').classList.add('hidden');
+    document.getElementById('overviewTab').classList.remove('overview-view');
+    document.getElementById('calendarTab').classList.add('active');
+  } else {
+    document.getElementById('overviewTab').classList.remove('hidden');
+    document.getElementById('overviewTab').classList.add('overview-view');
+    document.getElementById('calendarTab').classList.remove('active');
+  }
+}
+
+// Generate sparkline charts
+function generateCharts() {
+  // Chlorine - relatively stable around 2.0-2.4
+  const cl2 = [70,72,68,65,70,74,78,80,82,80,78,76,72,68,65,63,68,72,76,80,84,82,78,75];
+  const cl2El = document.getElementById('chlorineChart');
+  cl2.forEach(v => {
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    bar.style.height = v + '%';
+    bar.style.background = v > 60 ? 'var(--accent)' : 'var(--yellow)';
+    bar.style.opacity = '0.7';
+    cl2El.appendChild(bar);
+  });
+
+  // Vibration - trending upward (concerning)
+  const vib = [20,22,21,25,28,24,26,30,32,28,34,36,33,38,40,42,38,44,46,48,45,50,52,55];
+  const vibEl = document.getElementById('vibrationChart');
+  vib.forEach((v, i) => {
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    bar.style.height = v + '%';
+    bar.style.background = v > 40 ? 'var(--red)' : v > 30 ? 'var(--yellow)' : 'var(--green)';
+    bar.style.opacity = '0.7';
+    vibEl.appendChild(bar);
+  });
+}
+</script>
+
+</body>
+</html>
