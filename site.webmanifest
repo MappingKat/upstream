@@ -1,0 +1,28 @@
+{
+  "name": "Upstream AI",
+  "short_name": "Upstream AI",
+  "description": "Data trust and predictive intelligence for small water utilities",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0d3b5e",
+  "theme_color": "#0d3b5e",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "apple touch icon"
+    }
+  ]
+}

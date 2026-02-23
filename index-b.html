@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ════════════════════════════════════════════
+       TITLE & CORE META (for search engines, bots, LLMs)
+       ════════════════════════════════════════════ -->
+  <title>Upstream AI — Data Trust &amp; Predictive Intelligence for Small Water Utilities</title>
+  <meta name="description" content="Upstream AI helps small water and wastewater utilities trust their SCADA data again. Two-tier platform: Trust Foundation ($600/mo) scores data quality; Operator Co-Pilot ($1,800/mo) adds AI predictions. Built for 1–5 person rural utility operations.">
+  <meta name="keywords" content="water utility software, wastewater SCADA, predictive maintenance water, rural water utility, data trust scoring, alarm fatigue water utility, POTW software, operator co-pilot, water utility AI">
+  <meta name="author" content="Upstream AI">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="revisit-after" content="7 days">
+  <meta name="language" content="English">
+  <link rel="canonical" href="https://getupstream.ai/">
+
+  <!-- ════════════════════════════════════════════
+       SECURITY META HEADERS (belt-and-suspenders for hosts
+       that don't support server-level headers)
+       ════════════════════════════════════════════ -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+  <!-- Note: X-Frame-Options and HSTS must be set server-side; see _headers / vercel.json -->
+
+  <!-- ════════════════════════════════════════════
+       OPEN GRAPH — Facebook, LinkedIn, Discord, Slack, iMessage
+       ════════════════════════════════════════════ -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getupstream.ai/">
+  <meta property="og:site_name" content="Upstream AI">
+  <meta property="og:title" content="Upstream AI — Data Trust &amp; Predictive Intelligence for Water Utilities">
+  <meta property="og:description" content="Small water utilities can't trust their SCADA data. Upstream AI fixes that with transparent data quality scores and AI-powered predictions built for 1–5 person teams.">
+  <meta property="og:image" content="https://getupstream.ai/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Upstream AI dashboard showing water system data trust scores">
+  <meta property="og:locale" content="en_US">
+
+  <!-- ════════════════════════════════════════════
+       TWITTER / X CARD
+       ════════════════════════════════════════════ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@getupstreamai">
+  <meta name="twitter:title" content="Upstream AI — Data Trust for Small Water Utilities">
+  <meta name="twitter:description" content="Trust your SCADA data again. AI-powered data quality scoring and predictive intelligence for rural water utilities.">
+  <meta name="twitter:image" content="https://getupstream.ai/og-image.png">
+
+  <!-- ════════════════════════════════════════════
+       FAVICONS — All formats for maximum compatibility
+       ════════════════════════════════════════════ -->
+  <!-- SVG (modern browsers) -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <!-- PNG fallback for older browsers -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <!-- Apple devices -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <!-- Web app manifest -->
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0d3b5e">
+  <meta name="msapplication-TileColor" content="#0d3b5e">
+
+  <!-- ════════════════════════════════════════════
+       SITEMAP + FEED DISCOVERY
+       ════════════════════════════════════════════ -->
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+
+  <!-- ════════════════════════════════════════════
+       JSON-LD STRUCTURED DATA — for Google, AI agents, LLMs
+       ════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://getupstream.ai/#organization",
+        "name": "Upstream AI",
+        "url": "https://getupstream.ai",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://getupstream.ai/favicon.svg",
+          "contentUrl": "https://getupstream.ai/favicon.svg"
+        },
+        "description": "Data trust and predictive intelligence platform for small water and wastewater utilities. Serving rural utilities with 1–5 person operations across the United States.",
+        "foundingDate": "2023",
+        "foundingLocation": {
+          "@type": "Place",
+          "name": "Glenwood Springs, Colorado, United States"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Glenwood Springs",
+          "addressRegion": "CO",
+          "addressCountry": "US"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "hello@getupstream.ai",
+          "contactType": "customer support"
+        },
+        "sameAs": []
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://getupstream.ai/#website",
+        "url": "https://getupstream.ai",
+        "name": "Upstream AI",
+        "publisher": { "@id": "https://getupstream.ai/#organization" }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://getupstream.ai/#webpage",
+        "url": "https://getupstream.ai/",
+        "name": "Upstream AI — Data Trust & Predictive Intelligence for Small Water Utilities",
+        "isPartOf": { "@id": "https://getupstream.ai/#website" },
+        "about": { "@id": "https://getupstream.ai/#organization" },
+        "description": "Upstream AI helps small water and wastewater utilities trust their SCADA data with transparent data quality scoring and AI-powered operator intelligence."
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Upstream AI Platform",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Trust Foundation",
+            "price": "600",
+            "priceCurrency": "USD",
+            "billingIncrement": "P1M",
+            "description": "Data quality scoring, sensor validation, alarm audit, and live data trust dashboard for water utilities."
+          },
+          {
+            "@type": "Offer",
+            "name": "Operator Co-Pilot",
+            "price": "1800",
+            "priceCurrency": "USD",
+            "billingIncrement": "P1M",
+            "description": "Full AI predictive intelligence layer on top of Trust Foundation: anomaly detection, failure forecasting, maintenance prioritization."
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- ════════════════════════════════════════════
+       FONTS — preconnect for performance
+       ════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <style>
+    /* ══════════════════════════════════════
+       RESET & CUSTOM PROPERTIES
+       ══════════════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy:    #0d3b5e;
+      --water:   #1a6fa8;
+      --sky:     #2e86ab;
+      --flow:    #5bc8f5;
+      --mint:    #a8e6cf;
+      --dark:    #0a0a0a;
+      --body:    #2c2c2c;
+      --mid:     #5a5a5a;
+      --dim:     #8a8a8a;
+      --light:   #e8edf2;
+      --bg:      #f4f7fb;
+      --white:   #ffffff;
+      --shadow:  0 4px 24px rgba(13,59,94,0.10);
+      --shadow-lg: 0 16px 48px rgba(13,59,94,0.16);
+      --radius:  10px;
+      --font-body: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--body);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Skip nav for accessibility */
+    .skip-link {
+      position: absolute; top: -100px; left: 16px; z-index: 9999;
+      background: var(--navy); color: #fff; padding: 8px 16px;
+      border-radius: 0 0 6px 6px; font-size: 14px; text-decoration: none;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ══════════════════════════════════════
+       NAVIGATION
+       ══════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 64px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(13,59,94,0.08);
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 16px rgba(13,59,94,0.10); }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--dark);
+      font-size: 17px; font-weight: 600; letter-spacing: -0.3px;
+    }
+    .nav-logo svg { flex-shrink: 0; }
+    .nav-logo .brand-up { color: var(--sky); font-weight: 400; }
+
+    .nav-links {
+      display: flex; gap: 28px; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none; color: var(--mid);
+      font-size: 13.5px; font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--dark); }
+
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .btn-ghost {
+      background: none; border: 1.5px solid var(--light);
+      color: var(--mid); padding: 7px 18px;
+      border-radius: var(--radius); font-size: 13.5px; font-weight: 500;
+      cursor: pointer; font-family: inherit; text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: var(--sky); color: var(--sky); }
+
+    .btn-primary {
+      background: var(--navy); color: #fff;
+      border: none; padding: 8px 20px;
+      border-radius: var(--radius); font-size: 13.5px; font-weight: 500;
+      cursor: pointer; font-family: inherit; text-decoration: none;
+      transition: background .2s, transform .1s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-primary:hover { background: var(--water); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    /* ══════════════════════════════════════
+       HERO
+       ══════════════════════════════════════ */
+    .hero {
+      padding: 120px 48px 80px;
+      max-width: 1100px; margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(46,134,171,0.08);
+      border: 1px solid rgba(46,134,171,0.20);
+      color: var(--sky); padding: 5px 14px;
+      border-radius: 100px; font-size: 12.5px; font-weight: 500;
+      margin-bottom: 28px; letter-spacing: 0.2px;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--sky); display: inline-block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      color: var(--dark);
+      margin-bottom: 24px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--sky);
+    }
+
+    .hero-sub {
+      font-size: 18px; color: var(--mid); font-weight: 400;
+      max-width: 620px; margin: 0 auto 40px;
+      line-height: 1.65;
+    }
+
+    .hero-ctas {
+      display: flex; gap: 12px; justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-ctas .btn-primary { padding: 12px 28px; font-size: 15px; }
+    .hero-ctas .btn-ghost   { padding: 12px 28px; font-size: 15px; }
+
+    .hero-stat-bar {
+      display: flex; gap: 48px; justify-content: center;
+      margin-top: 64px; padding-top: 40px;
+      border-top: 1px solid var(--light);
+      flex-wrap: wrap;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 2.2rem; font-weight: 400;
+      color: var(--navy); line-height: 1;
+      margin-bottom: 4px;
+    }
+    .hero-stat span { font-size: 13px; color: var(--dim); }
+
+    /* ══════════════════════════════════════
+       SECTION UTILITIES
+       ══════════════════════════════════════ */
+    section { padding: 80px 48px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--sky); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 400; line-height: 1.2;
+      color: var(--dark); margin-bottom: 16px;
+    }
+    .section-body {
+      font-size: 17px; color: var(--mid);
+      max-width: 560px; line-height: 1.7;
+    }
+
+    /* ══════════════════════════════════════
+       PROBLEM SECTION
+       ══════════════════════════════════════ */
+    .problem { background: var(--bg); }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: center;
+      margin-top: 48px;
+    }
+    .problem-text h2 { margin-bottom: 20px; }
+
+    .alarm-counter {
+      background: var(--white);
+      border: 1px solid var(--light);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+    .alarm-label {
+      font-size: 12px; font-weight: 500; color: var(--dim);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .alarm-number {
+      font-family: var(--font-display);
+      font-size: 3.5rem; font-weight: 400;
+      color: #c0392b; line-height: 1;
+      margin-bottom: 4px;
+    }
+    .alarm-sub { font-size: 14px; color: var(--mid); margin-bottom: 24px; }
+    .alarm-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-top: 1px solid var(--light);
+      font-size: 13.5px;
+    }
+    .alarm-row .tag-bad  { background: #fef2f2; color: #c0392b; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+    .alarm-row .tag-warn { background: #fffbeb; color: #b45309; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+
+    /* ══════════════════════════════════════
+       HOW IT WORKS — TWO TIERS
+       ══════════════════════════════════════ */
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 48px;
+    }
+
+    .tier-card {
+      border-radius: 16px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .tier-card.tier-1 {
+      background: var(--bg);
+      border: 1px solid var(--light);
+    }
+    .tier-card.tier-2 {
+      background: var(--navy);
+      color: #fff;
+    }
+    .tier-number {
+      font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--dim); margin-bottom: 16px;
+    }
+    .tier-2 .tier-number { color: rgba(255,255,255,0.45); }
+    .tier-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem; font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .tier-card .price {
+      font-size: 2.2rem; font-weight: 600;
+      margin: 16px 0 8px; letter-spacing: -1px;
+    }
+    .tier-2 .price { color: var(--flow); }
+    .tier-card .price-sub { font-size: 13px; color: var(--dim); margin-bottom: 24px; }
+    .tier-2 .price-sub { color: rgba(255,255,255,0.5); }
+    .tier-card ul { list-style: none; }
+    .tier-card ul li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 8px 0; font-size: 14.5px;
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+    .tier-2 ul li { border-top-color: rgba(255,255,255,0.08); }
+    .tier-card ul li:first-child { border-top: none; }
+    .check { color: var(--sky); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .tier-2 .check { color: var(--flow); }
+
+    .tier-badge {
+      position: absolute; top: 20px; right: 20px;
+      background: var(--flow); color: var(--navy);
+      font-size: 11px; font-weight: 700;
+      padding: 4px 10px; border-radius: 100px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ══════════════════════════════════════
+       TRUST SCORE DEMO
+       ══════════════════════════════════════ */
+    .demo-section { background: var(--navy); color: #fff; }
+    .demo-section .section-label { color: var(--flow); }
+    .demo-section .section-title { color: #fff; }
+    .demo-section .section-body  { color: rgba(255,255,255,0.6); }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px; margin-top: 48px; align-items: start;
+    }
+
+    .demo-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 12px; padding: 24px;
+    }
+    .demo-card-title {
+      font-size: 12px; color: rgba(255,255,255,0.4);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .sensor-row {
+      display: flex; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+      gap: 12px;
+    }
+    .sensor-row:last-child { border-bottom: none; }
+    .sensor-name { flex: 1; font-size: 14px; }
+    .trust-pill {
+      font-size: 12px; font-weight: 600;
+      padding: 3px 10px; border-radius: 100px;
+    }
+    .trust-high { background: rgba(168,230,207,0.15); color: var(--mint); }
+    .trust-med  { background: rgba(253,197,63,0.15);  color: #fdc53f; }
+    .trust-low  { background: rgba(255,90,90,0.15);   color: #ff5a5a; }
+    .trust-bar-wrap { width: 80px; height: 5px; background: rgba(255,255,255,0.10); border-radius: 3px; }
+    .trust-bar { height: 100%; border-radius: 3px; }
+
+    /* ══════════════════════════════════════
+       PERSONAS
+       ══════════════════════════════════════ */
+    .personas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 48px;
+    }
+    .persona-card {
+      border: 1px solid var(--light);
+      border-radius: 16px; padding: 32px;
+      transition: box-shadow .3s, transform .2s;
+      text-decoration: none; color: inherit;
+      display: block;
+    }
+    .persona-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-3px);
+    }
+    .persona-icon {
+      width: 48px; height: 48px;
+      background: rgba(46,134,171,0.08);
+      border-radius: 12px; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 20px;
+    }
+    .persona-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem; font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .persona-card p { font-size: 14px; color: var(--mid); line-height: 1.6; }
+    .persona-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 16px; font-size: 13px; font-weight: 500;
+      color: var(--sky); text-decoration: none;
+    }
+
+    /* ══════════════════════════════════════
+       PRICING
+       ══════════════════════════════════════ */
+    #pricing { background: var(--bg); }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px; margin-top: 48px;
+      max-width: 860px;
+    }
+    .pricing-card {
+      background: var(--white);
+      border: 1.5px solid var(--light);
+      border-radius: 16px; padding: 36px;
+      position: relative;
+    }
+    .pricing-card.featured {
+      border-color: var(--sky);
+      box-shadow: 0 0 0 4px rgba(46,134,171,0.08);
+    }
+    .featured-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--sky); color: #fff;
+      font-size: 11px; font-weight: 600;
+      padding: 3px 14px; border-radius: 100px;
+      white-space: nowrap;
+    }
+    .plan-name {
+      font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--dim); margin-bottom: 12px;
+    }
+    .plan-price {
+      font-family: var(--font-display);
+      font-size: 2.8rem; font-weight: 400;
+      letter-spacing: -1px; line-height: 1;
+      margin-bottom: 4px;
+    }
+    .plan-price sup { font-size: 1.2rem; vertical-align: top; margin-top: 6px; }
+    .plan-cadence { font-size: 13px; color: var(--dim); margin-bottom: 20px; }
+    .plan-desc { font-size: 14.5px; color: var(--mid); margin-bottom: 24px; line-height: 1.6; }
+    .plan-features { list-style: none; }
+    .plan-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 8px 0; font-size: 14px;
+      border-top: 1px solid var(--light);
+    }
+    .plan-features li:first-child { border-top: none; }
+    .plan-features .chk { color: var(--sky); flex-shrink: 0; }
+
+    /* ══════════════════════════════════════
+       CTA SECTION
+       ══════════════════════════════════════ */
+    .cta-section {
+      text-align: center; background: var(--navy);
+      padding: 96px 48px;
+    }
+    .cta-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400; color: #fff;
+      margin-bottom: 16px;
+    }
+    .cta-section p { font-size: 17px; color: rgba(255,255,255,0.6); margin-bottom: 36px; }
+    .cta-section .btn-primary {
+      background: var(--flow); color: var(--navy);
+      padding: 14px 32px; font-size: 16px; font-weight: 600;
+    }
+    .cta-section .btn-primary:hover { background: var(--mint); }
+
+    /* ══════════════════════════════════════
+       FOOTER
+       ══════════════════════════════════════ */
+    footer {
+      background: #08263f; color: rgba(255,255,255,0.55);
+      padding: 56px 48px 32px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-brand .logo {
+      font-size: 17px; font-weight: 600;
+      color: #fff; text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px;
+    }
+    .footer-brand .logo .brand-up { color: var(--flow); font-weight: 400; }
+    .footer-brand p { font-size: 13.5px; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 {
+      font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.8); margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a {
+      text-decoration: none; color: rgba(255,255,255,0.45);
+      font-size: 14px; transition: color .2s;
+    }
+    .footer-col ul li a:hover { color: rgba(255,255,255,0.85); }
+    .footer-bottom {
+      max-width: 1100px; margin: 0 auto;
+      padding-top: 28px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom span { font-size: 13px; }
+    .footer-bottom a { color: rgba(255,255,255,0.45); text-decoration: none; }
+
+    /* ══════════════════════════════════════
+       MODAL
+       ══════════════════════════════════════ */
+    .modal-overlay {
+      display: none; position: fixed;
+      inset: 0; z-index: 1000;
+      background: rgba(8,38,63,0.70);
+      align-items: center; justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--white);
+      border-radius: 20px; padding: 40px;
+      width: 100%; max-width: 520px;
+      max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.25);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 20px; right: 20px;
+      background: var(--bg); border: none;
+      width: 32px; height: 32px; border-radius: 50%;
+      font-size: 18px; cursor: pointer; color: var(--mid);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .modal-close:hover { background: var(--light); }
+    .modal h2 {
+      font-family: var(--font-display);
+      font-size: 1.7rem; font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .modal p.sub { font-size: 14px; color: var(--mid); margin-bottom: 28px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 13px; font-weight: 500;
+      color: var(--body); margin-bottom: 6px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--light);
+      border-radius: 8px; font-size: 14px;
+      font-family: inherit; color: var(--body);
+      background: var(--white);
+      transition: border-color .2s;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none; border-color: var(--sky);
+      box-shadow: 0 0 0 3px rgba(46,134,171,0.10);
+    }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-submit {
+      width: 100%; padding: 13px;
+      background: var(--navy); color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 500;
+      cursor: pointer; font-family: inherit;
+      transition: background .2s;
+      margin-top: 8px;
+    }
+    .form-submit:hover { background: var(--water); }
+    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .form-success {
+      display: none; text-align: center;
+      padding: 32px 0;
+    }
+    .form-success .success-icon {
+      font-size: 40px; margin-bottom: 16px;
+    }
+    .form-success h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem; margin-bottom: 8px;
+    }
+    .form-success p { color: var(--mid); font-size: 14px; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+       ══════════════════════════════════════ */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      section { padding: 60px 24px; }
+      .problem-grid,
+      .tiers-grid,
+      .demo-grid,
+      .pricing-grid,
+      .footer-inner { grid-template-columns: 1fr; }
+      .personas-grid { grid-template-columns: 1fr; }
+      .footer-inner { gap: 32px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Accessibility: skip to main content -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ══════════════════════════════════════
+       NAVIGATION
+       ══════════════════════════════════════ -->
+  <nav id="site-nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="nav-logo" aria-label="Upstream AI - Home">
+      <!-- Watershed icon inline SVG (32px) -->
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <circle cx="16" cy="16" r="16" fill="#0d3b5e"/>
+        <path d="M7 6 L11 13" stroke="#2e86ab" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M25 6 L21 13" stroke="#2e86ab" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M4 11 L11 15" stroke="#2e86ab" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M28 11 L21 15" stroke="#2e86ab" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M9 18 L14 20" stroke="#a8e6cf" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M23 18 L18 20" stroke="#a8e6cf" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M11 13 Q13 17 16 20 Q19 17 21 13" stroke="#5bc8f5" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <circle cx="16" cy="20" r="1.5" fill="#5bc8f5"/>
+        <path d="M16 21.5 L16 26" stroke="#5bc8f5" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M10 26 Q16 29 22 26" stroke="#a8e6cf" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span><span class="brand-up">Upstream</span> AI</span>
+    </a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#platform">Platform</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="security.html">Security</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="for-operators.html" class="btn-ghost">For Operators</a>
+      <button class="btn-primary" id="nav-cta" type="button">Request Early Access</button>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       HERO
+       ══════════════════════════════════════ -->
+  <main id="main-content">
+    <section class="hero" aria-label="Hero">
+      <div class="hero-badge">
+        <span class="dot" aria-hidden="true"></span>
+        Now in early access — Colorado utilities
+      </div>
+
+      <h1>
+        Your SCADA data is lying to you.<br>
+        <em>Let's fix that first.</em>
+      </h1>
+
+      <p class="hero-sub">
+        Small water utilities drown in alarms they don't trust. Upstream AI scores the quality of every data point — so your operators know what to believe, and your AI predictions are actually reliable.
+      </p>
+
+      <div class="hero-ctas">
+        <button class="btn-primary" type="button" data-modal-trigger>
+          Request Early Access
+          <span aria-hidden="true">→</span>
+        </button>
+        <a href="#platform" class="btn-ghost">See how it works</a>
+      </div>
+
+      <div class="hero-stat-bar" aria-label="Key statistics">
+        <div class="hero-stat">
+          <strong>14,000+</strong>
+          <span>Small POTWs in the U.S.</span>
+        </div>
+        <div class="hero-stat">
+          <strong>94%</strong>
+          <span>Alarm reduction reported</span>
+        </div>
+        <div class="hero-stat">
+          <strong>$600</strong>
+          <span>Per month to start</span>
+        </div>
+        <div class="hero-stat">
+          <strong>1–5</strong>
+          <span>Person teams served</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         THE PROBLEM
+         ══════════════════════════════════════ -->
+    <section class="problem" id="problem" aria-labelledby="problem-title">
+      <div class="section-inner">
+        <div class="problem-grid">
+          <div class="problem-text">
+            <p class="section-label">The Problem</p>
+            <h2 class="section-title" id="problem-title">
+              Alarm fatigue is a crisis,<br>not an inconvenience.
+            </h2>
+            <p class="section-body">
+              A typical small utility generates hundreds of alarms per week. Operators learn to ignore most of them — because the data isn't trustworthy. When you can't trust your sensors, you can't trust your AI. And when something actually fails, you're already numb to the noise.
+            </p>
+            <p class="section-body" style="margin-top:16px;">
+              We don't start with predictions. We start with data quality. Because intelligence built on bad data is worse than no intelligence at all.
+            </p>
+          </div>
+
+          <div class="alarm-counter" role="region" aria-label="Example alarm dashboard showing data quality issues">
+            <div class="alarm-label">This week's alarms</div>
+            <div class="alarm-number">847</div>
+            <div class="alarm-sub">Across 12 sensors — how many do you trust?</div>
+
+            <div class="alarm-row">
+              <span>Influent flow meter</span>
+              <span class="tag-bad">Trust: 34%</span>
+            </div>
+            <div class="alarm-row">
+              <span>Aeration basin DO</span>
+              <span class="tag-bad">Trust: 41%</span>
+            </div>
+            <div class="alarm-row">
+              <span>Effluent turbidity</span>
+              <span class="tag-warn">Trust: 67%</span>
+            </div>
+            <div class="alarm-row">
+              <span>Clarifier level</span>
+              <span class="tag-bad">Trust: 28%</span>
+            </div>
+            <div class="alarm-row">
+              <span>MLSS probe</span>
+              <span class="tag-bad">Trust: 22%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         PLATFORM — TWO TIERS
+         ══════════════════════════════════════ -->
+    <section id="platform" aria-labelledby="platform-title">
+      <div class="section-inner">
+        <p class="section-label">The Platform</p>
+        <h2 class="section-title" id="platform-title">Trust first. Intelligence second.</h2>
+        <p class="section-body">Two tiers. One philosophy. Build on a solid foundation of verified data before layering AI predictions on top.</p>
+
+        <div class="tiers-grid">
+          <!-- Tier 1 -->
+          <div class="tier-card tier-1">
+            <div class="tier-number">Tier 1</div>
+            <h3>Trust Foundation</h3>
+            <p style="font-size:14px;color:var(--mid);line-height:1.6;">Data quality scoring, sensor validation, and alarm audit for your existing SCADA system.</p>
+            <div class="price">$600<span style="font-size:1rem;font-weight:400;color:var(--dim)">/mo</span></div>
+            <div class="price-sub">Per facility · No long-term contract</div>
+            <ul>
+              <li><span class="check" aria-hidden="true">✓</span> Real-time data quality scoring (0–100%)</li>
+              <li><span class="check" aria-hidden="true">✓</span> Sensor drift and calibration detection</li>
+              <li><span class="check" aria-hidden="true">✓</span> Alarm noise audit — which alarms matter</li>
+              <li><span class="check" aria-hidden="true">✓</span> Transparent score calculations</li>
+              <li><span class="check" aria-hidden="true">✓</span> SCADA-agnostic integration</li>
+              <li><span class="check" aria-hidden="true">✓</span> Operator dashboard</li>
+            </ul>
+          </div>
+
+          <!-- Tier 2 -->
+          <div class="tier-card tier-2">
+            <div class="tier-badge">Full Intelligence</div>
+            <div class="tier-number">Tier 1 + 2</div>
+            <h3 style="color:#fff;">Operator Co-Pilot</h3>
+            <p style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.6;">Everything in Trust Foundation, plus AI-powered predictions built on data you actually trust.</p>
+            <div class="price">$1,800<span style="font-size:1rem;font-weight:400;color:rgba(255,255,255,0.4)">/mo</span></div>
+            <div class="price-sub">Includes Trust Foundation</div>
+            <ul>
+              <li><span class="check" aria-hidden="true">✓</span> AI anomaly detection on trusted data</li>
+              <li><span class="check" aria-hidden="true">✓</span> Equipment failure forecasting (7–30 day)</li>
+              <li><span class="check" aria-hidden="true">✓</span> Maintenance prioritization engine</li>
+              <li><span class="check" aria-hidden="true">✓</span> Root cause analysis</li>
+              <li><span class="check" aria-hidden="true">✓</span> Compliance risk flagging</li>
+              <li><span class="check" aria-hidden="true">✓</span> Explainable AI — see the reasoning</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         TRUST SCORE DEMO
+         ══════════════════════════════════════ -->
+    <section class="demo-section" aria-labelledby="demo-title">
+      <div class="section-inner">
+        <p class="section-label">Data Trust in Action</p>
+        <h2 class="section-title" id="demo-title">Every sensor. Every reading. Scored.</h2>
+        <p class="section-body">Click any score to see exactly how we calculated it. No black boxes.</p>
+
+        <div class="demo-grid">
+          <div class="demo-card" role="region" aria-label="Sensor trust score dashboard">
+            <div class="demo-card-title">Sensor Trust Dashboard — Live</div>
+
+            <div class="sensor-row">
+              <span class="sensor-name">Effluent flow meter</span>
+              <div class="trust-bar-wrap" role="progressbar" aria-valuenow="91" aria-valuemin="0" aria-valuemax="100" aria-label="91% trust">
+                <div class="trust-bar" style="width:91%;background:#a8e6cf;"></div>
+              </div>
+              <span class="trust-pill trust-high">91%</span>
+            </div>
+            <div class="sensor-row">
+              <span class="sensor-name">Aeration basin DO</span>
+              <div class="trust-bar-wrap" role="progressbar" aria-valuenow="73" aria-valuemin="0" aria-valuemax="100" aria-label="73% trust">
+                <div class="trust-bar" style="width:73%;background:#fdc53f;"></div>
+              </div>
+              <span class="trust-pill trust-med">73%</span>
+            </div>
+            <div class="sensor-row">
+              <span class="sensor-name">Influent flow meter</span>
+              <div class="trust-bar-wrap" role="progressbar" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100" aria-label="34% trust">
+                <div class="trust-bar" style="width:34%;background:#ff5a5a;"></div>
+              </div>
+              <span class="trust-pill trust-low">34%</span>
+            </div>
+            <div class="sensor-row">
+              <span class="sensor-name">Clarifier level</span>
+              <div class="trust-bar-wrap" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" aria-label="88% trust">
+                <div class="trust-bar" style="width:88%;background:#a8e6cf;"></div>
+              </div>
+              <span class="trust-pill trust-high">88%</span>
+            </div>
+            <div class="sensor-row">
+              <span class="sensor-name">MLSS probe</span>
+              <div class="trust-bar-wrap" role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" aria-label="22% trust">
+                <div class="trust-bar" style="width:22%;background:#ff5a5a;"></div>
+              </div>
+              <span class="trust-pill trust-low">22%</span>
+            </div>
+          </div>
+
+          <div class="demo-card" role="region" aria-label="AI prediction built on trusted data">
+            <div class="demo-card-title">Co-Pilot Alert — Based on Trusted Sensors Only</div>
+            <div style="padding:20px 0;">
+              <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:20px;">
+                <span style="font-size:24px;" aria-hidden="true">⚠️</span>
+                <div>
+                  <div style="font-weight:600;color:#fdc53f;font-size:14px;margin-bottom:4px;">Blower failure risk — 72% confidence</div>
+                  <div style="font-size:13px;color:rgba(255,255,255,0.55);">Based on 91 days of validated sensor history. Projected failure window: 8–14 days.</div>
+                </div>
+              </div>
+              <div style="background:rgba(255,255,255,0.06);border-radius:8px;padding:16px;font-size:12px;color:rgba(255,255,255,0.5);">
+                <div style="margin-bottom:8px;font-weight:600;color:rgba(255,255,255,0.7);">Why we trust this prediction:</div>
+                ✓ Used 3 of 5 sensors (excluded low-trust)<br>
+                ✓ Pattern matches 4 prior failure signatures<br>
+                ✓ Corroborated by vibration + power draw data<br>
+                ✓ Excludes influent flow (34% trust — excluded)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         WHO IT'S FOR
+         ══════════════════════════════════════ -->
+    <section aria-labelledby="personas-title">
+      <div class="section-inner">
+        <p class="section-label">Who It's For</p>
+        <h2 class="section-title" id="personas-title">Built for small utility teams.</h2>
+        <p class="section-body">Whether you're an operator on the floor, a manager watching the budget, or a board member protecting the community — Upstream AI speaks your language.</p>
+
+        <div class="personas-grid">
+          <a href="for-operators.html" class="persona-card" aria-label="Learn more: for water and wastewater operators">
+            <div class="persona-icon" aria-hidden="true">🔧</div>
+            <h3>For Operators</h3>
+            <p>Stop second-guessing your sensors. Know exactly which alarms to act on, and which to ignore — with the data to back you up.</p>
+            <span class="persona-link" aria-hidden="true">Learn more →</span>
+          </a>
+          <a href="for-managers.html" class="persona-card" aria-label="Learn more: for utility managers">
+            <div class="persona-icon" aria-hidden="true">📊</div>
+            <h3>For Managers</h3>
+            <p>Justify maintenance budgets with data. Prevent the surprise failures that blow your budget and land you in a board meeting you didn't expect.</p>
+            <span class="persona-link" aria-hidden="true">Learn more →</span>
+          </a>
+          <a href="for-boards.html" class="persona-card" aria-label="Learn more: for board members">
+            <div class="persona-icon" aria-hidden="true">🏛️</div>
+            <h3>For Board Members</h3>
+            <p>Demonstrate responsible stewardship. Know your infrastructure risk before the EPA does — and show your community you're ahead of it.</p>
+            <span class="persona-link" aria-hidden="true">Learn more →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         PRICING
+         ══════════════════════════════════════ -->
+    <section id="pricing" aria-labelledby="pricing-title">
+      <div class="section-inner">
+        <p class="section-label">Pricing</p>
+        <h2 class="section-title" id="pricing-title">Simple, transparent pricing.</h2>
+        <p class="section-body">No setup fees, no long-term contracts, no hidden costs. Cancel anytime.</p>
+
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div class="plan-name">Trust Foundation</div>
+            <div class="plan-price"><sup>$</sup>600</div>
+            <div class="plan-cadence">per facility / month</div>
+            <p class="plan-desc">Data quality scoring and alarm audit. The essential first step before any AI predictions.</p>
+            <ul class="plan-features">
+              <li><span class="chk" aria-hidden="true">✓</span> Real-time data quality scores</li>
+              <li><span class="chk" aria-hidden="true">✓</span> Sensor drift detection</li>
+              <li><span class="chk" aria-hidden="true">✓</span> Alarm audit and filtering</li>
+              <li><span class="chk" aria-hidden="true">✓</span> Transparent score breakdowns</li>
+              <li><span class="chk" aria-hidden="true">✓</span> Operator dashboard</li>
+              <li><span class="chk" aria-hidden="true">✓</span> SCADA-agnostic</li>
+            </ul>
+            <button class="btn-primary" type="button" data-modal-trigger style="width:100%;justify-content:center;margin-top:28px;padding:12px;">
+              Get Started
+            </button>
+          </div>
+
+          <div class="pricing-card featured">
+            <div class="featured-badge">Most Popular</div>
+            <div class="plan-name">Operator Co-Pilot</div>
+            <div class="plan-price"><sup>$</sup>1,800</div>
+            <div class="plan-cadence">per facility / month · includes Trust Foundation</div>
+            <p class="plan-desc">Full AI intelligence layer. Predictions you can actually trust, built on data you know is real.</p>
+            <ul class="plan-features">
+              <li><span class="chk" aria-hidden="true">✓</span> Everything in Trust Foundation</li>
+              <li><span class="chk" aria-hidden="true">✓</span> AI anomaly detection</li>
+              <li><span class="chk" aria-hidden="true">✓</span> Equipment failure forecasting</li>
+              <li><span class="chk" aria-hidden="true">✓</span> Maintenance prioritization</li>
+              <li><span class="chk" aria-hidden="true">✓</span> Compliance risk flagging</li>
+              <li><span class="chk" aria-hidden="true">✓</span> Explainable AI reasoning</li>
+            </ul>
+            <button class="btn-primary" type="button" data-modal-trigger style="width:100%;justify-content:center;margin-top:28px;padding:12px;background:var(--navy);">
+              Request Early Access
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         CTA BAND
+         ══════════════════════════════════════ -->
+    <section class="cta-section" aria-label="Call to action">
+      <h2>Ready to trust your data again?</h2>
+      <p>We're onboarding utilities across Colorado. Pilots take 2 weeks to set up.</p>
+      <button class="btn-primary" type="button" data-modal-trigger>
+        Talk to Us → 
+      </button>
+    </section>
+  </main>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+       ══════════════════════════════════════ -->
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="logo" aria-label="Upstream AI home">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="16" cy="16" r="16" fill="#0d3b5e"/>
+            <path d="M7 6 L11 13" stroke="#2e86ab" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M25 6 L21 13" stroke="#2e86ab" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M11 13 Q13 17 16 20 Q19 17 21 13" stroke="#5bc8f5" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <circle cx="16" cy="20" r="1.5" fill="#5bc8f5"/>
+            <path d="M16 21.5 L16 26" stroke="#5bc8f5" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+          <span><span class="brand-up">Upstream</span> AI</span>
+        </a>
+        <p>Data trust and predictive intelligence for small water and wastewater utilities. Built in Colorado for rural operations.</p>
+      </div>
+
+      <nav class="footer-col" aria-label="Product navigation">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#problem">The Problem</a></li>
+          <li><a href="#platform">Platform</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="security.html">Security</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-label="For your team">
+        <h4>For Your Team</h4>
+        <ul>
+          <li><a href="for-operators.html">Operators</a></li>
+          <li><a href="for-managers.html">Managers</a></li>
+          <li><a href="for-boards.html">Board Members</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-label="Company navigation">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="mailto:hello@getupstream.ai">Contact</a></li>
+          <li><a href="security.html">Security Overview</a></li>
+          <li><a href="/sitemap.xml">Sitemap</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Upstream AI. All rights reserved. · Glenwood Springs, Colorado</span>
+      <span>
+        <a href="mailto:hello@getupstream.ai">hello@getupstream.ai</a>
+      </span>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════
+       MODAL — Request Early Access
+       ══════════════════════════════════════ -->
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+    <div class="modal" id="modal-box">
+      <button class="modal-close" id="modal-close" type="button" aria-label="Close dialog">✕</button>
+
+      <div id="form-view">
+        <h2 id="modal-heading">Request Early Access</h2>
+        <p class="sub">We're onboarding Colorado utilities now. Tell us a bit about your system and we'll be in touch within 24 hours.</p>
+
+        <form id="access-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+          <!-- Honeypot anti-spam field — hidden from real users -->
+          <div style="display:none;" aria-hidden="true">
+            <label for="website-field">Website (leave blank)</label>
+            <input type="text" id="website-field" name="_gotcha" tabindex="-1" autocomplete="off">
+          </div>
+          <input type="hidden" name="_subject" value="Upstream AI — Early Access Request">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="f-name">Full name <span aria-hidden="true">*</span></label>
+              <input type="text" id="f-name" name="name" required autocomplete="name" placeholder="Jane Smith">
+            </div>
+            <div class="form-group">
+              <label for="f-email">Email <span aria-hidden="true">*</span></label>
+              <input type="email" id="f-email" name="email" required autocomplete="email" placeholder="jane@utility.gov">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="f-utility">Utility name <span aria-hidden="true">*</span></label>
+              <input type="text" id="f-utility" name="utility" required placeholder="Example Water District">
+            </div>
+            <div class="form-group">
+              <label for="f-phone">Phone</label>
+              <input type="tel" id="f-phone" name="phone" autocomplete="tel" placeholder="(970) 555-0100">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="f-role">Your role</label>
+              <select id="f-role" name="role">
+                <option value="">Select role…</option>
+                <option>Operator / Chief Operator</option>
+                <option>Utility Manager / Director</option>
+                <option>Board Member</option>
+                <option>Consultant / Engineer</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="f-connections">Approx. service connections</label>
+              <select id="f-connections" name="connections">
+                <option value="">Select range…</option>
+                <option>Under 500</option>
+                <option>500 – 2,000</option>
+                <option>2,000 – 5,000</option>
+                <option>5,000+</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="f-message">What's your biggest challenge right now?</label>
+            <textarea id="f-message" name="message" placeholder="Alarm fatigue, unreliable sensors, tracking compliance…" rows="3"></textarea>
+          </div>
+
+          <button class="form-submit" type="submit" id="form-submit-btn">
+            Send Request
+          </button>
+        </form>
+      </div>
+
+      <div class="form-success" id="form-success" role="status" aria-live="polite">
+        <div class="success-icon" aria-hidden="true">✅</div>
+        <h3>Request received!</h3>
+        <p>We'll be in touch within 24 hours.<br>In the meantime, feel free to email us at <a href="mailto:hello@getupstream.ai">hello@getupstream.ai</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       JAVASCRIPT — minimal, no inline handlers
+       ══════════════════════════════════════ -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── Nav scroll shadow ── */
+      var nav = document.getElementById('site-nav');
+      window.addEventListener('scroll', function () {
+        if (window.scrollY > 8) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+      }, { passive: true });
+
+      /* ── Modal ── */
+      var overlay     = document.getElementById('modal-overlay');
+      var closeBtn    = document.getElementById('modal-close');
+      var formView    = document.getElementById('form-view');
+      var successView = document.getElementById('form-success');
+      var form        = document.getElementById('access-form');
+      var submitBtn   = document.getElementById('form-submit-btn');
+
+      function openModal () {
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        // Focus the first input for accessibility
+        var first = form.querySelector('input, select, textarea');
+        if (first) { setTimeout(function () { first.focus(); }, 50); }
+      }
+
+      function closeModal () {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      // Attach open to all triggers
+      var triggers = document.querySelectorAll('[data-modal-trigger]');
+      for (var i = 0; i < triggers.length; i++) {
+        triggers[i].addEventListener('click', openModal);
+      }
+      // Also nav CTA
+      var navCta = document.getElementById('nav-cta');
+      if (navCta) { navCta.addEventListener('click', openModal); }
+
+      // Close button
+      closeBtn.addEventListener('click', closeModal);
+
+      // Close on overlay click (not modal box click)
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) { closeModal(); }
+      });
+
+      // Close on Escape key
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'Escape' || e.keyCode === 27) && overlay.classList.contains('open')) {
+          closeModal();
+        }
+      });
+
+      /* ── Form submission ── */
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Basic validation
+        var name    = document.getElementById('f-name').value.trim();
+        var email   = document.getElementById('f-email').value.trim();
+        var utility = document.getElementById('f-utility').value.trim();
+
+        if (!name || !email || !utility) {
+          alert('Please fill in your name, email, and utility name.');
+          return;
+        }
+
+        // Simple email format check (no regex catastrophe)
+        if (email.indexOf('@') < 1 || email.lastIndexOf('.') < email.indexOf('@') + 2) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+
+        // Honeypot check
+        var honeypot = document.getElementById('website-field');
+        if (honeypot && honeypot.value) {
+          // Bot detected — silently succeed to not reveal the trap
+          showSuccess();
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+
+        var formData = new FormData(form);
+
+        // Try Formspree; fall back to mailto if not configured
+        var action = form.getAttribute('action');
+        if (!action || action.indexOf('YOUR_FORM_ID') !== -1) {
+          // Mailto fallback
+          mailtoFallback(formData);
+          return;
+        }
+
+        fetch(action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        })
+        .then(function (res) {
+          if (res.ok) {
+            showSuccess();
+          } else {
+            mailtoFallback(formData);
+          }
+        })
+        .catch(function () {
+          mailtoFallback(formData);
+        });
+      });
+
+      function showSuccess () {
+        formView.style.display = 'none';
+        successView.style.display = 'block';
+        setTimeout(closeModal, 5000);
+      }
+
+      function mailtoFallback (formData) {
+        var name       = (formData.get('name')        || '').replace(/[^a-zA-Z0-9 .,\-]/g, '');
+        var email      = (formData.get('email')       || '').replace(/[^a-zA-Z0-9@._\-+]/g, '');
+        var utility    = (formData.get('utility')     || '').replace(/[^a-zA-Z0-9 .,\-]/g, '');
+        var role       = (formData.get('role')        || '').replace(/[^a-zA-Z0-9 \/]/g, '');
+        var connections= (formData.get('connections') || '').replace(/[^a-zA-Z0-9 ,+\-]/g, '');
+        var message    = (formData.get('message')     || '').replace(/[^a-zA-Z0-9 .,!\?\-\n]/g, '');
+
+        var subject = encodeURIComponent('Early Access Request — ' + utility);
+        var body    = encodeURIComponent(
+          'Name: ' + name + '\n' +
+          'Email: ' + email + '\n' +
+          'Utility: ' + utility + '\n' +
+          'Role: ' + role + '\n' +
+          'Connections: ' + connections + '\n\n' +
+          'Message:\n' + message
+        );
+
+        window.location.href = 'mailto:hello@getupstream.ai?subject=' + subject + '&body=' + body;
+        showSuccess();
+      }
+
+    })();
+  </script>
+
+</body>
+</html>

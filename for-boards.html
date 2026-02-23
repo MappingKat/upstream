@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<parameter name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Board Members — Upstream AI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --dark: #1a1a1a;
+    --mid: #6b6b6b;
+    --dim: #a3a3a3;
+    --light: #e8e8e8;
+    --bg: #f7f7f7;
+    --white: #ffffff;
+    --accent: #1a5276;
+    --accent-light: #2e86ab;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--black);
+    background: var(--white);
+    line-height: 1.6;
+  }
+
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display: flex; align-items:center; justify-content:space-between;
+    padding: 20px 48px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .nav-logo {
+    font-size: 18px; font-weight: 600; color: var(--black);
+    text-decoration:none; letter-spacing: -0.5px;
+  }
+  .nav-logo .upstream { color: var(--accent-light); font-weight: 400; }
+  .nav-cta {
+    background: var(--black); color:#fff;
+    padding: 10px 22px; border-radius:6px;
+    font-size:13px; font-weight:500;
+    text-decoration: none;
+  }
+
+  .hero {
+    padding: 180px 48px 100px;
+    max-width: 900px; margin: 0 auto;
+    text-align: center;
+  }
+  .hero-tag {
+    display:inline-flex; align-items:center; gap:8px;
+    background: var(--bg); border:1px solid var(--light);
+    border-radius: 20px; padding: 6px 14px;
+    margin-bottom: 24px;
+    font-size:12px; font-weight:500; color:var(--mid);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 300; line-height:1.1;
+    color: var(--black); letter-spacing:-2px;
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-weight:700;
+    color: var(--accent);
+  }
+  .hero p {
+    font-size:18px; color:var(--mid);
+    margin: 0 auto 36px; line-height:1.7;
+  }
+  .hero .btn {
+    display: inline-block;
+    background:var(--black); color:#fff;
+    padding:16px 36px; border-radius:8px;
+    font-size:15px; font-weight:500;
+    text-decoration: none;
+  }
+
+  .governance {
+    padding: 80px 48px;
+    background: var(--bg);
+  }
+  .governance-inner {
+    max-width: 1000px; margin: 0 auto;
+  }
+  .governance h2 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+  .governance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .governance-card {
+    background: var(--white);
+    border: 1px solid var(--light);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .governance-card .icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+  .governance-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .governance-card p {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.7;
+  }
+
+  .compliance {
+    padding: 80px 48px;
+  }
+  .compliance-inner {
+    max-width: 900px; margin: 0 auto;
+  }
+  .compliance h2 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .compliance .subtitle {
+    text-align: center;
+    font-size: 16px;
+    color: var(--mid);
+    margin-bottom: 48px;
+  }
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+  .timeline:before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--light);
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 40px;
+  }
+  .timeline-item:before {
+    content: '';
+    position: absolute;
+    left: -32px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .timeline-item h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+  .timeline-item p {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.7;
+  }
+
+  .fiduciary {
+    padding: 80px 48px;
+    background: linear-gradient(135deg, rgba(26,82,118,0.06), rgba(26,82,118,0.02));
+  }
+  .fiduciary-inner {
+    max-width: 800px; margin: 0 auto;
+  }
+  .fiduciary h2 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .fiduciary-box {
+    background: var(--white);
+    border: 1px solid var(--light);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+  .fiduciary-box h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--accent);
+  }
+  .fiduciary-box p {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .fiduciary-box ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 12px;
+  }
+  .fiduciary-box li {
+    font-size: 14px;
+    color: var(--black);
+    padding: 6px 0;
+    padding-left: 24px;
+    position: relative;
+  }
+  .fiduciary-box li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .cta {
+    padding: 80px 48px;
+    text-align: center;
+  }
+  .cta h2 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+  .cta p {
+    font-size: 16px;
+    color: var(--mid);
+    margin-bottom: 32px;
+  }
+  .cta .btn {
+    display: inline-block;
+    background:var(--black); color:#fff;
+    padding:16px 36px; border-radius:8px;
+    font-size:15px; font-weight:500;
+    text-decoration: none;
+  }
+
+  @media(max-width:860px) {
+    nav { padding:16px 24px; }
+    .hero { padding:140px 24px 80px; }
+    .governance-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="upstream">Upstream</span> AI</a>
+  <a href="index.html#pricing" class="nav-cta">See pricing</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">🏛️ For Water District Board Members</div>
+  <h1>Governance through<br><em>operational transparency.</em></h1>
+  <p>Fulfill your fiduciary duty with complete visibility into infrastructure health, compliance status, and operational decisions. No IT expertise required.</p>
+  <a href="index.html#pricing" class="btn">Learn more →</a>
+</section>
+
+<section class="governance">
+  <div class="governance-inner">
+    <h2>Your board's four responsibilities</h2>
+    <div class="governance-grid">
+      <div class="governance-card">
+        <div class="icon">📋</div>
+        <h3>Regulatory Compliance</h3>
+        <p>Ensure the district meets all EPA and state requirements. Upstream AI provides real-time compliance dashboards and automated reporting, giving you confidence that deadlines won't be missed.</p>
+      </div>
+
+      <div class="governance-card">
+        <div class="icon">💰</div>
+        <h3>Financial Stewardship</h3>
+        <p>Maximize ratepayer value by preventing costly emergency repairs. Predictive maintenance reduces reactive spending by 70%, keeping rates stable while improving service.</p>
+      </div>
+
+      <div class="governance-card">
+        <div class="icon">🏘️</div>
+        <h3>Community Service</h3>
+        <p>Protect public health and maintain trust. Transparent operations data shows the community that your board is proactively managing infrastructure, not reacting to crises.</p>
+      </div>
+
+      <div class="governance-card">
+        <div class="icon">🔐</div>
+        <h3>Risk Management</h3>
+        <p>Identify and mitigate infrastructure risks before they become board-level problems. Get advance warning of equipment failures, compliance risks, and operational anomalies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="compliance">
+  <div class="compliance-inner">
+    <h2>Regulatory environment is tightening</h2>
+    <p class="subtitle">New mandates create board-level accountability</p>
+    
+    <div class="timeline">
+      <div class="timeline-item">
+        <h4>PFAS Monitoring (EPA Final Rule 2024)</h4>
+        <p>Districts must monitor for PFAS contamination and report to EPA. Non-compliance triggers mandatory public notification and corrective action plans. Upstream AI automates sampling schedules and reporting to ensure deadlines are never missed.</p>
+      </div>
+
+      <div class="timeline-item">
+        <h4>Lead Pipe Inventory (Infrastructure Act Requirement)</h4>
+        <p>All utilities must complete lead service line inventories by October 2024. Upstream AI helps track completion status and generates submission-ready reports, reducing staff burden and ensuring compliance.</p>
+      </div>
+
+      <div class="timeline-item">
+        <h4>AWIA Cybersecurity (Section 2013)</h4>
+        <p>Water systems serving 3,300+ people must conduct cybersecurity assessments and certify compliance. Upstream AI's read-only architecture and audit trails support your certification process with documented security controls.</p>
+      </div>
+
+      <div class="timeline-item">
+        <h4>Nutrient Reduction Requirements (State-Specific)</h4>
+        <p>Many states are tightening phosphorus and nitrogen limits for wastewater discharge. Upstream AI monitors treatment performance continuously, alerting operators before permit limits are approached—preventing violations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fiduciary">
+  <div class="fiduciary-inner">
+    <h2>Board-level questions Upstream AI answers</h2>
+    
+    <div class="fiduciary-box">
+      <h4>"Are we in compliance with all regulations?"</h4>
+      <p>Real-time compliance dashboard shows:</p>
+      <ul>
+        <li>Upcoming sampling deadlines (with auto-alerts to staff)</li>
+        <li>Current parameter values vs. permit limits</li>
+        <li>Status of required reports (draft/submitted/approved)</li>
+        <li>Historical violations and corrective actions taken</li>
+      </ul>
+    </div>
+
+    <div class="fiduciary-box">
+      <h4>"What is the condition of our infrastructure?"</h4>
+      <p>Asset health scoring (0-100) for all critical equipment:</p>
+      <ul>
+        <li>Pumps: health scores based on vibration, runtime, performance</li>
+        <li>Treatment systems: efficiency trends and anomaly detection</li>
+        <li>Distribution: pressure stability and leak indicators</li>
+        <li>Predicted time-to-failure for aging assets</li>
+      </ul>
+    </div>
+
+    <div class="fiduciary-box">
+      <h4>"Are ratepayer funds being used efficiently?"</h4>
+      <p>ROI tracking and operational efficiency metrics:</p>
+      <ul>
+        <li>Emergency repairs avoided (dollar savings documented)</li>
+        <li>Energy costs: actual vs. optimized (% reduction tracked)</li>
+        <li>Operator productivity: time saved on manual tasks</li>
+        <li>Grant opportunities identified and pursued</li>
+      </ul>
+    </div>
+
+    <div class="fiduciary-box">
+      <h4>"What risks should we be aware of?"</h4>
+      <p>Proactive risk identification with severity scoring:</p>
+      <ul>
+        <li>Equipment predicted to fail within 30/60/90 days</li>
+        <li>Compliance parameters trending toward limits</li>
+        <li>Staffing gaps (key person dependencies identified)</li>
+        <li>Capital planning: which assets need budget allocation</li>
+      </ul>
+    </div>
+
+    <div class="fiduciary-box">
+      <h4>"Can we prove due diligence to regulators and ratepayers?"</h4>
+      <p>Complete audit trail and documentation:</p>
+      <ul>
+        <li>Every operational decision logged (who, what, when, why)</li>
+        <li>Maintenance history tied to asset performance data</li>
+        <li>Board meeting reports auto-generated monthly</li>
+        <li>Public-facing transparency: "Here's how we manage your water"</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Board presentation package available</h2>
+  <p>Schedule a call to receive a customized presentation for your next board meeting,<br>including ROI analysis specific to your utility's size and operations.</p>
+  <a href="index.html#pricing" class="btn">Request board package →</a>
+</section>
+
+</body>
+</html>

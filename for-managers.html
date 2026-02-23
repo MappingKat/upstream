@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Utility Managers — Upstream AI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --dark: #1a1a1a;
+    --mid: #6b6b6b;
+    --dim: #a3a3a3;
+    --light: #e8e8e8;
+    --bg: #f7f7f7;
+    --white: #ffffff;
+    --accent: #1a5276;
+    --accent-light: #2e86ab;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--black);
+    background: var(--white);
+    line-height: 1.6;
+  }
+
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display: flex; align-items:center; justify-content:space-between;
+    padding: 20px 48px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .nav-logo {
+    font-size: 18px; font-weight: 600; color: var(--black);
+    text-decoration:none; letter-spacing: -0.5px;
+  }
+  .nav-logo .upstream { color: var(--accent-light); font-weight: 400; }
+  .nav-cta {
+    background: var(--black); color:#fff;
+    padding: 10px 22px; border-radius:6px;
+    font-size:13px; font-weight:500;
+    text-decoration: none;
+  }
+
+  .hero {
+    padding: 180px 48px 100px;
+    max-width: 900px; margin: 0 auto;
+    text-align: center;
+  }
+  .hero-tag {
+    display:inline-flex; align-items:center; gap:8px;
+    background: var(--bg); border:1px solid var(--light);
+    border-radius: 20px; padding: 6px 14px;
+    margin-bottom: 24px;
+    font-size:12px; font-weight:500; color:var(--mid);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 300; line-height:1.1;
+    color: var(--black); letter-spacing:-2px;
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-weight:700;
+    color: var(--accent);
+  }
+  .hero p {
+    font-size:18px; color:var(--mid);
+    margin: 0 auto 36px; line-height:1.7;
+  }
+  .hero .btn {
+    display: inline-block;
+    background:var(--black); color:#fff;
+    padding:16px 36px; border-radius:8px;
+    font-size:15px; font-weight:500;
+    text-decoration: none;
+  }
+
+  .stats {
+    padding: 80px 48px;
+    background: var(--bg);
+  }
+  .stats-inner {
+    max-width: 1000px; margin: 0 auto;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 48px;
+  }
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--light);
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+  }
+  .stat-card .number {
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .stat-card .label {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.5;
+  }
+
+  .roi {
+    padding: 80px 48px;
+  }
+  .roi-inner {
+    max-width: 1000px; margin: 0 auto;
+  }
+  .roi h2 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+  .roi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .roi-card {
+    padding: 28px;
+    border: 1px solid var(--light);
+    border-radius: 12px;
+    background: var(--bg);
+  }
+  .roi-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--accent);
+  }
+  .roi-card p {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .roi-card .savings {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--black);
+  }
+
+  .justification {
+    padding: 80px 48px;
+    background: linear-gradient(135deg, rgba(26,82,118,0.06), rgba(26,82,118,0.02));
+  }
+  .justification-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .justification h2 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .justification .box {
+    background: var(--white);
+    border: 1px solid var(--light);
+    border-radius: 12px;
+    padding: 32px;
+    margin-top: 32px;
+  }
+  .justification .box h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--accent);
+  }
+  .justification .box p {
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .justification .box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .justification .box li {
+    font-size: 14px;
+    color: var(--black);
+    padding: 8px 0;
+    padding-left: 24px;
+    position: relative;
+  }
+  .justification .box li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .cta {
+    padding: 80px 48px;
+    text-align: center;
+  }
+  .cta h2 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+  .cta p {
+    font-size: 16px;
+    color: var(--mid);
+    margin-bottom: 32px;
+  }
+  .cta .btn {
+    display: inline-block;
+    background:var(--black); color:#fff;
+    padding:16px 36px; border-radius:8px;
+    font-size:15px; font-weight:500;
+    text-decoration: none;
+  }
+
+  @media(max-width:860px) {
+    nav { padding:16px 24px; }
+    .hero { padding:140px 24px 80px; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .roi-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="upstream">Upstream</span> AI</a>
+  <a href="index.html#pricing" class="nav-cta">See pricing</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">📊 For Utility & District Managers</div>
+  <h1>Reduce emergency repairs<br>by <em>70% in year one.</em></h1>
+  <p>Predictive intelligence that pays for itself within the first prevented failure. Built for utilities with 1-5 staff and tight budgets.</p>
+  <a href="index.html#pricing" class="btn">See ROI calculator →</a>
+</section>
+
+<section class="stats">
+  <div class="stats-inner">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="number">$42K</div>
+        <div class="label">Average annual savings per utility (emergency repairs avoided)</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">72hrs</div>
+        <div class="label">Average advance warning before equipment failure</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">3.5x</div>
+        <div class="label">ROI in first year for typical 1,000-connection utility</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="roi">
+  <div class="roi-inner">
+    <h2>The real cost of reactive operations</h2>
+    <div class="roi-grid">
+      <div class="roi-card">
+        <h3>Emergency pump repair</h3>
+        <p>3 AM callout. Emergency contractor rates. Overtime for your operator. Water loss during downtime. Customer complaints.</p>
+        <div class="savings">$15K - $80K per event</div>
+      </div>
+
+      <div class="roi-card">
+        <h3>Compliance violation</h3>
+        <p>Missed sampling deadline or permit exceedance. EPA/state fines. Mandatory corrective action plan. Board embarrassment. Public notice requirements.</p>
+        <div class="savings">$10K - $100K per violation</div>
+      </div>
+
+      <div class="roi-card">
+        <h3>Operator burnout & turnover</h3>
+        <p>24/7 on-call stress. False alarm fatigue. Can't find replacement when they quit. Training costs for new hire. Lost institutional knowledge.</p>
+        <div class="savings">$60K - $100K to replace</div>
+      </div>
+
+      <div class="roi-card">
+        <h3>Energy waste</h3>
+        <p>Pumps running on inefficient schedules. Aeration system over-dosing. Demand charges from peak usage. No visibility into optimization opportunities.</p>
+        <div class="savings">15-25% of energy budget</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="justification">
+  <div class="justification-inner">
+    <h2>Present this to your board</h2>
+    
+    <div class="box">
+      <h4>Budget Request: Upstream AI Trust Foundation</h4>
+      <p><strong>Annual Cost:</strong> $7,200/year ($600/month)</p>
+      <p><strong>Expected ROI:</strong> $25,000 - $45,000 in first year through:</p>
+      <ul>
+        <li>Prevented emergency repairs (2-3 failures avoided = $30K-120K)</li>
+        <li>Reduced false alarm callouts (50+ fewer truck rolls = $5K)</li>
+        <li>Avoided compliance violations (0-1 violations prevented = $0-50K)</li>
+        <li>Staff retention (reduced burnout, higher job satisfaction)</li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h4>Upgrade Option: Operator Co-Pilot (Year 2)</h4>
+      <p><strong>Annual Cost:</strong> $21,600/year ($1,800/month)</p>
+      <p><strong>Additional ROI:</strong> $15,000 - $30,000/year through:</p>
+      <ul>
+        <li>Energy optimization (10-15% reduction = $5K-15K)</li>
+        <li>Automated compliance reporting (8 hrs/month saved = $4K)</li>
+        <li>Predictive vs. reactive maintenance (30% lower repair costs = $10K)</li>
+        <li>Grant identification & application support</li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h4>Risk Mitigation</h4>
+      <p><strong>What happens if we don't invest?</strong></p>
+      <ul>
+        <li>Operators continue guessing on data quality (liability exposure)</li>
+        <li>Next major failure costs $40K+ in emergency repairs</li>
+        <li>Compliance violation triggers mandatory state oversight</li>
+        <li>Senior operator quits due to burnout (replacement cost $80K+)</li>
+        <li>Board faces public criticism for reactive management</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>See what it would save your utility</h2>
+  <p>Schedule a 20-minute discovery call. We'll review your operations,<br>calculate your specific ROI, and show you exactly how it works.</p>
+  <a href="index.html#pricing" class="btn">Request ROI analysis →</a>
+</section>
+
+</body>
+</html>
