@@ -451,6 +451,229 @@
     font-size: 11px; color: var(--text-dim); line-height: 1.5;
   }
 
+  /* ════════ NEW TAB STYLES ════════ */
+  .tab-view { display: none; }
+  .tab-view.active { display: block; }
+  .overview-view { display: block; }
+  .overview-view.hidden { display: none; }
+
+  /* Alerts Tab */
+  .alert-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .alert-filter-btn {
+    padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    border: 1px solid var(--border); background: transparent; color: var(--text-dim);
+    cursor: pointer; transition: all .15s;
+  }
+  .alert-filter-btn.active, .alert-filter-btn:hover {
+    background: var(--accent-glow); color: var(--accent); border-color: var(--accent);
+  }
+  .alert-card {
+    background: var(--surface); border-radius: 10px; padding: 16px 20px;
+    margin-bottom: 12px; border-left: 3px solid var(--border);
+    display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start;
+  }
+  .alert-card.critical { border-left-color: var(--red); }
+  .alert-card.warning { border-left-color: var(--yellow); }
+  .alert-card.info { border-left-color: var(--accent); }
+  .alert-card.success { border-left-color: var(--green); }
+  .alert-severity {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; padding: 3px 8px; border-radius: 4px;
+    display: inline-block; white-space: nowrap;
+  }
+  .alert-severity.critical { background: rgba(248,81,73,.15); color: var(--red); }
+  .alert-severity.warning { background: rgba(210,153,34,.15); color: var(--yellow); }
+  .alert-severity.info { background: var(--accent-glow); color: var(--accent); }
+  .alert-title { font-size: 14px; font-weight: 600; margin: 4px 0; }
+  .alert-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+  .alert-action {
+    font-size: 12px; color: var(--text-dim); line-height: 1.5;
+    background: var(--surface-2); padding: 10px 14px; border-radius: 6px;
+    margin-top: 8px; border: 1px solid var(--border);
+  }
+  .alert-action strong { color: var(--accent); font-weight: 600; }
+  .alert-timestamp { font-size: 11px; color: var(--text-muted); text-align: right; white-space: nowrap; }
+
+  /* Assets Tab */
+  .asset-summary {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-bottom: 24px;
+  }
+  .asset-stat {
+    background: var(--surface); border-radius: 10px; padding: 16px;
+    text-align: center;
+  }
+  .asset-stat .number { font-size: 28px; font-weight: 700; }
+  .asset-stat .label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .asset-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .asset-table th {
+    text-align: left; padding: 10px 12px; font-size: 11px; font-weight: 600;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+    border-bottom: 1px solid var(--border); background: var(--surface);
+  }
+  .asset-table td {
+    padding: 12px; border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .asset-table tr:hover { background: var(--surface); }
+  .health-bar {
+    width: 60px; height: 6px; border-radius: 3px;
+    background: var(--surface-2); display: inline-block; vertical-align: middle;
+    margin-right: 8px; overflow: hidden;
+  }
+  .health-bar-fill {
+    height: 100%; border-radius: 3px;
+    transition: width .3s;
+  }
+  .health-good .health-bar-fill { background: var(--green); }
+  .health-warn .health-bar-fill { background: var(--yellow); }
+  .health-crit .health-bar-fill { background: var(--red); }
+  .maint-badge {
+    font-size: 10px; font-weight: 600; padding: 3px 8px;
+    border-radius: 10px; display: inline-block;
+  }
+  .maint-overdue { background: rgba(248,81,73,.15); color: var(--red); }
+  .maint-soon { background: rgba(210,153,34,.15); color: var(--yellow); }
+  .maint-ok { background: rgba(63,185,80,.15); color: var(--green); }
+
+  /* Water Quality Tab */
+  .wq-group-header {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--text-muted); padding: 16px 0 8px;
+    border-bottom: 1px solid var(--border); margin-bottom: 12px;
+  }
+  .wq-param-row {
+    display: grid; grid-template-columns: 200px 100px 100px 80px 1fr 80px;
+    gap: 8px; align-items: center; padding: 10px 0;
+    border-bottom: 1px solid rgba(48,54,61,.5); font-size: 13px;
+  }
+  .wq-param-name { font-weight: 600; }
+  .wq-reading { font-family: 'DM Mono', monospace; font-size: 14px; }
+  .wq-mcl { font-family: 'DM Mono', monospace; color: var(--text-muted); font-size: 12px; }
+  .wq-unit { font-size: 11px; color: var(--text-dim); }
+  .wq-sparkline { display: flex; align-items: flex-end; gap: 1px; height: 24px; }
+  .wq-sparkline .bar { width: 3px; border-radius: 1px; background: var(--accent); opacity: .5; }
+  .wq-status-dot {
+    width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+    margin-right: 6px; flex-shrink: 0;
+  }
+  .wq-status-dot.good { background: var(--green); }
+  .wq-status-dot.warn { background: var(--yellow); }
+  .wq-status-dot.crit { background: var(--red); }
+  .wq-trust-banner {
+    background: var(--surface); border-radius: 10px; padding: 16px 20px;
+    margin-bottom: 20px; display: flex; align-items: center; gap: 16px;
+    border: 1px solid var(--border);
+  }
+  .wq-trust-score {
+    font-size: 36px; font-weight: 700; color: var(--green); line-height: 1;
+  }
+  .wq-trust-label { font-size: 11px; color: var(--text-muted); }
+
+  /* Compliance Tab */
+  .compliance-timeline {
+    position: relative; padding-left: 28px; margin-bottom: 24px;
+  }
+  .compliance-timeline::before {
+    content: ''; position: absolute; left: 10px; top: 0; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .compliance-event {
+    position: relative; padding: 12px 16px; margin-bottom: 16px;
+    background: var(--surface); border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .compliance-event::before {
+    content: ''; position: absolute; left: -24px; top: 16px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--bg);
+  }
+  .compliance-event.upcoming::before { background: var(--yellow); }
+  .compliance-event.overdue::before { background: var(--red); }
+  .compliance-event.complete::before { background: var(--green); }
+  .compliance-event-date { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+  .compliance-event-title { font-size: 14px; font-weight: 600; margin: 4px 0; }
+  .compliance-event-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+  .compliance-sections {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .compliance-card {
+    background: var(--surface); border-radius: 10px; padding: 20px;
+    border: 1px solid var(--border);
+  }
+  .compliance-card h4 {
+    font-size: 13px; font-weight: 700; margin-bottom: 12px;
+    color: var(--text);
+  }
+  .compliance-checklist { list-style: none; padding: 0; margin: 0; }
+  .compliance-checklist li {
+    padding: 8px 0; border-bottom: 1px solid rgba(48,54,61,.4);
+    font-size: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .compliance-checklist li:last-child { border: none; }
+  .check-icon { font-size: 14px; flex-shrink: 0; }
+
+  /* Knowledge Base Tab */
+  .kb-search {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .kb-search input {
+    flex: 1; background: transparent; border: none; outline: none;
+    color: var(--text); font-size: 14px; font-family: inherit;
+  }
+  .kb-search input::placeholder { color: var(--text-muted); }
+  .kb-categories {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-bottom: 24px;
+  }
+  .kb-category-card {
+    background: var(--surface); border-radius: 10px; padding: 16px;
+    border: 1px solid var(--border); cursor: pointer;
+    transition: all .2s;
+  }
+  .kb-category-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .kb-category-icon { font-size: 24px; margin-bottom: 8px; }
+  .kb-category-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .kb-category-count { font-size: 11px; color: var(--text-muted); }
+  .kb-article {
+    background: var(--surface); border-radius: 8px; padding: 14px 18px;
+    margin-bottom: 10px; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .kb-article-title { font-size: 13px; font-weight: 600; }
+  .kb-article-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .kb-article-tag {
+    font-size: 10px; font-weight: 600; padding: 3px 8px;
+    border-radius: 10px; background: var(--accent-glow); color: var(--accent);
+  }
+  .kb-sop-card {
+    background: var(--surface); border-radius: 10px; padding: 16px 20px;
+    margin-bottom: 12px; border: 1px solid var(--border);
+  }
+  .kb-sop-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .kb-sop-title { font-size: 14px; font-weight: 700; }
+  .kb-sop-steps { font-size: 12px; color: var(--text-dim); line-height: 1.8; padding-left: 16px; }
+  .kb-sop-steps li { margin-bottom: 2px; }
+  .kb-sop-footer { font-size: 10px; color: var(--text-muted); margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .kb-reg-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+    margin-bottom: 16px;
+  }
+  .kb-reg-table th {
+    text-align: left; padding: 8px 10px; font-size: 10px; font-weight: 600;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+    border-bottom: 1px solid var(--border); background: var(--surface);
+  }
+  .kb-reg-table td {
+    padding: 8px 10px; border-bottom: 1px solid rgba(48,54,61,.4);
+    vertical-align: top;
+  }
+  .kb-reg-table tr:hover { background: var(--surface); }
+
   /* ════════ MOBILE FRAME ════════ */
   .mobile-wrapper {
     display: flex; gap: 32px;
@@ -604,7 +827,7 @@
     <input type="password" class="gate-input" id="passInput" placeholder="Enter access code" autofocus>
     <button class="gate-btn" onclick="checkPass()">View Preview</button>
     <div class="gate-error" id="gateError">Incorrect access code. Try again.</div>
-    <div class="gate-note">This is a private preview of Upstream AI's dashboard and mobile experience. Contact hello@getupstream.ai for access.</div>
+    <div class="gate-note">This is a private preview of Upstream AI's dashboard and mobile experience. Contact <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="68000d040407280f0d1c1d181b1c1a0d0905460901">[email&#160;protected]</a> for access.</div>
   </div>
 </div>
 
@@ -644,17 +867,17 @@
             <div class="sidebar-brand"><span>Upstream</span> AI</div>
             <div class="sidebar-item active" onclick="showDashTab('overview')"><span class="icon">📊</span> Overview</div>
             <div class="sidebar-item" onclick="showDashTab('calendar')"><span class="icon">📅</span> Smart Calendar</div>
-            <div class="sidebar-item"><span class="icon">🔔</span> Alerts</div>
-            <div class="sidebar-item"><span class="icon">⚙️</span> Assets</div>
+            <div class="sidebar-item" onclick="showDashTab('alerts')"><span class="icon">🔔</span> Alerts</div>
+            <div class="sidebar-item" onclick="showDashTab('assets')"><span class="icon">⚙️</span> Assets</div>
             <div class="sidebar-divider"></div>
             <div class="sidebar-label">Monitoring</div>
-            <div class="sidebar-item"><span class="icon">💧</span> Water Quality</div>
-            <div class="sidebar-item"><span class="icon">🔌</span> Pumps & Motors</div>
-            <div class="sidebar-item"><span class="icon">📏</span> Tank Levels</div>
+            <div class="sidebar-item" onclick="showDashTab('waterquality')"><span class="icon">💧</span> Water Quality</div>
+            <div class="sidebar-item" onclick="showDashTab('waterquality')"><span class="icon">🔌</span> Pumps & Motors</div>
+            <div class="sidebar-item" onclick="showDashTab('waterquality')"><span class="icon">📏</span> Tank Levels</div>
             <div class="sidebar-divider"></div>
-            <div class="sidebar-label">Reports</div>
-            <div class="sidebar-item"><span class="icon">📋</span> Compliance</div>
-            <div class="sidebar-item"><span class="icon">💰</span> ROI Tracker</div>
+            <div class="sidebar-label">Intelligence</div>
+            <div class="sidebar-item" onclick="showDashTab('compliance')"><span class="icon">📋</span> Compliance</div>
+            <div class="sidebar-item" onclick="showDashTab('knowledge')"><span class="icon">📚</span> Knowledge Base</div>
           </div>
 
           <!-- Main content -->
@@ -894,6 +1117,780 @@
                 </div>
               </div>
             </div>
+
+            <!-- ════════ ALERTS TAB ════════ -->
+            <div class="tab-view" id="alertsTab">
+              <div class="dash-topbar">
+                <h1>Alert Center</h1>
+                <div class="meta"><div class="live-dot"></div> 7 Active · 3 Resolved Today</div>
+              </div>
+
+              <div class="alert-filters">
+                <div class="alert-filter-btn active">All (7)</div>
+                <div class="alert-filter-btn">Critical (1)</div>
+                <div class="alert-filter-btn">Warning (3)</div>
+                <div class="alert-filter-btn">Predictive (2)</div>
+                <div class="alert-filter-btn">Data Quality (1)</div>
+              </div>
+
+              <!-- Critical -->
+              <div class="alert-card critical">
+                <div>
+                  <span class="alert-severity critical">Critical</span>
+                  <div class="alert-title">Pump #2 Bearing Temperature Exceeds Threshold</div>
+                  <div class="alert-meta">Pump Station A · Sensor: PS-A-TEMP-02 · Trust: 98%</div>
+                  <div class="alert-action">
+                    <strong>🤖 AI Recommendation:</strong> Bearing temperature has risen 18°F over 14 days, consistent with bearing wear pattern. Current: 185°F (threshold: 180°F). Recommend scheduling bearing replacement within 72 hours. Estimated part cost: $340. If deferred, risk of catastrophic failure increases to 65% within 30 days per vibration correlation model. <em>See SOP: "Pump Bearing Inspection & Replacement"</em>
+                  </div>
+                </div>
+                <div class="alert-timestamp">14 min ago</div>
+              </div>
+
+              <!-- Warning -->
+              <div class="alert-card warning">
+                <div>
+                  <span class="alert-severity warning">Warning</span>
+                  <div class="alert-title">Chlorine Residual Trending Below Target at Distribution EP-3</div>
+                  <div class="alert-meta">Distribution System · Sensor: DIST-CL2-03 · Trust: 91%</div>
+                  <div class="alert-action">
+                    <strong>🤖 AI Recommendation:</strong> Free chlorine at EP-3 has dropped from 2.3 to 1.8 ppm over 48 hours. Rate of decay suggests potential main break or unusual demand upstream. CDPHE minimum for distribution is 0.2 mg/L; your internal target is 1.5 mg/L. Recommend checking for main breaks on Elm St. corridor and increasing booster chlorination rate by 0.3 mg/L.
+                  </div>
+                </div>
+                <div class="alert-timestamp">1 hr ago</div>
+              </div>
+
+              <div class="alert-card warning">
+                <div>
+                  <span class="alert-severity warning">Warning</span>
+                  <div class="alert-title">Tank #1 Level Dropping Faster Than Expected</div>
+                  <div class="alert-meta">Storage · Sensor: TANK-1-LVL · Trust: 96%</div>
+                  <div class="alert-action">
+                    <strong>🤖 AI Recommendation:</strong> Tank #1 draw-down rate is 2.1x the expected rate for this time of day. Current level: 68% (normal: 82%). Check for stuck valve on fill line or unusual demand event. If level drops below 50%, automatic low-level alarm triggers per your emergency response plan. <em>See SOP: "Tank Level Emergency Response"</em>
+                  </div>
+                </div>
+                <div class="alert-timestamp">2 hr ago</div>
+              </div>
+
+              <div class="alert-card warning">
+                <div>
+                  <span class="alert-severity warning">Warning</span>
+                  <div class="alert-title">Turbidity Spike at Source Water Intake</div>
+                  <div class="alert-meta">Source Water · Sensor: SW-TURB-01 · Trust: 94%</div>
+                  <div class="alert-action">
+                    <strong>🤖 AI Recommendation:</strong> Turbidity rose from 1.2 NTU to 4.8 NTU over 3 hours, correlating with upstream snowmelt activity. Colorado Reg 11 requires combined filter effluent ≤0.3 NTU in 95% of measurements. Recommend increasing coagulant dose and monitoring filter performance. Historical pattern: turbidity typically peaks 6-8 hrs after snowmelt onset.
+                  </div>
+                </div>
+                <div class="alert-timestamp">3 hr ago</div>
+              </div>
+
+              <!-- Predictive -->
+              <div class="alert-card info">
+                <div>
+                  <span class="alert-severity info">Predictive</span>
+                  <div class="alert-title">VFD #1 Power Draw Anomaly — Possible Impeller Wear</div>
+                  <div class="alert-meta">Pump Station B · Sensor: PS-B-PWR-01 · Trust: 97%</div>
+                  <div class="alert-action">
+                    <strong>🤖 AI Recommendation:</strong> VFD power consumption has increased 12% at same flow rate over 60 days. Pattern matches impeller wear degradation curve. No immediate risk — estimated 90-120 days before performance impact. Recommend scheduling impeller inspection during next planned outage. Estimated savings vs. emergency repair: $2,800.
+                  </div>
+                </div>
+                <div class="alert-timestamp">6 hr ago</div>
+              </div>
+
+              <div class="alert-card info">
+                <div>
+                  <span class="alert-severity info">Predictive</span>
+                  <div class="alert-title">Compliance Sample Due — Bacteriological (Monthly)</div>
+                  <div class="alert-meta">Compliance Calendar · Auto-generated</div>
+                  <div class="alert-action">
+                    <strong>📅 Calendar:</strong> Monthly total coliform / E. coli sample due by March 1. Collection points: EP-1, EP-3, Distribution midpoint. Use 120 mL sterile bottle with sodium thiosulfate. Max hold time: 30 hours. Lab confirmed turnaround: 24-48 hrs (Standard Method 9223B).
+                  </div>
+                </div>
+                <div class="alert-timestamp">Today</div>
+              </div>
+
+              <!-- Data Quality -->
+              <div class="alert-card info">
+                <div>
+                  <span class="alert-severity info">Data Quality</span>
+                  <div class="alert-title">Chlorine Probe CL2-02 Showing Intermittent Flat-Line</div>
+                  <div class="alert-meta">Sensor Health · Sensor: CL2-02 · Trust: 72% ↓</div>
+                  <div class="alert-action">
+                    <strong>🤖 AI Recommendation:</strong> Probe CL2-02 has produced 4 flat-line periods in the last 48 hours (8-15 min each). Trust score dropped from 94% to 72%. This pattern typically indicates membrane fouling or electrolyte depletion. Recommend cleaning or replacing the membrane and recalibrating per manufacturer SOP. Data from this sensor is flagged and excluded from compliance calculations until trust score recovers above 85%.
+                  </div>
+                </div>
+                <div class="alert-timestamp">Yesterday</div>
+              </div>
+            </div>
+
+            <!-- ════════ ASSETS TAB ════════ -->
+            <div class="tab-view" id="assetsTab">
+              <div class="dash-topbar">
+                <h1>Asset Manager</h1>
+                <div class="meta">12 Assets Tracked · 2 Need Attention</div>
+              </div>
+
+              <div class="asset-summary">
+                <div class="asset-stat">
+                  <div class="number" style="color:var(--green)">83%</div>
+                  <div class="label">Average Asset Health</div>
+                </div>
+                <div class="asset-stat">
+                  <div class="number" style="color:var(--yellow)">2</div>
+                  <div class="label">Maintenance Due Soon</div>
+                </div>
+                <div class="asset-stat">
+                  <div class="number" style="color:var(--accent)">$4.2K</div>
+                  <div class="label">Predicted Savings (90 day)</div>
+                </div>
+              </div>
+
+              <table class="asset-table">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th>Type</th>
+                    <th>Health</th>
+                    <th>Install Date</th>
+                    <th>Last Service</th>
+                    <th>Next Maintenance</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight:600">Pump #1 — Well Station A</td>
+                    <td>Submersible, 25 HP</td>
+                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:92%"></div></div> 92%</td>
+                    <td>Mar 2019</td>
+                    <td>Jan 2026</td>
+                    <td>Jul 2026</td>
+                    <td><span class="maint-badge maint-ok">On Track</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Pump #2 — Well Station A</td>
+                    <td>Submersible, 25 HP</td>
+                    <td><div class="health-bar health-crit"><div class="health-bar-fill" style="width:45%"></div></div> 45%</td>
+                    <td>Mar 2019</td>
+                    <td>Oct 2025</td>
+                    <td><strong style="color:var(--red)">Overdue</strong></td>
+                    <td><span class="maint-badge maint-overdue">Bearing Fail</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Booster Pump — Distribution</td>
+                    <td>Centrifugal, 10 HP</td>
+                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:88%"></div></div> 88%</td>
+                    <td>Jun 2021</td>
+                    <td>Dec 2025</td>
+                    <td>Jun 2026</td>
+                    <td><span class="maint-badge maint-ok">On Track</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">VFD #1 — Pump Station B</td>
+                    <td>Variable Freq Drive, 15 HP</td>
+                    <td><div class="health-bar health-warn"><div class="health-bar-fill" style="width:68%"></div></div> 68%</td>
+                    <td>Nov 2020</td>
+                    <td>Sep 2025</td>
+                    <td>Mar 2026</td>
+                    <td><span class="maint-badge maint-soon">Impeller Wear</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Chlorine Analyzer — Entry Point</td>
+                    <td>Hach CL17sc</td>
+                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:95%"></div></div> 95%</td>
+                    <td>Jan 2023</td>
+                    <td>Feb 2026</td>
+                    <td>Aug 2026</td>
+                    <td><span class="maint-badge maint-ok">On Track</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Turbidity Analyzer — Filter Eff.</td>
+                    <td>Hach TU5300sc</td>
+                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:91%"></div></div> 91%</td>
+                    <td>Jan 2023</td>
+                    <td>Jan 2026</td>
+                    <td>Jul 2026</td>
+                    <td><span class="maint-badge maint-ok">On Track</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Storage Tank #1</td>
+                    <td>Steel, 500K gal</td>
+                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:85%"></div></div> 85%</td>
+                    <td>2008</td>
+                    <td>Nov 2025 (Inspect)</td>
+                    <td>Nov 2030</td>
+                    <td><span class="maint-badge maint-ok">On Track</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">SCADA RTU — Main Plant</td>
+                    <td>Allen-Bradley CompactLogix</td>
+                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:97%"></div></div> 97%</td>
+                    <td>Aug 2022</td>
+                    <td>Jan 2026</td>
+                    <td>Jan 2027</td>
+                    <td><span class="maint-badge maint-ok">On Track</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Generator — Emergency Backup</td>
+                    <td>Diesel, 100 kW</td>
+                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:80%"></div></div> 80%</td>
+                    <td>2015</td>
+                    <td>Dec 2025</td>
+                    <td>Jun 2026</td>
+                    <td><span class="maint-badge maint-ok">On Track</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- ════════ WATER QUALITY TAB ════════ -->
+            <div class="tab-view" id="waterqualityTab">
+              <div class="dash-topbar">
+                <h1>Water Quality Monitor</h1>
+                <div class="meta"><div class="live-dot"></div> All Readings Current</div>
+              </div>
+
+              <div class="wq-trust-banner">
+                <div>
+                  <div class="wq-trust-score">94%</div>
+                  <div class="wq-trust-label">Data Trust Score</div>
+                </div>
+                <div style="flex:1; font-size:12px; color:var(--text-dim); line-height:1.6">
+                  23 of 24 sensors reporting healthy data. 1 sensor (CL2-02) flagged with intermittent flat-line — trust score 72%. All compliance-critical parameters have ≥90% trust scores. Last full calibration: Feb 15, 2026.
+                </div>
+              </div>
+
+              <!-- Disinfection -->
+              <div class="wq-group-header">💧 Disinfection & Microbial</div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Free Chlorine (Entry Point)</div>
+                <div class="wq-reading" style="color:var(--green)">2.1</div>
+                <div class="wq-mcl">MCL: 4.0</div>
+                <div class="wq-unit">mg/L</div>
+                <div class="wq-sparkline" id="wqCl2Spark"></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Free Chlorine (Distribution)</div>
+                <div class="wq-reading" style="color:var(--yellow)">1.8</div>
+                <div class="wq-mcl">Target: ≥1.5</div>
+                <div class="wq-unit">mg/L</div>
+                <div class="wq-sparkline" id="wqCl2DistSpark"></div>
+                <div style="font-size:11px; color:var(--yellow)">↓ Watch</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Total Coliform</div>
+                <div class="wq-reading" style="color:var(--green)">Absent</div>
+                <div class="wq-mcl">MCL: 5% pos</div>
+                <div class="wq-unit">P/A</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>E. coli</div>
+                <div class="wq-reading" style="color:var(--green)">Absent</div>
+                <div class="wq-mcl">MCL: 0</div>
+                <div class="wq-unit">P/A</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+
+              <!-- Inorganic -->
+              <div class="wq-group-header">⚗️ Inorganic Chemicals</div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Nitrate (as N)</div>
+                <div class="wq-reading">3.2</div>
+                <div class="wq-mcl">MCL: 10</div>
+                <div class="wq-unit">mg/L</div>
+                <div class="wq-sparkline" id="wqNitrateSpark"></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Arsenic</div>
+                <div class="wq-reading">0.004</div>
+                <div class="wq-mcl">MCL: 0.010</div>
+                <div class="wq-unit">mg/L</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Lead (90th percentile)</div>
+                <div class="wq-reading">0.008</div>
+                <div class="wq-mcl">AL: 0.015</div>
+                <div class="wq-unit">mg/L</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Copper (90th percentile)</div>
+                <div class="wq-reading">0.42</div>
+                <div class="wq-mcl">AL: 1.3</div>
+                <div class="wq-unit">mg/L</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Fluoride</div>
+                <div class="wq-reading">0.7</div>
+                <div class="wq-mcl">MCL: 4.0</div>
+                <div class="wq-unit">mg/L</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+
+              <!-- DBP -->
+              <div class="wq-group-header">🧪 Disinfection Byproducts</div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>TTHM (Total Trihalomethanes)</div>
+                <div class="wq-reading">42</div>
+                <div class="wq-mcl">MCL: 80</div>
+                <div class="wq-unit">µg/L</div>
+                <div class="wq-sparkline" id="wqTTHMSpark"></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>HAA5 (Haloacetic Acids)</div>
+                <div class="wq-reading">28</div>
+                <div class="wq-mcl">MCL: 60</div>
+                <div class="wq-unit">µg/L</div>
+                <div class="wq-sparkline" id="wqHAASpark"></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+
+              <!-- Physical -->
+              <div class="wq-group-header">📏 Physical Parameters</div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Turbidity (Combined Filter)</div>
+                <div class="wq-reading">0.08</div>
+                <div class="wq-mcl">TT: ≤0.3 (95%)</div>
+                <div class="wq-unit">NTU</div>
+                <div class="wq-sparkline" id="wqTurbSpark"></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>pH</div>
+                <div class="wq-reading">7.4</div>
+                <div class="wq-mcl">Range: 6.5–8.5</div>
+                <div class="wq-unit">SU</div>
+                <div class="wq-sparkline" id="wqpHSpark"></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Temperature</div>
+                <div class="wq-reading">8.2</div>
+                <div class="wq-mcl">—</div>
+                <div class="wq-unit">°C</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--text-dim)">Info</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>Alkalinity</div>
+                <div class="wq-reading">120</div>
+                <div class="wq-mcl">—</div>
+                <div class="wq-unit">mg/L CaCO₃</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--text-dim)">Info</div>
+              </div>
+
+              <!-- PFAS -->
+              <div class="wq-group-header">☣️ Emerging Contaminants (PFAS)</div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>PFOA</div>
+                <div class="wq-reading">2.1</div>
+                <div class="wq-mcl">MCL: 4.0</div>
+                <div class="wq-unit">ppt</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>PFOS</div>
+                <div class="wq-reading">1.8</div>
+                <div class="wq-mcl">MCL: 4.0</div>
+                <div class="wq-unit">ppt</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+              <div class="wq-param-row">
+                <div class="wq-param-name"><span class="wq-status-dot good"></span>PFHxS + PFNA + HFPO-DA</div>
+                <div class="wq-reading">5.4</div>
+                <div class="wq-mcl">HI: &lt;1.0</div>
+                <div class="wq-unit">Hazard Index</div>
+                <div></div>
+                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
+              </div>
+            </div>
+
+            <!-- ════════ COMPLIANCE TAB ════════ -->
+            <div class="tab-view" id="complianceTab">
+              <div class="dash-topbar">
+                <h1>Compliance Center</h1>
+                <div class="meta">In Compliance · 0 Violations (Trailing 12 mo)</div>
+              </div>
+
+              <div class="compliance-sections">
+                <!-- Left: Timeline -->
+                <div>
+                  <h3 style="font-size:14px; font-weight:700; margin-bottom:16px;">📅 Upcoming Deadlines</h3>
+                  <div class="compliance-timeline">
+                    <div class="compliance-event upcoming">
+                      <div class="compliance-event-date">Mar 1, 2026</div>
+                      <div class="compliance-event-title">Monthly Bacteriological Sample Due</div>
+                      <div class="compliance-event-desc">Total Coliform / E. coli per RTCR. Collect at approved sites EP-1, EP-3, and distribution midpoint. Sterile 120 mL bottle w/ sodium thiosulfate. 30-hr max hold.</div>
+                    </div>
+                    <div class="compliance-event upcoming">
+                      <div class="compliance-event-date">Mar 15, 2026</div>
+                      <div class="compliance-event-title">CDPHE Monthly Operating Report</div>
+                      <div class="compliance-event-desc">Submit MOR via CDPHE WQCD portal. Includes daily turbidity, CT calculations, chlorine residuals, and flow data for February.</div>
+                    </div>
+                    <div class="compliance-event upcoming">
+                      <div class="compliance-event-date">Apr 1, 2026</div>
+                      <div class="compliance-event-title">Quarterly DBP Sampling (Stage 2)</div>
+                      <div class="compliance-event-desc">TTHM + HAA5 at approved locations. LRAA must remain below MCL (80 µg/L TTHM, 60 µg/L HAA5). Ship to certified lab within 14-day hold window.</div>
+                    </div>
+                    <div class="compliance-event upcoming">
+                      <div class="compliance-event-date">Jul 1, 2026</div>
+                      <div class="compliance-event-title">Annual Consumer Confidence Report (CCR)</div>
+                      <div class="compliance-event-desc">Per revised CCR Rule (effective Jan 2027), prepare annual water quality report covering 2025 data. Must be delivered to all customers and certified within 10 days. New requirements include summary section, lead service line inventory info, and translation/accessibility.</div>
+                    </div>
+                    <div class="compliance-event complete">
+                      <div class="compliance-event-date">Feb 1, 2026 ✓</div>
+                      <div class="compliance-event-title">Monthly Bacteriological Sample — Complete</div>
+                      <div class="compliance-event-desc">All 3 sites sampled. Results: Absent / Absent / Absent. Submitted to CDPHE.</div>
+                    </div>
+                    <div class="compliance-event complete">
+                      <div class="compliance-event-date">Jan 15, 2026 ✓</div>
+                      <div class="compliance-event-title">January MOR Submitted</div>
+                      <div class="compliance-event-desc">Daily turbidity: 100% below 0.3 NTU. CT: 100% compliant. No violations.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Checklists & Status -->
+                <div>
+                  <div class="compliance-card" style="margin-bottom:16px">
+                    <h4>📊 Regulatory Status (Colorado)</h4>
+                    <ul class="compliance-checklist">
+                      <li><span class="check-icon">✅</span> Safe Drinking Water Act — In Compliance</li>
+                      <li><span class="check-icon">✅</span> RTCR (Revised Total Coliform Rule) — Compliant</li>
+                      <li><span class="check-icon">✅</span> Stage 2 DBP Rule — Compliant (LRAA OK)</li>
+                      <li><span class="check-icon">✅</span> LCR (Lead & Copper Rule) — Below AL</li>
+                      <li><span class="check-icon">✅</span> LCRI (LCR Improvements) — Service line inventory submitted Oct 2024</li>
+                      <li><span class="check-icon">✅</span> PFAS NPDWR (Final 2024) — Below MCLs</li>
+                      <li><span class="check-icon">✅</span> Surface Water Treatment Rule — CT compliant</li>
+                      <li><span class="check-icon">✅</span> Colorado Reg 11 — Turbidity compliant</li>
+                      <li><span class="check-icon">⏳</span> CCR Rule Revisions — Compliance date Jan 2027 (preparing now)</li>
+                      <li><span class="check-icon">⏳</span> AWIA Risk & Resilience Assessment — Due for update</li>
+                    </ul>
+                  </div>
+
+                  <div class="compliance-card" style="margin-bottom:16px">
+                    <h4>📋 CCR Report Builder</h4>
+                    <ul class="compliance-checklist">
+                      <li><span class="check-icon">✅</span> Source water information collected</li>
+                      <li><span class="check-icon">✅</span> 2025 monitoring data compiled</li>
+                      <li><span class="check-icon">✅</span> Detected contaminants table generated</li>
+                      <li><span class="check-icon">⏳</span> Lead service line inventory statement</li>
+                      <li><span class="check-icon">⬜</span> Summary section (new requirement)</li>
+                      <li><span class="check-icon">⬜</span> Translation/accessibility statement</li>
+                      <li><span class="check-icon">⬜</span> Final review & distribution plan</li>
+                    </ul>
+                  </div>
+
+                  <div class="compliance-card">
+                    <h4>📊 Violation History</h4>
+                    <div style="text-align:center; padding:20px; color:var(--green);">
+                      <div style="font-size:32px; font-weight:700;">0</div>
+                      <div style="font-size:12px; color:var(--text-muted)">Violations in trailing 24 months</div>
+                      <div style="font-size:11px; color:var(--text-dim); margin-top:8px;">Last violation: None on record</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ════════ KNOWLEDGE BASE TAB ════════ -->
+            <div class="tab-view" id="knowledgeTab">
+              <div class="dash-topbar">
+                <h1>Knowledge Base</h1>
+                <div class="meta">SOPs · Regulations · Best Practices · Troubleshooting</div>
+              </div>
+
+              <div class="kb-search">
+                <span>🔍</span>
+                <input type="text" placeholder="Search SOPs, regulations, hold times, troubleshooting guides..." />
+              </div>
+
+              <div class="kb-categories">
+                <div class="kb-category-card">
+                  <div class="kb-category-icon">📖</div>
+                  <div class="kb-category-title">Standard Operating Procedures</div>
+                  <div class="kb-category-count">12 SOPs · Updated Feb 2026</div>
+                </div>
+                <div class="kb-category-card">
+                  <div class="kb-category-icon">⚖️</div>
+                  <div class="kb-category-title">Regulations & MCLs</div>
+                  <div class="kb-category-count">Federal + Colorado state requirements</div>
+                </div>
+                <div class="kb-category-card">
+                  <div class="kb-category-icon">🧪</div>
+                  <div class="kb-category-title">Lab & Sampling Reference</div>
+                  <div class="kb-category-count">Hold times, containers, methods</div>
+                </div>
+                <div class="kb-category-card">
+                  <div class="kb-category-icon">🔧</div>
+                  <div class="kb-category-title">Troubleshooting Guides</div>
+                  <div class="kb-category-count">Equipment, water quality, SCADA</div>
+                </div>
+                <div class="kb-category-card">
+                  <div class="kb-category-icon">🎓</div>
+                  <div class="kb-category-title">Operator Training</div>
+                  <div class="kb-category-count">AWWA WSO, cert prep, CE tracking</div>
+                </div>
+                <div class="kb-category-card">
+                  <div class="kb-category-icon">🚨</div>
+                  <div class="kb-category-title">Emergency Response</div>
+                  <div class="kb-category-count">AWIA ERP, boil water, chemical spill</div>
+                </div>
+              </div>
+
+              <!-- Featured SOPs -->
+              <h3 style="font-size:14px; font-weight:700; margin:20px 0 12px;">📖 Key SOPs</h3>
+
+              <div class="kb-sop-card">
+                <div class="kb-sop-header">
+                  <div class="kb-sop-title">SOP-001: Daily Plant Walkthrough</div>
+                  <span class="kb-article-tag">Daily</span>
+                </div>
+                <ol class="kb-sop-steps">
+                  <li>Check and record chlorine residual at entry point and distribution (target: 1.5–3.0 mg/L free chlorine)</li>
+                  <li>Verify turbidity reading on combined filter effluent (must be ≤0.3 NTU; goal ≤0.1 NTU)</li>
+                  <li>Inspect chemical feed systems — check chlorine tank level, coagulant feed rate, fluoride pump operation</li>
+                  <li>Walk pump stations — listen for unusual sounds, check pressure gauges, note VFD readings</li>
+                  <li>Verify SCADA data matches field readings (>15% deviation = recalibrate sensor)</li>
+                  <li>Check tank levels against expected fill/draw-down curves for time of day</li>
+                  <li>Log all readings in daily operations log and SCADA</li>
+                </ol>
+                <div class="kb-sop-footer">Based on AWWA Water Treatment Operator Handbook · Last reviewed: Jan 2026 · Next review: Jul 2026</div>
+              </div>
+
+              <div class="kb-sop-card">
+                <div class="kb-sop-header">
+                  <div class="kb-sop-title">SOP-004: Chlorine Residual Low Response</div>
+                  <span class="kb-article-tag">Response</span>
+                </div>
+                <ol class="kb-sop-steps">
+                  <li>Confirm reading with handheld DPD test (HACH Pocket Colorimeter or equivalent)</li>
+                  <li>If confirmed &lt;1.0 mg/L at entry point: increase chlorine feed rate by 0.5 mg/L increments</li>
+                  <li>Check chlorine tank level and injection point for air locks or clogged check valves</li>
+                  <li>If distribution residual &lt;0.2 mg/L: notify supervisor immediately — this is below CDPHE minimum</li>
+                  <li>Sample for total coliform at low-residual points within 4 hours</li>
+                  <li>Document all actions and readings every 15 minutes until residual recovers above 1.5 mg/L</li>
+                  <li>If residual unrecoverable in 2 hours, evaluate need for Tier 1 public notification per Colorado Reg 11</li>
+                </ol>
+                <div class="kb-sop-footer">Ref: Colorado Reg 11 §11.8, AWWA M20 (Chlorination Practices) · Last reviewed: Feb 2026</div>
+              </div>
+
+              <div class="kb-sop-card">
+                <div class="kb-sop-header">
+                  <div class="kb-sop-title">SOP-007: Pump Bearing Inspection & Replacement</div>
+                  <span class="kb-article-tag">Maintenance</span>
+                </div>
+                <ol class="kb-sop-steps">
+                  <li>Lockout/tagout per OSHA 1910.147 — verify zero energy state before any work</li>
+                  <li>Record current vibration reading (baseline: &lt;0.15 in/s; alarm: &gt;0.3 in/s per ISO 10816)</li>
+                  <li>Check bearing temperature with IR thermometer (normal: 140-160°F; alarm: &gt;180°F)</li>
+                  <li>If replacement needed: order matching bearing (SKF 6310-2RS or equivalent per pump spec)</li>
+                  <li>Drain pump, disconnect coupling, pull impeller assembly</li>
+                  <li>Press out old bearing, clean housing, press in new bearing (use bearing heater for interference fit)</li>
+                  <li>Reassemble, verify alignment (&lt;0.002" TIR), refill and test run for 30 min monitoring temp and vibration</li>
+                  <li>Log in asset management system with new bearing date and runtime hours</li>
+                </ol>
+                <div class="kb-sop-footer">Ref: Hydraulic Institute Standards, SKF Bearing Maintenance Guide · Last reviewed: Dec 2025</div>
+              </div>
+
+              <!-- Regulatory Quick Reference -->
+              <h3 style="font-size:14px; font-weight:700; margin:24px 0 12px;">⚖️ MCL Quick Reference (EPA + Colorado)</h3>
+
+              <table class="kb-reg-table">
+                <thead>
+                  <tr>
+                    <th>Contaminant</th>
+                    <th>MCL / Action Level</th>
+                    <th>MCLG</th>
+                    <th>Rule</th>
+                    <th>Monitoring Frequency</th>
+                    <th>Your Last Result</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight:600">Total Coliform</td>
+                    <td>&gt;5% positive/month = violation</td>
+                    <td>0</td>
+                    <td>RTCR</td>
+                    <td>Monthly (≤3,300 pop = 1 sample)</td>
+                    <td style="color:var(--green)">Absent ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">E. coli</td>
+                    <td>0 (any positive = acute MCL violation)</td>
+                    <td>0</td>
+                    <td>RTCR</td>
+                    <td>With each TC+ result</td>
+                    <td style="color:var(--green)">Absent ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Turbidity</td>
+                    <td>≤0.3 NTU (95%), never &gt;1 NTU</td>
+                    <td>N/A</td>
+                    <td>SWTR / CO Reg 11</td>
+                    <td>Continuous (4-hr intervals)</td>
+                    <td style="color:var(--green)">0.08 NTU ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">TTHM</td>
+                    <td>80 µg/L (LRAA)</td>
+                    <td>0</td>
+                    <td>Stage 2 DBP</td>
+                    <td>Quarterly</td>
+                    <td style="color:var(--green)">42 µg/L ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">HAA5</td>
+                    <td>60 µg/L (LRAA)</td>
+                    <td>0</td>
+                    <td>Stage 2 DBP</td>
+                    <td>Quarterly</td>
+                    <td style="color:var(--green)">28 µg/L ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Lead</td>
+                    <td>AL: 15 µg/L (90th %ile)</td>
+                    <td>0</td>
+                    <td>LCR / LCRI</td>
+                    <td>Semi-annual → triennial</td>
+                    <td style="color:var(--green)">8 µg/L ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Copper</td>
+                    <td>AL: 1.3 mg/L (90th %ile)</td>
+                    <td>1.3</td>
+                    <td>LCR / LCRI</td>
+                    <td>Semi-annual → triennial</td>
+                    <td style="color:var(--green)">0.42 mg/L ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Nitrate (as N)</td>
+                    <td>10 mg/L</td>
+                    <td>10</td>
+                    <td>IOC</td>
+                    <td>Annual</td>
+                    <td style="color:var(--green)">3.2 mg/L ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">Arsenic</td>
+                    <td>10 µg/L</td>
+                    <td>0</td>
+                    <td>IOC</td>
+                    <td>Annual → triennial</td>
+                    <td style="color:var(--green)">4 µg/L ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">PFOA</td>
+                    <td>4.0 ppt</td>
+                    <td>0</td>
+                    <td>PFAS NPDWR (2024)</td>
+                    <td>Quarterly (initial) → annual</td>
+                    <td style="color:var(--green)">2.1 ppt ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">PFOS</td>
+                    <td>4.0 ppt</td>
+                    <td>0</td>
+                    <td>PFAS NPDWR (2024)</td>
+                    <td>Quarterly (initial) → annual</td>
+                    <td style="color:var(--green)">1.8 ppt ✓</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:600">PFHxS+PFNA+HFPO-DA</td>
+                    <td>Hazard Index &lt;1.0</td>
+                    <td>0</td>
+                    <td>PFAS NPDWR (2024)</td>
+                    <td>Quarterly (initial) → annual</td>
+                    <td style="color:var(--green)">HI: 0.54 ✓</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- Troubleshooting Guides -->
+              <h3 style="font-size:14px; font-weight:700; margin:24px 0 12px;">🔧 Quick Troubleshooting</h3>
+
+              <div class="kb-article">
+                <div>
+                  <div class="kb-article-title">High Turbidity After Storm Event</div>
+                  <div class="kb-article-meta">Increase coagulant → monitor filter headloss → consider filter-to-waste</div>
+                </div>
+                <span class="kb-article-tag">Treatment</span>
+              </div>
+              <div class="kb-article">
+                <div>
+                  <div class="kb-article-title">Chlorine Demand Spike (Warm Weather)</div>
+                  <div class="kb-article-meta">Check source water temp/TOC → adjust CT target → boost distribution residual</div>
+                </div>
+                <span class="kb-article-tag">Treatment</span>
+              </div>
+              <div class="kb-article">
+                <div>
+                  <div class="kb-article-title">SCADA Communication Loss</div>
+                  <div class="kb-article-meta">Check cellular signal → verify RTU power → manual read + log → contact integrator</div>
+                </div>
+                <span class="kb-article-tag">SCADA</span>
+              </div>
+              <div class="kb-article">
+                <div>
+                  <div class="kb-article-title">Pump Cavitation Noise</div>
+                  <div class="kb-article-meta">Check suction pressure → verify NPSH available → reduce speed → inspect impeller</div>
+                </div>
+                <span class="kb-article-tag">Equipment</span>
+              </div>
+              <div class="kb-article">
+                <div>
+                  <div class="kb-article-title">Positive Coliform Result Response</div>
+                  <div class="kb-article-meta">Collect Level 1 assessment samples → flush mains → increase residual → notify CDPHE if E.coli+</div>
+                </div>
+                <span class="kb-article-tag">Compliance</span>
+              </div>
+              <div class="kb-article">
+                <div>
+                  <div class="kb-article-title">DBP Levels Approaching MCL</div>
+                  <div class="kb-article-meta">Reduce pre-chlorination → optimize coagulation for TOC removal → consider chloramine conversion study</div>
+                </div>
+                <span class="kb-article-tag">Treatment</span>
+              </div>
+              <div class="kb-article">
+                <div>
+                  <div class="kb-article-title">Boil Water Notice Procedures</div>
+                  <div class="kb-article-meta">Tier 1 PN within 24 hrs → radio/social/door-to-door → maintain until 2 clean bacteriological rounds</div>
+                </div>
+                <span class="kb-article-tag">Emergency</span>
+              </div>
+
+              <!-- Emergency Contacts -->
+              <h3 style="font-size:14px; font-weight:700; margin:24px 0 12px;">🚨 Emergency Quick Reference</h3>
+              <div class="compliance-card">
+                <table class="kb-reg-table">
+                  <thead><tr><th>Contact</th><th>Phone</th><th>When to Call</th></tr></thead>
+                  <tbody>
+                    <tr><td style="font-weight:600">CDPHE Drinking Water</td><td style="font-family:'DM Mono',monospace">303-692-3500</td><td>Violations, coliform+, treatment failures</td></tr>
+                    <tr><td style="font-weight:600">EPA Region 8 Emergency</td><td style="font-family:'DM Mono',monospace">866-EPA-WEST</td><td>Imminent public health threat</td></tr>
+                    <tr><td style="font-weight:600">National Response Center</td><td style="font-family:'DM Mono',monospace">800-424-8802</td><td>Chemical spill near source water</td></tr>
+                    <tr><td style="font-weight:600">CO SEOC (State Emergency)</td><td style="font-family:'DM Mono',monospace">303-279-8855</td><td>Major system failure, natural disaster</td></tr>
+                    <tr><td style="font-weight:600">Your Certified Lab</td><td style="font-family:'DM Mono',monospace">—</td><td>Rush samples, results questions</td></tr>
+                    <tr><td style="font-weight:600">SCADA Integrator</td><td style="font-family:'DM Mono',monospace">—</td><td>RTU failure, communication outage</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -1066,7 +2063,7 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Password check — uses a simple hash to avoid plaintext in source
 // The password is: upstream2026
 function checkPass() {
@@ -1099,14 +2096,33 @@ function showDashTab(tab) {
   document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
   event.target.closest('.sidebar-item').classList.add('active');
   
-  if (tab === 'calendar') {
-    document.getElementById('overviewTab').classList.add('hidden');
-    document.getElementById('overviewTab').classList.remove('overview-view');
-    document.getElementById('calendarTab').classList.add('active');
-  } else {
+  // Hide all tabs
+  document.getElementById('overviewTab').classList.add('hidden');
+  document.getElementById('overviewTab').classList.remove('overview-view');
+  document.getElementById('calendarTab').classList.remove('active');
+  document.getElementById('alertsTab').classList.remove('active');
+  document.getElementById('assetsTab').classList.remove('active');
+  document.getElementById('waterqualityTab').classList.remove('active');
+  document.getElementById('complianceTab').classList.remove('active');
+  document.getElementById('knowledgeTab').classList.remove('active');
+  
+  // Show selected tab
+  if (tab === 'overview') {
     document.getElementById('overviewTab').classList.remove('hidden');
     document.getElementById('overviewTab').classList.add('overview-view');
-    document.getElementById('calendarTab').classList.remove('active');
+  } else if (tab === 'calendar') {
+    document.getElementById('calendarTab').classList.add('active');
+  } else if (tab === 'alerts') {
+    document.getElementById('alertsTab').classList.add('active');
+  } else if (tab === 'assets') {
+    document.getElementById('assetsTab').classList.add('active');
+  } else if (tab === 'waterquality') {
+    document.getElementById('waterqualityTab').classList.add('active');
+    generateWQSparklines();
+  } else if (tab === 'compliance') {
+    document.getElementById('complianceTab').classList.add('active');
+  } else if (tab === 'knowledge') {
+    document.getElementById('knowledgeTab').classList.add('active');
   }
 }
 
@@ -1136,7 +2152,41 @@ function generateCharts() {
     vibEl.appendChild(bar);
   });
 }
-</script>
 
+// Water Quality sparklines
+let wqGenerated = false;
+function generateWQSparklines() {
+  if (wqGenerated) return;
+  wqGenerated = true;
+  const sparkData = {
+    wqCl2Spark: [70,72,74,71,73,75,72,70,68,72,74,76,73,71,74,72,70,73,75,71],
+    wqCl2DistSpark: [80,78,76,74,72,70,68,66,64,62,65,63,61,60,58,62,60,58,56,55],
+    wqNitrateSpark: [32,33,31,32,34,33,35,32,31,33,32,34,33,35,34,32,33,31,32,34],
+    wqTTHMSpark: [45,48,50,52,48,46,50,52,54,50,48,52,54,52,50,48,52,54,52,50],
+    wqHAASpark: [38,40,42,44,40,38,42,44,46,42,40,44,46,44,42,40,44,46,44,42],
+    wqTurbSpark: [15,12,14,10,8,12,14,10,8,6,10,12,8,6,10,12,8,6,10,8],
+    wqpHSpark: [72,74,73,75,74,72,74,73,75,74,72,74,73,75,74,72,74,73,75,74]
+  };
+  Object.entries(sparkData).forEach(([id, data]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    data.forEach(v => {
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = v + '%';
+      bar.style.background = id.includes('Dist') ? 'var(--yellow)' : 'var(--accent)';
+      el.appendChild(bar);
+    });
+  });
+}
+
+// Alert filter buttons
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('alert-filter-btn')) {
+    document.querySelectorAll('.alert-filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+  }
+});
+</script>
 </body>
 </html>
