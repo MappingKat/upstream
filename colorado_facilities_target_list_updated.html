@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colorado Rural Water Facilities — Upstream AI Target List (Updated)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    padding: 48px 24px;
+  }
+
+  .container { max-width: 1600px; margin: 0 auto; }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #0a0a0a;
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 13px;
+    color: #6b6b6b;
+    max-width: 720px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a5276;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: #a3a3a3;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .callout {
+    background: linear-gradient(135deg, rgba(26,82,118,0.06), rgba(26,82,118,0.02));
+    border: 1px solid rgba(26,82,118,0.2);
+    border-left: 4px solid #1a5276;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 32px;
+  }
+  .callout h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0a0a0a;
+    margin-bottom: 8px;
+  }
+  .callout p {
+    font-size: 12px;
+    color: #6b6b6b;
+    line-height: 1.7;
+    margin: 0;
+  }
+  .callout strong { color: #1a1a1a; }
+
+  .table-wrap {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    background: #f7f7f7;
+    border-bottom: 2px solid #e8e8e8;
+  }
+  thead th {
+    padding: 14px 12px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    color: #6b6b6b;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.15s;
+  }
+  tbody tr:hover {
+    background: #fafafa;
+  }
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+  tbody tr.usda-grant {
+    background: linear-gradient(to right, rgba(34,197,94,0.03), transparent);
+    border-left: 3px solid #22c55e;
+  }
+
+  tbody td {
+    padding: 14px 12px;
+    font-size: 12px;
+    color: #1a1a1a;
+    vertical-align: top;
+  }
+
+  .facility-name {
+    font-weight: 600;
+    color: #0a0a0a;
+    margin-bottom: 2px;
+  }
+
+  .usda-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 8px;
+    background: rgba(34,197,94,0.1);
+    color: #15803d;
+    border: 1px solid rgba(34,197,94,0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 6px;
+  }
+
+  .location {
+    color: #6b6b6b;
+    font-size: 11px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .tag.mountain { background: #e8f4f8; color: #1a5276; border: 1px solid #d0e8f0; }
+  .tag.plains { background: #fff4e6; color: #b8700a; border: 1px solid #f0e0c8; }
+  .tag.western { background: #f0e8f4; color: #6b4a7e; border: 1px solid #e0d0e8; }
+
+  .priority {
+    font-weight: 600;
+  }
+  .priority.high { color: #16a34a; }
+  .priority.medium { color: #ea580c; }
+  .priority.low { color: #6b6b6b; }
+
+  .contact-link {
+    font-size: 11px;
+    color: #1a5276;
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .contact-link:hover {
+    text-decoration: underline;
+  }
+
+  .notes {
+    margin-top: 32px;
+    padding: 20px;
+    background: #f7f7f7;
+    border-radius: 8px;
+    border-left: 3px solid #1a5276;
+  }
+  .notes h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0a0a0a;
+    margin-bottom: 10px;
+  }
+  .notes p {
+    font-size: 12px;
+    color: #6b6b6b;
+    line-height: 1.7;
+  }
+  .notes ul {
+    margin-top: 12px;
+    padding-left: 20px;
+  }
+  .notes li {
+    font-size: 12px;
+    color: #6b6b6b;
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+
+  @media(max-width:1400px) {
+    .table-wrap { overflow-x: auto; }
+    table { min-width: 1500px; }
+  }
+  @media(max-width:720px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>Colorado Rural Water Facilities — Upstream AI Target List</h1>
+  <p>28 small to medium water and wastewater treatment facilities in rural Colorado. Prioritized by size, aging infrastructure, regulatory pressure, and USDA grant activity. <strong>3 USDA grant recipients highlighted.</strong></p>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="stat-num">28</div>
+    <div class="stat-label">Target facilities</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">~54K</div>
+    <div class="stat-label">Total connections</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">3</div>
+    <div class="stat-label">USDA grant recipients</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num">$17M+</div>
+    <div class="stat-label">Recent USDA funding</div>
+  </div>
+</div>
+
+<div class="callout">
+  <h3>🎯 USDA Grant Recipients = Highest Priority Leads</h3>
+  <p><strong>Round Mountain, Romeo, and Center Sanitation</strong> recently received $17M+ in USDA Rural Development funding for infrastructure upgrades. These utilities are actively modernizing, have budget for new tech, and need operational monitoring for their brand-new systems. <strong>Start here.</strong></p>
+</div>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th style="width:200px;">Facility Name</th>
+      <th style="width:140px;">Location / County</th>
+      <th style="width:80px;">Region</th>
+      <th>Facility / Equipment Type</th>
+      <th style="width:90px;">Est. Connections</th>
+      <th style="width:70px;">Staff Size</th>
+      <th style="width:100px;">Likely SCADA</th>
+      <th style="width:70px;">Priority</th>
+      <th style="width:200px;">Contact / Website</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- USDA GRANT RECIPIENTS (TOP 3) -->
+    <tr class="usda-grant">
+      <td class="facility-name">Round Mountain Water & Sanitation District<span class="usda-badge">$4.9M USDA</span></td>
+      <td class="location">Westcliffe, Custer County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td><strong>NEW:</strong> Mechanical wastewater treatment system (2018-2020), new office & storage facility. Groundwater wells + distribution.</td>
+      <td>~1,200</td>
+      <td>3–4</td>
+      <td>VTScada / eLynx</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.roundmountainwater.com" class="contact-link" target="_blank">roundmountainwater.com</a><br><small style="color:#a3a3a3;">Call: Need to research</small></td>
+      <td><strong>PERFECT PILOT:</strong> Brand new mechanical treatment (replaced lagoons). Desperately need monitoring for new system. USDA-funded = budget available. Target #1.</td>
+    </tr>
+
+    <tr class="usda-grant">
+      <td class="facility-name">Town of Romeo<span class="usda-badge">$559K USDA</span></td>
+      <td class="location">Romeo, Conejos County</td>
+      <td><span class="tag western">Western</span></td>
+      <td><strong>NEW (2018):</strong> Constant pressure pump system, remote meters, upgraded disinfection, backup generator. Wastewater with influent/effluent metering.</td>
+      <td>~250</td>
+      <td>1–2</td>
+      <td>eLynx / Basic SCADA</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.townofromeo.colorado.gov" class="contact-link" target="_blank">townofromeo.colorado.gov</a><br><small style="color:#a3a3a3;">Main: Need to research</small></td>
+      <td><strong>TINY PILOT:</strong> 250 connections, 1-2 staff. New constant pressure system + remote meters = perfect for monitoring. South CO (near NM border).</td>
+    </tr>
+
+    <tr class="usda-grant">
+      <td class="facility-name">Center Sanitation District<span class="usda-badge">$11.8M USDA</span></td>
+      <td class="location">Center, Saguache County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td><strong>NEW (2020-2021):</strong> $11.8M upgrade from non-compliant lagoons to mechanical treatment. Brand new wastewater treatment facility.</td>
+      <td>~1,800</td>
+      <td>2–3</td>
+      <td>Ignition / VTScada</td>
+      <td class="priority high">High</td>
+      <td><a href="https://townofcenter.colorado.gov/departments/public-works-department" class="contact-link" target="_blank">Contact: Jaime Hurtado, PW Director</a><br><small style="color:#a3a3a3;">jhurtado@centerco.gov | 719-754-3497</small></td>
+      <td><strong>MAJOR INVESTMENT:</strong> Went from out-of-compliance lagoons to $11.8M mechanical plant. Brand new infrastructure = high need for predictive maintenance. San Luis Valley.</td>
+    </tr>
+
+    <!-- EXISTING TARGET LIST -->
+    <tr>
+      <td class="facility-name">Crestone Water & Sewer District</td>
+      <td class="location">Crestone, Saguache County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Groundwater wells + surface water treatment. Remote mountain system, aging pump stations, basic chlorination.</td>
+      <td>~650</td>
+      <td>2–3</td>
+      <td>Ignition / VTScada</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.bacawater.com/baca-grande-water-and-sanitation-team" class="contact-link" target="_blank">bacawater.com/staff</a></td>
+      <td>Remote mountain town, aging infrastructure, groundwater + surface water. Perfect small utility profile.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Pagosa Area Water & Sanitation District (PAWSD)</td>
+      <td class="location">Pagosa Springs, Archuleta County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Surface water treatment (San Juan River), 3 pump stations, distribution, wastewater collection & treatment.</td>
+      <td>~6,300</td>
+      <td>8–12</td>
+      <td>Ignition</td>
+      <td class="priority medium">Medium</td>
+      <td><a href="https://www.pawsd.org" class="contact-link" target="_blank">pawsd.org</a></td>
+      <td>Larger district but serves rural subdivisions, surface water dependent, seasonal demand variability.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Upper Thompson Sanitation District</td>
+      <td class="location">Estes Park, Larimer County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Wastewater treatment (50+ year old facility), collection system, serves Estes Park area. Received USDA funding for upgrades.</td>
+      <td>~4,800</td>
+      <td>6–8</td>
+      <td>Wonderware / Ignition</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.estespark.com" class="contact-link" target="_blank">estespark.com</a><br><small style="color:#a3a3a3;">Main town contact</small></td>
+      <td>50+ year old treatment facility, USDA funding recipient ($11M for distribution upgrade), tourism-driven demand.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Leadville Sanitation District</td>
+      <td class="location">Leadville, Lake County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Wastewater treatment at 10,152 ft elevation. Extreme weather challenges, aging collection system.</td>
+      <td>~2,800</td>
+      <td>4–6</td>
+      <td>Ignition</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.leadvillesanitation.org" class="contact-link" target="_blank">leadvillesanitation.org</a><br><small style="color:#a3a3a3;">(estimate)</small></td>
+      <td>Highest elevation treatment (10,152 ft), extreme weather impacts on operations, aging system.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Town of Frisco Utilities</td>
+      <td class="location">Frisco, Summit County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Water treatment & distribution, 2-3 pump stations, wastewater collection. Four-phase water restriction system.</td>
+      <td>~3,200</td>
+      <td>4–6</td>
+      <td>Ignition / SCADA</td>
+      <td class="priority medium">Medium</td>
+      <td><a href="https://www.friscogov.com" class="contact-link" target="_blank">friscogov.com</a></td>
+      <td>Summit County ski town, water conservation district, tourism-driven seasonal demand spikes.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Dillon Valley Metro District</td>
+      <td class="location">Dillon, Summit County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Water distribution, remote pump stations on Ignition Edge, serves Dillon Valley subdivisions.</td>
+      <td>~2,400</td>
+      <td>3–5</td>
+      <td>Ignition Edge</td>
+      <td class="priority medium">Medium</td>
+      <td><a href="https://www.dillonvalleymetro.com" class="contact-link" target="_blank">dillonvalleymetro.com</a><br><small style="color:#a3a3a3;">(estimate)</small></td>
+      <td>Remote pump stations already using Ignition Edge — perfect technical fit for Upstream AI.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">East Dillon Water District</td>
+      <td class="location">Summit Cove, Summit County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Small water distribution district serving Keystone area subdivisions (Summit Cove, Keystone West, etc).</td>
+      <td>~1,800</td>
+      <td>2–3</td>
+      <td>eLynx / Ignition Edge</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.eastdillonwd.colorado.gov" class="contact-link" target="_blank">eastdillonwd.colorado.gov</a></td>
+      <td>Smaller district, 2-3 staff serving Keystone area — perfect pilot profile.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Town of Silverthorne Utilities</td>
+      <td class="location">Silverthorne, Summit County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Water treatment & distribution, wastewater collection, serves town + small surrounding areas.</td>
+      <td>~2,600</td>
+      <td>4–5</td>
+      <td>Wonderware</td>
+      <td class="priority medium">Medium</td>
+      <td><a href="https://www.silverthorne.org" class="contact-link" target="_blank">silverthorne.org</a></td>
+      <td>Summit County, I-70 corridor, tourism economy with seasonal demand.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Telluride Water District</td>
+      <td class="location">Telluride, San Miguel County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Surface water treatment (high-altitude), distribution, 2-3 pump stations. Resort town seasonal demand.</td>
+      <td>~2,100</td>
+      <td>3–5</td>
+      <td>Ignition</td>
+      <td class="priority medium">Medium</td>
+      <td><a href="https://www.telluride-co.gov" class="contact-link" target="_blank">telluride-co.gov</a></td>
+      <td>High-altitude resort town (8,750 ft), surface water treatment, extreme seasonal variation.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Bayfield Water & Sanitation District</td>
+      <td class="location">Bayfield, La Plata County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Groundwater wells, treatment, distribution. Small wastewater treatment. Growing population, aging system.</td>
+      <td>~1,400</td>
+      <td>2–4</td>
+      <td>VTScada</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.bayfieldwsd.org" class="contact-link" target="_blank">bayfieldwsd.org</a><br><small style="color:#a3a3a3;">(estimate)</small></td>
+      <td>Southwest Colorado, growing population putting strain on aging infrastructure.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Town of Silverton Utilities</td>
+      <td class="location">Silverton, San Juan County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Tiny system: groundwater wells, basic treatment, distribution. Historic mining town with water quality challenges (heavy metals).</td>
+      <td>~600</td>
+      <td>2</td>
+      <td>VTScada / Manual</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.silvertoncolorado.com" class="contact-link" target="_blank">silvertoncolorado.com</a></td>
+      <td>2-person operation, extremely rural, historic mining impacts water quality. Minimal automation.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Georgetown Water & Sewer</td>
+      <td class="location">Georgetown, Clear Creek County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Small historic town: groundwater wells, basic chlorination, distribution, wastewater collection.</td>
+      <td>~1,100</td>
+      <td>2–3</td>
+      <td>Ignition / Manual</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.town.georgetown.co.us" class="contact-link" target="_blank">town.georgetown.co.us</a></td>
+      <td>I-70 corridor, small historic town, likely minimal automation. 2-3 staff total.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Idaho Springs Water & Sewer</td>
+      <td class="location">Idaho Springs, Clear Creek County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Groundwater + surface water, treatment, distribution, wastewater treatment. I-70 corridor, tourism-driven.</td>
+      <td>~1,800</td>
+      <td>3–4</td>
+      <td>Wonderware</td>
+      <td class="priority medium">Medium</td>
+      <td><a href="https://www.idahospringsco.com" class="contact-link" target="_blank">idahospringsco.com</a></td>
+      <td>I-70 corridor, tourism creates seasonal demand spikes (casinos, hot springs).</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Buena Vista Water & Sewer</td>
+      <td class="location">Buena Vista, Chaffee County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Arkansas River water rights, treatment, distribution, wastewater treatment. Outdoor recreation economy.</td>
+      <td>~3,200</td>
+      <td>4–6</td>
+      <td>Ignition</td>
+      <td class="priority medium">Medium</td>
+      <td><a href="https://www.buenavistaco.gov" class="contact-link" target="_blank">buenavistaco.gov</a></td>
+      <td>Arkansas River headwaters, tourism + outdoor recreation creates seasonal demand.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Fairplay Water & Sanitation</td>
+      <td class="location">Fairplay, Park County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Tiny 2-person operation: groundwater wells, basic treatment. 10,000+ ft elevation, harsh winters.</td>
+      <td>~800</td>
+      <td>2</td>
+      <td>eLynx / Manual</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.fairplayco.us" class="contact-link" target="_blank">fairplayco.us</a></td>
+      <td>10,000+ ft elevation, 2-person staff, harsh winters, likely minimal automation.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Ridgway Water & Sanitation</td>
+      <td class="location">Ridgway, Ouray County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Surface water from Ridgway Reservoir, treatment, distribution. Serves town + campground demand in summer.</td>
+      <td>~950</td>
+      <td>2–3</td>
+      <td>VTScada</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.town.ridgway.co.us" class="contact-link" target="_blank">town.ridgway.co.us</a></td>
+      <td>Near Ridgway State Park — campground/RV demand in summer doubles load.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Norwood Water & Sanitation</td>
+      <td class="location">Norwood, San Miguel County</td>
+      <td><span class="tag western">Western</span></td>
+      <td>Very small Western Slope town. Groundwater wells, basic treatment, minimal distribution.</td>
+      <td>~580</td>
+      <td>2</td>
+      <td>Manual / eLynx</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.townofnorwood.com" class="contact-link" target="_blank">townofnorwood.com</a><br><small style="color:#a3a3a3;">(estimate)</small></td>
+      <td>Very small (580 connections), 2-person operation, remote Western Slope.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Cortez Water & Wastewater</td>
+      <td class="location">Cortez, Montezuma County</td>
+      <td><span class="tag western">Western</span></td>
+      <td>Four Corners region: groundwater wells, treatment, distribution, wastewater treatment. Water scarcity challenges.</td>
+      <td>~4,200</td>
+      <td>6–8</td>
+      <td>Wonderware</td>
+      <td class="priority medium">Medium</td>
+      <td><a href="https://www.cityofcortez.com" class="contact-link" target="_blank">cityofcortez.com</a></td>
+      <td>Four Corners region, chronic water scarcity, growing strain on aquifers.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Dove Creek Water District</td>
+      <td class="location">Dove Creek, Dolores County</td>
+      <td><span class="tag western">Western</span></td>
+      <td>Extremely small ag community ("Pinto Bean Capital"). Groundwater wells, basic chlorination, small distribution.</td>
+      <td>~480</td>
+      <td>1–2</td>
+      <td>Manual / Basic</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.dovecreek.org" class="contact-link" target="_blank">dovecreek.org</a><br><small style="color:#a3a3a3;">(estimate)</small></td>
+      <td>1-2 person operation, remote Western Slope ag community, minimal automation.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Grand Lake Water & Sewer</td>
+      <td class="location">Grand Lake, Grand County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Rocky Mountain National Park gateway. Surface water, treatment, distribution. Heavy campground/RV load in summer.</td>
+      <td>~720</td>
+      <td>2–3</td>
+      <td>Ignition Edge</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.townofgrandlake.com" class="contact-link" target="_blank">townofgrandlake.com</a></td>
+      <td>RMNP gateway — massive seasonal tourism creates 5-10x summer demand spike.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Hillrose Water District</td>
+      <td class="location">Hillrose, Morgan County</td>
+      <td><span class="tag plains">Plains</span></td>
+      <td>CASE STUDY: Secured $1M USDA + $1M loan for uranium compliance. Groundwater wells, treatment for uranium removal.</td>
+      <td>~320</td>
+      <td>1–2</td>
+      <td>Manual / Basic</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.hillrosecolorado.com" class="contact-link" target="_blank">hillrosecolorado.com</a><br><small style="color:#a3a3a3;">(estimate)</small></td>
+      <td>320 connections, 1-2 staff. EPA uranium compliance case study — perfect compliance automation target.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Security Water & Sanitation District</td>
+      <td class="location">Security-Widefield, El Paso County</td>
+      <td><span class="tag plains">Plains</span></td>
+      <td>Larger metro district: groundwater wells, treatment, distribution, wastewater treatment. More resourced.</td>
+      <td>~5,800</td>
+      <td>8–10</td>
+      <td>Wonderware / OSIsoft PI</td>
+      <td class="priority low">Low</td>
+      <td><a href="https://securitywsd.com" class="contact-link" target="_blank">securitywsd.com</a></td>
+      <td>Larger system with more resources, but still rural metro district on edge of Colorado Springs.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Donala Water & Sanitation District</td>
+      <td class="location">Colorado Springs area, El Paso County</td>
+      <td><span class="tag plains">Plains</span></td>
+      <td>Metro district: 2 water treatment plants, groundwater wells, booster pumps, storage tanks, wastewater treatment.</td>
+      <td>~4,600</td>
+      <td>6–8</td>
+      <td>Ignition</td>
+      <td class="priority low">Low</td>
+      <td><a href="https://www.donalawater.org" class="contact-link" target="_blank">donalawater.org</a></td>
+      <td>More resourced metro district, but still outside city limits. Professional staff.</td>
+    </tr>
+
+    <tr>
+      <td class="facility-name">Divide Metropolitan District</td>
+      <td class="location">Divide, Teller County</td>
+      <td><span class="tag mountain">Mountain</span></td>
+      <td>Mountain community west of Colorado Springs. Groundwater wells, treatment, distribution. Small staff.</td>
+      <td>~1,200</td>
+      <td>2–3</td>
+      <td>eLynx / VTScada</td>
+      <td class="priority high">High</td>
+      <td><a href="https://www.dividemetro.org" class="contact-link" target="_blank">dividemetro.org</a><br><small style="color:#a3a3a3;">(estimate)</small></td>
+      <td>Mountain community, 2-3 staff, west of Colorado Springs but still small/rural.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="notes">
+  <h3>Target Criteria & Notes</h3>
+  <p><strong>Priority ranking methodology:</strong></p>
+  <ul>
+    <li><strong>High Priority:</strong> 1–4 staff, &lt;2,000 connections, recent USDA grant activity or compliance pressure, aging infrastructure (&gt;40 years), minimal SCADA automation. <strong>USDA grant recipients are priority #1.</strong></li>
+    <li><strong>Medium Priority:</strong> 2–8 staff, 2,000–6,500 connections, functional SCADA but likely no predictive capability, known seasonal demand variability.</li>
+    <li><strong>Low Priority:</strong> Larger districts (&gt;4,500 connections), more resourced, may already have vendor relationships or in-house IT.</li>
+  </ul>
+  <p style="margin-top:12px;"><strong>USDA grant recipients (TOP 3 TARGETS):</strong></p>
+  <ul>
+    <li><strong>Round Mountain ($4.9M):</strong> Brand new mechanical wastewater system. Perfect pilot — desperately need monitoring for new infrastructure.</li>
+    <li><strong>Romeo ($559K):</strong> Tiny town (250 connections), new constant pressure pumps + remote meters. Ideal small utility profile.</li>
+    <li><strong>Center ($11.8M):</strong> Massive investment to replace non-compliant lagoons. Brand new mechanical treatment = high predictive maintenance need.</li>
+  </ul>
+  <p style="margin-top:12px;"><strong>Contact webpage column:</strong> Direct links to staff/contact pages where available. For facilities without public staff directories, general town/district website provided with "(estimate)" note — you'll need to call main line and ask for operator/manager.</p>
+  <p style="margin-top:12px;"><strong>Next steps:</strong> Start with USDA grant recipients (Round Mountain, Romeo, Center). Then target other "High Priority" facilities with 1-4 staff. Lead with grant guidance + compliance automation + predictive maintenance bundle.</p>
+</div>
+
+</div>
+</body>
+</html>
