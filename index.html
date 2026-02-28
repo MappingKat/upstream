@@ -12,6 +12,27 @@
         person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
     })
 </script>
+<script>
+// Modal functions defined early so they're always available
+function openModal() {
+  document.getElementById('earlyAccessModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('earlyAccessModal').classList.remove('active');
+  document.body.style.overflow = '';
+  setTimeout(function() {
+    var fc = document.getElementById('formContainer');
+    var sm = document.getElementById('successMessage');
+    var ef = document.getElementById('earlyAccessForm');
+    var btn = document.getElementById('submitBtn');
+    if (fc) fc.style.display = 'block';
+    if (sm) sm.classList.remove('active');
+    if (ef) ef.reset();
+    if (btn) { btn.disabled = false; btn.textContent = 'Request Early Access'; }
+  }, 350);
+}
+</script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
 
@@ -184,8 +205,8 @@
 
   /* ═══════════════ HOW IT WORKS ═══════════════ */
   .how-grid {
-    display:grid; grid-template-columns:1fr 1fr 1fr;
-    gap:40px; margin-top:64px;
+    display:grid; grid-template-columns:repeat(5,1fr);
+    gap:28px; margin-top:64px;
   }
   .how-card { position:relative; }
   .how-num {
@@ -678,7 +699,7 @@
     <div class="tag-dot"></div>
     <span>Now in early access — Colorado pilot utilities</span>
   </div>
-  <h1>AI that <em>protects</em> small water systems before they break.</h1>
+  <h1>AI that protects small water systems <em>before they break.</em></h1>
   <p>Upstream connects to your existing SCADA, learns what "normal" looks like, and alerts your team before pumps fail, pipes burst, or compliance deadlines slip. Built for utilities with 1–5 operators and no IT staff.</p>
   <div class="hero-actions">
     <a href="#" class="btn-primary" onclick="openModal(); return false;">Request early access →</a>
@@ -719,26 +740,38 @@
   <div class="section-inner">
     <div class="section-label">How it works</div>
     <h2 class="section-title">Trust first.<br><em>Intelligence second.</em></h2>
-    <p class="section-sub">Most vendors assume your data is clean. We know it's not. So we fix that problem first, then layer on the AI.</p>
+    <p class="section-sub">Most vendors assume your data is clean. We know it's not. So we fix that first — then add daily observation logs, visual AI monitoring, and an intelligence layer that explains every recommendation.</p>
 
     <div class="how-grid">
       <div class="how-card">
         <div class="how-num">01</div>
         <div class="how-icon">🔌</div>
         <h3>Connect & baseline</h3>
-        <p>Install a lightweight agent on your existing SCADA PC. It auto-discovers your sensors, pumps, and treatment systems. For the first 30 days, it just watches—learning what "normal" looks like for your specific equipment.</p>
+        <p>Install a lightweight agent on your existing SCADA PC. It auto-discovers your sensors, pumps, and treatment systems. For the first 30 days, it just watches — learning what "normal" looks like for your specific equipment and operations.</p>
       </div>
       <div class="how-card">
         <div class="how-num">02</div>
         <div class="how-icon">✓</div>
         <h3>Score every data point</h3>
-        <p>Every sensor reading gets a trust score (0-100%) based on calibration history, drift patterns, and cross-validation. When you see "Chlorine: 2.3 ppm," you also see "Trust: 94%"—or "Trust: 47%, probe overdue for calibration."</p>
+        <p>Every sensor reading gets a trust score (0-100%) based on calibration history, drift patterns, and cross-validation. "Chlorine: 2.3 ppm (Trust: 94%)" means act on it. "Trust: 38%, probe overdue" means verify first. No more midnight guessing.</p>
       </div>
       <div class="how-card">
         <div class="how-num">03</div>
+        <div class="how-icon">📝</div>
+        <h3>Log daily observations</h3>
+        <p>Replace paper logs and spreadsheets with a cloud-based process journal. Enter your manual readings, lab results, and field notes in one place. The system shows guardrails — like Garmin's HRV zones — so you instantly see what's in range and what isn't.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">04</div>
+        <div class="how-icon">📷</div>
+        <h3>AI watches your facility</h3>
+        <p>Connect cameras to your basins and pump room. The AI detects foam buildup, equipment vibration, and visual anomalies — automatically, every hour. Your physical visits focus on what the system has already flagged, not routine look-arounds.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">05</div>
         <div class="how-icon">🧠</div>
-        <h3>Add intelligence you can explain</h3>
-        <p>Once you trust the data, we add predictions. But every alert shows its reasoning: "Pump 2 bearing will fail in 4-7 days (87% confident). Based on: vibration trend, temperature pattern, runtime hours." You understand the why, not just the what.</p>
+        <h3>Morning briefing from your AI co-pilot</h3>
+        <p>Every morning: a plain-English summary of overnight activity, adjustments the AI made automatically, the three things that need your attention today, and compliance status. You walk in knowing exactly what matters — not scrolling through 40 alarms.</p>
       </div>
     </div>
   </div>
@@ -749,40 +782,40 @@
   <div class="section-inner">
     <div class="section-label">Solutions</div>
     <h2 class="section-title">The questions operators<br>ask <em>every single day.</em></h2>
-    <p class="section-sub">Can I trust this reading? Is this alarm real? Who changed that setpoint? We answer these questions first—then add intelligence on top.</p>
+    <p class="section-sub">Can I trust this reading? Who changed that setpoint? Did I miss something on the night shift? We answer these questions first — then add intelligence on top.</p>
 
     <div class="solve-grid">
       <div class="solve-card">
         <div class="solve-tag">Data Trust</div>
         <h3>"Is this sensor reading real?"</h3>
-        <p>Every value gets a trust score. "Chlorine: 2.3 ppm (Trust: 94%)" means act on it. "Chlorine: 2.3 ppm (Trust: 38%, probe overdue calibration)" means verify manually. No more guessing whether to drive out at 3 AM.</p>
+        <p>Every value gets a trust score. "Chlorine: 2.3 ppm (Trust: 94%)" means act on it. "Chlorine: 2.3 ppm (Trust: 38%, probe overdue calibration)" means verify manually. No more 3 AM drives to check a reading that turns out to be a drifting probe.</p>
         <div class="solve-stat">
           <span class="stat-num">0-100%</span>
           <span class="stat-label">trust score on every data point</span>
         </div>
       </div>
       <div class="solve-card">
-        <div class="solve-tag">Transparent Logic</div>
-        <h3>"How did the system get this number?"</h3>
-        <p>Click any calculated value to see the formula, source data, and assumptions. "Energy efficiency 78%" isn't mysterious—you see exactly which sensors contributed and how it was computed. No black boxes.</p>
+        <div class="solve-tag">Daily Observations</div>
+        <h3>"I'm still logging everything on paper."</h3>
+        <p>Replace paper logs and spreadsheets with a cloud-based process journal. Enter manual readings, lab results, and field notes once — they sync to compliance records automatically. Guardrails flag out-of-range values the moment you type them in.</p>
         <div class="solve-stat">
-          <span class="stat-num">100%</span>
-          <span class="stat-label">of calculations documented and explainable</span>
+          <span class="stat-num">Paper → cloud</span>
+          <span class="stat-label">guardrail alerts on every entry</span>
         </div>
       </div>
       <div class="solve-card">
-        <div class="solve-tag">Audit Trails</div>
-        <h3>"Who changed that setpoint last night?"</h3>
-        <p>Full audit trail for every manual override, setpoint change, and equipment start/stop. "Pump 3 stopped at 2:47 AM by Operator Tim for bearing inspection." When your manager asks what happened, you have answers.</p>
+        <div class="solve-tag">Visual Monitoring</div>
+        <h3>"I can't check the basins every hour."</h3>
+        <p>Connect cameras to your basins and pump room. The AI runs a visual inspection every hour — detecting foam buildup, equipment vibration, and surface anomalies. Your physical visits focus on what the system has already flagged, not routine look-arounds.</p>
         <div class="solve-stat">
-          <span class="stat-num">Every</span>
-          <span class="stat-label">action logged with who, what, when, why</span>
+          <span class="stat-num">Hourly</span>
+          <span class="stat-label">AI visual checks replace manual site visits</span>
         </div>
       </div>
       <div class="solve-card">
         <div class="solve-tag">Intelligent Alerts</div>
         <h3>"Pump 2 bearing will fail in 4-7 days"</h3>
-        <p>Once you trust the data, predictions become valuable. But we show our work: "87% confident. Based on: vibration trend +15% over 5 days, temperature +8°F, runtime 2,847 hrs." You understand why, not just what.</p>
+        <p>Once you trust the data, predictions become valuable. But we show our work: "87% confident. Based on: vibration trend +15% over 5 days, temperature +8°F, runtime 2,847 hrs." You understand the why — and you decide whether to act now or monitor another day.</p>
         <div class="solve-stat">
           <span class="stat-num">48-72hr</span>
           <span class="stat-label">advance warning before failures</span>
@@ -914,10 +947,11 @@
         <h3 style="font-size:22px; font-weight:300; letter-spacing:-0.5px; margin-bottom:16px; line-height:1.3;">Build <em style="font-family:'Playfair Display',serif; font-style:italic; font-weight:700; color:var(--accent);">confidence</em> in your data</h3>
         <ul class="price-list">
           <li><span class="check">✓</span>Real-time data quality scoring (0-100%)</li>
-          <li><span class="check">✓</span>Automated event documentation</li>
+          <li><span class="check">✓</span>Daily observations log — replaces paper & spreadsheets</li>
+          <li><span class="check">✓</span>Guardrail alerts on every manual entry</li>
+          <li><span class="check">✓</span>Camera-based visual monitoring (foam, vibration)</li>
+          <li><span class="check">✓</span>Automated event documentation & audit trails</li>
           <li><span class="check">✓</span>Transparent calculations — click to see the formula</li>
-          <li><span class="check">✓</span>Intelligent exception alerts</li>
-          <li><span class="check">✓</span>Full audit trails (who, what, when, why)</li>
           <li><span class="check">✓</span>Basic asset health dashboard</li>
           <li><span class="check">✓</span>Email + SMS support</li>
         </ul>
@@ -930,11 +964,12 @@
         <h3 style="font-size:22px; font-weight:300; letter-spacing:-0.5px; margin-bottom:16px; line-height:1.3; color:#fff;">Add <em style="font-family:'Playfair Display',serif; font-style:italic; font-weight:700; color:var(--water);">predictive intelligence</em></h3>
         <ul class="price-list">
           <li><span class="check">✓</span>Everything in Trust Foundation</li>
+          <li><span class="check">✓</span>Morning AI briefing — daily shift summary</li>
           <li><span class="check">✓</span>Predictive alerts with confidence scores</li>
+          <li><span class="check">✓</span>AI auto-adjustments with full audit trail</li>
           <li><span class="check">✓</span>Decision support with tradeoff analysis</li>
-          <li><span class="check">✓</span>What-if scenario modeling</li>
           <li><span class="check">✓</span>Explainable AI recommendations</li>
-          <li><span class="check">✓</span>Compliance report automation</li>
+          <li><span class="check">✓</span>Automated board & compliance reports</li>
           <li><span class="check">✓</span>ROI & savings tracker</li>
           <li><span class="check">✓</span>Priority phone support</li>
         </ul>
@@ -947,7 +982,7 @@
 <!-- CTA BANNER -->
 <div class="cta-banner">
   <h2>Stop guessing.<br><em>Start trusting your data.</em></h2>
-  <p>Join the Colorado utilities already using Upstream AI. Setup takes one afternoon. Data trust starts on day one. Intelligence builds over 30 days.</p>
+  <p>Join the Colorado utilities already piloting Upstream AI. Trust scores, daily observation logs, visual monitoring, and morning AI briefings — all live in one afternoon. No IT staff required.</p>
   <a href="#" class="btn-light" onclick="openModal(); return false;">Get in touch →</a>
 </div>
 
@@ -956,7 +991,7 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <a href="index.html" class="nav-logo"><span class="upstream">Upstream</span> AI</a>
-      <p>AI that protects small water systems before they break. Built by people who understand that operators need confidence in their decisions, not black-box algorithms.</p>
+      <p>Data trust, daily observation logs, visual AI monitoring, and an AI co-pilot for small water utilities. Built for 1–5 person operations that need confidence in their data — not black-box algorithms.</p>
     </div>
     <div>
       <h4>Product</h4>
@@ -983,7 +1018,7 @@
       </ul>
       <h4 style="margin-top:20px;">Connect</h4>
       <ul>
-        <li><a href="mailto:hello@getupstream.ai">hello@getupstream.ai</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#1e767b7272715e797b6a6b6e6d6a6c7b7f73307f77"><span class="__cf_email__" data-cfemail="84ece1e8e8ebc4e3e1f0f1f4f7f0f6e1e5e9aae5ed">[email&#160;protected]</span></a></li>
       </ul>
     </div>
   </div>
@@ -1002,7 +1037,7 @@
       <h3>Request Early Access</h3>
       <p>Join the small utilities already piloting Upstream AI. We'll reach out within 24 hours to schedule a discovery call.</p>
       
-      <form id="earlyAccessForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <form id="earlyAccessForm" action="https://formsubmit.co/hello@getupstream.ai" method="POST">
         <div class="form-group">
           <label for="name">Name *</label>
           <input type="text" id="name" name="name" required>
@@ -1061,91 +1096,70 @@
     <div class="form-success" id="successMessage">
       <div class="success-icon">✓</div>
       <h4>Thanks for your interest!</h4>
-      <p>We'll reach out within 24 hours to schedule a discovery call. In the meantime, feel free to email us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7018151c1c1f30171504050003040215111d5e1119">[email&#160;protected]</a> with any questions.</p>
+      <p>We'll reach out within 24 hours to schedule a discovery call. In the meantime, feel free to email us at <a href="/cdn-cgi/l/email-protection#cfa7aaa3a3a08fa8aabbbabfbcbbbdaaaea2e1aea6"><span class="__cf_email__" data-cfemail="69010c050506290e0c1d1c191a1d1b0c0804470800">[email&#160;protected]</span></a> with any questions.</p>
     </div>
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// Open modal
-function openModal() {
-  document.getElementById('earlyAccessModal').classList.add('active');
-  document.body.style.overflow = 'hidden'; // Prevent background scroll
-}
 
-// Close modal
-function closeModal() {
-  document.getElementById('earlyAccessModal').classList.remove('active');
-  document.body.style.overflow = ''; // Restore scroll
-  
-  // Reset form after close
-  setTimeout(() => {
-    document.getElementById('formContainer').style.display = 'block';
-    document.getElementById('successMessage').classList.remove('active');
-    document.getElementById('earlyAccessForm').reset();
-  }, 300);
-}
+<script>
+// ── Build endpoint at runtime so Cloudflare can't obfuscate the address
+var _ep = ['hello', 'getupstream', 'ai'].join('@').replace('@getupstream', '@getupstream.');
+var _fs = 'https://formsubmit.co/ajax/' + _ep;
 
-// Close modal when clicking outside
+// Close on backdrop click
 document.getElementById('earlyAccessModal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeModal();
-  }
+  if (e.target === this) closeModal();
 });
 
-// Handle form submission
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// Form submission
 document.getElementById('earlyAccessForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  
-  const submitBtn = document.getElementById('submitBtn');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Sending...';
-  
-  const formData = new FormData(this);
-  
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  var data = new FormData(this);
   try {
-    // Using Formspree - replace YOUR_FORM_ID with your actual Formspree form ID
-    // Or use the mailto fallback below
-    const response = await fetch(this.action, {
+    var res = await fetch(_fs, {
       method: 'POST',
-      body: formData,
-      headers: {
-        'Accept': 'application/json'
-      }
+      headers: { 'Accept': 'application/json' },
+      body: data
     });
-    
-    if (response.ok) {
-      // Show success message
-      document.getElementById('formContainer').style.display = 'none';
-      document.getElementById('successMessage').classList.add('active');
-      
-      // Auto-close after 5 seconds
-      setTimeout(() => {
-        closeModal();
-      }, 5000);
-    } else {
-      throw new Error('Form submission failed');
-    }
-  } catch (error) {
-    // Fallback: open email client
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const phone = formData.get('phone');
-    const utility = formData.get('utility');
-    const role = formData.get('role');
-    const connections = formData.get('connections');
-    const message = formData.get('message');
-    
-    const emailBody = `Name: ${name}%0D%0AEmail: ${email}%0D%0APhone: ${phone}%0D%0AUtility: ${utility}%0D%0ARole: ${role}%0D%0AConnections: ${connections}%0D%0A%0D%0AMessage:%0D%0A${message}`;
-    
-    window.location.href = `mailto:hello@getupstream.ai?subject=Early Access Request - ${utility}&body=${emailBody}`;
-    
-    closeModal();
+    if (res.ok) { showSuccess(); return; }
+    throw new Error('failed');
+  } catch (_) {
+    // mailto fallback — no lead ever lost
+    var get = function(k) { return data.get(k) || ''; };
+    var body = [
+      'Name: ' + get('name'), 'Email: ' + get('email'), 'Phone: ' + get('phone'),
+      'Utility: ' + get('utility'), 'Role: ' + get('role'), 'Connections: ' + get('connections'),
+      '', 'Message:', get('message')
+    ].join('%0D%0A');
+    var subject = encodeURIComponent('Early Access – ' + (get('utility') || 'New Inquiry'));
+    window.open('mailto:' + _ep + '?subject=' + subject + '&body=' + body, '_blank');
+    showSuccess();
   }
-  
-  submitBtn.disabled = false;
-  submitBtn.textContent = 'Request Early Access';
 });
 
-// Attach modal open to all CTAs
-document.addEventListener('DOMContentLoaded',
+function showSuccess() {
+  document.getElementById('formContainer').style.display = 'none';
+  document.getElementById('successMessage').classList.add('active');
+  setTimeout(closeModal, 5000);
+}
+
+// PostHog CTA tracking
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[onclick*="openModal"]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      if (window.posthog) posthog.capture('cta_clicked', { location: (el.closest('section') || {}).id || el.className });
+    });
+  });
+});
+</script>
+</body>
+</html>

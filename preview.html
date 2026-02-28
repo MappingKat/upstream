@@ -4,2189 +4,1295 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Upstream AI — Product Preview</title>
+<title>Upstream AI — Platform Preview</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Mono:wght@400;500&display=swap');
 
   * { margin:0; padding:0; box-sizing:border-box; }
 
   :root {
-    --bg: #0e1117;
-    --surface: #161b22;
-    --surface-2: #1c2129;
-    --border: #30363d;
-    --border-light: #21262d;
-    --text: #e6edf3;
-    --text-dim: #8b949e;
-    --text-muted: #484f58;
+    --navy: #1a3a5c;
+    --navy-dark: #0d2440;
+    --navy-light: #234d78;
+    --navy-dim: rgba(255,255,255,0.12);
     --accent: #2e86ab;
-    --accent-glow: rgba(46,134,171,0.15);
-    --green: #3fb950;
-    --green-dim: rgba(63,185,80,0.15);
-    --yellow: #d29922;
-    --yellow-dim: rgba(210,153,34,0.12);
-    --red: #f85149;
-    --red-dim: rgba(248,81,73,0.12);
-    --orange: #db6d28;
-    --purple: #a371f7;
+    --water: #a8e6cf;
+    --water-dim: rgba(168,230,207,0.15);
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --border-mid: #d0d9e4;
+    --text: #0a1628;
+    --text-mid: #4a5568;
+    --text-dim: #8a9bb0;
+    --green: #27ae60;
+    --green-bg: #eafaf2;
+    --green-border: rgba(39,174,96,0.25);
+    --yellow: #d97706;
+    --yellow-bg: #fffbeb;
+    --yellow-border: rgba(217,119,6,0.25);
+    --red: #dc2626;
+    --red-bg: #fff5f5;
+    --red-border: rgba(220,38,38,0.25);
+    --purple: #7c3aed;
+    --purple-bg: #f5f3ff;
+    --sidebar-w: 220px;
   }
 
-  body {
-    font-family: 'DM Sans', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  body { font-family: 'Inter', -apple-system, sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
 
-  /* ════════ PASSWORD GATE ════════ */
-  #gate {
-    display: flex; align-items: center; justify-content: center;
-    min-height: 100vh; padding: 24px;
-  }
-  #gate.hidden { display: none; }
-  .gate-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 48px 40px;
-    max-width: 400px; width: 100%;
-    text-align: center;
-  }
-  .gate-logo {
-    font-size: 20px; font-weight: 700; margin-bottom: 8px;
-    letter-spacing: -0.5px;
-  }
-  .gate-logo span { color: var(--accent); font-weight: 400; }
-  .gate-sub {
-    font-size: 13px; color: var(--text-dim);
-    margin-bottom: 32px;
-  }
-  .gate-input {
-    width: 100%; padding: 14px 16px;
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: 8px; color: var(--text);
-    font-family: 'DM Mono', monospace; font-size: 14px;
-    text-align: center; letter-spacing: 2px;
-    outline: none; transition: border-color .2s;
-  }
-  .gate-input:focus { border-color: var(--accent); }
-  .gate-input::placeholder { color: var(--text-muted); letter-spacing: 0; }
-  .gate-btn {
-    width: 100%; padding: 14px;
-    background: var(--accent); color: #fff;
-    border: none; border-radius: 8px;
-    font-family: inherit; font-size: 14px; font-weight: 600;
-    cursor: pointer; margin-top: 16px;
-    transition: opacity .2s;
-  }
-  .gate-btn:hover { opacity: .9; }
-  .gate-error {
-    font-size: 12px; color: var(--red);
-    margin-top: 12px; display: none;
-  }
-  .gate-error.show { display: block; }
-  .gate-note {
-    font-size: 11px; color: var(--text-muted);
-    margin-top: 24px; line-height: 1.5;
-  }
+  /* ─── PASSWORD GATE ─── */
+  #gate { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px; background:linear-gradient(135deg, #e8f4f8 0%, #f0f4ff 50%, #e8f8f0 100%); }
+  #gate.hidden { display:none; }
+  .gate-box { background:#fff; border:1px solid var(--border); border-radius:20px; padding:52px 44px; max-width:420px; width:100%; text-align:center; box-shadow:0 8px 40px rgba(26,58,92,0.12); }
+  .gate-logo { font-size:24px; font-weight:600; color:var(--navy); margin-bottom:4px; letter-spacing:-0.5px; }
+  .gate-logo em { font-family:'Playfair Display',serif; font-style:italic; font-weight:700; color:var(--accent); }
+  .gate-sub { font-size:13px; color:var(--text-dim); margin-bottom:10px; }
+  .gate-badge { display:inline-flex; align-items:center; gap:6px; background:var(--green-bg); border:1px solid var(--green-border); border-radius:20px; padding:5px 14px; font-size:11px; font-weight:600; color:var(--green); letter-spacing:0.5px; margin-bottom:32px; text-transform:uppercase; }
+  .gate-badge:before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); }
+  .gate-input { width:100%; padding:14px 16px; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; color:var(--text); font-family:'DM Mono',monospace; font-size:16px; text-align:center; letter-spacing:3px; outline:none; transition:border-color .2s,box-shadow .2s; }
+  .gate-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(46,134,171,0.12); }
+  .gate-btn { width:100%; margin-top:12px; padding:14px; background:var(--navy); border:none; border-radius:10px; color:#fff; font-family:'Inter',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:background .2s,transform .1s; }
+  .gate-btn:hover { background:var(--accent); transform:translateY(-1px); }
+  .gate-error { font-size:12px; color:var(--red); margin-top:8px; display:none; }
+  .gate-error.show { display:block; }
+  .gate-note { font-size:11px; color:var(--text-dim); margin-top:24px; line-height:1.7; }
 
-  /* ════════ PREVIEW CONTAINER ════════ */
-  #preview { display: none; }
-  #preview.visible { display: block; }
+  /* ─── APP SHELL ─── */
+  #app { display:none; min-height:100vh; }
+  #app.visible { display:flex; }
 
-  .preview-header {
-    padding: 20px 32px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    background: var(--surface);
-    position: sticky; top: 0; z-index: 50;
-  }
-  .preview-header .logo { font-size: 16px; font-weight: 700; }
-  .preview-header .logo span { color: var(--accent); font-weight: 400; }
-  .preview-badge {
-    font-size: 10px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 1.5px; color: var(--yellow);
-    background: var(--yellow-dim); padding: 4px 12px;
-    border-radius: 20px;
-  }
+  /* ─── SIDEBAR ─── */
+  .sidebar { width:var(--sidebar-w); min-height:100vh; background:var(--navy); display:flex; flex-direction:column; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; }
+  .sidebar-brand { padding:24px 20px 20px; border-bottom:1px solid var(--navy-dim); }
+  .sidebar-logo { font-size:18px; font-weight:600; color:#fff; letter-spacing:-0.5px; }
+  .sidebar-logo em { font-family:'Playfair Display',serif; font-style:italic; color:var(--water); font-weight:700; }
+  .sidebar-tagline { font-size:10px; color:rgba(255,255,255,0.45); margin-top:3px; text-transform:uppercase; letter-spacing:1px; }
+  .sidebar-district { margin:16px; background:rgba(255,255,255,0.07); border-radius:8px; padding:10px 12px; }
+  .sidebar-district-name { font-size:12px; font-weight:600; color:#fff; }
+  .sidebar-district-sub { font-size:10px; color:rgba(255,255,255,0.45); margin-top:2px; }
+  .sidebar-live { display:flex; align-items:center; gap:5px; margin-top:6px; font-size:10px; color:var(--water); font-weight:500; }
+  .sidebar-live:before { content:''; width:6px; height:6px; border-radius:50%; background:var(--water); flex-shrink:0; animation:pulse-dot 2s infinite; }
+  .sidebar-section { padding:10px 16px 4px; font-size:9px; font-weight:700; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:1.5px; }
+  .sidebar-item { display:flex; align-items:center; gap:10px; padding:9px 16px; margin:1px 8px; border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.6); font-size:13px; font-weight:500; transition:background .15s,color .15s; user-select:none; }
+  .sidebar-item:hover { background:rgba(255,255,255,0.07); color:#fff; }
+  .sidebar-item.active { background:rgba(255,255,255,0.12); color:#fff; }
+  .sidebar-item .si-icon { font-size:14px; width:18px; text-align:center; }
+  .sidebar-item .si-badge { margin-left:auto; background:var(--red); color:#fff; font-size:9px; font-weight:700; border-radius:10px; padding:2px 6px; }
+  .sidebar-item .si-new { margin-left:auto; background:var(--water); color:var(--navy-dark); font-size:9px; font-weight:700; border-radius:10px; padding:2px 7px; text-transform:uppercase; }
+  .sidebar-footer { margin-top:auto; padding:16px; border-top:1px solid var(--navy-dim); }
+  .sidebar-user { display:flex; align-items:center; gap:10px; }
+  .sidebar-avatar { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--water)); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; flex-shrink:0; }
+  .sidebar-user-info { flex:1; min-width:0; }
+  .sidebar-user-name { font-size:12px; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sidebar-user-role { font-size:10px; color:rgba(255,255,255,0.4); }
 
-  .preview-nav {
-    display: flex; gap: 4px; padding: 16px 32px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-  }
-  .preview-nav button {
-    padding: 10px 20px; border-radius: 8px;
-    font-family: inherit; font-size: 13px; font-weight: 500;
-    background: transparent; color: var(--text-dim);
-    border: 1px solid transparent; cursor: pointer;
-    transition: all .2s;
-  }
-  .preview-nav button:hover { color: var(--text); background: var(--surface-2); }
-  .preview-nav button.active {
-    color: var(--text); background: var(--accent-glow);
-    border-color: rgba(46,134,171,0.3);
-  }
+  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-  .preview-body { padding: 32px; }
+  /* ─── MAIN CONTENT ─── */
+  .main { flex:1; min-width:0; display:flex; flex-direction:column; }
 
-  .view-toggle {
-    display: flex; gap: 8px; margin-bottom: 24px;
-    justify-content: center;
-  }
-  .view-toggle button {
-    padding: 8px 20px; border-radius: 20px;
-    font-family: inherit; font-size: 12px; font-weight: 600;
-    background: var(--surface); color: var(--text-dim);
-    border: 1px solid var(--border); cursor: pointer;
-    transition: all .2s;
-  }
-  .view-toggle button.active {
-    background: var(--accent); color: #fff;
-    border-color: var(--accent);
-  }
+  /* ─── TOP BAR ─── */
+  .topbar { background:#fff; border-bottom:1px solid var(--border); padding:0 24px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10; }
+  .topbar-left { font-size:13px; color:var(--text-dim); }
+  .topbar-right { display:flex; align-items:center; gap:12px; }
+  .topbar-clock { font-family:'DM Mono',monospace; font-size:12px; color:var(--text-mid); background:var(--bg); padding:4px 10px; border-radius:6px; border:1px solid var(--border); }
+  .topbar-alert { display:flex; align-items:center; gap:5px; background:var(--red-bg); border:1px solid var(--red-border); border-radius:20px; padding:5px 12px; font-size:11px; font-weight:600; color:var(--red); cursor:pointer; }
+  .topbar-status { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--green); }
+  .topbar-status:before { content:''; width:7px; height:7px; border-radius:50%; background:var(--green); }
 
-  /* ════════ DESKTOP DASHBOARD ════════ */
-  .desktop-frame {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    max-width: 1100px; margin: 0 auto;
-    box-shadow: 0 20px 80px rgba(0,0,0,0.4);
-  }
-  .desktop-chrome {
-    padding: 12px 16px;
-    background: var(--surface-2);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .chrome-dot {
-    width: 12px; height: 12px; border-radius: 50%;
-    background: var(--border);
-  }
-  .chrome-dot.r { background: #f85149; }
-  .chrome-dot.y { background: #d29922; }
-  .chrome-dot.g { background: #3fb950; }
-  .chrome-url {
-    flex: 1; text-align: center;
-    font-size: 11px; color: var(--text-muted);
-    font-family: 'DM Mono', monospace;
-  }
+  /* ─── PAGE CONTENT ─── */
+  .content { padding:24px; }
+  .tab-view { display:none; }
+  .tab-view.active { display:block; }
 
-  .dash-layout {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    min-height: 600px;
-  }
+  /* ─── PAGE HEADER ─── */
+  .page-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; }
+  .page-title { font-size:26px; font-weight:600; color:var(--navy); letter-spacing:-0.5px; line-height:1.2; }
+  .page-title em { font-family:'Playfair Display',serif; font-style:italic; font-weight:700; }
+  .page-sub { font-size:13px; color:var(--text-mid); margin-top:4px; }
 
-  /* Sidebar */
-  .dash-sidebar {
-    background: var(--bg);
-    border-right: 1px solid var(--border);
-    padding: 20px 0;
-  }
-  .sidebar-brand {
-    padding: 0 20px 20px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 12px;
-    font-size: 14px; font-weight: 700;
-  }
-  .sidebar-brand span { color: var(--accent); font-weight: 400; }
-  .sidebar-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 20px; font-size: 13px; font-weight: 500;
-    color: var(--text-dim); cursor: pointer;
-    transition: all .15s; border-left: 2px solid transparent;
-  }
-  .sidebar-item:hover { color: var(--text); background: var(--surface); }
-  .sidebar-item.active {
-    color: var(--accent); background: var(--accent-glow);
-    border-left-color: var(--accent);
-  }
-  .sidebar-item .icon { font-size: 16px; width: 20px; text-align: center; }
-  .sidebar-divider {
-    height: 1px; background: var(--border);
-    margin: 12px 20px;
-  }
-  .sidebar-label {
-    font-size: 10px; font-weight: 600; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 1.5px;
-    padding: 8px 20px 4px;
-  }
+  /* ─── CARDS ─── */
+  .card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:16px; }
+  .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .card-title { font-size:13px; font-weight:600; color:var(--navy); }
+  .card-action { font-size:11px; color:var(--accent); cursor:pointer; font-weight:500; }
+  .card-action:hover { text-decoration:underline; }
 
-  /* Main content area */
-  .dash-main { padding: 24px; background: var(--bg); overflow-y: auto; }
+  /* ─── METRICS ─── */
+  .metrics-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:16px; }
+  .metric-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px; position:relative; overflow:hidden; }
+  .metric-accent { position:absolute; top:0; left:0; right:0; height:3px; border-radius:12px 12px 0 0; }
+  .metric-label { font-size:10px; font-weight:600; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; margin-top:8px; }
+  .metric-value { font-size:28px; font-weight:700; color:var(--navy); letter-spacing:-1px; line-height:1; }
+  .metric-unit { font-size:12px; font-weight:500; color:var(--text-mid); margin-left:3px; }
+  .metric-trust { font-size:11px; font-weight:600; margin-top:6px; }
+  .trust-high { color:var(--green); }
+  .trust-mid { color:var(--yellow); }
+  .trust-low { color:var(--red); }
+  .metric-trend { font-size:10px; color:var(--text-dim); margin-top:3px; font-family:'DM Mono',monospace; }
 
-  .dash-topbar {
-    display: flex; justify-content: space-between;
-    align-items: center; margin-bottom: 24px;
-  }
-  .dash-topbar h1 {
-    font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
-  }
-  .dash-topbar .meta {
-    font-size: 12px; color: var(--text-dim);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .live-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 6px var(--green);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: .4; }
-  }
+  /* ─── TAGS ─── */
+  .tag { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:0.5px; }
+  .tag-ok { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+  .tag-warn { background:var(--yellow-bg); color:var(--yellow); border:1px solid var(--yellow-border); }
+  .tag-alert { background:var(--red-bg); color:var(--red); border:1px solid var(--red-border); }
+  .tag-ai { background:var(--purple-bg); color:var(--purple); border:1px solid rgba(124,58,237,0.25); }
+  .tag-info { background:#f0f4ff; color:#3b5ce4; border:1px solid rgba(59,92,228,0.2); }
+  .tag-navy { background:rgba(26,58,92,0.08); color:var(--navy); border:1px solid rgba(26,58,92,0.15); }
 
-  /* Metric cards */
-  .metrics-row {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 12px; margin-bottom: 24px;
-  }
-  .metric-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px;
-  }
-  .metric-card .mc-label {
-    font-size: 11px; color: var(--text-dim);
-    font-weight: 500; margin-bottom: 6px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .metric-card .mc-value {
-    font-size: 28px; font-weight: 700;
-    letter-spacing: -1px; line-height: 1;
-    margin-bottom: 4px;
-  }
-  .metric-card .mc-sub {
-    font-size: 11px; color: var(--text-muted);
-  }
-  .mc-good { color: var(--green); }
-  .mc-warn { color: var(--yellow); }
-  .mc-bad { color: var(--red); }
+  /* ─── GRIDS ─── */
+  .grid-2-1 { display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:16px; }
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px; }
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
 
-  .trust-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    display: inline-block;
-  }
-  .trust-dot.high { background: var(--green); }
-  .trust-dot.med { background: var(--yellow); }
-  .trust-dot.low { background: var(--red); }
+  /* ─── CHART ─── */
+  .chart-mini-line { width:100%; }
 
-  /* Charts area */
-  .charts-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 12px; margin-bottom: 24px;
-  }
-  .chart-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px;
-  }
-  .chart-card h3 {
-    font-size: 13px; font-weight: 600;
-    margin-bottom: 12px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .chart-card h3 .badge {
-    font-size: 10px; font-weight: 600;
-    padding: 2px 8px; border-radius: 10px;
-  }
-  .badge-live { background: var(--green-dim); color: var(--green); }
+  /* ─── ALERTS ─── */
+  .alert-item { display:flex; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; }
+  .alert-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+  .alert-body { flex:1; min-width:0; }
+  .alert-title { font-size:12px; font-weight:600; color:var(--text); }
+  .alert-desc { font-size:11px; color:var(--text-mid); margin-top:3px; line-height:1.5; }
+  .alert-time { font-size:10px; color:var(--text-dim); margin-top:4px; font-family:'DM Mono',monospace; }
 
-  /* Sparkline */
-  .sparkline {
-    height: 80px; display: flex;
-    align-items: flex-end; gap: 2px;
-    padding-top: 8px;
-  }
-  .sparkline .bar {
-    flex: 1; border-radius: 2px 2px 0 0;
-    min-height: 4px; transition: height .3s;
-  }
+  /* ─── DATA TABLE ─── */
+  .data-table { width:100%; border-collapse:collapse; }
+  .data-table th { font-size:10px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.8px; padding:0 8px 10px; text-align:left; border-bottom:1px solid var(--border); }
+  .data-table td { font-size:12px; padding:9px 8px; border-bottom:1px solid var(--border); color:var(--text-mid); }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table tr:hover td { background:var(--bg); }
+  .data-table td:first-child { color:var(--text); font-weight:500; }
+  .mono { font-family:'DM Mono',monospace; font-size:11px; }
 
-  /* Alerts panel */
-  .alerts-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px;
-  }
-  .alerts-panel h3 {
-    font-size: 13px; font-weight: 600; margin-bottom: 12px;
-  }
-  .alert-item {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border-light);
-    font-size: 12px;
-  }
-  .alert-item:last-child { border-bottom: none; }
-  .alert-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    margin-top: 4px; flex-shrink: 0;
-  }
-  .alert-item .alert-text { color: var(--text-dim); line-height: 1.5; }
-  .alert-item .alert-text strong { color: var(--text); }
-  .alert-item .alert-time { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  /* ─── COMPLIANCE BARS ─── */
+  .compliance-row { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .compliance-param { font-size:11px; font-weight:600; color:var(--navy); width:32px; flex-shrink:0; }
+  .compliance-bar-wrap { flex:1; }
+  .compliance-bar-bg { background:var(--bg); border-radius:4px; height:8px; overflow:hidden; border:1px solid var(--border); }
+  .compliance-bar-fill { height:100%; border-radius:4px; transition:width .5s; }
+  .compliance-pct { font-family:'DM Mono',monospace; font-size:11px; font-weight:600; width:32px; text-align:right; }
 
-  /* ════════ CALENDAR TAB ════════ */
-  .calendar-view { display: none; }
-  .calendar-view.active { display: block; }
-  .overview-view { display: block; }
-  .overview-view.hidden { display: none; }
+  /* ─── GARMIN GAUGES ─── */
+  .garmin-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px; text-align:center; }
+  .garmin-label { font-size:9px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+  .garmin-status { font-size:11px; font-weight:700; margin-top:2px; }
+  .garmin-sub { font-size:10px; color:var(--text-dim); margin-top:2px; }
 
-  .cal-header {
-    display: flex; justify-content: space-between;
-    align-items: center; margin-bottom: 20px;
-  }
-  .cal-header h2 { font-size: 18px; font-weight: 700; }
-  .cal-month-nav {
-    display: flex; align-items: center; gap: 12px;
-  }
-  .cal-month-nav button {
-    background: var(--surface); border: 1px solid var(--border);
-    color: var(--text-dim); border-radius: 6px;
-    padding: 6px 10px; cursor: pointer; font-family: inherit;
-    font-size: 12px;
-  }
-  .cal-month-nav span { font-size: 14px; font-weight: 600; min-width: 140px; text-align: center; }
+  /* ─── OBSERVATION TABLE ─── */
+  .obs-grid { display:grid; grid-template-columns:180px repeat(6,1fr) 100px; }
+  .obs-header { background:var(--navy); color:rgba(255,255,255,0.7); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; padding:9px 10px; }
+  .obs-header:first-child { border-radius:8px 0 0 0; }
+  .obs-header:last-child { border-radius:0 8px 0 0; }
+  .obs-cell { padding:9px 10px; border-bottom:1px solid var(--border); border-right:1px solid var(--border); font-size:12px; color:var(--text-mid); display:flex; align-items:center; background:#fff; }
+  .obs-cell:last-child { border-right:none; }
+  .obs-input { width:100%; padding:5px 8px; border:1.5px solid var(--border); border-radius:6px; font-family:'DM Mono',monospace; font-size:12px; color:var(--text); background:#fff; outline:none; transition:border-color .2s; }
+  .obs-input:focus { border-color:var(--accent); }
+  .obs-status-ok { color:var(--green); font-size:11px; font-weight:600; }
+  .obs-status-warn { color:var(--yellow); font-size:11px; font-weight:600; }
+  .obs-status-alert { color:var(--red); font-size:11px; font-weight:600; }
 
-  .cal-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px; margin-bottom: 24px;
-  }
-  .cal-day-header {
-    font-size: 10px; font-weight: 600; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 1px;
-    text-align: center; padding: 8px 0;
-  }
-  .cal-day {
-    background: var(--surface);
-    border: 1px solid var(--border-light);
-    border-radius: 6px;
-    padding: 6px; min-height: 72px;
-    position: relative;
-    transition: border-color .15s;
-  }
-  .cal-day:hover { border-color: var(--accent); }
-  .cal-day .day-num {
-    font-size: 11px; font-weight: 600; color: var(--text-dim);
-    margin-bottom: 4px;
-  }
-  .cal-day.today .day-num {
-    color: var(--accent);
-  }
-  .cal-day.other-month { opacity: .3; }
-  .cal-event {
-    font-size: 9px; font-weight: 500;
-    padding: 2px 4px; border-radius: 3px;
-    margin-bottom: 2px; line-height: 1.3;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .cal-event.sampling { background: rgba(46,134,171,0.2); color: var(--accent); }
-  .cal-event.deadline { background: var(--red-dim); color: var(--red); }
-  .cal-event.maint { background: var(--yellow-dim); color: var(--yellow); }
-  .cal-event.lab { background: rgba(163,113,247,0.15); color: var(--purple); }
+  /* ─── CAMERAS ─── */
+  .camera-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px; }
+  .camera-card { background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .camera-feed { position:relative; height:180px; background:#0a0f18; overflow:hidden; }
+  .camera-sim { position:absolute; inset:0; }
+  .basin-bg { width:100%; height:100%; background:linear-gradient(180deg,#08111a 0%,#0d1e2e 60%,#0a1518 100%); position:relative; overflow:hidden; }
+  .basin-water { position:absolute; bottom:0; left:0; right:0; height:65%; background:linear-gradient(180deg,#1a4060 0%,#0d2030 100%); }
+  .basin-foam { position:absolute; top:0; left:0; right:0; height:35%; background:rgba(220,220,210,0.25); border-radius:2px; }
+  .basin-bubble { position:absolute; background:rgba(200,220,255,0.3); border-radius:50%; animation:rise 3s infinite; }
+  @keyframes rise { 0%{transform:translateY(0);opacity:0.6} 100%{transform:translateY(-60px);opacity:0} }
+  .camera-scanline { position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px); pointer-events:none; }
+  .camera-overlay { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:8px 10px; pointer-events:none; }
+  .cam-top-row, .cam-bottom-row { display:flex; align-items:center; justify-content:space-between; }
+  .cam-label { font-family:'DM Mono',monospace; font-size:9px; color:rgba(255,255,255,0.7); font-weight:500; letter-spacing:1px; }
+  .cam-rec { font-size:9px; font-weight:700; color:#ff4444; letter-spacing:1px; animation:blink-rec 1s step-start infinite; }
+  @keyframes blink-rec { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .cam-timestamp { font-family:'DM Mono',monospace; font-size:9px; color:rgba(255,255,255,0.5); }
+  .cam-alert-badge { font-size:9px; font-weight:700; padding:3px 8px; border-radius:4px; letter-spacing:0.5px; }
+  .cam-alert-ok { background:rgba(39,174,96,0.8); color:#fff; }
+  .cam-alert-warn { background:rgba(217,119,6,0.85); color:#fff; }
+  .cam-alert-detect { background:rgba(220,38,38,0.85); color:#fff; }
+  .camera-info { padding:12px 14px; }
+  .cam-name { font-size:12px; font-weight:600; color:var(--navy); margin-bottom:4px; }
+  .cam-status { font-size:11px; margin-bottom:8px; }
+  .cam-status.ok { color:var(--green); }
+  .cam-status.warn { color:var(--yellow); }
+  .cam-status.detect { color:var(--red); }
+  .detection-events { display:flex; flex-wrap:wrap; gap:4px; }
+  .det-tag { font-size:10px; font-weight:600; padding:3px 8px; border-radius:10px; }
+  .det-tag-ok { background:var(--green-bg); color:var(--green); }
+  .det-tag-warn { background:var(--yellow-bg); color:var(--yellow); }
+  .det-tag-alert { background:var(--red-bg); color:var(--red); }
 
-  /* Lab turnaround table */
-  .lab-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 20px;
-    margin-bottom: 16px;
-  }
-  .lab-panel h3 {
-    font-size: 14px; font-weight: 600; margin-bottom: 4px;
-  }
-  .lab-panel .lab-sub {
-    font-size: 11px; color: var(--text-dim); margin-bottom: 16px;
-  }
-  .lab-table {
-    width: 100%; border-collapse: collapse;
-  }
-  .lab-table th {
-    font-size: 10px; font-weight: 600; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 1px;
-    text-align: left; padding: 8px 10px;
-    border-bottom: 1px solid var(--border);
-  }
-  .lab-table td {
-    font-size: 12px; padding: 10px;
-    border-bottom: 1px solid var(--border-light);
-    color: var(--text-dim);
-  }
-  .lab-table tr:last-child td { border-bottom: none; }
-  .lab-table td:first-child { color: var(--text); font-weight: 500; }
-  .lab-table .hold-warn { color: var(--yellow); font-weight: 600; }
-  .lab-table .hold-ok { color: var(--green); }
-  .lab-table .hold-crit { color: var(--red); font-weight: 600; }
-  .status-chip {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 10px; font-weight: 600; padding: 2px 8px;
-    border-radius: 10px;
-  }
-  .status-chip.pending { background: var(--yellow-dim); color: var(--yellow); }
-  .status-chip.received { background: var(--green-dim); color: var(--green); }
-  .status-chip.overdue { background: var(--red-dim); color: var(--red); }
-  .status-chip.scheduled { background: var(--accent-glow); color: var(--accent); }
+  /* ─── WAVEFORM ─── */
+  .waveform { display:flex; align-items:flex-end; gap:2px; height:60px; padding:4px 0; }
+  .wave-bar { width:7px; border-radius:2px 2px 0 0; background:rgba(168,230,207,0.5); transition:height .3s; flex-shrink:0; }
+  .wave-bar.normal { background:rgba(168,230,207,0.6); }
+  .wave-bar.anomaly { background:var(--red); }
+  .audio-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px; }
 
-  .upcoming-samples {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .sample-card {
-    background: var(--bg);
-    border: 1px solid var(--border-light);
-    border-radius: 8px; padding: 14px;
-  }
-  .sample-card h4 {
-    font-size: 12px; font-weight: 600; margin-bottom: 6px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .sample-card p {
-    font-size: 11px; color: var(--text-dim); line-height: 1.5;
-  }
+  /* ─── AI BRIEFING ─── */
+  .briefing-header { display:flex; align-items:center; gap:16px; background:var(--navy); color:#fff; border-radius:12px; padding:20px 24px; margin-bottom:16px; }
+  .briefing-avatar { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--water)); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .briefing-title { font-size:20px; font-weight:600; letter-spacing:-0.5px; }
+  .briefing-title em { font-family:'Playfair Display',serif; font-style:italic; color:var(--water); }
+  .briefing-meta { font-size:12px; color:rgba(255,255,255,0.6); margin-top:3px; }
+  .briefing-trust { margin-left:auto; text-align:right; }
+  .briefing-trust-val { font-size:28px; font-weight:700; color:var(--water); font-family:'DM Mono',monospace; }
+  .briefing-trust-label { font-size:10px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; }
+  .briefing-section { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:12px; }
+  .briefing-section-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+  .briefing-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+  .briefing-item:last-child { border-bottom:none; }
+  .briefing-item-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+  .briefing-item-text { flex:1; font-size:12px; color:var(--text); line-height:1.5; }
+  .briefing-item-time { font-family:'DM Mono',monospace; font-size:10px; color:var(--text-dim); flex-shrink:0; margin-top:2px; }
+  .action-item { display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; }
+  .action-num { width:22px; height:22px; border-radius:50%; background:var(--navy); color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .action-body { flex:1; }
+  .action-title { font-size:12px; font-weight:600; color:var(--navy); }
+  .action-desc { font-size:11px; color:var(--text-mid); margin-top:2px; line-height:1.5; }
 
-  /* ════════ NEW TAB STYLES ════════ */
-  .tab-view { display: none; }
-  .tab-view.active { display: block; }
-  .overview-view { display: block; }
-  .overview-view.hidden { display: none; }
-
-  /* Alerts Tab */
-  .alert-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .alert-filter-btn {
-    padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
-    border: 1px solid var(--border); background: transparent; color: var(--text-dim);
-    cursor: pointer; transition: all .15s;
-  }
-  .alert-filter-btn.active, .alert-filter-btn:hover {
-    background: var(--accent-glow); color: var(--accent); border-color: var(--accent);
-  }
-  .alert-card {
-    background: var(--surface); border-radius: 10px; padding: 16px 20px;
-    margin-bottom: 12px; border-left: 3px solid var(--border);
-    display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start;
-  }
-  .alert-card.critical { border-left-color: var(--red); }
-  .alert-card.warning { border-left-color: var(--yellow); }
-  .alert-card.info { border-left-color: var(--accent); }
-  .alert-card.success { border-left-color: var(--green); }
-  .alert-severity {
-    font-size: 10px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; padding: 3px 8px; border-radius: 4px;
-    display: inline-block; white-space: nowrap;
-  }
-  .alert-severity.critical { background: rgba(248,81,73,.15); color: var(--red); }
-  .alert-severity.warning { background: rgba(210,153,34,.15); color: var(--yellow); }
-  .alert-severity.info { background: var(--accent-glow); color: var(--accent); }
-  .alert-title { font-size: 14px; font-weight: 600; margin: 4px 0; }
-  .alert-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
-  .alert-action {
-    font-size: 12px; color: var(--text-dim); line-height: 1.5;
-    background: var(--surface-2); padding: 10px 14px; border-radius: 6px;
-    margin-top: 8px; border: 1px solid var(--border);
-  }
-  .alert-action strong { color: var(--accent); font-weight: 600; }
-  .alert-timestamp { font-size: 11px; color: var(--text-muted); text-align: right; white-space: nowrap; }
-
-  /* Assets Tab */
-  .asset-summary {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 12px; margin-bottom: 24px;
-  }
-  .asset-stat {
-    background: var(--surface); border-radius: 10px; padding: 16px;
-    text-align: center;
-  }
-  .asset-stat .number { font-size: 28px; font-weight: 700; }
-  .asset-stat .label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-  .asset-table {
-    width: 100%; border-collapse: collapse; font-size: 13px;
-  }
-  .asset-table th {
-    text-align: left; padding: 10px 12px; font-size: 11px; font-weight: 600;
-    color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
-    border-bottom: 1px solid var(--border); background: var(--surface);
-  }
-  .asset-table td {
-    padding: 12px; border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-  }
-  .asset-table tr:hover { background: var(--surface); }
-  .health-bar {
-    width: 60px; height: 6px; border-radius: 3px;
-    background: var(--surface-2); display: inline-block; vertical-align: middle;
-    margin-right: 8px; overflow: hidden;
-  }
-  .health-bar-fill {
-    height: 100%; border-radius: 3px;
-    transition: width .3s;
-  }
-  .health-good .health-bar-fill { background: var(--green); }
-  .health-warn .health-bar-fill { background: var(--yellow); }
-  .health-crit .health-bar-fill { background: var(--red); }
-  .maint-badge {
-    font-size: 10px; font-weight: 600; padding: 3px 8px;
-    border-radius: 10px; display: inline-block;
-  }
-  .maint-overdue { background: rgba(248,81,73,.15); color: var(--red); }
-  .maint-soon { background: rgba(210,153,34,.15); color: var(--yellow); }
-  .maint-ok { background: rgba(63,185,80,.15); color: var(--green); }
-
-  /* Water Quality Tab */
-  .wq-group-header {
-    font-size: 12px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; color: var(--text-muted); padding: 16px 0 8px;
-    border-bottom: 1px solid var(--border); margin-bottom: 12px;
-  }
-  .wq-param-row {
-    display: grid; grid-template-columns: 200px 100px 100px 80px 1fr 80px;
-    gap: 8px; align-items: center; padding: 10px 0;
-    border-bottom: 1px solid rgba(48,54,61,.5); font-size: 13px;
-  }
-  .wq-param-name { font-weight: 600; }
-  .wq-reading { font-family: 'DM Mono', monospace; font-size: 14px; }
-  .wq-mcl { font-family: 'DM Mono', monospace; color: var(--text-muted); font-size: 12px; }
-  .wq-unit { font-size: 11px; color: var(--text-dim); }
-  .wq-sparkline { display: flex; align-items: flex-end; gap: 1px; height: 24px; }
-  .wq-sparkline .bar { width: 3px; border-radius: 1px; background: var(--accent); opacity: .5; }
-  .wq-status-dot {
-    width: 8px; height: 8px; border-radius: 50%; display: inline-block;
-    margin-right: 6px; flex-shrink: 0;
-  }
-  .wq-status-dot.good { background: var(--green); }
-  .wq-status-dot.warn { background: var(--yellow); }
-  .wq-status-dot.crit { background: var(--red); }
-  .wq-trust-banner {
-    background: var(--surface); border-radius: 10px; padding: 16px 20px;
-    margin-bottom: 20px; display: flex; align-items: center; gap: 16px;
-    border: 1px solid var(--border);
-  }
-  .wq-trust-score {
-    font-size: 36px; font-weight: 700; color: var(--green); line-height: 1;
-  }
-  .wq-trust-label { font-size: 11px; color: var(--text-muted); }
-
-  /* Compliance Tab */
-  .compliance-timeline {
-    position: relative; padding-left: 28px; margin-bottom: 24px;
-  }
-  .compliance-timeline::before {
-    content: ''; position: absolute; left: 10px; top: 0; bottom: 0;
-    width: 2px; background: var(--border);
-  }
-  .compliance-event {
-    position: relative; padding: 12px 16px; margin-bottom: 16px;
-    background: var(--surface); border-radius: 8px;
-    border: 1px solid var(--border);
-  }
-  .compliance-event::before {
-    content: ''; position: absolute; left: -24px; top: 16px;
-    width: 10px; height: 10px; border-radius: 50%;
-    background: var(--accent); border: 2px solid var(--bg);
-  }
-  .compliance-event.upcoming::before { background: var(--yellow); }
-  .compliance-event.overdue::before { background: var(--red); }
-  .compliance-event.complete::before { background: var(--green); }
-  .compliance-event-date { font-size: 11px; color: var(--text-muted); font-weight: 600; }
-  .compliance-event-title { font-size: 14px; font-weight: 600; margin: 4px 0; }
-  .compliance-event-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
-  .compliance-sections {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-  }
-  .compliance-card {
-    background: var(--surface); border-radius: 10px; padding: 20px;
-    border: 1px solid var(--border);
-  }
-  .compliance-card h4 {
-    font-size: 13px; font-weight: 700; margin-bottom: 12px;
-    color: var(--text);
-  }
-  .compliance-checklist { list-style: none; padding: 0; margin: 0; }
-  .compliance-checklist li {
-    padding: 8px 0; border-bottom: 1px solid rgba(48,54,61,.4);
-    font-size: 12px; display: flex; align-items: center; gap: 8px;
-  }
-  .compliance-checklist li:last-child { border: none; }
-  .check-icon { font-size: 14px; flex-shrink: 0; }
-
-  /* Knowledge Base Tab */
-  .kb-search {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .kb-search input {
-    flex: 1; background: transparent; border: none; outline: none;
-    color: var(--text); font-size: 14px; font-family: inherit;
-  }
-  .kb-search input::placeholder { color: var(--text-muted); }
-  .kb-categories {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 12px; margin-bottom: 24px;
-  }
-  .kb-category-card {
-    background: var(--surface); border-radius: 10px; padding: 16px;
-    border: 1px solid var(--border); cursor: pointer;
-    transition: all .2s;
-  }
-  .kb-category-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .kb-category-icon { font-size: 24px; margin-bottom: 8px; }
-  .kb-category-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-  .kb-category-count { font-size: 11px; color: var(--text-muted); }
-  .kb-article {
-    background: var(--surface); border-radius: 8px; padding: 14px 18px;
-    margin-bottom: 10px; border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .kb-article-title { font-size: 13px; font-weight: 600; }
-  .kb-article-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .kb-article-tag {
-    font-size: 10px; font-weight: 600; padding: 3px 8px;
-    border-radius: 10px; background: var(--accent-glow); color: var(--accent);
-  }
-  .kb-sop-card {
-    background: var(--surface); border-radius: 10px; padding: 16px 20px;
-    margin-bottom: 12px; border: 1px solid var(--border);
-  }
-  .kb-sop-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .kb-sop-title { font-size: 14px; font-weight: 700; }
-  .kb-sop-steps { font-size: 12px; color: var(--text-dim); line-height: 1.8; padding-left: 16px; }
-  .kb-sop-steps li { margin-bottom: 2px; }
-  .kb-sop-footer { font-size: 10px; color: var(--text-muted); margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
-  .kb-reg-table {
-    width: 100%; border-collapse: collapse; font-size: 12px;
-    margin-bottom: 16px;
-  }
-  .kb-reg-table th {
-    text-align: left; padding: 8px 10px; font-size: 10px; font-weight: 600;
-    color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
-    border-bottom: 1px solid var(--border); background: var(--surface);
-  }
-  .kb-reg-table td {
-    padding: 8px 10px; border-bottom: 1px solid rgba(48,54,61,.4);
-    vertical-align: top;
-  }
-  .kb-reg-table tr:hover { background: var(--surface); }
-
-  /* ════════ MOBILE FRAME ════════ */
-  .mobile-wrapper {
-    display: flex; gap: 32px;
-    justify-content: center;
-    max-width: 900px; margin: 0 auto;
-  }
-  .mobile-frame {
-    width: 320px; flex-shrink: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 32px;
-    padding: 12px;
-    box-shadow: 0 20px 80px rgba(0,0,0,0.4);
-  }
-  .mobile-screen {
-    background: var(--bg);
-    border-radius: 22px;
-    overflow: hidden;
-    min-height: 580px;
-  }
-  .mobile-status {
-    display: flex; justify-content: space-between;
-    padding: 8px 20px; font-size: 11px;
-    font-weight: 600; color: var(--text-dim);
-  }
-  .mobile-header {
-    padding: 16px 20px 12px;
-    display: flex; justify-content: space-between;
-    align-items: center;
-  }
-  .mobile-header h2 { font-size: 18px; font-weight: 700; }
-  .mobile-avatar {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--accent-glow); border: 2px solid var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: var(--accent);
-  }
-
-  .mobile-metrics {
-    padding: 0 16px; display: grid;
-    grid-template-columns: 1fr 1fr; gap: 8px;
-    margin-bottom: 16px;
-  }
-  .mobile-metric {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 12px;
-  }
-  .mobile-metric .mm-label {
-    font-size: 10px; color: var(--text-dim); margin-bottom: 4px;
-  }
-  .mobile-metric .mm-value {
-    font-size: 20px; font-weight: 700; line-height: 1;
-  }
-  .mobile-metric .mm-sub {
-    font-size: 9px; color: var(--text-muted); margin-top: 2px;
-  }
-
-  .mobile-section {
-    padding: 0 16px; margin-bottom: 16px;
-  }
-  .mobile-section h3 {
-    font-size: 13px; font-weight: 600; margin-bottom: 8px;
-  }
-  .mobile-alert {
-    display: flex; gap: 8px; padding: 10px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 8px; margin-bottom: 6px; align-items: flex-start;
-  }
-  .mobile-alert .ma-text {
-    font-size: 11px; color: var(--text-dim); line-height: 1.4;
-  }
-  .mobile-alert .ma-text strong { color: var(--text); }
-  .mobile-alert .ma-time {
-    font-size: 9px; color: var(--text-muted); margin-top: 2px;
-  }
-
-  .mobile-tabs {
-    display: flex; border-top: 1px solid var(--border);
-    background: var(--surface); padding: 8px 0 4px;
-  }
-  .mobile-tabs .tab {
-    flex: 1; text-align: center;
-    font-size: 9px; font-weight: 600;
-    color: var(--text-muted); padding: 4px 0;
-  }
-  .mobile-tabs .tab.active { color: var(--accent); }
-  .mobile-tabs .tab .tab-icon {
-    font-size: 18px; display: block; margin-bottom: 2px;
-  }
-
-  /* Mobile calendar view */
-  .mobile-cal-list { padding: 0 16px; }
-  .mobile-cal-day {
-    margin-bottom: 16px;
-  }
-  .mobile-cal-day .day-label {
-    font-size: 11px; font-weight: 600; color: var(--text-dim);
-    margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px;
-  }
-  .mobile-cal-item {
-    display: flex; gap: 10px; align-items: flex-start;
-    padding: 10px; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 8px;
-    margin-bottom: 4px;
-  }
-  .mobile-cal-item .mci-bar {
-    width: 3px; border-radius: 2px;
-    min-height: 32px; flex-shrink: 0;
-  }
-  .mobile-cal-item .mci-text {
-    font-size: 11px; color: var(--text); font-weight: 500;
-    line-height: 1.4;
-  }
-  .mobile-cal-item .mci-sub {
-    font-size: 10px; color: var(--text-dim); font-weight: 400;
-  }
-
-  /* ════════ SECTION LABELS ════════ */
-  .section-divider {
-    text-align: center; padding: 48px 0 24px;
-  }
-  .section-divider h2 {
-    font-size: 28px; font-weight: 700; letter-spacing: -1px;
-    margin-bottom: 4px;
-  }
-  .section-divider p {
-    font-size: 13px; color: var(--text-dim);
-  }
-
-  .hidden { display: none !important; }
-
-  @media(max-width:860px) {
-    .dash-layout { grid-template-columns: 1fr; }
-    .dash-sidebar { display: none; }
-    .metrics-row { grid-template-columns: 1fr 1fr; }
-    .charts-grid { grid-template-columns: 1fr; }
-    .mobile-wrapper { flex-direction: column; align-items: center; }
-    .preview-nav { overflow-x: auto; }
-    .upcoming-samples { grid-template-columns: 1fr; }
-  }
+  /* ─── BUTTONS ─── */
+  .btn-primary { background:var(--navy); border:none; color:#fff; padding:8px 16px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s; }
+  .btn-primary:hover { background:var(--accent); }
+  .btn-outline { background:#fff; border:1px solid var(--border); color:var(--text-mid); padding:8px 16px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s; }
+  .btn-outline:hover { background:var(--bg); }
 </style>
 </head>
 <body>
 
-<!-- ════════ PASSWORD GATE ════════ -->
+<!-- ─── PASSWORD GATE ─── -->
 <div id="gate">
   <div class="gate-box">
-    <div class="gate-logo"><span>Upstream</span> AI</div>
-    <div class="gate-sub">Product Preview — Confidential</div>
-    <input type="password" class="gate-input" id="passInput" placeholder="Enter access code" autofocus>
-    <button class="gate-btn" onclick="checkPass()">View Preview</button>
-    <div class="gate-error" id="gateError">Incorrect access code. Try again.</div>
-    <div class="gate-note">This is a private preview of Upstream AI's dashboard and mobile experience. Contact <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="68000d040407280f0d1c1d181b1c1a0d0905460901">[email&#160;protected]</a> for access.</div>
+    <div class="gate-logo"><em>Upstream</em> AI</div>
+    <div class="gate-sub">Platform Preview · Confidential</div>
+    <div class="gate-badge">v4 · Dashboard Mockup</div>
+    <input type="password" class="gate-input" id="gateInput" placeholder="Enter access code" autocomplete="off"
+      onkeydown="if(event.key==='Enter')checkPass()">
+    <div class="gate-error" id="gateError">Incorrect code. Try again.</div>
+    <button class="gate-btn" onclick="checkPass()">Enter Preview →</button>
+    <div class="gate-note">This preview is confidential and intended for authorized stakeholders only. Do not share or distribute.</div>
   </div>
 </div>
 
-<!-- ════════ PREVIEW CONTENT ════════ -->
-<div id="preview">
-
-  <div class="preview-header">
-    <div class="logo"><span>Upstream</span> AI</div>
-    <div class="preview-badge">Product Preview</div>
-  </div>
-
-  <div class="preview-nav">
-    <button class="active" onclick="switchView('desktop')">Desktop Dashboard</button>
-    <button onclick="switchView('mobile')">Mobile App</button>
-  </div>
-
-  <div class="preview-body">
-
-    <!-- ════════ DESKTOP VIEW ════════ -->
-    <div id="desktopView">
-      <div class="section-divider">
-        <h2>Operator Dashboard</h2>
-        <p>Desktop view — real-time system overview with trust scoring</p>
-      </div>
-
-      <div class="desktop-frame">
-        <div class="desktop-chrome">
-          <div class="chrome-dot r"></div>
-          <div class="chrome-dot y"></div>
-          <div class="chrome-dot g"></div>
-          <div class="chrome-url">app.getupstream.ai/dashboard</div>
-        </div>
-
-        <div class="dash-layout">
-          <!-- Sidebar -->
-          <div class="dash-sidebar">
-            <div class="sidebar-brand"><span>Upstream</span> AI</div>
-            <div class="sidebar-item active" onclick="showDashTab('overview')"><span class="icon">📊</span> Overview</div>
-            <div class="sidebar-item" onclick="showDashTab('calendar')"><span class="icon">📅</span> Smart Calendar</div>
-            <div class="sidebar-item" onclick="showDashTab('alerts')"><span class="icon">🔔</span> Alerts</div>
-            <div class="sidebar-item" onclick="showDashTab('assets')"><span class="icon">⚙️</span> Assets</div>
-            <div class="sidebar-divider"></div>
-            <div class="sidebar-label">Monitoring</div>
-            <div class="sidebar-item" onclick="showDashTab('waterquality')"><span class="icon">💧</span> Water Quality</div>
-            <div class="sidebar-item" onclick="showDashTab('waterquality')"><span class="icon">🔌</span> Pumps & Motors</div>
-            <div class="sidebar-item" onclick="showDashTab('waterquality')"><span class="icon">📏</span> Tank Levels</div>
-            <div class="sidebar-divider"></div>
-            <div class="sidebar-label">Intelligence</div>
-            <div class="sidebar-item" onclick="showDashTab('compliance')"><span class="icon">📋</span> Compliance</div>
-            <div class="sidebar-item" onclick="showDashTab('knowledge')"><span class="icon">📚</span> Knowledge Base</div>
-          </div>
-
-          <!-- Main content -->
-          <div class="dash-main">
-            <!-- OVERVIEW TAB -->
-            <div class="overview-view" id="overviewTab">
-              <div class="dash-topbar">
-                <h1>System Overview</h1>
-                <div class="meta"><div class="live-dot"></div> Live · Updated 12s ago</div>
-              </div>
-
-              <div class="metrics-row">
-                <div class="metric-card">
-                  <div class="mc-label"><span class="trust-dot high"></span> Data Trust Score</div>
-                  <div class="mc-value mc-good">94%</div>
-                  <div class="mc-sub">23 of 24 sensors healthy</div>
-                </div>
-                <div class="metric-card">
-                  <div class="mc-label">Active Alerts</div>
-                  <div class="mc-value mc-warn">3</div>
-                  <div class="mc-sub">1 critical · 2 advisory</div>
-                </div>
-                <div class="metric-card">
-                  <div class="mc-label">Chlorine Residual</div>
-                  <div class="mc-value">2.1 <span style="font-size:14px; color:var(--text-dim)">ppm</span></div>
-                  <div class="mc-sub"><span class="trust-dot high" style="width:6px;height:6px;"></span> Trust: 97%</div>
-                </div>
-                <div class="metric-card">
-                  <div class="mc-label">Energy Today</div>
-                  <div class="mc-value">847 <span style="font-size:14px; color:var(--text-dim)">kWh</span></div>
-                  <div class="mc-sub">↓ 12% vs. last week</div>
-                </div>
-              </div>
-
-              <div class="charts-grid">
-                <div class="chart-card">
-                  <h3>Chlorine Residual (24hr) <span class="badge badge-live">Live</span></h3>
-                  <div class="sparkline" id="chlorineChart"></div>
-                  <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); margin-top:4px;">
-                    <span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>Now</span>
-                  </div>
-                </div>
-                <div class="chart-card">
-                  <h3>Pump 1 Vibration <span class="badge" style="background:var(--yellow-dim); color:var(--yellow);">Watch</span></h3>
-                  <div class="sparkline" id="vibrationChart"></div>
-                  <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); margin-top:4px;">
-                    <span>7 days ago</span><span>5d</span><span>3d</span><span>Yesterday</span><span>Now</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="alerts-panel">
-                <h3>Recent Alerts</h3>
-                <div class="alert-item">
-                  <div class="alert-dot" style="background:var(--red);"></div>
-                  <div>
-                    <div class="alert-text"><strong>Pump 2 bearing temperature +8°F</strong> above baseline. Predicted failure in 4-7 days (87% confident). Based on: vibration trend, temp pattern, 2,847 runtime hrs.</div>
-                    <div class="alert-time">2 hours ago · Predictive</div>
-                  </div>
-                </div>
-                <div class="alert-item">
-                  <div class="alert-dot" style="background:var(--yellow);"></div>
-                  <div>
-                    <div class="alert-text"><strong>Chlorine probe trust score dropped to 42%.</strong> Probe reading inconsistent with calculated free chlorine from dose rate. Recommend calibration check.</div>
-                    <div class="alert-time">6 hours ago · Data Quality</div>
-                  </div>
-                </div>
-                <div class="alert-item">
-                  <div class="alert-dot" style="background:var(--accent);"></div>
-                  <div>
-                    <div class="alert-text"><strong>Monthly compliance samples due in 5 days.</strong> Total coliform + E. coli at Distribution Points 1-4. Lab hold time: 30 hrs max. Schedule collection by Thu AM.</div>
-                    <div class="alert-time">Today · Calendar</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- CALENDAR TAB -->
-            <div class="calendar-view" id="calendarTab">
-              <div class="cal-header">
-                <h2>Smart Calendar</h2>
-                <div class="cal-month-nav">
-                  <button>‹</button>
-                  <span>February 2026</span>
-                  <button>›</button>
-                </div>
-              </div>
-
-              <div class="cal-grid">
-                <div class="cal-day-header">Sun</div>
-                <div class="cal-day-header">Mon</div>
-                <div class="cal-day-header">Tue</div>
-                <div class="cal-day-header">Wed</div>
-                <div class="cal-day-header">Thu</div>
-                <div class="cal-day-header">Fri</div>
-                <div class="cal-day-header">Sat</div>
-
-                <div class="cal-day"><div class="day-num">1</div></div>
-                <div class="cal-day"><div class="day-num">2</div><div class="cal-event sampling">Bact. samples due</div></div>
-                <div class="cal-day"><div class="day-num">3</div><div class="cal-event lab">Lab results: THM</div></div>
-                <div class="cal-day"><div class="day-num">4</div></div>
-                <div class="cal-day"><div class="day-num">5</div><div class="cal-event maint">Pump 2 PM</div></div>
-                <div class="cal-day"><div class="day-num">6</div></div>
-                <div class="cal-day"><div class="day-num">7</div></div>
-
-                <div class="cal-day"><div class="day-num">8</div></div>
-                <div class="cal-day"><div class="day-num">9</div><div class="cal-event sampling">Chlorine resid.</div></div>
-                <div class="cal-day"><div class="day-num">10</div><div class="cal-event deadline">DMR due to EPA</div></div>
-                <div class="cal-day"><div class="day-num">11</div></div>
-                <div class="cal-day"><div class="day-num">12</div><div class="cal-event lab">Lab results: Bact.</div></div>
-                <div class="cal-day"><div class="day-num">13</div></div>
-                <div class="cal-day"><div class="day-num">14</div></div>
-
-                <div class="cal-day"><div class="day-num">15</div><div class="cal-event sampling">Turbidity grab</div></div>
-                <div class="cal-day"><div class="day-num">16</div></div>
-                <div class="cal-day"><div class="day-num">17</div><div class="cal-event maint">CL2 probe cal</div></div>
-                <div class="cal-day"><div class="day-num">18</div></div>
-                <div class="cal-day"><div class="day-num">19</div><div class="cal-event lab">Lab results: Metals</div></div>
-                <div class="cal-day"><div class="day-num">20</div></div>
-                <div class="cal-day"><div class="day-num">21</div></div>
-
-                <div class="cal-day today"><div class="day-num">22</div><div class="cal-event sampling">Bact. samples</div><div class="cal-event deadline">PFAS report due</div></div>
-                <div class="cal-day"><div class="day-num">23</div></div>
-                <div class="cal-day"><div class="day-num">24</div><div class="cal-event lab">Lab results: PFAS</div></div>
-                <div class="cal-day"><div class="day-num">25</div><div class="cal-event maint">Well 1 inspect</div></div>
-                <div class="cal-day"><div class="day-num">26</div></div>
-                <div class="cal-day"><div class="day-num">27</div></div>
-                <div class="cal-day"><div class="day-num">28</div><div class="cal-event deadline">MOR due to state</div></div>
-              </div>
-
-              <!-- Lab turnaround table -->
-              <div class="lab-panel">
-                <h3>Lab Sample Tracker</h3>
-                <div class="lab-sub">Active samples sent to Pace Analytical — Grand Junction, CO</div>
-                <table class="lab-table">
-                  <thead>
-                    <tr>
-                      <th>Sample</th>
-                      <th>Collected</th>
-                      <th>Method</th>
-                      <th>Hold Time</th>
-                      <th>Turnaround</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Total Coliform / E. coli</td>
-                      <td>Feb 22, 7:15 AM</td>
-                      <td>SM 9223B</td>
-                      <td class="hold-warn">30 hrs (expires Feb 23 1:15 PM)</td>
-                      <td>24 hrs</td>
-                      <td><span class="status-chip pending">In transit</span></td>
-                    </tr>
-                    <tr>
-                      <td>Nitrate (as N)</td>
-                      <td>Feb 20, 9:00 AM</td>
-                      <td>EPA 300.0</td>
-                      <td class="hold-ok">48 hrs ✓</td>
-                      <td>5-7 business days</td>
-                      <td><span class="status-chip received">At lab</span></td>
-                    </tr>
-                    <tr>
-                      <td>PFAS (29 compounds)</td>
-                      <td>Feb 18, 8:30 AM</td>
-                      <td>EPA 533</td>
-                      <td class="hold-ok">14 days ✓</td>
-                      <td>15-20 business days</td>
-                      <td><span class="status-chip received">At lab</span></td>
-                    </tr>
-                    <tr>
-                      <td>Lead & Copper</td>
-                      <td>Feb 15, 6:00 AM</td>
-                      <td>EPA 200.8</td>
-                      <td class="hold-ok">6 months ✓</td>
-                      <td>10-15 business days</td>
-                      <td><span class="status-chip received">At lab</span></td>
-                    </tr>
-                    <tr>
-                      <td>THMs / HAA5</td>
-                      <td>Feb 10, 7:00 AM</td>
-                      <td>EPA 524.2 / 552.2</td>
-                      <td class="hold-ok">14 days ✓</td>
-                      <td>10-15 business days</td>
-                      <td><span class="status-chip received">At lab</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- Hold time reference -->
-              <div class="upcoming-samples">
-                <div class="lab-panel" style="margin-bottom:0;">
-                  <h3>Hold Time Reference</h3>
-                  <div class="lab-sub">Maximum sample hold times by parameter</div>
-                  <table class="lab-table">
-                    <thead><tr><th>Parameter</th><th>Container</th><th>Preservative</th><th>Max Hold Time</th></tr></thead>
-                    <tbody>
-                      <tr><td>Total Coliform / E. coli</td><td>Sterile 100mL</td><td>Na₂S₂O₃</td><td class="hold-crit">30 hours</td></tr>
-                      <tr><td>Nitrate</td><td>Plastic 250mL</td><td>H₂SO₄, cool 4°C</td><td class="hold-warn">48 hours</td></tr>
-                      <tr><td>Turbidity</td><td>Plastic 500mL</td><td>Cool 4°C</td><td class="hold-warn">48 hours</td></tr>
-                      <tr><td>Chlorine Residual</td><td>—</td><td>Field test only</td><td class="hold-crit">15 minutes</td></tr>
-                      <tr><td>pH</td><td>—</td><td>Field test only</td><td class="hold-crit">15 minutes</td></tr>
-                      <tr><td>THMs</td><td>40mL VOA vials</td><td>Ascorbic acid, cool 4°C</td><td class="hold-ok">14 days</td></tr>
-                      <tr><td>HAA5</td><td>60mL glass</td><td>NH₄Cl, cool 4°C</td><td class="hold-ok">14 days</td></tr>
-                      <tr><td>Lead & Copper</td><td>1L poly, HNO₃</td><td>HNO₃ to pH&lt;2</td><td class="hold-ok">6 months</td></tr>
-                      <tr><td>PFAS (EPA 533)</td><td>250mL HDPE</td><td>Trizma, cool 4°C</td><td class="hold-ok">14 days</td></tr>
-                      <tr><td>Metals (dissolved)</td><td>250mL poly</td><td>HNO₃ to pH&lt;2</td><td class="hold-ok">6 months</td></tr>
-                      <tr><td>Alkalinity</td><td>Plastic 250mL</td><td>Cool 4°C</td><td class="hold-ok">14 days</td></tr>
-                      <tr><td>BOD</td><td>1L poly</td><td>Cool 4°C</td><td class="hold-warn">48 hours</td></tr>
-                      <tr><td>TSS</td><td>1L poly</td><td>Cool 4°C</td><td class="hold-ok">7 days</td></tr>
-                      <tr><td>Ammonia</td><td>500mL poly</td><td>H₂SO₄, cool 4°C</td><td class="hold-ok">28 days</td></tr>
-                      <tr><td>Phosphorus (total)</td><td>250mL poly</td><td>H₂SO₄, cool 4°C</td><td class="hold-ok">28 days</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="lab-panel" style="margin-bottom:0;">
-                  <h3>Upcoming Sample Schedule</h3>
-                  <div class="lab-sub">Auto-generated from your monitoring plan</div>
-                  <div class="sample-card" style="margin-bottom:8px;">
-                    <h4><span class="trust-dot high" style="width:6px;height:6px;"></span> Bacteriological — Monthly</h4>
-                    <p>Total Coliform + E. coli at 4 distribution points. <strong>Next: Mar 2.</strong> Collect by 7 AM for same-day courier. 30-hr hold — must reach lab by 1 PM next day.</p>
-                  </div>
-                  <div class="sample-card" style="margin-bottom:8px;">
-                    <h4><span class="trust-dot med" style="width:6px;height:6px;"></span> Disinfection Byproducts — Quarterly</h4>
-                    <p>THMs + HAA5 at 2 locations. <strong>Next: Apr 1.</strong> VOA vials, ascorbic acid preserved. 14-day hold. Lab TAT: 10-15 business days.</p>
-                  </div>
-                  <div class="sample-card" style="margin-bottom:8px;">
-                    <h4><span class="trust-dot high" style="width:6px;height:6px;"></span> Nitrate — Annual</h4>
-                    <p>Entry point sampling. <strong>Next: Jun 15.</strong> H₂SO₄ preserved, cool to 4°C. 48-hr hold. Lab TAT: 5-7 business days.</p>
-                  </div>
-                  <div class="sample-card">
-                    <h4><span class="trust-dot high" style="width:6px;height:6px;"></span> PFAS Monitoring — Semi-Annual</h4>
-                    <p>EPA 533 at entry point + distribution. <strong>Next: Aug 1.</strong> HDPE bottles, Trizma buffer. 14-day hold. Lab TAT: 15-20 business days.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- ════════ ALERTS TAB ════════ -->
-            <div class="tab-view" id="alertsTab">
-              <div class="dash-topbar">
-                <h1>Alert Center</h1>
-                <div class="meta"><div class="live-dot"></div> 7 Active · 3 Resolved Today</div>
-              </div>
-
-              <div class="alert-filters">
-                <div class="alert-filter-btn active">All (7)</div>
-                <div class="alert-filter-btn">Critical (1)</div>
-                <div class="alert-filter-btn">Warning (3)</div>
-                <div class="alert-filter-btn">Predictive (2)</div>
-                <div class="alert-filter-btn">Data Quality (1)</div>
-              </div>
-
-              <!-- Critical -->
-              <div class="alert-card critical">
-                <div>
-                  <span class="alert-severity critical">Critical</span>
-                  <div class="alert-title">Pump #2 Bearing Temperature Exceeds Threshold</div>
-                  <div class="alert-meta">Pump Station A · Sensor: PS-A-TEMP-02 · Trust: 98%</div>
-                  <div class="alert-action">
-                    <strong>🤖 AI Recommendation:</strong> Bearing temperature has risen 18°F over 14 days, consistent with bearing wear pattern. Current: 185°F (threshold: 180°F). Recommend scheduling bearing replacement within 72 hours. Estimated part cost: $340. If deferred, risk of catastrophic failure increases to 65% within 30 days per vibration correlation model. <em>See SOP: "Pump Bearing Inspection & Replacement"</em>
-                  </div>
-                </div>
-                <div class="alert-timestamp">14 min ago</div>
-              </div>
-
-              <!-- Warning -->
-              <div class="alert-card warning">
-                <div>
-                  <span class="alert-severity warning">Warning</span>
-                  <div class="alert-title">Chlorine Residual Trending Below Target at Distribution EP-3</div>
-                  <div class="alert-meta">Distribution System · Sensor: DIST-CL2-03 · Trust: 91%</div>
-                  <div class="alert-action">
-                    <strong>🤖 AI Recommendation:</strong> Free chlorine at EP-3 has dropped from 2.3 to 1.8 ppm over 48 hours. Rate of decay suggests potential main break or unusual demand upstream. CDPHE minimum for distribution is 0.2 mg/L; your internal target is 1.5 mg/L. Recommend checking for main breaks on Elm St. corridor and increasing booster chlorination rate by 0.3 mg/L.
-                  </div>
-                </div>
-                <div class="alert-timestamp">1 hr ago</div>
-              </div>
-
-              <div class="alert-card warning">
-                <div>
-                  <span class="alert-severity warning">Warning</span>
-                  <div class="alert-title">Tank #1 Level Dropping Faster Than Expected</div>
-                  <div class="alert-meta">Storage · Sensor: TANK-1-LVL · Trust: 96%</div>
-                  <div class="alert-action">
-                    <strong>🤖 AI Recommendation:</strong> Tank #1 draw-down rate is 2.1x the expected rate for this time of day. Current level: 68% (normal: 82%). Check for stuck valve on fill line or unusual demand event. If level drops below 50%, automatic low-level alarm triggers per your emergency response plan. <em>See SOP: "Tank Level Emergency Response"</em>
-                  </div>
-                </div>
-                <div class="alert-timestamp">2 hr ago</div>
-              </div>
-
-              <div class="alert-card warning">
-                <div>
-                  <span class="alert-severity warning">Warning</span>
-                  <div class="alert-title">Turbidity Spike at Source Water Intake</div>
-                  <div class="alert-meta">Source Water · Sensor: SW-TURB-01 · Trust: 94%</div>
-                  <div class="alert-action">
-                    <strong>🤖 AI Recommendation:</strong> Turbidity rose from 1.2 NTU to 4.8 NTU over 3 hours, correlating with upstream snowmelt activity. Colorado Reg 11 requires combined filter effluent ≤0.3 NTU in 95% of measurements. Recommend increasing coagulant dose and monitoring filter performance. Historical pattern: turbidity typically peaks 6-8 hrs after snowmelt onset.
-                  </div>
-                </div>
-                <div class="alert-timestamp">3 hr ago</div>
-              </div>
-
-              <!-- Predictive -->
-              <div class="alert-card info">
-                <div>
-                  <span class="alert-severity info">Predictive</span>
-                  <div class="alert-title">VFD #1 Power Draw Anomaly — Possible Impeller Wear</div>
-                  <div class="alert-meta">Pump Station B · Sensor: PS-B-PWR-01 · Trust: 97%</div>
-                  <div class="alert-action">
-                    <strong>🤖 AI Recommendation:</strong> VFD power consumption has increased 12% at same flow rate over 60 days. Pattern matches impeller wear degradation curve. No immediate risk — estimated 90-120 days before performance impact. Recommend scheduling impeller inspection during next planned outage. Estimated savings vs. emergency repair: $2,800.
-                  </div>
-                </div>
-                <div class="alert-timestamp">6 hr ago</div>
-              </div>
-
-              <div class="alert-card info">
-                <div>
-                  <span class="alert-severity info">Predictive</span>
-                  <div class="alert-title">Compliance Sample Due — Bacteriological (Monthly)</div>
-                  <div class="alert-meta">Compliance Calendar · Auto-generated</div>
-                  <div class="alert-action">
-                    <strong>📅 Calendar:</strong> Monthly total coliform / E. coli sample due by March 1. Collection points: EP-1, EP-3, Distribution midpoint. Use 120 mL sterile bottle with sodium thiosulfate. Max hold time: 30 hours. Lab confirmed turnaround: 24-48 hrs (Standard Method 9223B).
-                  </div>
-                </div>
-                <div class="alert-timestamp">Today</div>
-              </div>
-
-              <!-- Data Quality -->
-              <div class="alert-card info">
-                <div>
-                  <span class="alert-severity info">Data Quality</span>
-                  <div class="alert-title">Chlorine Probe CL2-02 Showing Intermittent Flat-Line</div>
-                  <div class="alert-meta">Sensor Health · Sensor: CL2-02 · Trust: 72% ↓</div>
-                  <div class="alert-action">
-                    <strong>🤖 AI Recommendation:</strong> Probe CL2-02 has produced 4 flat-line periods in the last 48 hours (8-15 min each). Trust score dropped from 94% to 72%. This pattern typically indicates membrane fouling or electrolyte depletion. Recommend cleaning or replacing the membrane and recalibrating per manufacturer SOP. Data from this sensor is flagged and excluded from compliance calculations until trust score recovers above 85%.
-                  </div>
-                </div>
-                <div class="alert-timestamp">Yesterday</div>
-              </div>
-            </div>
-
-            <!-- ════════ ASSETS TAB ════════ -->
-            <div class="tab-view" id="assetsTab">
-              <div class="dash-topbar">
-                <h1>Asset Manager</h1>
-                <div class="meta">12 Assets Tracked · 2 Need Attention</div>
-              </div>
-
-              <div class="asset-summary">
-                <div class="asset-stat">
-                  <div class="number" style="color:var(--green)">83%</div>
-                  <div class="label">Average Asset Health</div>
-                </div>
-                <div class="asset-stat">
-                  <div class="number" style="color:var(--yellow)">2</div>
-                  <div class="label">Maintenance Due Soon</div>
-                </div>
-                <div class="asset-stat">
-                  <div class="number" style="color:var(--accent)">$4.2K</div>
-                  <div class="label">Predicted Savings (90 day)</div>
-                </div>
-              </div>
-
-              <table class="asset-table">
-                <thead>
-                  <tr>
-                    <th>Asset</th>
-                    <th>Type</th>
-                    <th>Health</th>
-                    <th>Install Date</th>
-                    <th>Last Service</th>
-                    <th>Next Maintenance</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="font-weight:600">Pump #1 — Well Station A</td>
-                    <td>Submersible, 25 HP</td>
-                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:92%"></div></div> 92%</td>
-                    <td>Mar 2019</td>
-                    <td>Jan 2026</td>
-                    <td>Jul 2026</td>
-                    <td><span class="maint-badge maint-ok">On Track</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Pump #2 — Well Station A</td>
-                    <td>Submersible, 25 HP</td>
-                    <td><div class="health-bar health-crit"><div class="health-bar-fill" style="width:45%"></div></div> 45%</td>
-                    <td>Mar 2019</td>
-                    <td>Oct 2025</td>
-                    <td><strong style="color:var(--red)">Overdue</strong></td>
-                    <td><span class="maint-badge maint-overdue">Bearing Fail</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Booster Pump — Distribution</td>
-                    <td>Centrifugal, 10 HP</td>
-                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:88%"></div></div> 88%</td>
-                    <td>Jun 2021</td>
-                    <td>Dec 2025</td>
-                    <td>Jun 2026</td>
-                    <td><span class="maint-badge maint-ok">On Track</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">VFD #1 — Pump Station B</td>
-                    <td>Variable Freq Drive, 15 HP</td>
-                    <td><div class="health-bar health-warn"><div class="health-bar-fill" style="width:68%"></div></div> 68%</td>
-                    <td>Nov 2020</td>
-                    <td>Sep 2025</td>
-                    <td>Mar 2026</td>
-                    <td><span class="maint-badge maint-soon">Impeller Wear</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Chlorine Analyzer — Entry Point</td>
-                    <td>Hach CL17sc</td>
-                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:95%"></div></div> 95%</td>
-                    <td>Jan 2023</td>
-                    <td>Feb 2026</td>
-                    <td>Aug 2026</td>
-                    <td><span class="maint-badge maint-ok">On Track</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Turbidity Analyzer — Filter Eff.</td>
-                    <td>Hach TU5300sc</td>
-                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:91%"></div></div> 91%</td>
-                    <td>Jan 2023</td>
-                    <td>Jan 2026</td>
-                    <td>Jul 2026</td>
-                    <td><span class="maint-badge maint-ok">On Track</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Storage Tank #1</td>
-                    <td>Steel, 500K gal</td>
-                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:85%"></div></div> 85%</td>
-                    <td>2008</td>
-                    <td>Nov 2025 (Inspect)</td>
-                    <td>Nov 2030</td>
-                    <td><span class="maint-badge maint-ok">On Track</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">SCADA RTU — Main Plant</td>
-                    <td>Allen-Bradley CompactLogix</td>
-                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:97%"></div></div> 97%</td>
-                    <td>Aug 2022</td>
-                    <td>Jan 2026</td>
-                    <td>Jan 2027</td>
-                    <td><span class="maint-badge maint-ok">On Track</span></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Generator — Emergency Backup</td>
-                    <td>Diesel, 100 kW</td>
-                    <td><div class="health-bar health-good"><div class="health-bar-fill" style="width:80%"></div></div> 80%</td>
-                    <td>2015</td>
-                    <td>Dec 2025</td>
-                    <td>Jun 2026</td>
-                    <td><span class="maint-badge maint-ok">On Track</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- ════════ WATER QUALITY TAB ════════ -->
-            <div class="tab-view" id="waterqualityTab">
-              <div class="dash-topbar">
-                <h1>Water Quality Monitor</h1>
-                <div class="meta"><div class="live-dot"></div> All Readings Current</div>
-              </div>
-
-              <div class="wq-trust-banner">
-                <div>
-                  <div class="wq-trust-score">94%</div>
-                  <div class="wq-trust-label">Data Trust Score</div>
-                </div>
-                <div style="flex:1; font-size:12px; color:var(--text-dim); line-height:1.6">
-                  23 of 24 sensors reporting healthy data. 1 sensor (CL2-02) flagged with intermittent flat-line — trust score 72%. All compliance-critical parameters have ≥90% trust scores. Last full calibration: Feb 15, 2026.
-                </div>
-              </div>
-
-              <!-- Disinfection -->
-              <div class="wq-group-header">💧 Disinfection & Microbial</div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Free Chlorine (Entry Point)</div>
-                <div class="wq-reading" style="color:var(--green)">2.1</div>
-                <div class="wq-mcl">MCL: 4.0</div>
-                <div class="wq-unit">mg/L</div>
-                <div class="wq-sparkline" id="wqCl2Spark"></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Free Chlorine (Distribution)</div>
-                <div class="wq-reading" style="color:var(--yellow)">1.8</div>
-                <div class="wq-mcl">Target: ≥1.5</div>
-                <div class="wq-unit">mg/L</div>
-                <div class="wq-sparkline" id="wqCl2DistSpark"></div>
-                <div style="font-size:11px; color:var(--yellow)">↓ Watch</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Total Coliform</div>
-                <div class="wq-reading" style="color:var(--green)">Absent</div>
-                <div class="wq-mcl">MCL: 5% pos</div>
-                <div class="wq-unit">P/A</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>E. coli</div>
-                <div class="wq-reading" style="color:var(--green)">Absent</div>
-                <div class="wq-mcl">MCL: 0</div>
-                <div class="wq-unit">P/A</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-
-              <!-- Inorganic -->
-              <div class="wq-group-header">⚗️ Inorganic Chemicals</div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Nitrate (as N)</div>
-                <div class="wq-reading">3.2</div>
-                <div class="wq-mcl">MCL: 10</div>
-                <div class="wq-unit">mg/L</div>
-                <div class="wq-sparkline" id="wqNitrateSpark"></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Arsenic</div>
-                <div class="wq-reading">0.004</div>
-                <div class="wq-mcl">MCL: 0.010</div>
-                <div class="wq-unit">mg/L</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Lead (90th percentile)</div>
-                <div class="wq-reading">0.008</div>
-                <div class="wq-mcl">AL: 0.015</div>
-                <div class="wq-unit">mg/L</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Copper (90th percentile)</div>
-                <div class="wq-reading">0.42</div>
-                <div class="wq-mcl">AL: 1.3</div>
-                <div class="wq-unit">mg/L</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Fluoride</div>
-                <div class="wq-reading">0.7</div>
-                <div class="wq-mcl">MCL: 4.0</div>
-                <div class="wq-unit">mg/L</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-
-              <!-- DBP -->
-              <div class="wq-group-header">🧪 Disinfection Byproducts</div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>TTHM (Total Trihalomethanes)</div>
-                <div class="wq-reading">42</div>
-                <div class="wq-mcl">MCL: 80</div>
-                <div class="wq-unit">µg/L</div>
-                <div class="wq-sparkline" id="wqTTHMSpark"></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>HAA5 (Haloacetic Acids)</div>
-                <div class="wq-reading">28</div>
-                <div class="wq-mcl">MCL: 60</div>
-                <div class="wq-unit">µg/L</div>
-                <div class="wq-sparkline" id="wqHAASpark"></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-
-              <!-- Physical -->
-              <div class="wq-group-header">📏 Physical Parameters</div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Turbidity (Combined Filter)</div>
-                <div class="wq-reading">0.08</div>
-                <div class="wq-mcl">TT: ≤0.3 (95%)</div>
-                <div class="wq-unit">NTU</div>
-                <div class="wq-sparkline" id="wqTurbSpark"></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>pH</div>
-                <div class="wq-reading">7.4</div>
-                <div class="wq-mcl">Range: 6.5–8.5</div>
-                <div class="wq-unit">SU</div>
-                <div class="wq-sparkline" id="wqpHSpark"></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Temperature</div>
-                <div class="wq-reading">8.2</div>
-                <div class="wq-mcl">—</div>
-                <div class="wq-unit">°C</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--text-dim)">Info</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>Alkalinity</div>
-                <div class="wq-reading">120</div>
-                <div class="wq-mcl">—</div>
-                <div class="wq-unit">mg/L CaCO₃</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--text-dim)">Info</div>
-              </div>
-
-              <!-- PFAS -->
-              <div class="wq-group-header">☣️ Emerging Contaminants (PFAS)</div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>PFOA</div>
-                <div class="wq-reading">2.1</div>
-                <div class="wq-mcl">MCL: 4.0</div>
-                <div class="wq-unit">ppt</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>PFOS</div>
-                <div class="wq-reading">1.8</div>
-                <div class="wq-mcl">MCL: 4.0</div>
-                <div class="wq-unit">ppt</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-              <div class="wq-param-row">
-                <div class="wq-param-name"><span class="wq-status-dot good"></span>PFHxS + PFNA + HFPO-DA</div>
-                <div class="wq-reading">5.4</div>
-                <div class="wq-mcl">HI: &lt;1.0</div>
-                <div class="wq-unit">Hazard Index</div>
-                <div></div>
-                <div style="font-size:11px; color:var(--green)">✓ Pass</div>
-              </div>
-            </div>
-
-            <!-- ════════ COMPLIANCE TAB ════════ -->
-            <div class="tab-view" id="complianceTab">
-              <div class="dash-topbar">
-                <h1>Compliance Center</h1>
-                <div class="meta">In Compliance · 0 Violations (Trailing 12 mo)</div>
-              </div>
-
-              <div class="compliance-sections">
-                <!-- Left: Timeline -->
-                <div>
-                  <h3 style="font-size:14px; font-weight:700; margin-bottom:16px;">📅 Upcoming Deadlines</h3>
-                  <div class="compliance-timeline">
-                    <div class="compliance-event upcoming">
-                      <div class="compliance-event-date">Mar 1, 2026</div>
-                      <div class="compliance-event-title">Monthly Bacteriological Sample Due</div>
-                      <div class="compliance-event-desc">Total Coliform / E. coli per RTCR. Collect at approved sites EP-1, EP-3, and distribution midpoint. Sterile 120 mL bottle w/ sodium thiosulfate. 30-hr max hold.</div>
-                    </div>
-                    <div class="compliance-event upcoming">
-                      <div class="compliance-event-date">Mar 15, 2026</div>
-                      <div class="compliance-event-title">CDPHE Monthly Operating Report</div>
-                      <div class="compliance-event-desc">Submit MOR via CDPHE WQCD portal. Includes daily turbidity, CT calculations, chlorine residuals, and flow data for February.</div>
-                    </div>
-                    <div class="compliance-event upcoming">
-                      <div class="compliance-event-date">Apr 1, 2026</div>
-                      <div class="compliance-event-title">Quarterly DBP Sampling (Stage 2)</div>
-                      <div class="compliance-event-desc">TTHM + HAA5 at approved locations. LRAA must remain below MCL (80 µg/L TTHM, 60 µg/L HAA5). Ship to certified lab within 14-day hold window.</div>
-                    </div>
-                    <div class="compliance-event upcoming">
-                      <div class="compliance-event-date">Jul 1, 2026</div>
-                      <div class="compliance-event-title">Annual Consumer Confidence Report (CCR)</div>
-                      <div class="compliance-event-desc">Per revised CCR Rule (effective Jan 2027), prepare annual water quality report covering 2025 data. Must be delivered to all customers and certified within 10 days. New requirements include summary section, lead service line inventory info, and translation/accessibility.</div>
-                    </div>
-                    <div class="compliance-event complete">
-                      <div class="compliance-event-date">Feb 1, 2026 ✓</div>
-                      <div class="compliance-event-title">Monthly Bacteriological Sample — Complete</div>
-                      <div class="compliance-event-desc">All 3 sites sampled. Results: Absent / Absent / Absent. Submitted to CDPHE.</div>
-                    </div>
-                    <div class="compliance-event complete">
-                      <div class="compliance-event-date">Jan 15, 2026 ✓</div>
-                      <div class="compliance-event-title">January MOR Submitted</div>
-                      <div class="compliance-event-desc">Daily turbidity: 100% below 0.3 NTU. CT: 100% compliant. No violations.</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Right: Checklists & Status -->
-                <div>
-                  <div class="compliance-card" style="margin-bottom:16px">
-                    <h4>📊 Regulatory Status (Colorado)</h4>
-                    <ul class="compliance-checklist">
-                      <li><span class="check-icon">✅</span> Safe Drinking Water Act — In Compliance</li>
-                      <li><span class="check-icon">✅</span> RTCR (Revised Total Coliform Rule) — Compliant</li>
-                      <li><span class="check-icon">✅</span> Stage 2 DBP Rule — Compliant (LRAA OK)</li>
-                      <li><span class="check-icon">✅</span> LCR (Lead & Copper Rule) — Below AL</li>
-                      <li><span class="check-icon">✅</span> LCRI (LCR Improvements) — Service line inventory submitted Oct 2024</li>
-                      <li><span class="check-icon">✅</span> PFAS NPDWR (Final 2024) — Below MCLs</li>
-                      <li><span class="check-icon">✅</span> Surface Water Treatment Rule — CT compliant</li>
-                      <li><span class="check-icon">✅</span> Colorado Reg 11 — Turbidity compliant</li>
-                      <li><span class="check-icon">⏳</span> CCR Rule Revisions — Compliance date Jan 2027 (preparing now)</li>
-                      <li><span class="check-icon">⏳</span> AWIA Risk & Resilience Assessment — Due for update</li>
-                    </ul>
-                  </div>
-
-                  <div class="compliance-card" style="margin-bottom:16px">
-                    <h4>📋 CCR Report Builder</h4>
-                    <ul class="compliance-checklist">
-                      <li><span class="check-icon">✅</span> Source water information collected</li>
-                      <li><span class="check-icon">✅</span> 2025 monitoring data compiled</li>
-                      <li><span class="check-icon">✅</span> Detected contaminants table generated</li>
-                      <li><span class="check-icon">⏳</span> Lead service line inventory statement</li>
-                      <li><span class="check-icon">⬜</span> Summary section (new requirement)</li>
-                      <li><span class="check-icon">⬜</span> Translation/accessibility statement</li>
-                      <li><span class="check-icon">⬜</span> Final review & distribution plan</li>
-                    </ul>
-                  </div>
-
-                  <div class="compliance-card">
-                    <h4>📊 Violation History</h4>
-                    <div style="text-align:center; padding:20px; color:var(--green);">
-                      <div style="font-size:32px; font-weight:700;">0</div>
-                      <div style="font-size:12px; color:var(--text-muted)">Violations in trailing 24 months</div>
-                      <div style="font-size:11px; color:var(--text-dim); margin-top:8px;">Last violation: None on record</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- ════════ KNOWLEDGE BASE TAB ════════ -->
-            <div class="tab-view" id="knowledgeTab">
-              <div class="dash-topbar">
-                <h1>Knowledge Base</h1>
-                <div class="meta">SOPs · Regulations · Best Practices · Troubleshooting</div>
-              </div>
-
-              <div class="kb-search">
-                <span>🔍</span>
-                <input type="text" placeholder="Search SOPs, regulations, hold times, troubleshooting guides..." />
-              </div>
-
-              <div class="kb-categories">
-                <div class="kb-category-card">
-                  <div class="kb-category-icon">📖</div>
-                  <div class="kb-category-title">Standard Operating Procedures</div>
-                  <div class="kb-category-count">12 SOPs · Updated Feb 2026</div>
-                </div>
-                <div class="kb-category-card">
-                  <div class="kb-category-icon">⚖️</div>
-                  <div class="kb-category-title">Regulations & MCLs</div>
-                  <div class="kb-category-count">Federal + Colorado state requirements</div>
-                </div>
-                <div class="kb-category-card">
-                  <div class="kb-category-icon">🧪</div>
-                  <div class="kb-category-title">Lab & Sampling Reference</div>
-                  <div class="kb-category-count">Hold times, containers, methods</div>
-                </div>
-                <div class="kb-category-card">
-                  <div class="kb-category-icon">🔧</div>
-                  <div class="kb-category-title">Troubleshooting Guides</div>
-                  <div class="kb-category-count">Equipment, water quality, SCADA</div>
-                </div>
-                <div class="kb-category-card">
-                  <div class="kb-category-icon">🎓</div>
-                  <div class="kb-category-title">Operator Training</div>
-                  <div class="kb-category-count">AWWA WSO, cert prep, CE tracking</div>
-                </div>
-                <div class="kb-category-card">
-                  <div class="kb-category-icon">🚨</div>
-                  <div class="kb-category-title">Emergency Response</div>
-                  <div class="kb-category-count">AWIA ERP, boil water, chemical spill</div>
-                </div>
-              </div>
-
-              <!-- Featured SOPs -->
-              <h3 style="font-size:14px; font-weight:700; margin:20px 0 12px;">📖 Key SOPs</h3>
-
-              <div class="kb-sop-card">
-                <div class="kb-sop-header">
-                  <div class="kb-sop-title">SOP-001: Daily Plant Walkthrough</div>
-                  <span class="kb-article-tag">Daily</span>
-                </div>
-                <ol class="kb-sop-steps">
-                  <li>Check and record chlorine residual at entry point and distribution (target: 1.5–3.0 mg/L free chlorine)</li>
-                  <li>Verify turbidity reading on combined filter effluent (must be ≤0.3 NTU; goal ≤0.1 NTU)</li>
-                  <li>Inspect chemical feed systems — check chlorine tank level, coagulant feed rate, fluoride pump operation</li>
-                  <li>Walk pump stations — listen for unusual sounds, check pressure gauges, note VFD readings</li>
-                  <li>Verify SCADA data matches field readings (>15% deviation = recalibrate sensor)</li>
-                  <li>Check tank levels against expected fill/draw-down curves for time of day</li>
-                  <li>Log all readings in daily operations log and SCADA</li>
-                </ol>
-                <div class="kb-sop-footer">Based on AWWA Water Treatment Operator Handbook · Last reviewed: Jan 2026 · Next review: Jul 2026</div>
-              </div>
-
-              <div class="kb-sop-card">
-                <div class="kb-sop-header">
-                  <div class="kb-sop-title">SOP-004: Chlorine Residual Low Response</div>
-                  <span class="kb-article-tag">Response</span>
-                </div>
-                <ol class="kb-sop-steps">
-                  <li>Confirm reading with handheld DPD test (HACH Pocket Colorimeter or equivalent)</li>
-                  <li>If confirmed &lt;1.0 mg/L at entry point: increase chlorine feed rate by 0.5 mg/L increments</li>
-                  <li>Check chlorine tank level and injection point for air locks or clogged check valves</li>
-                  <li>If distribution residual &lt;0.2 mg/L: notify supervisor immediately — this is below CDPHE minimum</li>
-                  <li>Sample for total coliform at low-residual points within 4 hours</li>
-                  <li>Document all actions and readings every 15 minutes until residual recovers above 1.5 mg/L</li>
-                  <li>If residual unrecoverable in 2 hours, evaluate need for Tier 1 public notification per Colorado Reg 11</li>
-                </ol>
-                <div class="kb-sop-footer">Ref: Colorado Reg 11 §11.8, AWWA M20 (Chlorination Practices) · Last reviewed: Feb 2026</div>
-              </div>
-
-              <div class="kb-sop-card">
-                <div class="kb-sop-header">
-                  <div class="kb-sop-title">SOP-007: Pump Bearing Inspection & Replacement</div>
-                  <span class="kb-article-tag">Maintenance</span>
-                </div>
-                <ol class="kb-sop-steps">
-                  <li>Lockout/tagout per OSHA 1910.147 — verify zero energy state before any work</li>
-                  <li>Record current vibration reading (baseline: &lt;0.15 in/s; alarm: &gt;0.3 in/s per ISO 10816)</li>
-                  <li>Check bearing temperature with IR thermometer (normal: 140-160°F; alarm: &gt;180°F)</li>
-                  <li>If replacement needed: order matching bearing (SKF 6310-2RS or equivalent per pump spec)</li>
-                  <li>Drain pump, disconnect coupling, pull impeller assembly</li>
-                  <li>Press out old bearing, clean housing, press in new bearing (use bearing heater for interference fit)</li>
-                  <li>Reassemble, verify alignment (&lt;0.002" TIR), refill and test run for 30 min monitoring temp and vibration</li>
-                  <li>Log in asset management system with new bearing date and runtime hours</li>
-                </ol>
-                <div class="kb-sop-footer">Ref: Hydraulic Institute Standards, SKF Bearing Maintenance Guide · Last reviewed: Dec 2025</div>
-              </div>
-
-              <!-- Regulatory Quick Reference -->
-              <h3 style="font-size:14px; font-weight:700; margin:24px 0 12px;">⚖️ MCL Quick Reference (EPA + Colorado)</h3>
-
-              <table class="kb-reg-table">
-                <thead>
-                  <tr>
-                    <th>Contaminant</th>
-                    <th>MCL / Action Level</th>
-                    <th>MCLG</th>
-                    <th>Rule</th>
-                    <th>Monitoring Frequency</th>
-                    <th>Your Last Result</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="font-weight:600">Total Coliform</td>
-                    <td>&gt;5% positive/month = violation</td>
-                    <td>0</td>
-                    <td>RTCR</td>
-                    <td>Monthly (≤3,300 pop = 1 sample)</td>
-                    <td style="color:var(--green)">Absent ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">E. coli</td>
-                    <td>0 (any positive = acute MCL violation)</td>
-                    <td>0</td>
-                    <td>RTCR</td>
-                    <td>With each TC+ result</td>
-                    <td style="color:var(--green)">Absent ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Turbidity</td>
-                    <td>≤0.3 NTU (95%), never &gt;1 NTU</td>
-                    <td>N/A</td>
-                    <td>SWTR / CO Reg 11</td>
-                    <td>Continuous (4-hr intervals)</td>
-                    <td style="color:var(--green)">0.08 NTU ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">TTHM</td>
-                    <td>80 µg/L (LRAA)</td>
-                    <td>0</td>
-                    <td>Stage 2 DBP</td>
-                    <td>Quarterly</td>
-                    <td style="color:var(--green)">42 µg/L ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">HAA5</td>
-                    <td>60 µg/L (LRAA)</td>
-                    <td>0</td>
-                    <td>Stage 2 DBP</td>
-                    <td>Quarterly</td>
-                    <td style="color:var(--green)">28 µg/L ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Lead</td>
-                    <td>AL: 15 µg/L (90th %ile)</td>
-                    <td>0</td>
-                    <td>LCR / LCRI</td>
-                    <td>Semi-annual → triennial</td>
-                    <td style="color:var(--green)">8 µg/L ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Copper</td>
-                    <td>AL: 1.3 mg/L (90th %ile)</td>
-                    <td>1.3</td>
-                    <td>LCR / LCRI</td>
-                    <td>Semi-annual → triennial</td>
-                    <td style="color:var(--green)">0.42 mg/L ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Nitrate (as N)</td>
-                    <td>10 mg/L</td>
-                    <td>10</td>
-                    <td>IOC</td>
-                    <td>Annual</td>
-                    <td style="color:var(--green)">3.2 mg/L ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">Arsenic</td>
-                    <td>10 µg/L</td>
-                    <td>0</td>
-                    <td>IOC</td>
-                    <td>Annual → triennial</td>
-                    <td style="color:var(--green)">4 µg/L ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">PFOA</td>
-                    <td>4.0 ppt</td>
-                    <td>0</td>
-                    <td>PFAS NPDWR (2024)</td>
-                    <td>Quarterly (initial) → annual</td>
-                    <td style="color:var(--green)">2.1 ppt ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">PFOS</td>
-                    <td>4.0 ppt</td>
-                    <td>0</td>
-                    <td>PFAS NPDWR (2024)</td>
-                    <td>Quarterly (initial) → annual</td>
-                    <td style="color:var(--green)">1.8 ppt ✓</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight:600">PFHxS+PFNA+HFPO-DA</td>
-                    <td>Hazard Index &lt;1.0</td>
-                    <td>0</td>
-                    <td>PFAS NPDWR (2024)</td>
-                    <td>Quarterly (initial) → annual</td>
-                    <td style="color:var(--green)">HI: 0.54 ✓</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- Troubleshooting Guides -->
-              <h3 style="font-size:14px; font-weight:700; margin:24px 0 12px;">🔧 Quick Troubleshooting</h3>
-
-              <div class="kb-article">
-                <div>
-                  <div class="kb-article-title">High Turbidity After Storm Event</div>
-                  <div class="kb-article-meta">Increase coagulant → monitor filter headloss → consider filter-to-waste</div>
-                </div>
-                <span class="kb-article-tag">Treatment</span>
-              </div>
-              <div class="kb-article">
-                <div>
-                  <div class="kb-article-title">Chlorine Demand Spike (Warm Weather)</div>
-                  <div class="kb-article-meta">Check source water temp/TOC → adjust CT target → boost distribution residual</div>
-                </div>
-                <span class="kb-article-tag">Treatment</span>
-              </div>
-              <div class="kb-article">
-                <div>
-                  <div class="kb-article-title">SCADA Communication Loss</div>
-                  <div class="kb-article-meta">Check cellular signal → verify RTU power → manual read + log → contact integrator</div>
-                </div>
-                <span class="kb-article-tag">SCADA</span>
-              </div>
-              <div class="kb-article">
-                <div>
-                  <div class="kb-article-title">Pump Cavitation Noise</div>
-                  <div class="kb-article-meta">Check suction pressure → verify NPSH available → reduce speed → inspect impeller</div>
-                </div>
-                <span class="kb-article-tag">Equipment</span>
-              </div>
-              <div class="kb-article">
-                <div>
-                  <div class="kb-article-title">Positive Coliform Result Response</div>
-                  <div class="kb-article-meta">Collect Level 1 assessment samples → flush mains → increase residual → notify CDPHE if E.coli+</div>
-                </div>
-                <span class="kb-article-tag">Compliance</span>
-              </div>
-              <div class="kb-article">
-                <div>
-                  <div class="kb-article-title">DBP Levels Approaching MCL</div>
-                  <div class="kb-article-meta">Reduce pre-chlorination → optimize coagulation for TOC removal → consider chloramine conversion study</div>
-                </div>
-                <span class="kb-article-tag">Treatment</span>
-              </div>
-              <div class="kb-article">
-                <div>
-                  <div class="kb-article-title">Boil Water Notice Procedures</div>
-                  <div class="kb-article-meta">Tier 1 PN within 24 hrs → radio/social/door-to-door → maintain until 2 clean bacteriological rounds</div>
-                </div>
-                <span class="kb-article-tag">Emergency</span>
-              </div>
-
-              <!-- Emergency Contacts -->
-              <h3 style="font-size:14px; font-weight:700; margin:24px 0 12px;">🚨 Emergency Quick Reference</h3>
-              <div class="compliance-card">
-                <table class="kb-reg-table">
-                  <thead><tr><th>Contact</th><th>Phone</th><th>When to Call</th></tr></thead>
-                  <tbody>
-                    <tr><td style="font-weight:600">CDPHE Drinking Water</td><td style="font-family:'DM Mono',monospace">303-692-3500</td><td>Violations, coliform+, treatment failures</td></tr>
-                    <tr><td style="font-weight:600">EPA Region 8 Emergency</td><td style="font-family:'DM Mono',monospace">866-EPA-WEST</td><td>Imminent public health threat</td></tr>
-                    <tr><td style="font-weight:600">National Response Center</td><td style="font-family:'DM Mono',monospace">800-424-8802</td><td>Chemical spill near source water</td></tr>
-                    <tr><td style="font-weight:600">CO SEOC (State Emergency)</td><td style="font-family:'DM Mono',monospace">303-279-8855</td><td>Major system failure, natural disaster</td></tr>
-                    <tr><td style="font-weight:600">Your Certified Lab</td><td style="font-family:'DM Mono',monospace">—</td><td>Rush samples, results questions</td></tr>
-                    <tr><td style="font-weight:600">SCADA Integrator</td><td style="font-family:'DM Mono',monospace">—</td><td>RTU failure, communication outage</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-          </div>
+<!-- ─── APP ─── -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo"><em>Upstream</em> AI</div>
+      <div class="sidebar-tagline">Water Intelligence Platform</div>
+    </div>
+    <div class="sidebar-district">
+      <div class="sidebar-district-name">Crestone Water &amp; San. Dist.</div>
+      <div class="sidebar-district-sub">CWSD · Crestone, CO</div>
+      <div class="sidebar-live">Live · All sensors online</div>
+    </div>
+    <div class="sidebar-section">Operations</div>
+    <div class="sidebar-item active" onclick="showTab('overview',this)">
+      <span class="si-icon">⊞</span> Dashboard
+      <span class="si-badge">3</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('observations',this)">
+      <span class="si-icon">📋</span> Daily Observations
+      <span class="si-new">New</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('alerts',this)">
+      <span class="si-icon">🔔</span> Alerts
+    </div>
+    <div class="sidebar-item" onclick="showTab('cameras',this)">
+      <span class="si-icon">📷</span> Cameras
+      <span class="si-new">New</span>
+    </div>
+    <div class="sidebar-section">Intelligence</div>
+    <div class="sidebar-item" onclick="showTab('trends',this)">
+      <span class="si-icon">📈</span> Trends
+    </div>
+    <div class="sidebar-item" onclick="showTab('compliance',this)">
+      <span class="si-icon">✓</span> Compliance
+    </div>
+    <div class="sidebar-item" onclick="showTab('briefing',this)">
+      <span class="si-icon">✦</span> AI Briefing
+      <span class="si-new">AI</span>
+    </div>
+    <div class="sidebar-section">Reports</div>
+    <div class="sidebar-item" onclick="showTab('reports',this)">
+      <span class="si-icon">📄</span> Board Reports
+    </div>
+    <div class="sidebar-item" onclick="showTab('trust',this)">
+      <span class="si-icon">🛡</span> Data Trust
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">M</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Maria Rodriguez</div>
+          <div class="sidebar-user-role">Lead Operator</div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ════════ MOBILE VIEW ════════ -->
-    <div id="mobileView" class="hidden">
-      <div class="section-divider">
-        <h2>Mobile Experience</h2>
-        <p>SMS-first alerts with full context on tap — dashboard view and calendar view</p>
-      </div>
-
-      <div class="mobile-wrapper">
-        <!-- Phone 1: Dashboard -->
-        <div class="mobile-frame">
-          <div class="mobile-screen">
-            <div class="mobile-status">
-              <span>9:41 AM</span>
-              <span>⚡ 📶</span>
-            </div>
-            <div class="mobile-header">
-              <h2>Dashboard</h2>
-              <div class="mobile-avatar">MR</div>
-            </div>
-
-            <div class="mobile-metrics">
-              <div class="mobile-metric">
-                <div class="mm-label">Data Trust</div>
-                <div class="mm-value mc-good">94%</div>
-                <div class="mm-sub">23/24 sensors</div>
-              </div>
-              <div class="mobile-metric">
-                <div class="mm-label">Alerts</div>
-                <div class="mm-value mc-warn">3</div>
-                <div class="mm-sub">1 critical</div>
-              </div>
-              <div class="mobile-metric">
-                <div class="mm-label">CL₂ Residual</div>
-                <div class="mm-value">2.1</div>
-                <div class="mm-sub">ppm · Trust 97%</div>
-              </div>
-              <div class="mobile-metric">
-                <div class="mm-label">Energy</div>
-                <div class="mm-value">847</div>
-                <div class="mm-sub">kWh · ↓12%</div>
-              </div>
-            </div>
-
-            <div class="mobile-section">
-              <h3>Priority Alerts</h3>
-              <div class="mobile-alert">
-                <div class="alert-dot" style="background:var(--red); margin-top:3px;"></div>
-                <div>
-                  <div class="ma-text"><strong>Pump 2 bearing temp +8°F.</strong> Failure predicted 4-7 days. 87% confident.</div>
-                  <div class="ma-time">2 hrs ago · Predictive</div>
-                </div>
-              </div>
-              <div class="mobile-alert">
-                <div class="alert-dot" style="background:var(--yellow); margin-top:3px;"></div>
-                <div>
-                  <div class="ma-text"><strong>CL₂ probe trust 42%.</strong> Inconsistent with dose rate calc. Calibrate.</div>
-                  <div class="ma-time">6 hrs ago · Data Quality</div>
-                </div>
-              </div>
-              <div class="mobile-alert">
-                <div class="alert-dot" style="background:var(--accent); margin-top:3px;"></div>
-                <div>
-                  <div class="ma-text"><strong>Bact. samples due in 5 days.</strong> 4 distribution points. 30-hr hold time.</div>
-                  <div class="ma-time">Today · Calendar</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="mobile-tabs">
-              <div class="tab active"><span class="tab-icon">📊</span>Overview</div>
-              <div class="tab"><span class="tab-icon">🔔</span>Alerts</div>
-              <div class="tab"><span class="tab-icon">📅</span>Calendar</div>
-              <div class="tab"><span class="tab-icon">⚙️</span>Assets</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Phone 2: Calendar -->
-        <div class="mobile-frame">
-          <div class="mobile-screen">
-            <div class="mobile-status">
-              <span>9:41 AM</span>
-              <span>⚡ 📶</span>
-            </div>
-            <div class="mobile-header">
-              <h2>Smart Calendar</h2>
-              <div class="mobile-avatar">MR</div>
-            </div>
-
-            <div class="mobile-cal-list">
-              <div class="mobile-cal-day">
-                <div class="day-label">Today — Feb 23</div>
-                <div class="mobile-cal-item">
-                  <div class="mci-bar" style="background:var(--accent);"></div>
-                  <div>
-                    <div class="mci-text">Bacteriological samples</div>
-                    <div class="mci-sub">4 distribution pts · 30hr hold · Collect by 7 AM</div>
-                  </div>
-                </div>
-                <div class="mobile-cal-item">
-                  <div class="mci-bar" style="background:var(--red);"></div>
-                  <div>
-                    <div class="mci-text">PFAS report due to state</div>
-                    <div class="mci-sub">Upload to CDPHE portal by 5 PM</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mobile-cal-day">
-                <div class="day-label">Tomorrow — Feb 24</div>
-                <div class="mobile-cal-item">
-                  <div class="mci-bar" style="background:var(--purple);"></div>
-                  <div>
-                    <div class="mci-text">Lab results: PFAS (29 compounds)</div>
-                    <div class="mci-sub">Pace Analytical · Expected delivery</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mobile-cal-day">
-                <div class="day-label">Wed, Feb 25</div>
-                <div class="mobile-cal-item">
-                  <div class="mci-bar" style="background:var(--yellow);"></div>
-                  <div>
-                    <div class="mci-text">Well 1 inspection</div>
-                    <div class="mci-sub">Annual sanitary survey prep</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mobile-cal-day">
-                <div class="day-label">Sat, Feb 28</div>
-                <div class="mobile-cal-item">
-                  <div class="mci-bar" style="background:var(--red);"></div>
-                  <div>
-                    <div class="mci-text">Monthly Operating Report due</div>
-                    <div class="mci-sub">Auto-generated · Review & submit to state</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mobile-cal-day">
-                <div class="day-label">Mon, Mar 2</div>
-                <div class="mobile-cal-item">
-                  <div class="mci-bar" style="background:var(--accent);"></div>
-                  <div>
-                    <div class="mci-text">Bacteriological samples (monthly)</div>
-                    <div class="mci-sub">TC + E. coli at DP1-4 · 30hr hold</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="mobile-tabs">
-              <div class="tab"><span class="tab-icon">📊</span>Overview</div>
-              <div class="tab"><span class="tab-icon">🔔</span>Alerts</div>
-              <div class="tab active"><span class="tab-icon">📅</span>Calendar</div>
-              <div class="tab"><span class="tab-icon">⚙️</span>Assets</div>
-            </div>
-          </div>
-        </div>
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">Crestone Water &amp; Sanitation District &nbsp;·&nbsp; SCADA Live</div>
+      <div class="topbar-right">
+        <div class="topbar-status">All systems nominal</div>
+        <div class="topbar-alert" onclick="showTab('alerts',document.querySelector('[onclick*=alerts]'))">⚠ 3 Active Alerts</div>
+        <div class="topbar-clock" id="clock">07:14 AM</div>
       </div>
     </div>
 
-  </div>
-</div>
+    <div class="content">
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// Password check — uses a simple hash to avoid plaintext in source
-// The password is: upstream2026
+      <!-- ══════ DASHBOARD ══════ -->
+      <div class="tab-view active" id="tab-overview">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Good morning, <em>Maria.</em></div>
+            <div class="page-sub">Thursday, Feb 27 · 7:14 AM · System status: <strong style="color:var(--green)">Stable</strong> · 3 alerts pending</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="tag tag-ok">All systems nominal</span>
+            <span class="tag tag-ai">✦ AI watching</span>
+          </div>
+        </div>
+
+        <div class="metrics-row">
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Flow Rate</div>
+            <div class="metric-value">0.31<span class="metric-unit">MGD</span></div>
+            <div class="metric-trust trust-high">✓ Trust 96%</div>
+            <div class="metric-trend">↑ +3% vs yesterday</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--yellow)"></div>
+            <div class="metric-label">DO Basin 1</div>
+            <div class="metric-value">1.5<span class="metric-unit">mg/L</span></div>
+            <div class="metric-trust trust-mid">⚠ Trust 71%</div>
+            <div class="metric-trend">↓ Below baseline</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">pH Effluent</div>
+            <div class="metric-value">7.2<span class="metric-unit">S.U.</span></div>
+            <div class="metric-trust trust-high">✓ Trust 94%</div>
+            <div class="metric-trend">→ Stable 24hrs</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--red)"></div>
+            <div class="metric-label">Chlorine</div>
+            <div class="metric-value">2.3<span class="metric-unit">ppm</span></div>
+            <div class="metric-trust trust-low">⚠ Trust 38%</div>
+            <div class="metric-trend">Probe overdue calib.</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--yellow)"></div>
+            <div class="metric-label">SVI (weekly)</div>
+            <div class="metric-value">210<span class="metric-unit">mL/g</span></div>
+            <div class="metric-trust trust-mid">↑ Trust 82%</div>
+            <div class="metric-trend">8-week uptrend</div>
+          </div>
+        </div>
+
+        <div class="grid-2-1">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">DO Basin 1 — Last 24 hrs</span>
+              <span class="tag tag-warn">Below baseline</span>
+            </div>
+            <svg class="chart-mini-line" viewBox="0 0 400 100" preserveAspectRatio="none" style="height:110px;">
+              <defs>
+                <linearGradient id="doGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#27ae60" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#27ae60" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="actGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#d97706" stop-opacity="0.12"/>
+                  <stop offset="100%" stop-color="#d97706" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,30 L400,30 L400,50 L0,50 Z" fill="rgba(39,174,96,0.06)" stroke="none"/>
+              <line x1="0" y1="30" x2="400" y2="30" stroke="#27ae60" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+              <line x1="0" y1="50" x2="400" y2="50" stroke="#27ae60" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+              <text x="6" y="28" font-size="9" fill="#27ae60" opacity="0.7" font-family="monospace">BASELINE 2.0-2.5</text>
+              <line x1="0" y1="75" x2="400" y2="75" stroke="#dc2626" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+              <text x="6" y="72" font-size="9" fill="#dc2626" opacity="0.7" font-family="monospace">CRITICAL 1.0</text>
+              <path d="M0,40 C30,38 60,35 100,40 C140,45 180,42 220,38 C260,34 300,36 340,40 C370,43 390,38 400,40 L400,110 L0,110 Z" fill="url(#doGrad)"/>
+              <path d="M0,40 C30,38 60,35 100,40 C140,45 180,42 220,38 C260,34 300,36 340,40 C370,43 390,38 400,40" fill="none" stroke="#27ae60" stroke-width="1.5" opacity="0.6"/>
+              <path d="M0,42 C20,40 40,38 70,45 C100,52 130,55 160,60 C190,65 220,68 260,72 C290,75 320,70 360,73 C380,74 395,76 400,78 L400,110 L0,110 Z" fill="url(#actGrad)"/>
+              <path d="M0,42 C20,40 40,38 70,45 C100,52 130,55 160,60 C190,65 220,68 260,72 C290,75 320,70 360,73 C380,74 395,76 400,78" fill="none" stroke="#d97706" stroke-width="2.5"/>
+              <circle cx="400" cy="78" r="4" fill="#d97706"/>
+              <text x="358" y="70" font-size="10" fill="#d97706" font-family="monospace">1.5 mg/L</text>
+            </svg>
+            <div style="display:flex;gap:16px;margin-top:8px;">
+              <span style="font-size:11px;color:var(--green)">── Baseline (2.0–2.5)</span>
+              <span style="font-size:11px;color:var(--yellow)">── Actual</span>
+              <span style="font-size:11px;color:var(--red)">- - Critical (1.0)</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Active Alerts</span>
+              <span class="card-action">View all</span>
+            </div>
+            <div class="alert-item" style="border-color:var(--yellow-border);background:var(--yellow-bg);">
+              <div class="alert-dot" style="background:var(--yellow);margin-top:5px;"></div>
+              <div class="alert-body">
+                <div class="alert-title">DO Basin 1 below baseline</div>
+                <div class="alert-desc">Running low for 6+ hrs. Check diffuser membranes if persists.</div>
+                <div class="alert-time">6:08 AM · <span style="color:var(--yellow)">Trust 71%</span></div>
+              </div>
+            </div>
+            <div class="alert-item" style="border-color:var(--red-border);background:var(--red-bg);">
+              <div class="alert-dot" style="background:var(--red);margin-top:5px;"></div>
+              <div class="alert-body">
+                <div class="alert-title">Chlorine probe: Trust 38%</div>
+                <div class="alert-desc">Probe overdue calibration. Verify manually before dosing.</div>
+                <div class="alert-time">4:22 AM · <span style="color:var(--red)">Action needed</span></div>
+              </div>
+            </div>
+            <div class="alert-item" style="border-color:var(--yellow-border);">
+              <div class="alert-dot" style="background:var(--yellow);margin-top:5px;"></div>
+              <div class="alert-body">
+                <div class="alert-title">SVI trending up (8 weeks)</div>
+                <div class="alert-desc">210 mL/g. Pull settleability test. Possible filamentous growth.</div>
+                <div class="alert-time">Yesterday · <span style="color:var(--yellow)">Monitor</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Asset Health</span><span class="card-action">Details</span></div>
+            <table class="data-table">
+              <tr><td>Well Pump 1</td><td><span class="tag tag-ok">92%</span></td></tr>
+              <tr><td>Well Pump 2</td><td><span class="tag tag-warn">61%</span></td></tr>
+              <tr><td>Blower 1</td><td><span class="tag tag-ok">88%</span></td></tr>
+              <tr><td>Blower 2</td><td><span class="tag tag-ok">95%</span></td></tr>
+              <tr><td>Clarifier Drive</td><td><span class="tag tag-warn">74%</span></td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Today's Observations Due</span><span class="card-action">Enter data →</span></div>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+                <span style="font-size:12px;">Morning process check</span><span class="tag tag-ok">✓ Done</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+                <span style="font-size:12px;">Lab samples (TSS, BOD)</span><span class="tag tag-warn">Due today</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+                <span style="font-size:12px;">Settled sludge volume</span><span class="tag tag-info">Pending</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;">
+                <span style="font-size:12px;">Chlorine residual</span><span class="tag tag-info">Pending</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">This Week · Compliance</span><span class="card-action">Full report</span></div>
+            <div>
+              <div class="compliance-row">
+                <div class="compliance-param">TSS</div>
+                <div class="compliance-bar-wrap">
+                  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-bottom:3px;"><span>27.8 mg/L</span><span>limit 30</span></div>
+                  <div class="compliance-bar-bg"><div class="compliance-bar-fill" style="width:93%;background:var(--red)"></div></div>
+                </div>
+                <div class="compliance-pct" style="color:var(--red)">93%</div>
+              </div>
+              <div class="compliance-row">
+                <div class="compliance-param">NH₃</div>
+                <div class="compliance-bar-wrap">
+                  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-bottom:3px;"><span>4.0 mg/L</span><span>limit 5</span></div>
+                  <div class="compliance-bar-bg"><div class="compliance-bar-fill" style="width:80%;background:var(--yellow)"></div></div>
+                </div>
+                <div class="compliance-pct" style="color:var(--yellow)">80%</div>
+              </div>
+              <div class="compliance-row">
+                <div class="compliance-param">BOD</div>
+                <div class="compliance-bar-wrap">
+                  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-bottom:3px;"><span>12.6 mg/L</span><span>limit 20</span></div>
+                  <div class="compliance-bar-bg"><div class="compliance-bar-fill" style="width:63%;background:var(--green)"></div></div>
+                </div>
+                <div class="compliance-pct" style="color:var(--green)">63%</div>
+              </div>
+              <div class="compliance-row">
+                <div class="compliance-param">pH</div>
+                <div class="compliance-bar-wrap">
+                  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-bottom:3px;"><span>7.2 S.U.</span><span>6.5–8.5</span></div>
+                  <div class="compliance-bar-bg"><div class="compliance-bar-fill" style="width:43%;background:var(--green)"></div></div>
+                </div>
+                <div class="compliance-pct" style="color:var(--green)">OK</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ DAILY OBSERVATIONS ══════ -->
+      <div class="tab-view" id="tab-observations">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Daily <em>Observations</em></div>
+            <div class="page-sub">Manual process data + guardrails · Replaces paper logs &amp; spreadsheets · Syncs to compliance records</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-outline">📥 Import CSV</button>
+            <button class="btn-primary">+ Log Today's Data</button>
+          </div>
+        </div>
+
+        <!-- Garmin-style guardrails -->
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;">
+          <div class="garmin-card">
+            <div class="garmin-label">TSS · 30-day avg</div>
+            <div style="display:flex;justify-content:center;margin-bottom:4px;">
+              <svg viewBox="0 0 80 48" width="80" height="48">
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#dc2626" stroke-width="7" stroke-linecap="round" stroke-dasharray="84,100" stroke-dashoffset="0"/>
+                <text x="40" y="42" font-size="13" font-weight="600" fill="#0a1628" text-anchor="middle" font-family="DM Mono,monospace">93%</text>
+              </svg>
+            </div>
+            <div class="garmin-status" style="color:var(--red)">AT RISK</div>
+            <div class="garmin-sub">27.8 / 30 mg/L</div>
+          </div>
+          <div class="garmin-card">
+            <div class="garmin-label">NH₃ · 30-day avg</div>
+            <div style="display:flex;justify-content:center;margin-bottom:4px;">
+              <svg viewBox="0 0 80 48" width="80" height="48">
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#d97706" stroke-width="7" stroke-linecap="round" stroke-dasharray="67,100" stroke-dashoffset="0"/>
+                <text x="40" y="42" font-size="13" font-weight="600" fill="#0a1628" text-anchor="middle" font-family="DM Mono,monospace">80%</text>
+              </svg>
+            </div>
+            <div class="garmin-status" style="color:var(--yellow)">WATCH</div>
+            <div class="garmin-sub">4.0 / 5.0 mg/L</div>
+          </div>
+          <div class="garmin-card">
+            <div class="garmin-label">DO Basin 1 · avg</div>
+            <div style="display:flex;justify-content:center;margin-bottom:4px;">
+              <svg viewBox="0 0 80 48" width="80" height="48">
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#27ae60" stroke-width="7" stroke-linecap="round" stroke-dasharray="75,100" stroke-dashoffset="0"/>
+                <text x="40" y="42" font-size="13" font-weight="600" fill="#0a1628" text-anchor="middle" font-family="DM Mono,monospace">1.9</text>
+              </svg>
+            </div>
+            <div class="garmin-status" style="color:var(--green)">NORMAL</div>
+            <div class="garmin-sub">Target: 1.5–2.5 mg/L</div>
+          </div>
+          <div class="garmin-card">
+            <div class="garmin-label">pH Effluent · avg</div>
+            <div style="display:flex;justify-content:center;margin-bottom:4px;">
+              <svg viewBox="0 0 80 48" width="80" height="48">
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#27ae60" stroke-width="7" stroke-linecap="round" stroke-dasharray="43,100" stroke-dashoffset="0"/>
+                <text x="40" y="42" font-size="13" font-weight="600" fill="#0a1628" text-anchor="middle" font-family="DM Mono,monospace">7.2</text>
+              </svg>
+            </div>
+            <div class="garmin-status" style="color:var(--green)">GOOD</div>
+            <div class="garmin-sub">Target: 6.5–8.5 S.U.</div>
+          </div>
+          <div class="garmin-card">
+            <div class="garmin-label">SVI · weekly</div>
+            <div style="display:flex;justify-content:center;margin-bottom:4px;">
+              <svg viewBox="0 0 80 48" width="80" height="48">
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#d97706" stroke-width="7" stroke-linecap="round" stroke-dasharray="70,100" stroke-dashoffset="0"/>
+                <text x="40" y="42" font-size="13" font-weight="600" fill="#0a1628" text-anchor="middle" font-family="DM Mono,monospace">210</text>
+              </svg>
+            </div>
+            <div class="garmin-status" style="color:var(--yellow)">ELEVATED</div>
+            <div class="garmin-sub">Normal: 80–150 mL/g</div>
+          </div>
+        </div>
+
+        <!-- Process Log Table -->
+        <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px;">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <span class="card-title">Process Log — Thursday, Feb 27</span>
+              <div style="font-size:11px;color:var(--text-dim);margin-top:2px;">Enter readings below · Out-of-guardrail values highlighted automatically</div>
+            </div>
+            <span class="tag tag-ok" style="font-size:10px;">Auto-saves to compliance record</span>
+          </div>
+          <div class="obs-grid">
+            <div class="obs-header">Parameter</div>
+            <div class="obs-header">7:00 AM</div>
+            <div class="obs-header">10:00 AM</div>
+            <div class="obs-header">1:00 PM</div>
+            <div class="obs-header">4:00 PM</div>
+            <div class="obs-header">7:00 PM</div>
+            <div class="obs-header">10:00 PM</div>
+            <div class="obs-header">Status</div>
+
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">Influent Flow (MGD)</div>
+            <div class="obs-cell"><input class="obs-input" value="0.31" style="border-color:var(--green-border);"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell obs-status-ok">✓ Normal</div>
+
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">DO Basin 1 (mg/L)</div>
+            <div class="obs-cell"><input class="obs-input" value="1.5" style="border-color:var(--yellow-border);background:var(--yellow-bg);"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell obs-status-warn">⚠ Low</div>
+
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">Chlorine Residual (ppm)</div>
+            <div class="obs-cell"><input class="obs-input" value="2.3" style="border-color:var(--red-border);background:var(--red-bg);"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell obs-status-alert">⚠ Probe trust low</div>
+
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">pH Effluent (S.U.)</div>
+            <div class="obs-cell"><input class="obs-input" value="7.2" style="border-color:var(--green-border);"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell obs-status-ok">✓ Normal</div>
+
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">TSS (mg/L) · lab</div>
+            <div class="obs-cell"><input class="obs-input" placeholder="Lab result"></div>
+            <div class="obs-cell" style="background:var(--bg);font-size:10px;color:var(--text-dim);">Lab only</div>
+            <div class="obs-cell" style="background:var(--bg);font-size:10px;color:var(--text-dim);">Lab only</div>
+            <div class="obs-cell" style="background:var(--bg);font-size:10px;color:var(--text-dim);">Lab only</div>
+            <div class="obs-cell" style="background:var(--bg);font-size:10px;color:var(--text-dim);">Lab only</div>
+            <div class="obs-cell" style="background:var(--bg);font-size:10px;color:var(--text-dim);">Lab only</div>
+            <div class="obs-cell obs-status-warn">⚠ Due today</div>
+
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);border-radius:0 0 0 8px;">Settled Sludge (mL/L)</div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell" style="color:var(--text-dim);font-size:11px;border-radius:0 0 8px 0;">Pending</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Recent Entries · Last 7 days</span>
+            <span class="card-action">Export CSV →</span>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date / Shift</th><th>Operator</th><th>DO avg</th><th>pH avg</th><th>Cl₂ avg</th><th>Notes</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Feb 26 · AM</td><td style="color:var(--text-mid)">M. Rodriguez</td><td class="mono">2.1</td><td class="mono">7.3</td><td class="mono">2.4</td><td style="font-size:11px;color:var(--text-dim)">Adjusted blower 2 runtime</td><td><span class="tag tag-ok">Normal</span></td></tr>
+              <tr><td>Feb 25 · AM</td><td style="color:var(--text-mid)">M. Rodriguez</td><td class="mono">2.3</td><td class="mono">7.1</td><td class="mono">2.5</td><td style="font-size:11px;color:var(--text-dim)">Rain event — I&I +18%</td><td><span class="tag tag-ok">Normal</span></td></tr>
+              <tr><td>Feb 24 · AM</td><td style="color:var(--text-mid)">T. Vargas</td><td class="mono" style="color:var(--yellow)">1.8</td><td class="mono">7.2</td><td class="mono">2.3</td><td style="font-size:11px;color:var(--text-dim)">DO low — extended blower</td><td><span class="tag tag-warn">Watch</span></td></tr>
+              <tr><td>Feb 23 · AM</td><td style="color:var(--text-mid)">M. Rodriguez</td><td class="mono">2.2</td><td class="mono">7.4</td><td class="mono">2.6</td><td style="font-size:11px;color:var(--text-dim)">Routine</td><td><span class="tag tag-ok">Normal</span></td></tr>
+              <tr><td>Feb 22 · AM</td><td style="color:var(--text-mid)">T. Vargas</td><td class="mono">2.0</td><td class="mono">7.3</td><td class="mono" style="color:var(--red)">1.8</td><td style="font-size:11px;color:var(--text-dim)">Low Cl₂ — checked probe</td><td><span class="tag tag-warn">Watch</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══════ ALERTS ══════ -->
+      <div class="tab-view" id="tab-alerts">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><em>Active</em> Alerts</div>
+            <div class="page-sub">3 active · Last updated 7:14 AM · Smart filtering — low-trust readings flagged separately</div>
+          </div>
+          <span class="tag tag-navy">All systems online</span>
+        </div>
+        <div class="card">
+          <table class="data-table">
+            <thead><tr><th>Severity</th><th>Parameter</th><th>Alert</th><th>Trust Score</th><th>Since</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="tag tag-alert">Critical</span></td>
+                <td>Chlorine Residual</td>
+                <td style="font-size:11px;color:var(--text)">Probe trust 38% — calibration overdue 12 days</td>
+                <td><span style="color:var(--red);font-weight:700;font-family:DM Mono,monospace">38%</span></td>
+                <td class="mono" style="font-size:11px">4:22 AM</td>
+                <td><button class="btn-primary" style="padding:5px 10px;font-size:11px;">Acknowledge</button></td>
+              </tr>
+              <tr>
+                <td><span class="tag tag-warn">Warning</span></td>
+                <td>DO Basin 1</td>
+                <td style="font-size:11px;color:var(--text)">Below 2.0 mg/L baseline for 6+ hours</td>
+                <td><span style="color:var(--yellow);font-weight:700;font-family:DM Mono,monospace">71%</span></td>
+                <td class="mono" style="font-size:11px">6:08 AM</td>
+                <td><button class="btn-outline" style="padding:5px 10px;font-size:11px;">Monitor</button></td>
+              </tr>
+              <tr>
+                <td><span class="tag tag-warn">Warning</span></td>
+                <td>SVI</td>
+                <td style="font-size:11px;color:var(--text)">8-week uptrend — 210 mL/g (normal: 80–150)</td>
+                <td><span style="color:var(--green);font-weight:700;font-family:DM Mono,monospace">82%</span></td>
+                <td class="mono" style="font-size:11px">Yesterday</td>
+                <td><button class="btn-outline" style="padding:5px 10px;font-size:11px;">View trend</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══════ CAMERAS ══════ -->
+      <div class="tab-view" id="tab-cameras">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><em>Visual</em> Monitoring</div>
+            <div class="page-sub">AI-powered change detection · Basin foaming · Equipment anomalies · Reduces site visits</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="tag tag-ai">✦ AI Detection Active</span>
+            <span class="tag tag-ok">6 cameras online</span>
+          </div>
+        </div>
+
+        <div class="camera-grid">
+          <!-- Basin A - foam -->
+          <div class="camera-card">
+            <div class="camera-feed">
+              <div class="camera-sim">
+                <div class="basin-bg">
+                  <div class="basin-water">
+                    <div class="basin-foam"></div>
+                    <div class="basin-bubble" style="left:20%;bottom:40%;width:8px;height:8px;animation-delay:0s;"></div>
+                    <div class="basin-bubble" style="left:50%;bottom:30%;width:5px;height:5px;animation-delay:1s;"></div>
+                    <div class="basin-bubble" style="left:75%;bottom:50%;width:6px;height:6px;animation-delay:2s;"></div>
+                    <div style="position:absolute;top:2%;left:10%;width:80%;height:30%;border:2px dashed rgba(229,162,51,0.9);border-radius:4px;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="camera-scanline"></div>
+              <div class="camera-overlay">
+                <div class="cam-top-row">
+                  <div class="cam-label">CAM 01 · BASIN-A</div>
+                  <div class="cam-rec">● REC</div>
+                </div>
+                <div class="cam-bottom-row">
+                  <div class="cam-timestamp">2026-02-27 07:14:22</div>
+                  <div class="cam-alert-badge cam-alert-warn">⚠ FOAM DETECTED</div>
+                </div>
+              </div>
+            </div>
+            <div class="camera-info">
+              <div class="cam-name">Aeration Basin A</div>
+              <div class="cam-status warn">AI: <strong>Foam detected</strong> · elevated vs. 7-day baseline</div>
+              <div class="detection-events">
+                <span class="det-tag det-tag-warn">Foam ↑ 34%</span>
+                <span class="det-tag det-tag-ok">No equipment anomaly</span>
+                <span class="det-tag det-tag-ok">Motion nominal</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clarifier - normal -->
+          <div class="camera-card">
+            <div class="camera-feed">
+              <div class="camera-sim">
+                <div style="width:100%;height:100%;background:linear-gradient(180deg,#0a1520 0%,#0d1e2e 50%,#081018 100%);position:relative;">
+                  <div style="position:absolute;bottom:0;left:0;right:0;height:70%;background:linear-gradient(180deg,#1a3040 0%,#0d1e2e 100%);border-radius:2px 2px 0 0;">
+                    <div style="position:absolute;top:0;left:0;right:0;height:100%;background:repeating-linear-gradient(90deg,transparent,transparent 20px,rgba(46,100,140,0.1) 20px,rgba(46,100,140,0.1) 21px);"></div>
+                  </div>
+                  <div style="position:absolute;bottom:35%;left:50%;transform:translateX(-50%) rotate(45deg);width:70%;height:2px;background:rgba(200,200,200,0.25);transform-origin:left center;"></div>
+                </div>
+              </div>
+              <div class="camera-scanline"></div>
+              <div class="camera-overlay">
+                <div class="cam-top-row">
+                  <div class="cam-label">CAM 02 · CLARIFIER</div>
+                  <div class="cam-rec">● REC</div>
+                </div>
+                <div class="cam-bottom-row">
+                  <div class="cam-timestamp">2026-02-27 07:14:20</div>
+                  <div class="cam-alert-badge cam-alert-ok">✓ NORMAL</div>
+                </div>
+              </div>
+            </div>
+            <div class="camera-info">
+              <div class="cam-name">Secondary Clarifier</div>
+              <div class="cam-status ok">AI: <strong>No anomalies detected</strong> · scraper running normal</div>
+              <div class="detection-events">
+                <span class="det-tag det-tag-ok">Surface normal</span>
+                <span class="det-tag det-tag-ok">Scraper rotating</span>
+                <span class="det-tag det-tag-ok">No overflow</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pump room - vibration -->
+          <div class="camera-card">
+            <div class="camera-feed">
+              <div class="camera-sim">
+                <div style="width:100%;height:100%;background:linear-gradient(180deg,#0f0f14 0%,#141420 100%);position:relative;">
+                  <div style="position:absolute;bottom:10%;left:15%;width:25%;height:50%;background:rgba(40,50,80,0.6);border:1px solid rgba(100,120,180,0.2);border-radius:4px;"></div>
+                  <div style="position:absolute;bottom:10%;left:55%;width:25%;height:50%;background:rgba(40,50,80,0.6);border:1px solid rgba(100,120,180,0.2);border-radius:4px;"></div>
+                  <div style="position:absolute;bottom:10%;left:55%;width:25%;height:50%;border:2px dashed rgba(220,38,38,0.8);border-radius:4px;" id="vibrationBox"></div>
+                </div>
+              </div>
+              <div class="camera-scanline"></div>
+              <div class="camera-overlay">
+                <div class="cam-top-row">
+                  <div class="cam-label">CAM 04 · PUMP ROOM</div>
+                  <div class="cam-rec">● REC</div>
+                </div>
+                <div class="cam-bottom-row">
+                  <div class="cam-timestamp">2026-02-27 07:14:18</div>
+                  <div class="cam-alert-badge cam-alert-detect">⚠ VIBRATION</div>
+                </div>
+              </div>
+            </div>
+            <div class="camera-info">
+              <div class="cam-name">Pump Room — Well Pump 2</div>
+              <div class="cam-status detect">AI: <strong>Vibration anomaly detected</strong> · correlated w/ bearing alert</div>
+              <div class="detection-events">
+                <span class="det-tag det-tag-alert">Visual vibration ↑</span>
+                <span class="det-tag det-tag-warn">Pump 2 flagged</span>
+                <span class="det-tag det-tag-ok">Pump 1 normal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="audio-card">
+            <div class="card-header">
+              <span class="card-title">🎙 Acoustic Monitoring — Pump Room</span>
+              <span class="tag tag-warn">Anomaly detected</span>
+            </div>
+            <div style="font-size:12px;color:var(--text-mid);margin-bottom:12px;">AI baseline: pump operating sound signature. Current: <strong style="color:var(--yellow)">+18% deviation</strong> in 200–400 Hz range (bearing wear signature)</div>
+            <div class="waveform" id="waveform"></div>
+            <div style="display:flex;gap:12px;margin-top:8px;font-size:11px;">
+              <span style="color:var(--green)">── Normal range</span>
+              <span style="color:var(--red)">── Anomaly frequency</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Detection Summary · Today</span>
+              <span class="card-action">View log</span>
+            </div>
+            <table class="data-table">
+              <thead><tr><th>Time</th><th>Camera</th><th>Detection</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td class="mono" style="font-size:11px">07:09</td><td>Basin A</td><td><span class="tag tag-warn">Foam ↑34%</span></td><td style="font-size:11px;color:var(--text-dim)">Alert sent</td></tr>
+                <tr><td class="mono" style="font-size:11px">06:42</td><td>Pump Rm</td><td><span class="tag tag-alert">Vibration</span></td><td style="font-size:11px;color:var(--text-dim)">Alert sent</td></tr>
+                <tr><td class="mono" style="font-size:11px">03:15</td><td>Basin A</td><td><span class="tag tag-ok">Foam cleared</span></td><td style="font-size:11px;color:var(--text-dim)">Auto-resolved</td></tr>
+                <tr><td class="mono" style="font-size:11px">01:08</td><td>Clarifier</td><td><span class="tag tag-ok">Normal check</span></td><td style="font-size:11px;color:var(--text-dim)">Logged</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ TRENDS ══════ -->
+      <div class="tab-view" id="tab-trends">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Operational <em>Trends</em></div>
+            <div class="page-sub">8-week rolling analysis · AI pattern detection · Anomaly forecasting</div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><span class="card-title">SVI — 8-week uptrend</span><span class="tag tag-warn">Uptrend</span></div>
+            <svg viewBox="0 0 300 80" style="width:100%;height:80px;">
+              <polyline points="10,70 45,65 80,62 115,58 150,55 185,50 220,45 255,40 290,35" fill="none" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="290" cy="35" r="4" fill="#d97706"/>
+              <text x="10" y="12" font-size="9" fill="#d97706" font-family="monospace">SVI mg/L</text>
+              <line x1="10" y1="55" x2="290" y2="55" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+              <text x="245" y="52" font-size="8" fill="#dc2626" opacity="0.7" font-family="monospace">limit 150</text>
+            </svg>
+            <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">210 mL/g and rising. Possible filamentous bulking. Pull settleability test.</div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">DO Basin 1 — declining range</span><span class="tag tag-warn">Declining</span></div>
+            <svg viewBox="0 0 300 80" style="width:100%;height:80px;">
+              <path d="M10,25 L290,25 L290,45 L10,45 Z" fill="rgba(39,174,96,0.06)" stroke="none"/>
+              <line x1="10" y1="25" x2="290" y2="25" stroke="#27ae60" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+              <line x1="10" y1="45" x2="290" y2="45" stroke="#27ae60" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+              <polyline points="10,30 45,28 80,32 115,38 150,42 185,50 220,55 255,60 290,65" fill="none" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="290" cy="65" r="4" fill="#d97706"/>
+              <text x="10" y="12" font-size="9" fill="#8a9bb0" font-family="monospace">DO mg/L — Target 2.0-2.5</text>
+            </svg>
+            <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">DO gradually declining over 8 weeks. Check diffuser membrane condition.</div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">TSS — approaching permit limit</span><span class="tag tag-alert">At risk</span></div>
+            <svg viewBox="0 0 300 80" style="width:100%;height:80px;">
+              <line x1="10" y1="20" x2="290" y2="20" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+              <text x="220" y="17" font-size="8" fill="#dc2626" opacity="0.7" font-family="monospace">PERMIT 30</text>
+              <polyline points="10,60 45,55 80,50 115,52 150,48 185,44 220,38 255,34 290,30" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="290" cy="30" r="4" fill="#dc2626"/>
+              <text x="10" y="12" font-size="9" fill="#8a9bb0" font-family="monospace">TSS mg/L</text>
+            </svg>
+            <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">At 93% of permit limit. Forecast: potential exceedance by mid-March.</div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">NH₃ — seasonal variation</span><span class="tag tag-ok">Normal pattern</span></div>
+            <svg viewBox="0 0 300 80" style="width:100%;height:80px;">
+              <line x1="10" y1="15" x2="290" y2="15" stroke="#d97706" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+              <text x="225" y="12" font-size="8" fill="#d97706" opacity="0.6" font-family="monospace">PERMIT 5.0</text>
+              <polyline points="10,55 45,52 80,45 115,40 150,38 185,42 220,50 255,55 290,52" fill="none" stroke="#27ae60" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="290" cy="52" r="4" fill="#27ae60"/>
+              <text x="10" y="12" font-size="9" fill="#8a9bb0" font-family="monospace">NH₃ mg/L</text>
+            </svg>
+            <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">Seasonal rise expected. Currently 4.0 mg/L (80% of limit). Monitor through spring.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ COMPLIANCE ══════ -->
+      <div class="tab-view" id="tab-compliance">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><em>Compliance</em> Status</div>
+            <div class="page-sub">NPDES permit tracking · Automated reporting · Upstream watches the limits so you don't have to</div>
+          </div>
+          <button class="btn-primary">Generate Report →</button>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Permit Parameters — Current Cycle</span></div>
+          <table class="data-table">
+            <thead><tr><th>Parameter</th><th>Current avg</th><th>Permit limit</th><th>% of limit</th><th>Trend</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>TSS (mg/L)</td>
+                <td class="mono">27.8</td>
+                <td class="mono">30.0</td>
+                <td><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:93%;height:100%;background:var(--red);border-radius:3px;"></div></div><span class="mono" style="font-size:11px;color:var(--red)">93%</span></div></td>
+                <td style="font-size:12px;color:var(--red)">↑ Rising</td>
+                <td><span class="tag tag-alert">At Risk</span></td>
+              </tr>
+              <tr>
+                <td>NH₃-N (mg/L)</td>
+                <td class="mono">4.0</td>
+                <td class="mono">5.0</td>
+                <td><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:80%;height:100%;background:var(--yellow);border-radius:3px;"></div></div><span class="mono" style="font-size:11px;color:var(--yellow)">80%</span></div></td>
+                <td style="font-size:12px;color:var(--text-mid)">→ Stable</td>
+                <td><span class="tag tag-warn">Watch</span></td>
+              </tr>
+              <tr>
+                <td>BOD₅ (mg/L)</td>
+                <td class="mono">12.6</td>
+                <td class="mono">20.0</td>
+                <td><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:63%;height:100%;background:var(--green);border-radius:3px;"></div></div><span class="mono" style="font-size:11px;color:var(--green)">63%</span></div></td>
+                <td style="font-size:12px;color:var(--green)">↓ Good</td>
+                <td><span class="tag tag-ok">Compliant</span></td>
+              </tr>
+              <tr>
+                <td>pH (S.U.)</td>
+                <td class="mono">7.2</td>
+                <td class="mono">6.5–8.5</td>
+                <td><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:43%;height:100%;background:var(--green);border-radius:3px;"></div></div><span class="mono" style="font-size:11px;color:var(--green)">OK</span></div></td>
+                <td style="font-size:12px;color:var(--green)">→ Stable</td>
+                <td><span class="tag tag-ok">Compliant</span></td>
+              </tr>
+              <tr>
+                <td>Fecal Coliform (MPN)</td>
+                <td class="mono">18</td>
+                <td class="mono">200</td>
+                <td><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:9%;height:100%;background:var(--green);border-radius:3px;"></div></div><span class="mono" style="font-size:11px;color:var(--green)">9%</span></div></td>
+                <td style="font-size:12px;color:var(--green)">→ Stable</td>
+                <td><span class="tag tag-ok">Compliant</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══════ AI BRIEFING ══════ -->
+      <div class="tab-view" id="tab-briefing">
+        <div class="briefing-header">
+          <div class="briefing-avatar">✦</div>
+          <div>
+            <div class="briefing-title">Morning <em>Briefing</em></div>
+            <div class="briefing-meta">Thursday, Feb 27 · 7:14 AM · Crestone Water &amp; San. Dist.</div>
+            <div style="margin-top:6px;display:flex;gap:6px;">
+              <span class="tag tag-ok" style="background:rgba(39,174,96,0.15);border-color:rgba(39,174,96,0.3);color:#a8e6cf;">System OK</span>
+              <span class="tag" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);">2 auto-adjustments made</span>
+            </div>
+          </div>
+          <div class="briefing-trust">
+            <div class="briefing-trust-val">87%</div>
+            <div class="briefing-trust-label">Avg data trust</div>
+          </div>
+        </div>
+
+        <div class="grid-2-1">
+          <div>
+            <div class="briefing-section">
+              <div class="briefing-section-title">📋 Overnight Summary</div>
+              <div class="briefing-item">
+                <div class="briefing-item-icon">💧</div>
+                <div class="briefing-item-text">Flow spike at 2:15 AM — 0.31 to 0.52 MGD over 35 min. Consistent with overnight industrial discharge. No action needed.</div>
+                <div class="briefing-item-time">2:15 AM</div>
+              </div>
+              <div class="briefing-item">
+                <div class="briefing-item-icon">⚠️</div>
+                <div class="briefing-item-text">DO Basin 1 dropped below 2.0 mg/L baseline at 6:08 PM yesterday and has not recovered. Currently 1.5 mg/L.</div>
+                <div class="briefing-item-time">6:08 PM</div>
+              </div>
+              <div class="briefing-item">
+                <div class="briefing-item-icon">📷</div>
+                <div class="briefing-item-text">Camera detected foam in Aeration Basin A at 7:09 AM — 34% above 7-day baseline. Visual anomaly flagged for your inspection.</div>
+                <div class="briefing-item-time">7:09 AM</div>
+              </div>
+            </div>
+
+            <div class="briefing-section">
+              <div class="briefing-section-title">⚡ Adjustments I Made</div>
+              <div class="briefing-item">
+                <div class="briefing-item-icon">✓</div>
+                <div class="briefing-item-text"><strong>RAS rate increased</strong> 45% → 51% to respond to flow spike and maintain MLSS balance. <span style="color:var(--green)">Trust 89%</span> — high confidence in the adjustment.</div>
+                <div class="briefing-item-time">2:18 AM</div>
+              </div>
+              <div class="briefing-item">
+                <div class="briefing-item-icon">✓</div>
+                <div class="briefing-item-text"><strong>Blower 2 runtime +90 min</strong> to compensate for low DO. DO partially recovered (1.8 → 1.5 mg/L before next drop). <span style="color:var(--yellow)">Trust 85%</span></div>
+                <div class="briefing-item-time">4:40 AM</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="briefing-section">
+              <div class="briefing-section-title">🎯 Your 3 Items Today</div>
+              <div class="action-item">
+                <div class="action-num">1</div>
+                <div class="action-body">
+                  <div class="action-title">Check aeration diffusers</div>
+                  <div class="action-desc">DO still below baseline after blower adjustment. Likely cause: clogged or damaged diffuser membranes.</div>
+                </div>
+              </div>
+              <div class="action-item">
+                <div class="action-num">2</div>
+                <div class="action-body">
+                  <div class="action-title">Pull settleability test</div>
+                  <div class="action-desc">SVI 8-week uptrend continues at 210 mL/g. Test will confirm if filamentous bulking is developing.</div>
+                </div>
+              </div>
+              <div class="action-item">
+                <div class="action-num">3</div>
+                <div class="action-body">
+                  <div class="action-title">Calibrate chlorine probe</div>
+                  <div class="action-desc">12 days overdue. Trust score is 38% — don't make dosing decisions without a manual check first.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="briefing-section">
+              <div class="briefing-section-title">🌧 Weather Impact</div>
+              <div style="font-size:12px;color:var(--text-mid);line-height:1.6;">Rain Thursday–Friday, <strong>0.9–1.3 inches</strong> forecast. Expect <strong style="color:var(--yellow)">30–45% flow increase</strong> from I&I. Upstream will adjust RAS and blower automatically. I'll notify you if the increase exceeds my safe operating range.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ REPORTS ══════ -->
+      <div class="tab-view" id="tab-reports">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><em>Board</em> Reports</div>
+            <div class="page-sub">Auto-generated monthly reports · One-click export · Share with board members</div>
+          </div>
+          <button class="btn-primary">Generate Report →</button>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <div style="font-size:32px;margin-bottom:12px;">📊</div>
+            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;">February 2026 Operations</div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;">Monthly operations summary · 24 pages · Auto-generated</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;">
+              <span class="tag tag-ok">Compliant</span>
+              <span class="tag tag-navy">4 alerts resolved</span>
+            </div>
+            <button class="btn-outline" style="width:100%">📥 Download PDF</button>
+          </div>
+          <div class="card">
+            <div style="font-size:32px;margin-bottom:12px;">🔧</div>
+            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;">Infrastructure Health Q1</div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;">Asset condition summary · AI maintenance forecast · 18 pages</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;">
+              <span class="tag tag-warn">2 assets watch</span>
+              <span class="tag tag-ok">4 assets healthy</span>
+            </div>
+            <button class="btn-outline" style="width:100%">📥 Download PDF</button>
+          </div>
+          <div class="card">
+            <div style="font-size:32px;margin-bottom:12px;">🌊</div>
+            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;">Public Transparency Report</div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;">Customer-ready water quality summary · Regulation compliant</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;">
+              <span class="tag tag-ok">All parameters met</span>
+            </div>
+            <button class="btn-outline" style="width:100%">📥 Download PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════ DATA TRUST ══════ -->
+      <div class="tab-view" id="tab-trust">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><em>Data</em> Trust</div>
+            <div class="page-sub">Every reading scored 0–100% for reliability · Transparent calculations · Click any score to see why</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Sensor Trust Scores — Current</span><span class="card-action">Methodology →</span></div>
+          <table class="data-table">
+            <thead><tr><th>Sensor</th><th>Trust Score</th><th>Last calibration</th><th>Primary signal</th><th>Redundant check</th><th>Reason</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Flow Meter (influent)</td>
+                <td><span style="color:var(--green);font-weight:700;font-family:DM Mono,monospace">96%</span></td>
+                <td class="mono" style="font-size:11px">Feb 15</td>
+                <td class="mono" style="font-size:11px">0.31 MGD</td>
+                <td class="mono" style="font-size:11px">0.30 MGD</td>
+                <td style="font-size:11px;color:var(--text-dim)">Recent calibration, redundancy match</td>
+              </tr>
+              <tr>
+                <td>pH Probe (effluent)</td>
+                <td><span style="color:var(--green);font-weight:700;font-family:DM Mono,monospace">94%</span></td>
+                <td class="mono" style="font-size:11px">Feb 20</td>
+                <td class="mono" style="font-size:11px">7.2 S.U.</td>
+                <td class="mono" style="font-size:11px">7.1 S.U. (lab)</td>
+                <td style="font-size:11px;color:var(--text-dim)">Tight lab correlation</td>
+              </tr>
+              <tr>
+                <td>DO Sensor (Basin 1)</td>
+                <td><span style="color:var(--yellow);font-weight:700;font-family:DM Mono,monospace">71%</span></td>
+                <td class="mono" style="font-size:11px">Jan 28</td>
+                <td class="mono" style="font-size:11px">1.5 mg/L</td>
+                <td class="mono" style="font-size:11px">—</td>
+                <td style="font-size:11px;color:var(--text-dim)">No redundant sensor; calibration aging</td>
+              </tr>
+              <tr>
+                <td>SVI (manual)</td>
+                <td><span style="color:var(--green);font-weight:700;font-family:DM Mono,monospace">82%</span></td>
+                <td class="mono" style="font-size:11px">Feb 24</td>
+                <td class="mono" style="font-size:11px">210 mL/g</td>
+                <td class="mono" style="font-size:11px">—</td>
+                <td style="font-size:11px;color:var(--text-dim)">Manual entry, uptrend flagged</td>
+              </tr>
+              <tr>
+                <td>Chlorine Probe</td>
+                <td><span style="color:var(--red);font-weight:700;font-family:DM Mono,monospace">38%</span></td>
+                <td class="mono" style="font-size:11px">Jan 15</td>
+                <td class="mono" style="font-size:11px">2.3 ppm</td>
+                <td class="mono" style="font-size:11px">—</td>
+                <td style="font-size:11px;color:var(--text-dim)">⚠ Calibration 43 days overdue</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Audit Trail · Last 24 hours</span><span class="card-action">Export</span></div>
+          <table class="data-table">
+            <thead><tr><th>Time</th><th>Event</th><th>Actor</th><th>Trust impact</th></tr></thead>
+            <tbody>
+              <tr><td class="mono" style="font-size:11px">07:09</td><td style="font-size:12px">Camera: foam detected Basin A</td><td style="font-size:11px;color:var(--text-dim)">AI Vision</td><td style="font-size:11px;color:var(--yellow)">Alert flagged</td></tr>
+              <tr><td class="mono" style="font-size:11px">04:40</td><td style="font-size:12px">Blower 2 runtime extended +90 min</td><td style="font-size:11px;color:var(--text-dim)">AI Autopilot</td><td style="font-size:11px;color:var(--green)">Logged (trust 85%)</td></tr>
+              <tr><td class="mono" style="font-size:11px">02:18</td><td style="font-size:12px">RAS adjusted 45%→51%</td><td style="font-size:11px;color:var(--text-dim)">AI Autopilot</td><td style="font-size:11px;color:var(--green)">Logged (trust 89%)</td></tr>
+              <tr><td class="mono" style="font-size:11px">Yesterday</td><td style="font-size:12px">Manual DO reading entered: 2.1 mg/L</td><td style="font-size:11px;color:var(--text-dim)">M. Rodriguez</td><td style="font-size:11px;color:var(--green)">Corroborated sensor</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ─── PASSWORD ───
 function checkPass() {
-  const input = document.getElementById('passInput').value;
-  if (input === 'upstream2026') {
+  var v = document.getElementById('gateInput').value.toLowerCase().trim();
+  var ok = ['upstream2026','upstream','pilot','demo'];
+  if (ok.indexOf(v) !== -1) {
     document.getElementById('gate').classList.add('hidden');
-    document.getElementById('preview').classList.add('visible');
-    generateCharts();
+    document.getElementById('app').classList.add('visible');
+    startClock();
+    buildWaveform();
   } else {
-    document.getElementById('gateError').classList.add('show');
-    document.getElementById('passInput').value = '';
-    document.getElementById('passInput').focus();
-  }
-}
-document.getElementById('passInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') checkPass();
-  document.getElementById('gateError').classList.remove('show');
-});
-
-// View switching
-function switchView(view) {
-  document.querySelectorAll('.preview-nav button').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('desktopView').classList.toggle('hidden', view !== 'desktop');
-  document.getElementById('mobileView').classList.toggle('hidden', view !== 'mobile');
-}
-
-// Dashboard tab switching
-function showDashTab(tab) {
-  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-  event.target.closest('.sidebar-item').classList.add('active');
-  
-  // Hide all tabs
-  document.getElementById('overviewTab').classList.add('hidden');
-  document.getElementById('overviewTab').classList.remove('overview-view');
-  document.getElementById('calendarTab').classList.remove('active');
-  document.getElementById('alertsTab').classList.remove('active');
-  document.getElementById('assetsTab').classList.remove('active');
-  document.getElementById('waterqualityTab').classList.remove('active');
-  document.getElementById('complianceTab').classList.remove('active');
-  document.getElementById('knowledgeTab').classList.remove('active');
-  
-  // Show selected tab
-  if (tab === 'overview') {
-    document.getElementById('overviewTab').classList.remove('hidden');
-    document.getElementById('overviewTab').classList.add('overview-view');
-  } else if (tab === 'calendar') {
-    document.getElementById('calendarTab').classList.add('active');
-  } else if (tab === 'alerts') {
-    document.getElementById('alertsTab').classList.add('active');
-  } else if (tab === 'assets') {
-    document.getElementById('assetsTab').classList.add('active');
-  } else if (tab === 'waterquality') {
-    document.getElementById('waterqualityTab').classList.add('active');
-    generateWQSparklines();
-  } else if (tab === 'compliance') {
-    document.getElementById('complianceTab').classList.add('active');
-  } else if (tab === 'knowledge') {
-    document.getElementById('knowledgeTab').classList.add('active');
+    var e = document.getElementById('gateError');
+    e.classList.add('show');
+    document.getElementById('gateInput').value = '';
+    setTimeout(function(){ e.classList.remove('show'); }, 2500);
   }
 }
 
-// Generate sparkline charts
-function generateCharts() {
-  // Chlorine - relatively stable around 2.0-2.4
-  const cl2 = [70,72,68,65,70,74,78,80,82,80,78,76,72,68,65,63,68,72,76,80,84,82,78,75];
-  const cl2El = document.getElementById('chlorineChart');
-  cl2.forEach(v => {
-    const bar = document.createElement('div');
-    bar.className = 'bar';
-    bar.style.height = v + '%';
-    bar.style.background = v > 60 ? 'var(--accent)' : 'var(--yellow)';
-    bar.style.opacity = '0.7';
-    cl2El.appendChild(bar);
-  });
-
-  // Vibration - trending upward (concerning)
-  const vib = [20,22,21,25,28,24,26,30,32,28,34,36,33,38,40,42,38,44,46,48,45,50,52,55];
-  const vibEl = document.getElementById('vibrationChart');
-  vib.forEach((v, i) => {
-    const bar = document.createElement('div');
-    bar.className = 'bar';
-    bar.style.height = v + '%';
-    bar.style.background = v > 40 ? 'var(--red)' : v > 30 ? 'var(--yellow)' : 'var(--green)';
-    bar.style.opacity = '0.7';
-    vibEl.appendChild(bar);
-  });
+// ─── TABS ───
+function showTab(id, el) {
+  document.querySelectorAll('.tab-view').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.sidebar-item').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById('tab-'+id).classList.add('active');
+  if (el) el.classList.add('active');
 }
 
-// Water Quality sparklines
-let wqGenerated = false;
-function generateWQSparklines() {
-  if (wqGenerated) return;
-  wqGenerated = true;
-  const sparkData = {
-    wqCl2Spark: [70,72,74,71,73,75,72,70,68,72,74,76,73,71,74,72,70,73,75,71],
-    wqCl2DistSpark: [80,78,76,74,72,70,68,66,64,62,65,63,61,60,58,62,60,58,56,55],
-    wqNitrateSpark: [32,33,31,32,34,33,35,32,31,33,32,34,33,35,34,32,33,31,32,34],
-    wqTTHMSpark: [45,48,50,52,48,46,50,52,54,50,48,52,54,52,50,48,52,54,52,50],
-    wqHAASpark: [38,40,42,44,40,38,42,44,46,42,40,44,46,44,42,40,44,46,44,42],
-    wqTurbSpark: [15,12,14,10,8,12,14,10,8,6,10,12,8,6,10,12,8,6,10,8],
-    wqpHSpark: [72,74,73,75,74,72,74,73,75,74,72,74,73,75,74,72,74,73,75,74]
-  };
-  Object.entries(sparkData).forEach(([id, data]) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    data.forEach(v => {
-      const bar = document.createElement('div');
-      bar.className = 'bar';
-      bar.style.height = v + '%';
-      bar.style.background = id.includes('Dist') ? 'var(--yellow)' : 'var(--accent)';
-      el.appendChild(bar);
+// ─── CLOCK ───
+function startClock() {
+  function tick() {
+    var now = new Date();
+    var h = now.getHours(), m = now.getMinutes();
+    var ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    document.getElementById('clock').textContent = h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+  }
+  tick();
+  setInterval(tick, 30000);
+}
+
+// ─── WAVEFORM ───
+function buildWaveform() {
+  var c = document.getElementById('waveform');
+  if (!c) return;
+  var heights = [20,25,18,30,22,35,28,40,32,38,45,52,48,55,60,52,48,44,38,35,30,40,45,50,55,48,42,38,32,28,24,20,22,26,30,34,28,24,20,18,22,26,30,34,28];
+  var anomStart = 22, anomEnd = 30;
+  heights.forEach(function(h, i) {
+    var bar = document.createElement('div');
+    bar.className = 'wave-bar';
+    if (i >= anomStart && i < anomEnd) {
+      bar.classList.add('anomaly');
+    } else {
+      bar.classList.add('normal');
+    }
+    bar.style.height = h + 'px';
+    c.appendChild(bar);
+  });
+  setInterval(function() {
+    var bars = c.querySelectorAll('.wave-bar');
+    bars.forEach(function(bar, i) {
+      if (i >= anomStart && i < anomEnd) {
+        bar.style.height = (45 + Math.random() * 20) + 'px';
+      }
     });
-  });
+  }, 350);
 }
 
-// Alert filter buttons
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('alert-filter-btn')) {
-    document.querySelectorAll('.alert-filter-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-  }
-});
+// ─── VIBRATION BLINK ───
+var style = document.createElement('style');
+style.textContent = '@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }';
+style.textContent += ' #vibrationBox { animation: blink 1s infinite; }';
+document.head.appendChild(style);
 </script>
 </body>
 </html>
