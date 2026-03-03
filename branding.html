@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upstream AI — Logo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --deep:    #08121f;
+    --ocean:   #0d3b6e;
+    --current: #1565c0;
+    --ripple:  #2196f3;
+    --foam:    #64b5f6;
+    --mist:    #b3d9ff;
+    --white:   #eef5ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    gap: 72px;
+    padding: 60px 40px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 10%, rgba(21,101,192,0.1) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .label {
+    color: var(--foam);
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 22px;
+    text-align: center;
+  }
+
+  .mark { position: relative; flex-shrink: 0; }
+  .mark svg { overflow: visible; display: block; }
+
+  .wordmark { display: flex; flex-direction: column; gap: 3px; }
+  .wordmark-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: -0.025em;
+    color: var(--white);
+    line-height: 1;
+  }
+  .wordmark-name span { color: var(--ripple); }
+  .wordmark-tag {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--foam);
+    opacity: 0.6;
+    font-weight: 300;
+  }
+
+  .logo-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .favicon-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 28px;
+  }
+  .favicon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .favicon-bg {
+    border-radius: 22%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #0d3060, #1565c0);
+    box-shadow: 0 6px 24px rgba(33,150,243,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .favicon-bg.sz-64 { width: 64px; height: 64px; }
+  .favicon-bg.sz-48 { width: 48px; height: 48px; }
+  .favicon-bg.sz-32 { width: 32px; height: 32px; border-radius: 18%; }
+  .favicon-bg.sz-16 { width: 16px; height: 16px; border-radius: 3px; }
+  .favicon-bg svg { width: 74%; height: 74%; overflow: visible; }
+  .size-label { font-size: 10px; color: var(--foam); opacity: 0.45; letter-spacing: 0.08em; }
+
+  .variant-light {
+    background: var(--white);
+    padding: 28px 40px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .variant-light .wordmark-name { color: var(--deep); }
+  .variant-light .wordmark-name span { color: var(--current); }
+  .variant-light .wordmark-tag { color: var(--ocean); opacity: 0.55; }
+
+  /* ══ RING ANIMATION ══
+     Each ring scales from 0 → 1 at transform-origin center
+     while fading and thinning.                              */
+  @keyframes ringGrow {
+    0%   { transform: scale(0.04); opacity: 0.9; stroke-width: 2.4; }
+    20%  { opacity: 0.85; }
+    70%  { opacity: 0.25; stroke-width: 0.7; }
+    100% { transform: scale(1);    opacity: 0;   stroke-width: 0.2; }
+  }
+
+  @keyframes impactDot {
+    0%,100% { r: 0; opacity: 0; }
+    8%      { r: 3;   opacity: 1; }
+    25%     { r: 1.5; opacity: 0.5; }
+    40%     { r: 0;   opacity: 0; }
+  }
+
+  /* Crown splash — two short arcs that flick up and vanish */
+  @keyframes crownFade {
+    0%,100% { opacity: 0; transform: scale(0.6) translateY(2px); }
+    6%      { opacity: 0.9; transform: scale(1) translateY(0); }
+    20%     { opacity: 0; transform: scale(1.15) translateY(-2px); }
+  }
+
+  .ring { transform-origin: 26px 26px; }
+  .ring1 { animation: ringGrow 3.2s ease-out infinite 0.12s; }
+  .ring2 { animation: ringGrow 3.2s ease-out infinite 0.48s; }
+  .ring3 { animation: ringGrow 3.2s ease-out infinite 0.84s; }
+  .ring4 { animation: ringGrow 3.2s ease-out infinite 1.22s; }
+
+  .impact { animation: impactDot 3.2s ease-out infinite; }
+  .crown  { transform-origin: 26px 26px; animation: crownFade 3.2s ease-out infinite; }
+
+  .mark:hover svg *, .favicon-bg:hover svg * { animation-play-state: paused; }
+
+  .panel { text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- PRIMARY LOCKUP -->
+<div class="panel">
+  <div class="label">Primary Lockup</div>
+  <div class="logo-primary">
+    <div class="mark" style="width:52px;height:52px;">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#2196f3" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#2196f3" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Soft ambient glow -->
+        <ellipse cx="26" cy="26" rx="22" ry="14" fill="url(#glow)"/>
+
+        <!-- 4 rings, all anchored at center, scaled up by CSS -->
+        <circle class="ring ring1" cx="26" cy="26" r="18" fill="none" stroke="#ddeeff" stroke-width="2.4"/>
+        <circle class="ring ring2" cx="26" cy="26" r="18" fill="none" stroke="#90caf9" stroke-width="2.4"/>
+        <circle class="ring ring3" cx="26" cy="26" r="18" fill="none" stroke="#64b5f6" stroke-width="2.4"/>
+        <circle class="ring ring4" cx="26" cy="26" r="18" fill="none" stroke="#42a5f5" stroke-width="2.4"/>
+
+        <!-- Crown — tiny W-shaped splash on impact -->
+        <path class="crown"
+          d="M21.5 25 Q23.5 21.5 26 24 Q28.5 21.5 30.5 25"
+          fill="none" stroke="#e8f4ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Impact dot -->
+        <circle class="impact" cx="26" cy="26" r="0" fill="white"/>
+      </svg>
+    </div>
+
+    <div class="wordmark">
+      <div class="wordmark-name">Upstream<span> AI</span></div>
+      <div class="wordmark-tag">Predictive Water Intelligence</div>
+    </div>
+  </div>
+</div>
+
+<!-- FAVICON SIZES -->
+<div class="panel">
+  <div class="label">Favicon — All Sizes</div>
+  <div class="favicon-row">
+
+    <div class="favicon-item">
+      <div class="favicon-bg sz-64">
+        <svg viewBox="0 0 52 52" fill="none">
+          <circle class="ring ring1" cx="26" cy="26" r="18" fill="none" stroke="#ddeeff" stroke-width="2.4"/>
+          <circle class="ring ring2" cx="26" cy="26" r="18" fill="none" stroke="#90caf9" stroke-width="2.4"/>
+          <circle class="ring ring3" cx="26" cy="26" r="18" fill="none" stroke="#64b5f6" stroke-width="2.4"/>
+          <circle class="ring ring4" cx="26" cy="26" r="18" fill="none" stroke="#42a5f5" stroke-width="2.4"/>
+          <path class="crown" d="M21.5 25 Q23.5 21.5 26 24 Q28.5 21.5 30.5 25" fill="none" stroke="#e8f4ff" stroke-width="1.5" stroke-linecap="round"/>
+          <circle class="impact" cx="26" cy="26" r="0" fill="white"/>
+        </svg>
+      </div>
+      <div class="size-label">64px</div>
+    </div>
+
+    <div class="favicon-item">
+      <div class="favicon-bg sz-48">
+        <svg viewBox="0 0 52 52" fill="none">
+          <circle class="ring ring1" cx="26" cy="26" r="18" fill="none" stroke="#ddeeff" stroke-width="2.4"/>
+          <circle class="ring ring2" cx="26" cy="26" r="18" fill="none" stroke="#90caf9" stroke-width="2.4"/>
+          <circle class="ring ring3" cx="26" cy="26" r="18" fill="none" stroke="#64b5f6" stroke-width="2.4"/>
+          <circle class="ring ring4" cx="26" cy="26" r="18" fill="none" stroke="#42a5f5" stroke-width="2.4"/>
+          <path class="crown" d="M21.5 25 Q23.5 21.5 26 24 Q28.5 21.5 30.5 25" fill="none" stroke="#e8f4ff" stroke-width="1.5" stroke-linecap="round"/>
+          <circle class="impact" cx="26" cy="26" r="0" fill="white"/>
+        </svg>
+      </div>
+      <div class="size-label">48px</div>
+    </div>
+
+    <div class="favicon-item">
+      <div class="favicon-bg sz-32">
+        <svg viewBox="0 0 52 52" fill="none">
+          <circle class="ring ring1" cx="26" cy="26" r="18" fill="none" stroke="#ddeeff" stroke-width="2.8"/>
+          <circle class="ring ring2" cx="26" cy="26" r="18" fill="none" stroke="#90caf9" stroke-width="2.8"/>
+          <circle class="ring ring3" cx="26" cy="26" r="18" fill="none" stroke="#64b5f6" stroke-width="2.8"/>
+          <circle class="impact" cx="26" cy="26" r="0" fill="white"/>
+        </svg>
+      </div>
+      <div class="size-label">32px</div>
+    </div>
+
+    <div class="favicon-item">
+      <div class="favicon-bg sz-16">
+        <svg viewBox="0 0 52 52" fill="none">
+          <circle class="ring ring1" cx="26" cy="26" r="18" fill="none" stroke="#ddeeff" stroke-width="3.5"/>
+          <circle class="ring ring2" cx="26" cy="26" r="18" fill="none" stroke="#64b5f6" stroke-width="3.5"/>
+          <circle class="impact" cx="26" cy="26" r="0" fill="white"/>
+        </svg>
+      </div>
+      <div class="size-label">16px</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LIGHT VARIANT -->
+<div class="panel">
+  <div class="label">Light Background Variant</div>
+  <div class="variant-light">
+    <div class="mark" style="width:44px;height:44px;">
+      <svg viewBox="0 0 52 52" fill="none">
+        <circle class="ring ring1" cx="26" cy="26" r="18" fill="none" stroke="#0d47a1" stroke-width="2.4"/>
+        <circle class="ring ring2" cx="26" cy="26" r="18" fill="none" stroke="#1565c0" stroke-width="2.4"/>
+        <circle class="ring ring3" cx="26" cy="26" r="18" fill="none" stroke="#1976d2" stroke-width="2.4"/>
+        <circle class="ring ring4" cx="26" cy="26" r="18" fill="none" stroke="#2196f3" stroke-width="2.4"/>
+        <path class="crown" d="M21.5 25 Q23.5 21.5 26 24 Q28.5 21.5 30.5 25" fill="none" stroke="#0d47a1" stroke-width="1.5" stroke-linecap="round"/>
+        <circle class="impact" cx="26" cy="26" r="0" fill="#0d47a1"/>
+      </svg>
+    </div>
+    <div class="wordmark">
+      <div class="wordmark-name" style="font-size:24px;">Upstream<span> AI</span></div>
+      <div class="wordmark-tag">Predictive Water Intelligence</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
