@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Upstream AI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --dark: #1a1a1a;
+    --mid: #6b6b6b;
+    --dim: #a3a3a3;
+    --light: #e8e8e8;
+    --bg: #f7f7f7;
+    --white: #ffffff;
+    --accent: #1a5276;
+    --accent-light: #2e86ab;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--black);
+    background: var(--white);
+    line-height: 1.6;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display: flex; align-items:center; justify-content:space-between;
+    padding: 20px 48px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .nav-logo {
+    font-size: 18px; font-weight: 600; color: var(--black);
+    text-decoration:none; letter-spacing: -0.5px;
+  }
+  .nav-logo .upstream { color: var(--accent-light); font-weight: 400; }
+  .nav-cta {
+    background: var(--black); color:#fff;
+    padding: 10px 22px; border-radius:6px;
+    font-size:13px; font-weight:500;
+    text-decoration: none;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 180px 48px 80px;
+    max-width: 800px; margin: 0 auto;
+    text-align: center;
+  }
+  .hero-tag {
+    display:inline-flex; align-items:center; gap:8px;
+    background: var(--bg); border:1px solid var(--light);
+    border-radius: 20px; padding: 6px 14px;
+    margin-bottom: 24px;
+    font-size:12px; font-weight:500; color:var(--mid);
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 300; line-height:1.1;
+    color: var(--black); letter-spacing:-2px;
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-weight:700;
+    color: var(--accent);
+  }
+  .hero p {
+    font-size:18px; color:var(--mid);
+    margin: 0 auto; line-height:1.7;
+    max-width: 600px;
+  }
+
+  /* Story */
+  .story {
+    padding: 80px 48px 100px;
+    max-width: 760px; margin: 0 auto;
+  }
+  .story p {
+    font-size: 17px;
+    color: var(--dark);
+    line-height: 1.85;
+    margin-bottom: 28px;
+  }
+  .story p:last-child { margin-bottom: 0; }
+
+  .story .pullquote {
+    border-left: 3px solid var(--accent-light);
+    padding: 20px 28px;
+    margin: 40px 0;
+    background: var(--bg);
+    border-radius: 0 8px 8px 0;
+  }
+  .story .pullquote p {
+    font-size: 19px;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 0;
+    line-height: 1.7;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--light);
+    padding: 40px 48px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--dim);
+  }
+  footer a { color: var(--mid); text-decoration:none; }
+  footer a:hover { color: var(--black); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Upstream <span class="upstream">AI</span></a>
+  <a href="mailto:hello@getupstream.ai" class="nav-cta">Get in touch</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">Our founding story</div>
+  <h1>Built from a <em>near miss</em></h1>
+  <p>The story behind Upstream AI starts not in a boardroom, but at a wastewater facility on Presidents Day.</p>
+</section>
+
+<section class="story">
+  <p>While thousands of skiers are catching the first lift at the Vail ski resort, the backbone of the resort is quietly failing. It's Presidents Day—one of the busiest days of the year—and at the Vail Valley wastewater facility, a critical air-actuated valve from the 1970s finally gives up under peak demand. As influent wastewater pours in and tanks fill at an alarming rate, the on-call staff are frantic. The solution was buried in a 400-page manual on a dusty shelf that hadn't been opened in decades.</p>
+
+  <p>My co-founder, Rob, who was the District's Operations Manager, was finally enjoying a day off—but he was the only one left who knew how to manually override that specific valve. He had to drop everything, drive in, and insert a steel dowel pin to manually actuate the valve and restore the normal flow pattern, narrowly avoiding damage and a potential permit violation.</p>
+
+  <div class="pullquote">
+    <p>"What other near misses are lurking in the shadows?"</p>
+  </div>
+
+  <p>As he stood there, that's exactly what Rob asked himself. And it's the question that led us to build Upstream AI.</p>
+
+  <p>That reality plays out every day across 50,000 small utilities that form the backbone of American infrastructure. A third of their most experienced operators are retiring, taking decades of institutional knowledge with them. The ones who stay are stretched thin—managing hundreds of alarms and running critical systems on inferences, not data.</p>
+
+  <p>Upstream AI is the smart brain for rural water operations. Instead of more alarms, we provide a Morning Briefing. Before an operator even steps on-site, our platform has summarized overnight events, scored the health of every sensor, and built a predictive checklist for the day. We ensure that when a veteran retires, their process knowledge stays in the platform—not just in their head.</p>
+</section>
+
+<footer>
+  <p>&copy; 2025 Upstream AI &nbsp;·&nbsp; <a href="/">Home</a> &nbsp;·&nbsp; <a href="mailto:hello@getupstream.ai">hello@getupstream.ai</a></p>
+</footer>
+
+</body>
+</html>
