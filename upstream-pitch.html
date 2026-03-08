@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upstream AI — Investor Pitch</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --deep: #0a1628;
+    --navy: #0d2240;
+    --teal: #0e7490;
+    --aqua: #06b6d4;
+    --mint: #67e8f9;
+    --cream: #f0f4f8;
+    --sand: #e8dcc8;
+    --rust: #c2540a;
+    --white: #ffffff;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* NAV DOTS */
+  .nav-dots {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+  }
+  .nav-dot.active, .nav-dot:hover { background: var(--aqua); transform: scale(1.4); }
+
+  /* SLIDE BASE */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-inner {
+    max-width: 1100px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .slide-inner.visible { opacity: 1; transform: translateY(0); }
+
+  /* WATER RIPPLE BG */
+  .ripple-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .ripple-bg svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; }
+
+  /* SLIDE 1 — TITLE */
+  #slide-1 {
+    background: var(--deep);
+    flex-direction: column;
+    text-align: center;
+  }
+  .slide-number {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--aqua);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+  .title-eyebrow {
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    color: var(--aqua);
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+  .title-main {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 0.95;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  .title-main em {
+    font-style: italic;
+    color: var(--aqua);
+  }
+  .title-sub {
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.65);
+    max-width: 560px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+  }
+  .tag-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .tag {
+    border: 1px solid rgba(6,182,212,0.4);
+    padding: 0.45rem 1.2rem;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--mint);
+    text-transform: uppercase;
+  }
+
+  /* SLIDE 2 — STORY */
+  #slide-2 { background: linear-gradient(160deg, #0a1628 0%, #0d2a42 100%); }
+  .story-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .story-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+  .story-text h2 em { font-style: italic; color: var(--aqua); }
+  .story-text p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.72);
+    margin-bottom: 1rem;
+  }
+  .story-text p:last-child { margin-bottom: 0; }
+  .story-visual {
+    position: relative;
+    height: 380px;
+  }
+  .visual-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(6,182,212,0.2);
+    border-radius: 16px;
+    padding: 2rem;
+    position: absolute;
+  }
+  .visual-card.main-card {
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .alarm-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.2rem;
+    background: rgba(194,84,10,0.12);
+    border: 1px solid rgba(194,84,10,0.3);
+    border-radius: 10px;
+  }
+  .alarm-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--rust); flex-shrink: 0; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  .alarm-row span { font-size: 0.85rem; color: rgba(255,255,255,0.8); }
+  .alarm-row .alarm-time { margin-left: auto; font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+  .time-badge {
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    background: var(--rust);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  /* SLIDE 3 — PROBLEM */
+  #slide-3 { background: var(--navy); }
+  .problem-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--aqua);
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+  }
+  .problem-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+  .stat-block {
+    margin-top: 2.5rem;
+  }
+  .stat-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.8rem;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--aqua);
+    line-height: 1;
+  }
+  .stat-desc { font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.5; max-width: 200px; }
+  .problem-right {
+    padding-top: 2.5rem;
+  }
+  .crisis-box {
+    background: rgba(194,84,10,0.08);
+    border: 1px solid rgba(194,84,10,0.25);
+    border-radius: 14px;
+    padding: 1.75rem;
+    margin-bottom: 1.2rem;
+  }
+  .crisis-box h4 {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #fb923c;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+  .crisis-box p { font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.6; }
+  .quote-block {
+    border-left: 2px solid var(--aqua);
+    padding-left: 1.25rem;
+    margin-top: 2rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  .quote-block cite { display: block; margin-top: 0.5rem; font-style: normal; font-size: 0.8rem; color: var(--aqua); }
+
+  /* SLIDE 4 — SOLUTION */
+  #slide-4 { background: linear-gradient(160deg, #062030 0%, #0a2535 100%); }
+  .solution-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .solution-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .solution-left h2 em { font-style: italic; color: var(--aqua); }
+  .solution-left p { font-size: 0.95rem; line-height: 1.8; color: rgba(255,255,255,0.65); margin-bottom: 2rem; }
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .feature-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(6,182,212,0.15);
+    border: 1px solid rgba(6,182,212,0.3);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.9rem;
+  }
+  .feature-text strong { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.2rem; }
+  .feature-text span { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.5; }
+
+  /* DASHBOARD MOCKUP */
+  .dashboard-mock {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(6,182,212,0.2);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .dash-header {
+    background: rgba(6,182,212,0.1);
+    border-bottom: 1px solid rgba(6,182,212,0.15);
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .dash-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dash-title { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-left: 0.5rem; letter-spacing: 0.05em; }
+  .dash-body { padding: 1.2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .dash-row {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .dash-widget {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 0.9rem;
+  }
+  .dash-widget .w-label { font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .dash-widget .w-value { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--mint); }
+  .dash-widget .w-sub { font-size: 0.65rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem; }
+  .dash-widget.good .w-value { color: #4ade80; }
+  .dash-widget.warn .w-value { color: #fbbf24; }
+  .dash-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.4rem;
+  }
+  .dash-bar-label { font-size: 0.65rem; color: rgba(255,255,255,0.5); width: 80px; flex-shrink: 0; }
+  .dash-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+  .dash-bar-fill { height: 100%; border-radius: 3px; }
+
+  /* SLIDE 5 — TRACTION */
+  #slide-5 { background: var(--deep); }
+  .traction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .traction-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(6,182,212,0.18);
+    border-radius: 14px;
+    padding: 1.8rem 1.5rem;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .traction-card:hover {
+    border-color: rgba(6,182,212,0.45);
+    background: rgba(6,182,212,0.05);
+  }
+  .traction-card .tc-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--aqua);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .traction-card .tc-label { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .traction-card .tc-desc { font-size: 0.78rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+  .traction-heading {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    margin-bottom: 0.5rem;
+  }
+  .traction-heading h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .pricing-row {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .price-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 1.5rem;
+  }
+  .price-card.featured { border-color: rgba(6,182,212,0.4); background: rgba(6,182,212,0.06); }
+  .price-card .pc-tier { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--aqua); margin-bottom: 0.6rem; }
+  .price-card .pc-price { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .price-card .pc-price span { font-size: 0.85rem; font-weight: 400; color: rgba(255,255,255,0.5); font-family: 'DM Sans', sans-serif; }
+  .price-card .pc-desc { font-size: 0.8rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+  /* SLIDE 6 — ASK */
+  #slide-6 {
+    background: linear-gradient(160deg, #062030 0%, #0a1628 100%);
+    text-align: center;
+  }
+  .ask-layout { max-width: 800px; margin: 0 auto; }
+  .ask-layout h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .ask-layout h2 em { font-style: italic; color: var(--aqua); }
+  .ask-layout .sub { font-size: 1rem; color: rgba(255,255,255,0.55); margin-bottom: 3rem; line-height: 1.7; }
+  .ask-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-bottom: 3rem;
+  }
+  .ask-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(6,182,212,0.2);
+    border-radius: 14px;
+    padding: 1.75rem 1.25rem;
+    text-align: left;
+  }
+  .ask-card .ac-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+  .ask-card .ac-title { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--white); }
+  .ask-card .ac-desc { font-size: 0.8rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+  .closing-line {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--aqua);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+  .closing-sub { font-size: 0.85rem; color: rgba(255,255,255,0.4); letter-spacing: 0.15em; text-transform: uppercase; }
+
+  /* WATER ANIMATION */
+  @keyframes wave {
+    0% { transform: translateX(0) translateY(0); }
+    50% { transform: translateX(-2%) translateY(1%); }
+    100% { transform: translateX(0) translateY(0); }
+  }
+  .wave-path { animation: wave 8s ease-in-out infinite; }
+  .wave-path2 { animation: wave 11s ease-in-out infinite reverse; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--deep); }
+  ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 2px; }
+
+  @media (max-width: 768px) {
+    .slide { padding: 4rem 2rem; }
+    .story-layout, .problem-layout, .solution-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    .story-visual { height: 240px; }
+    .traction-grid { grid-template-columns: 1fr 1fr; }
+    .ask-cards { grid-template-columns: 1fr; }
+    .pricing-row { grid-template-columns: 1fr; }
+    .nav-dots { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" aria-label="Slide navigation">
+  <button class="nav-dot active" onclick="scrollTo(0)" title="Title"></button>
+  <button class="nav-dot" onclick="document.getElementById('slide-2').scrollIntoView({behavior:'smooth'})" title="The Story"></button>
+  <button class="nav-dot" onclick="document.getElementById('slide-3').scrollIntoView({behavior:'smooth'})" title="The Problem"></button>
+  <button class="nav-dot" onclick="document.getElementById('slide-4').scrollIntoView({behavior:'smooth'})" title="The Solution"></button>
+  <button class="nav-dot" onclick="document.getElementById('slide-5').scrollIntoView({behavior:'smooth'})" title="Business Model"></button>
+  <button class="nav-dot" onclick="document.getElementById('slide-6').scrollIntoView({behavior:'smooth'})" title="The Ask"></button>
+</nav>
+
+<!-- SLIDE 1: TITLE -->
+<section class="slide" id="slide-1">
+  <div class="ripple-bg">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+      <ellipse class="wave-path" cx="600" cy="400" rx="700" ry="200" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+      <ellipse class="wave-path2" cx="600" cy="350" rx="550" ry="160" fill="none" stroke="#06b6d4" stroke-width="1"/>
+      <ellipse class="wave-path" cx="600" cy="500" rx="800" ry="250" fill="none" stroke="#06b6d4" stroke-width="0.8" style="animation-delay:-3s"/>
+      <ellipse class="wave-path2" cx="600" cy="450" rx="450" ry="130" fill="none" stroke="#06b6d4" stroke-width="0.6" style="animation-delay:-6s"/>
+    </svg>
+  </div>
+  <div class="slide-inner" style="text-align:center">
+    <p class="title-eyebrow">Investor Pitch · 2026</p>
+    <h1 class="title-main">Upstream<br><em>AI</em></h1>
+    <p class="title-sub">2026 is a water shortage year. Rural operators are managing drought conditions with aging infrastructure and skeleton crews. They need operational intelligence — now.</p>
+    <div class="tag-row">
+      <span class="tag">Water Infrastructure</span>
+      <span class="tag">AI · SaaS</span>
+      <span class="tag">Rural Resilience</span>
+      <span class="tag">Dashboard v5</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 2: THE STORY -->
+<section class="slide" id="slide-2">
+  <div class="ripple-bg">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+      <ellipse class="wave-path" cx="900" cy="600" rx="600" ry="180" fill="none" stroke="#06b6d4" stroke-width="1"/>
+      <ellipse class="wave-path2" cx="200" cy="100" rx="500" ry="150" fill="none" stroke="#06b6d4" stroke-width="0.8"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <div class="story-layout">
+      <div class="story-text">
+        <p class="section-label">Origin Story</p>
+        <h2>Presidents Day.<br>Peak demand.<br><em>A valve from 1974.</em></h2>
+        <p>While thousands of skiers hit the slopes at Vail, the backbone of the resort was quietly failing. A critical air-actuated valve at the valley's wastewater facility gave out under peak load.</p>
+        <p>Our co-founder Rob — the District's Operations Manager — was the only person left who knew how to manually override it. He drove in on his day off, inserted a steel dowel pin, and narrowly avoided a permit violation.</p>
+        <p>That was during a normal year. In a water shortage year like 2026, every gallon matters more. Every treatment failure carries bigger consequences. And the operators who prevent those failures are more stretched than ever.</p>
+        <p>Standing there, Rob asked: <em style="color:rgba(255,255,255,0.85)">"What other near misses are lurking in the shadows — and what happens when there's no one left who knows where to look?"</em></p>
+      </div>
+      <div class="story-visual">
+        <div class="visual-card main-card" style="position:relative">
+          <div style="position:absolute;top:-0.75rem;right:-0.75rem;background:var(--rust);color:white;padding:0.35rem 0.85rem;border-radius:2rem;font-size:0.72rem;font-weight:500;letter-spacing:0.05em">PRESIDENTS DAY · 6:42 AM</div>
+          <div style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:1rem">Active Alarms — Vail Valley WW</div>
+          <div class="alarm-row">
+            <div class="alarm-dot"></div>
+            <span>Influent valve P-17 — actuator fault</span>
+            <span class="alarm-time">06:42</span>
+          </div>
+          <div class="alarm-row">
+            <div class="alarm-dot"></div>
+            <span>Tank 3 level 94% — rising fast</span>
+            <span class="alarm-time">06:44</span>
+          </div>
+          <div class="alarm-row">
+            <div class="alarm-dot" style="animation-delay:0.5s"></div>
+            <span>Flow imbalance — zone 2 offline</span>
+            <span class="alarm-time">06:51</span>
+          </div>
+          <div style="margin-top:1rem;padding:0.8rem 1rem;background:rgba(255,255,255,0.04);border-radius:8px;font-size:0.75rem;color:rgba(255,255,255,0.4)">
+            📄 Manual P-17 override: See Binder C, Shelf 4, pp. 312–318
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 3: THE PROBLEM -->
+<section class="slide" id="slide-3">
+  <div class="slide-inner">
+    <div class="problem-layout">
+      <div class="problem-left">
+        <p class="section-label">The Problem</p>
+        <h2>50,000 utilities.<br>A drought year.<br>A workforce in crisis.</h2>
+        <div class="stat-block">
+          <div class="stat-item">
+            <div class="stat-num">50K</div>
+            <div class="stat-desc">small water & wastewater utilities — most operating blind during the worst shortage conditions in a decade</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">1 in 3</div>
+            <div class="stat-desc">of the most experienced operators are retiring — taking decades of irreplaceable knowledge with them</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">1–5</div>
+            <div class="stat-desc">person teams managing hundreds of alarms, making critical decisions on gut feel during conditions that demand precision</div>
+          </div>
+        </div>
+      </div>
+      <div class="problem-right">
+        <div class="crisis-box">
+          <h4>⚠ Water Shortage, Zero Margin</h4>
+          <p>2026 drought conditions mean lower source water levels, higher treatment demands, and zero room for error. Utilities that waste water through operational inefficiency are the ones that end up on boil notices.</p>
+        </div>
+        <div class="crisis-box">
+          <h4>⚠ Knowledge Drain</h4>
+          <p>When a veteran retires, their process knowledge — built over 30 years of droughts, floods, and equipment failures — walks out the door. There is no system to capture it. Tribal knowledge isn't scalable.</p>
+        </div>
+        <div class="crisis-box">
+          <h4>⚠ Data They Can't Trust</h4>
+          <p>Operators are drowning in alarms from sensors they don't fully trust. They make decisions based on gut feel, not verified data — because nothing verifies it for them. In a shortage year, a bad reading can mean a bad decision with real consequences.</p>
+        </div>
+        <div class="crisis-box">
+          <h4>⚠ Enterprise Tools Don't Fit</h4>
+          <p>Existing platforms (Xylem Vue, AVEVA) require IT teams and data scientists. A 3-person rural utility can't deploy or maintain them. The gap is enormous — and it's widening as conditions get harder.</p>
+        </div>
+        <div class="quote-block">
+          "Operators don't trust their own SCADA data."
+          <cite>— Josh Goldman, Metro Water Recovery</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 4: THE SOLUTION -->
+<section class="slide" id="slide-4">
+  <div class="ripple-bg">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+      <ellipse class="wave-path2" cx="300" cy="600" rx="700" ry="200" fill="none" stroke="#06b6d4" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <div class="solution-layout">
+      <div class="solution-left">
+        <p class="section-label">The Solution · Dashboard v5</p>
+        <h2>The <em>smart brain</em><br>for rural water ops.</h2>
+        <p>Dashboard Version 5 is a ground-up rebuild. Instead of more alarms, operators get a Morning Briefing before they step on-site — overnight events summarized, sensor health scored, a predictive checklist for the day. During a shortage year, that means faster decisions, less waste, and fewer surprises.</p>
+        <ul class="feature-list">
+          <li class="feature-item">
+            <div class="feature-icon">🌅</div>
+            <div class="feature-text">
+              <strong>Morning Briefing</strong>
+              <span>AI-generated overnight summary with prioritized action items — before the first boot hits the ground. New in v5: drought-adjusted baselines and water loss alerts.</span>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">📊</div>
+            <div class="feature-text">
+              <strong>Data Trust Scoring</strong>
+              <span>Every sensor scored 0–100% for reliability. Operators know what to act on and what to question. New in v5: transparent scoring methodology and audit trail.</span>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">💧</div>
+            <div class="feature-text">
+              <strong>Dual-System Monitoring</strong>
+              <span>Wastewater and drinking water on a single pane of glass. New in v5: unified compliance tracking, camera & acoustic AI, and chemical inventory management.</span>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">🧠</div>
+            <div class="feature-text">
+              <strong>Knowledge Capture</strong>
+              <span>SOPs, equipment manuals, and process knowledge stay in the platform — not in a binder on shelf 4. Institutional memory that survives retirements.</span>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-text">
+              <strong>No IT Required</strong>
+              <span>Designed for 1–5 person teams. Connects to existing SCADA. Up and running in days, not months.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="solution-right">
+        <div class="dashboard-mock">
+          <div class="dash-header">
+            <div class="dash-dot" style="background:#ff5f57"></div>
+            <div class="dash-dot" style="background:#fbbf24"></div>
+            <div class="dash-dot" style="background:#4ade80"></div>
+            <span class="dash-title">UPSTREAM AI v5 — MORNING BRIEFING · 5:58 AM</span>
+          </div>
+          <div class="dash-body">
+            <div style="padding:0.75rem;background:rgba(6,182,212,0.07);border:1px solid rgba(6,182,212,0.2);border-radius:8px;font-size:0.78rem;color:rgba(255,255,255,0.75);line-height:1.6">
+              🌤 <strong style="color:var(--mint)">Overnight Summary:</strong> All systems nominal. Flow rates 4% above baseline — consistent with weekend demand. Source well level down 0.3 ft this week. Sensor P-17 flagged for calibration drift. Recommend field check before 9am.
+            </div>
+            <div class="dash-row">
+              <div class="dash-widget good">
+                <div class="w-label">System Health</div>
+                <div class="w-value">94%</div>
+                <div class="w-sub">↑ 2% vs yesterday</div>
+              </div>
+              <div class="dash-widget warn">
+                <div class="w-label">Alerts</div>
+                <div class="w-value">2</div>
+                <div class="w-sub">1 critical, 1 advisory</div>
+              </div>
+              <div class="dash-widget">
+                <div class="w-label">Data Trust</div>
+                <div class="w-value">87%</div>
+                <div class="w-sub">Sensors scored</div>
+              </div>
+            </div>
+            <div style="padding:0.75rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px">
+              <div style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.75rem">Sensor Trust Index</div>
+              <div class="dash-bar-row">
+                <div class="dash-bar-label">Influent Flow</div>
+                <div class="dash-bar-track"><div class="dash-bar-fill" style="width:92%;background:#4ade80"></div></div>
+                <span style="font-size:0.65rem;color:rgba(255,255,255,0.4);width:2.5rem;text-align:right">92%</span>
+              </div>
+              <div class="dash-bar-row">
+                <div class="dash-bar-label">Tank Levels</div>
+                <div class="dash-bar-track"><div class="dash-bar-fill" style="width:88%;background:#4ade80"></div></div>
+                <span style="font-size:0.65rem;color:rgba(255,255,255,0.4);width:2.5rem;text-align:right">88%</span>
+              </div>
+              <div class="dash-bar-row">
+                <div class="dash-bar-label">Valve P-17</div>
+                <div class="dash-bar-track"><div class="dash-bar-fill" style="width:54%;background:#fbbf24"></div></div>
+                <span style="font-size:0.65rem;color:rgba(255,255,255,0.4);width:2.5rem;text-align:right">54%</span>
+              </div>
+            </div>
+            <div style="padding:0.75rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px">
+              <div style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.75rem">Today's Predictive Checklist</div>
+              <div style="display:flex;flex-direction:column;gap:0.4rem">
+                <div style="font-size:0.75rem;color:rgba(255,255,255,0.65);display:flex;gap:0.5rem;align-items:center"><span style="color:#4ade80">✓</span> Review P-17 calibration log</div>
+                <div style="font-size:0.75rem;color:rgba(255,255,255,0.65);display:flex;gap:0.5rem;align-items:center"><span style="color:#fbbf24">→</span> Inspect Tank 3 overflow valve</div>
+                <div style="font-size:0.75rem;color:rgba(255,255,255,0.65);display:flex;gap:0.5rem;align-items:center"><span style="color:rgba(255,255,255,0.3)">○</span> Scheduled: Zone 2 flow balance check</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 5: BUSINESS MODEL -->
+<section class="slide" id="slide-5">
+  <div class="slide-inner">
+    <div class="traction-heading">
+      <div>
+        <p class="section-label">Business Model</p>
+        <h2>Two tiers.<br>One mission.</h2>
+      </div>
+    </div>
+    <div class="pricing-row">
+      <div class="price-card">
+        <div class="pc-tier">Trust Foundation</div>
+        <div class="pc-price">$600 <span>/ month</span></div>
+        <div class="pc-desc">Dashboard v5 with SCADA data visualization, sensor health scoring, Data Trust dashboard, compliance tracking, and historical trend analysis. The foundation every small utility needs — especially when every drop counts.</div>
+      </div>
+      <div class="price-card featured">
+        <div class="pc-tier">Operator Co-Pilot</div>
+        <div class="pc-price">$1,800 <span>/ month</span></div>
+        <div class="pc-desc">Everything in Trust Foundation plus AI Morning Briefing, anomaly detection, predictive checklists, camera & acoustic monitoring, and institutional knowledge capture. The full co-pilot for operators managing shortage conditions with lean teams.</div>
+      </div>
+    </div>
+    <div class="traction-grid" style="margin-top:1.5rem">
+      <div class="traction-card">
+        <div class="tc-num">50K+</div>
+        <div class="tc-label">Addressable Utilities</div>
+        <div class="tc-desc">Small water & wastewater systems across the US, the vast majority underserved by enterprise software.</div>
+      </div>
+      <div class="traction-card">
+        <div class="tc-num">$1B+</div>
+        <div class="tc-label">Addressable Market</div>
+        <div class="tc-desc">Based on Co-Pilot tier penetration of 10% of small utilities — a conservative, near-term target.</div>
+      </div>
+      <div class="traction-card">
+        <div class="tc-num">No IT</div>
+        <div class="tc-label">Required to Deploy</div>
+        <div class="tc-desc">Connects to existing SCADA infrastructure. Operators onboard themselves. Zero data science background needed.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6: THE ASK -->
+<section class="slide" id="slide-6">
+  <div class="ripple-bg">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+      <ellipse class="wave-path" cx="600" cy="500" rx="700" ry="180" fill="none" stroke="#06b6d4" stroke-width="1"/>
+      <ellipse class="wave-path2" cx="600" cy="400" rx="500" ry="140" fill="none" stroke="#06b6d4" stroke-width="0.8"/>
+      <ellipse class="wave-path" cx="600" cy="600" rx="850" ry="220" fill="none" stroke="#06b6d4" stroke-width="0.5" style="animation-delay:-4s"/>
+    </svg>
+  </div>
+  <div class="slide-inner">
+    <div class="ask-layout">
+      <p class="section-label">We're Raising</p>
+      <h2>Rural water can't wait<br>for the <em>next drought</em><br>to modernize.</h2>
+      <p class="sub">2026 is the year this has to happen. We're building the digital backbone for rural water resilience — and we're looking for three things:</p>
+      <div class="ask-cards">
+        <div class="ask-card">
+          <div class="ac-icon">🔧</div>
+          <div class="ac-title">Pilot Partners</div>
+          <div class="ac-desc">Rural operators ready to manage their systems with intelligence during the toughest water year in a decade. Dashboard v5 is built for you.</div>
+        </div>
+        <div class="ask-card">
+          <div class="ac-icon">🛡️</div>
+          <div class="ac-title">Advisors</div>
+          <div class="ac-desc">Expertise in securing AI for critical infrastructure. Help us build something that utilities can trust with their most important systems — when the stakes are highest.</div>
+        </div>
+        <div class="ask-card">
+          <div class="ac-icon">🌊</div>
+          <div class="ac-title">Mission-Aligned Investors</div>
+          <div class="ac-desc">Who believe that rural infrastructure deserves the same intelligent tooling as enterprise — and see the urgency of a market that can't wait another cycle.</div>
+        </div>
+      </div>
+      <div class="closing-line">We are Upstream AI.</div>
+      <div class="closing-sub">getupstream.ai</div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Intersection observer for slide animations
+  const slides = document.querySelectorAll('.slide-inner');
+  const dots = document.querySelectorAll('.nav-dot');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // Active dot tracking
+  const sections = document.querySelectorAll('.slide');
+  const dotObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(sections).indexOf(entry.target);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { threshold: 0.5 });
+
+  sections.forEach(s => dotObserver.observe(s));
+</script>
+</body>
+</html>
