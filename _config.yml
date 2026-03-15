@@ -1,0 +1,9 @@
+# GitHub Pages configuration
+# Disables Jekyll processing — serve static files directly
+plugins: []
+exclude:
+  - README.md
+  - DEPLOYMENT.md
+  - FORM_SETUP.md
+  - vercel.json
+  - _headers

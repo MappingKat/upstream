@@ -1,21 +1,20 @@
+# Upstream AI — getupstream.ai
 User-agent: *
 Allow: /
+Disallow: /preview.html
+Disallow: /pilot.html
 
-# Sitemap location
-Sitemap: https://getupstream.ai/sitemap.xml
-
-# AI agent / LLM crawlers - welcome, this is public marketing content
+# Allow major AI crawlers explicitly
 User-agent: GPTBot
 Allow: /
 
-User-agent: Claude-Web
-Allow: /
-
-User-agent: anthropic-ai
+User-agent: ClaudeBot
 Allow: /
 
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: Applebot
-Allow: /
+User-agent: Bytespider
+Disallow: /
+
+Sitemap: https://getupstream.ai/sitemap.xml
