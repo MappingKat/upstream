@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upstream AI · Platform Preview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Mono:wght@400;500&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --navy: #1a3a5c; --navy-dark: #0d2440; --navy-light: #234d78;
+    --navy-dim: rgba(255,255,255,0.12); --accent: #2e86ab;
+    --water: #a8e6cf; --water-dim: rgba(168,230,207,0.15);
+    --bg: #f4f6f8; --surface: #ffffff;
+    --border: #e2e8f0; --border-mid: #d0d9e4;
+    --text: #0a1628; --text-mid: #4a5568; --text-dim: #8a9bb0;
+    --green: #27ae60; --green-bg: #eafaf2; --green-border: rgba(39,174,96,0.25);
+    --yellow: #d97706; --yellow-bg: #fffbeb; --yellow-border: rgba(217,119,6,0.25);
+    --red: #dc2626; --red-bg: #fff5f5; --red-border: rgba(220,38,38,0.25);
+    --purple: #7c3aed; --purple-bg: #f5f3ff;
+    --sidebar-w: 220px;
+  }
+  body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+
+  /* GATE */
+  #gate { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px; background:linear-gradient(135deg,#e8f4f8 0%,#f0f4ff 50%,#e8f8f0 100%); }
+  #gate.hidden { display:none; }
+  .gate-box { background:#fff; border:1px solid var(--border); border-radius:20px; padding:52px 44px; max-width:420px; width:100%; text-align:center; box-shadow:0 8px 40px rgba(26,58,92,0.12); }
+  .gate-logo { font-size:24px; font-weight:600; color:var(--navy); margin-bottom:4px; letter-spacing:-0.5px; }
+  .gate-logo em { font-family:'Playfair Display',serif; font-style:italic; font-weight:700; color:var(--accent); }
+  .gate-sub { font-size:13px; color:var(--text-dim); margin-bottom:10px; }
+  .gate-badge { display:inline-flex; align-items:center; gap:6px; background:var(--green-bg); border:1px solid var(--green-border); border-radius:20px; padding:5px 14px; font-size:11px; font-weight:600; color:var(--green); letter-spacing:0.5px; margin-bottom:32px; text-transform:uppercase; }
+  .gate-badge:before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); }
+  .gate-input { width:100%; padding:14px 16px; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; color:var(--text); font-family:'DM Mono',monospace; font-size:16px; text-align:center; letter-spacing:3px; outline:none; transition:border-color .2s,box-shadow .2s; }
+  .gate-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(46,134,171,0.12); }
+  .gate-btn { width:100%; margin-top:12px; padding:14px; background:var(--navy); border:none; border-radius:10px; color:#fff; font-family:'Inter',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:background .2s,transform .1s; }
+  .gate-btn:hover { background:var(--accent); transform:translateY(-1px); }
+  .gate-error { font-size:12px; color:var(--red); margin-top:8px; display:none; }
+  .gate-error.show { display:block; }
+  .gate-note { font-size:11px; color:var(--text-dim); margin-top:24px; line-height:1.7; }
+
+  /* APP SHELL */
+  #app { display:none; min-height:100vh; }
+  #app.visible { display:flex; }
+
+  /* SIDEBAR */
+  .sidebar { width:var(--sidebar-w); min-height:100vh; background:var(--navy); display:flex; flex-direction:column; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; }
+  .sidebar-brand { padding:24px 20px 20px; border-bottom:1px solid var(--navy-dim); }
+  .sidebar-logo { font-size:18px; font-weight:600; color:#fff; letter-spacing:-0.5px; }
+  .sidebar-logo em { font-family:'Playfair Display',serif; font-style:italic; color:var(--water); font-weight:700; }
+  .sidebar-tagline { font-size:10px; color:rgba(255,255,255,0.45); margin-top:3px; text-transform:uppercase; letter-spacing:1px; }
+  .sidebar-district { margin:16px; background:rgba(255,255,255,0.07); border-radius:8px; padding:10px 12px; }
+  .sidebar-district-name { font-size:12px; font-weight:600; color:#fff; }
+  .sidebar-district-sub { font-size:10px; color:rgba(255,255,255,0.45); margin-top:2px; }
+  .sidebar-live { display:flex; align-items:center; gap:5px; margin-top:6px; font-size:10px; color:var(--water); font-weight:500; }
+  .sidebar-live:before { content:''; width:6px; height:6px; border-radius:50%; background:var(--water); flex-shrink:0; animation:pulse-dot 2s infinite; }
+  .sidebar-section { padding:10px 16px 4px; font-size:9px; font-weight:700; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:1.5px; }
+  .sidebar-item { display:flex; align-items:center; gap:10px; padding:9px 16px; margin:1px 8px; border-radius:8px; cursor:pointer; color:rgba(255,255,255,0.6); font-size:13px; font-weight:500; transition:background .15s,color .15s; user-select:none; }
+  .sidebar-item:hover { background:rgba(255,255,255,0.07); color:#fff; }
+  .sidebar-item.active { background:rgba(255,255,255,0.12); color:#fff; }
+  .sidebar-item .si-icon { font-size:14px; width:18px; text-align:center; flex-shrink:0; }
+  .sidebar-item .si-badge { margin-left:auto; background:var(--red); color:#fff; font-size:9px; font-weight:700; border-radius:10px; padding:2px 6px; }
+  .sidebar-item .si-new { margin-left:auto; background:var(--water); color:var(--navy-dark); font-size:9px; font-weight:700; border-radius:10px; padding:2px 7px; text-transform:uppercase; }
+  .sidebar-item .si-ai { margin-left:auto; background:var(--purple); color:#fff; font-size:9px; font-weight:700; border-radius:10px; padding:2px 7px; text-transform:uppercase; }
+  .sidebar-footer { margin-top:auto; padding:16px; border-top:1px solid var(--navy-dim); }
+  .sidebar-user { display:flex; align-items:center; gap:10px; }
+  .sidebar-avatar { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--water)); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; flex-shrink:0; }
+  .sidebar-user-info { flex:1; min-width:0; }
+  .sidebar-user-name { font-size:12px; font-weight:600; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sidebar-user-role { font-size:10px; color:rgba(255,255,255,0.4); }
+  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* MAIN */
+  .main { flex:1; min-width:0; display:flex; flex-direction:column; }
+  .topbar { background:#fff; border-bottom:1px solid var(--border); padding:0 24px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:10; }
+  .topbar-left { font-size:13px; color:var(--text-dim); }
+  .topbar-right { display:flex; align-items:center; gap:12px; }
+  .topbar-clock { font-family:'DM Mono',monospace; font-size:12px; color:var(--text-mid); background:var(--bg); padding:4px 10px; border-radius:6px; border:1px solid var(--border); }
+  .topbar-alert { display:flex; align-items:center; gap:5px; background:var(--red-bg); border:1px solid var(--red-border); border-radius:20px; padding:5px 12px; font-size:11px; font-weight:600; color:var(--red); cursor:pointer; }
+  .topbar-status { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--green); }
+  .topbar-status:before { content:''; width:7px; height:7px; border-radius:50%; background:var(--green); }
+
+  /* PAGE */
+  .content { padding:24px; }
+  .tab-view { display:none; }
+  .tab-view.active { display:block; }
+  .page-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; }
+  .page-title { font-size:26px; font-weight:600; color:var(--navy); letter-spacing:-0.5px; line-height:1.2; }
+  .page-title em { font-family:'Playfair Display',serif; font-style:italic; font-weight:700; }
+  .page-sub { font-size:13px; color:var(--text-mid); margin-top:4px; }
+
+  /* CARDS */
+  .card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:16px; }
+  .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .card-title { font-size:13px; font-weight:600; color:var(--navy); }
+  .card-action { font-size:11px; color:var(--accent); cursor:pointer; font-weight:500; }
+  .card-action:hover { text-decoration:underline; }
+
+  /* METRICS */
+  .metrics-row { display:grid; gap:12px; margin-bottom:16px; }
+  .metrics-5 { grid-template-columns:repeat(5,1fr); }
+  .metrics-6 { grid-template-columns:repeat(6,1fr); }
+  .metric-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px; position:relative; overflow:hidden; }
+  .metric-accent { position:absolute; top:0; left:0; right:0; height:3px; border-radius:12px 12px 0 0; }
+  .metric-label { font-size:10px; font-weight:600; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; margin-top:8px; }
+  .metric-value { font-size:28px; font-weight:700; color:var(--navy); letter-spacing:-1px; line-height:1; }
+  .metric-unit { font-size:12px; font-weight:500; color:var(--text-mid); margin-left:3px; }
+  .metric-trust { font-size:11px; font-weight:600; margin-top:6px; }
+  .trust-high { color:var(--green); } .trust-mid { color:var(--yellow); } .trust-low { color:var(--red); }
+  .metric-trend { font-size:10px; color:var(--text-dim); margin-top:3px; font-family:'DM Mono',monospace; }
+
+  /* TAGS */
+  .tag { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:0.5px; }
+  .tag-ok { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+  .tag-warn { background:var(--yellow-bg); color:var(--yellow); border:1px solid var(--yellow-border); }
+  .tag-alert { background:var(--red-bg); color:var(--red); border:1px solid var(--red-border); }
+  .tag-ai { background:var(--purple-bg); color:var(--purple); border:1px solid rgba(124,58,237,0.25); }
+  .tag-info { background:#f0f4ff; color:#3b5ce4; border:1px solid rgba(59,92,228,0.2); }
+  .tag-navy { background:rgba(26,58,92,0.08); color:var(--navy); border:1px solid rgba(26,58,92,0.15); }
+  .tag-mint { background:#eafaf2; color:#059669; border:1px solid rgba(5,150,105,0.25); }
+
+  /* GRIDS */
+  .grid-2-1 { display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:16px; }
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px; }
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+
+  /* ALERTS */
+  .alert-item { display:flex; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; }
+  .alert-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+  .alert-body { flex:1; min-width:0; }
+  .alert-title { font-size:12px; font-weight:600; color:var(--text); }
+  .alert-desc { font-size:11px; color:var(--text-mid); margin-top:3px; line-height:1.5; }
+  .alert-time { font-size:10px; color:var(--text-dim); margin-top:4px; font-family:'DM Mono',monospace; }
+
+  /* TABLE */
+  .data-table { width:100%; border-collapse:collapse; }
+  .data-table th { font-size:10px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.8px; padding:0 8px 10px; text-align:left; border-bottom:1px solid var(--border); }
+  .data-table td { font-size:12px; padding:9px 8px; border-bottom:1px solid var(--border); color:var(--text-mid); }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table tr:hover td { background:var(--bg); }
+  .data-table td:first-child { color:var(--text); font-weight:500; }
+  .mono { font-family:'DM Mono',monospace; font-size:11px; }
+
+  /* NAV LINK CARDS */
+  .nav-link-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .nav-link-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px 20px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:box-shadow .15s,border-color .15s; }
+  .nav-link-card:hover { box-shadow:0 4px 20px rgba(26,58,92,0.10); border-color:var(--accent); }
+  .nav-link-label { font-size:10px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px; }
+  .nav-link-title { font-size:14px; font-weight:600; color:var(--navy); margin-bottom:8px; }
+  .nav-link-tags { display:flex; gap:5px; flex-wrap:wrap; }
+  .nav-link-arrow { font-size:18px; color:var(--text-dim); flex-shrink:0; margin-left:12px; }
+
+  /* PUMP STATUS */
+  .pump-row { display:flex; gap:10px; padding:14px 18px 18px; }
+  .pump-card { flex:1; background:var(--bg); border-radius:8px; padding:12px; }
+  .pump-name { font-size:10px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; }
+  .pump-dot { width:7px; height:7px; border-radius:50%; }
+  .pump-val { font-family:'DM Mono',monospace; font-size:18px; font-weight:700; }
+  .pump-sub { font-size:10px; color:var(--text-dim); margin-top:3px; }
+
+  /* GARMIN */
+  .garmin-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px; text-align:center; }
+  .garmin-label { font-size:9px; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+  .garmin-status { font-size:11px; font-weight:700; margin-top:2px; }
+  .garmin-sub { font-size:10px; color:var(--text-dim); margin-top:2px; }
+
+  /* COMPLIANCE BARS */
+  .compliance-row { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .compliance-param { font-size:11px; font-weight:600; color:var(--navy); width:38px; flex-shrink:0; }
+  .compliance-bar-wrap { flex:1; }
+  .compliance-bar-bg { background:var(--bg); border-radius:4px; height:8px; overflow:hidden; border:1px solid var(--border); }
+  .compliance-bar-fill { height:100%; border-radius:4px; transition:width .5s; }
+  .compliance-pct { font-family:'DM Mono',monospace; font-size:11px; font-weight:600; width:32px; text-align:right; }
+
+  /* OBS TABLE */
+  .obs-grid { display:grid; grid-template-columns:180px repeat(6,1fr) 110px; }
+  .obs-header { background:var(--navy); color:rgba(255,255,255,0.7); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; padding:9px 10px; }
+  .obs-header:first-child { border-radius:8px 0 0 0; }
+  .obs-header:last-child { border-radius:0 8px 0 0; }
+  .obs-cell { padding:9px 10px; border-bottom:1px solid var(--border); border-right:1px solid var(--border); font-size:12px; color:var(--text-mid); display:flex; align-items:center; background:#fff; }
+  .obs-cell:last-child { border-right:none; }
+  .obs-input { width:100%; padding:5px 8px; border:1.5px solid var(--border); border-radius:6px; font-family:'DM Mono',monospace; font-size:12px; color:var(--text); background:#fff; outline:none; transition:border-color .2s; }
+  .obs-input:focus { border-color:var(--accent); }
+  .obs-status-ok { color:var(--green); font-size:11px; font-weight:600; }
+  .obs-status-warn { color:var(--yellow); font-size:11px; font-weight:600; }
+  .obs-status-alert { color:var(--red); font-size:11px; font-weight:600; }
+
+  /* TOGGLE */
+  .toggle-group { display:flex; gap:3px; background:var(--bg); border-radius:8px; padding:3px; }
+  .toggle-btn { padding:6px 14px; border-radius:6px; border:none; background:transparent; color:var(--text-dim); font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; font-family:'Inter',sans-serif; }
+  .toggle-btn.active { background:#fff; color:var(--navy); box-shadow:0 1px 4px rgba(26,58,92,0.10); }
+
+  /* SUBNAV */
+  .subnav { display:flex; gap:3px; background:var(--bg); border-radius:8px; padding:3px; margin-bottom:16px; width:fit-content; }
+  .subnav-btn { padding:7px 16px; border-radius:6px; border:none; background:transparent; color:var(--text-dim); font-size:13px; font-weight:500; cursor:pointer; transition:all .15s; font-family:'Inter',sans-serif; }
+  .subnav-btn.active { background:#fff; color:var(--navy); font-weight:600; box-shadow:0 1px 4px rgba(26,58,92,0.10); }
+
+  /* O&M ROWS */
+  .sop-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+  .sop-row:last-child { border-bottom:none; }
+  .sop-id { font-family:'DM Mono',monospace; font-size:10px; color:var(--text-dim); width:58px; flex-shrink:0; }
+  .chem-row { margin-bottom:16px; }
+  .chem-name { font-size:13px; font-weight:600; color:var(--navy); margin-bottom:6px; }
+  .chem-bar-wrap { position:relative; height:8px; background:var(--bg); border-radius:99px; border:1px solid var(--border); overflow:visible; }
+  .chem-bar-fill { height:100%; border-radius:99px; }
+  .chem-reorder { position:absolute; top:-3px; width:2px; height:14px; background:var(--yellow); border-radius:1px; }
+  .chem-meta { display:flex; justify-content:space-between; font-size:10px; color:var(--text-dim); margin-top:3px; }
+  .maint-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+  .maint-row:last-child { border-bottom:none; }
+  .maint-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .doc-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+  .doc-row:last-child { border-bottom:none; }
+  .doc-icon { width:34px; height:34px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; border:1px solid var(--border); }
+  .cal-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+  .cal-row:last-child { border-bottom:none; }
+  .cal-date { font-family:'DM Mono',monospace; font-size:12px; font-weight:700; width:52px; flex-shrink:0; }
+
+  /* CAMERAS */
+  .camera-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px; }
+  .camera-card { background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .camera-feed { position:relative; height:180px; background:#0a0f18; overflow:hidden; }
+  .camera-sim { position:absolute; inset:0; }
+  .basin-bg { width:100%; height:100%; background:linear-gradient(180deg,#08111a 0%,#0d1e2e 60%,#0a1518 100%); position:relative; overflow:hidden; }
+  .basin-water { position:absolute; bottom:0; left:0; right:0; height:65%; background:linear-gradient(180deg,#1a4060 0%,#0d2030 100%); }
+  .basin-foam { position:absolute; top:0; left:0; right:0; height:35%; background:rgba(220,220,210,0.25); border-radius:2px; }
+  .basin-bubble { position:absolute; background:rgba(200,220,255,0.3); border-radius:50%; animation:rise 3s infinite; }
+  @keyframes rise { 0%{transform:translateY(0);opacity:0.6} 100%{transform:translateY(-60px);opacity:0} }
+  .camera-scanline { position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px); pointer-events:none; }
+  .camera-overlay { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:8px 10px; pointer-events:none; }
+  .cam-top-row,.cam-bottom-row { display:flex; align-items:center; justify-content:space-between; }
+  .cam-label { font-family:'DM Mono',monospace; font-size:9px; color:rgba(255,255,255,0.7); letter-spacing:1px; }
+  .cam-rec { font-size:9px; font-weight:700; color:#ff4444; letter-spacing:1px; animation:blink-rec 1s step-start infinite; }
+  @keyframes blink-rec { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .cam-timestamp { font-family:'DM Mono',monospace; font-size:9px; color:rgba(255,255,255,0.5); }
+  .cam-alert-badge { font-size:9px; font-weight:700; padding:3px 8px; border-radius:4px; letter-spacing:0.5px; }
+  .cam-alert-ok { background:rgba(39,174,96,0.8); color:#fff; }
+  .cam-alert-warn { background:rgba(217,119,6,0.85); color:#fff; }
+  .cam-alert-detect { background:rgba(220,38,38,0.85); color:#fff; }
+  .camera-info { padding:12px 14px; }
+  .cam-name { font-size:12px; font-weight:600; color:var(--navy); margin-bottom:4px; }
+  .cam-status { font-size:11px; margin-bottom:8px; }
+  .cam-status.ok { color:var(--green); } .cam-status.warn { color:var(--yellow); } .cam-status.detect { color:var(--red); }
+  .detection-events { display:flex; flex-wrap:wrap; gap:4px; }
+  .det-tag { font-size:10px; font-weight:600; padding:3px 8px; border-radius:10px; }
+  .det-tag-ok { background:var(--green-bg); color:var(--green); }
+  .det-tag-warn { background:var(--yellow-bg); color:var(--yellow); }
+  .det-tag-alert { background:var(--red-bg); color:var(--red); }
+
+  /* WAVEFORM */
+  .waveform { display:flex; align-items:flex-end; gap:2px; height:60px; padding:4px 0; }
+  .wave-bar { width:7px; border-radius:2px 2px 0 0; transition:height .3s; flex-shrink:0; }
+  .wave-bar.normal { background:rgba(168,230,207,0.6); }
+  .wave-bar.anomaly { background:var(--red); }
+  .audio-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px; }
+
+  /* AI BRIEFING */
+  .briefing-header { display:flex; align-items:center; gap:16px; background:var(--navy); color:#fff; border-radius:12px; padding:20px 24px; margin-bottom:16px; }
+  .briefing-avatar { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--water)); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .briefing-title { font-size:20px; font-weight:600; letter-spacing:-0.5px; }
+  .briefing-title em { font-family:'Playfair Display',serif; font-style:italic; color:var(--water); }
+  .briefing-meta { font-size:12px; color:rgba(255,255,255,0.6); margin-top:3px; }
+  .briefing-trust { margin-left:auto; text-align:right; }
+  .briefing-trust-val { font-size:28px; font-weight:700; color:var(--water); font-family:'DM Mono',monospace; }
+  .briefing-trust-label { font-size:10px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; }
+  .briefing-section { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:12px; }
+  .briefing-section-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+  .briefing-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+  .briefing-item:last-child { border-bottom:none; }
+  .briefing-item-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+  .briefing-item-text { flex:1; font-size:12px; color:var(--text); line-height:1.5; }
+  .briefing-item-time { font-family:'DM Mono',monospace; font-size:10px; color:var(--text-dim); flex-shrink:0; margin-top:2px; }
+  .action-item { display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; }
+  .action-num { width:22px; height:22px; border-radius:50%; background:var(--navy); color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .action-body { flex:1; }
+  .action-title { font-size:12px; font-weight:600; color:var(--navy); }
+  .action-desc { font-size:11px; color:var(--text-mid); margin-top:2px; line-height:1.5; }
+
+  /* BUTTONS */
+  .btn-primary { background:var(--navy); border:none; color:#fff; padding:8px 16px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s; font-family:'Inter',sans-serif; }
+  .btn-primary:hover { background:var(--accent); }
+  .btn-outline { background:#fff; border:1px solid var(--border); color:var(--text-mid); padding:8px 16px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; transition:background .15s; font-family:'Inter',sans-serif; }
+  .btn-outline:hover { background:var(--bg); }
+  .btn-link { background:none; border:none; color:var(--accent); font-size:12px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; padding:0; }
+</style>
+</head>
+<body>
+
+<!-- ACCESS GATE (loaded from gate.js) -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-logo"><em>Upstream</em> AI</div>
+    <div class="gate-sub">Platform Preview · Confidential</div>
+    <div class="gate-badge">v6 · Dashboard Mockup</div>
+    <input type="text" class="gate-input" id="gateInput" placeholder="Enter access code" autocomplete="off" style="-webkit-text-security:disc" onkeydown="if(event.key==='Enter')verifyAccess()">
+    <div class="gate-error" id="gateError">Incorrect code. Try again.</div>
+    <button class="gate-btn" onclick="verifyAccess()">Enter Preview →</button>
+    <div class="gate-note">This preview is confidential and intended for authorized stakeholders only. Do not share or distribute.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo"><em>Upstream</em> AI</div>
+      <div class="sidebar-tagline">Water Intelligence Platform</div>
+    </div>
+    <div class="sidebar-district">
+      <div class="sidebar-district-name">Maplewood San. &amp; Water Dist.</div>
+      <div class="sidebar-district-sub">MSWD · Maplewood, CO</div>
+      <div class="sidebar-live">Live · All sensors online</div>
+    </div>
+
+    <div class="sidebar-section">Operations</div>
+    <div class="sidebar-item active" onclick="showTab('wastewater',this)">
+      <span class="si-icon">⊞</span> Wastewater
+      <span class="si-badge">3</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('drinking',this)">
+      <span class="si-icon">💧</span> Drinking Water
+      <span class="si-new">New</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('observations',this)">
+      <span class="si-icon">📋</span> Daily Observations
+    </div>
+    <div class="sidebar-item" onclick="showTab('alerts',this)">
+      <span class="si-icon">🔔</span> Alerts
+      <span class="si-badge">3</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('cameras',this)">
+      <span class="si-icon">📷</span> Cameras
+      <span class="si-new">New</span>
+    </div>
+
+    <div class="sidebar-section">Intelligence</div>
+    <div class="sidebar-item" onclick="showTab('trends',this)">
+      <span class="si-icon">📈</span> Trends
+    </div>
+    <div class="sidebar-item" onclick="showTab('compliance',this)">
+      <span class="si-icon">✓</span> Compliance
+    </div>
+    <div class="sidebar-item" onclick="showTab('briefing',this)">
+      <span class="si-icon">✦</span> AI Briefing
+      <span class="si-ai">AI</span>
+    </div>
+
+    <div class="sidebar-section">Resources</div>
+    <div class="sidebar-item" onclick="showTab('om',this)">
+      <span class="si-icon">🔧</span> O&amp;M Resources
+      <span class="si-new">New</span>
+    </div>
+    <div class="sidebar-item" onclick="showTab('reports',this)">
+      <span class="si-icon">📄</span> Board Reports
+    </div>
+    <div class="sidebar-item" onclick="showTab('trust',this)">
+      <span class="si-icon">🛡</span> Data Trust
+    </div>
+    <div class="sidebar-item" onclick="showTab('datalake',this)">
+      <span class="si-icon">🔒</span> Secure Data Lake
+      <span class="si-new">New</span>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">J</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">J. Martinez</div>
+          <div class="sidebar-user-role">Lead Operator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">Maplewood San. &amp; Water District &nbsp;·&nbsp; SCADA Live</div>
+      <div class="topbar-right">
+        <div class="topbar-status">All systems nominal</div>
+        <div class="topbar-alert" onclick="showTab('alerts',document.querySelector('[onclick*=alerts]'))">⚠ 3 Active Alerts</div>
+        <div class="topbar-clock" id="clock">07:14 AM</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ══ WASTEWATER OVERVIEW ══ -->
+      <div class="tab-view active" id="tab-wastewater">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Good morning, <em>J. Martinez.</em></div>
+            <div class="page-sub">Thursday, Mar 8 · Wastewater Overview · System status: <strong style="color:var(--green)">Stable</strong> · 3 alerts pending</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="tag tag-ok">All systems nominal</span>
+            <span class="tag tag-ai">✦ AI watching</span>
+          </div>
+        </div>
+
+        <div class="metrics-row metrics-6">
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Influent Flow</div>
+            <div class="metric-value">0.42<span class="metric-unit">MGD</span></div>
+            <div class="metric-trust trust-high">✓ Trust 94%</div>
+            <div class="metric-trend">↑ +3% vs yesterday</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Effluent Flow</div>
+            <div class="metric-value">0.39<span class="metric-unit">MGD</span></div>
+            <div class="metric-trust trust-high">✓ Trust 93%</div>
+            <div class="metric-trend">→ Discharge normal</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--yellow)"></div>
+            <div class="metric-label">Dissolved O₂</div>
+            <div class="metric-value">1.4<span class="metric-unit">mg/L</span></div>
+            <div class="metric-trust trust-mid">⚠ Trust 88%</div>
+            <div class="metric-trend">↓ Below 2.0 baseline</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">pH Effluent</div>
+            <div class="metric-value">7.2<span class="metric-unit">S.U.</span></div>
+            <div class="metric-trust trust-high">✓ Trust 91%</div>
+            <div class="metric-trend">→ Stable 24hrs</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--yellow)"></div>
+            <div class="metric-label">SVI</div>
+            <div class="metric-value">137<span class="metric-unit">mL/g</span></div>
+            <div class="metric-trust trust-mid">↑ Trust 76%</div>
+            <div class="metric-trend">8-week uptrend</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Chlorine Dose</div>
+            <div class="metric-value">0.8<span class="metric-unit">mg/L</span></div>
+            <div class="metric-trust trust-high">✓ Trust 85%</div>
+            <div class="metric-trend">→ Disinfection normal</div>
+          </div>
+        </div>
+
+        <div class="grid-2-1">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Dissolved O₂ Basin 1 — Last 24 hrs</span>
+              <span class="tag tag-warn">Below baseline</span>
+            </div>
+            <svg width="100%" viewBox="0 0 400 100" preserveAspectRatio="none" style="height:110px;">
+              <defs>
+                <linearGradient id="doGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#27ae60" stop-opacity="0.15"/><stop offset="100%" stop-color="#27ae60" stop-opacity="0"/></linearGradient>
+                <linearGradient id="actGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d97706" stop-opacity="0.12"/><stop offset="100%" stop-color="#d97706" stop-opacity="0"/></linearGradient>
+              </defs>
+              <path d="M0,30 L400,30 L400,50 L0,50 Z" fill="rgba(39,174,96,0.06)"/>
+              <line x1="0" y1="30" x2="400" y2="30" stroke="#27ae60" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+              <line x1="0" y1="50" x2="400" y2="50" stroke="#27ae60" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+              <text x="6" y="28" font-size="9" fill="#27ae60" opacity="0.7" font-family="monospace">BASELINE 2.0–2.5</text>
+              <line x1="0" y1="75" x2="400" y2="75" stroke="#dc2626" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+              <text x="6" y="72" font-size="9" fill="#dc2626" opacity="0.7" font-family="monospace">CRITICAL 1.0</text>
+              <path d="M0,40 C30,38 60,35 100,40 C140,45 180,42 220,38 C260,34 300,36 340,40 C370,43 395,38 400,40 L400,110 L0,110 Z" fill="url(#doGrad)"/>
+              <path d="M0,40 C30,38 60,35 100,40 C140,45 180,42 220,38 C260,34 300,36 340,40 C370,43 395,38 400,40" fill="none" stroke="#27ae60" stroke-width="1.5" opacity="0.6"/>
+              <path d="M0,42 C20,40 40,38 70,45 C100,52 130,55 160,60 C190,65 220,68 260,72 C290,75 320,70 360,73 C380,74 395,76 400,78 L400,110 L0,110 Z" fill="url(#actGrad)"/>
+              <path d="M0,42 C20,40 40,38 70,45 C100,52 130,55 160,60 C190,65 220,68 260,72 C290,75 320,70 360,73 C380,74 395,76 400,78" fill="none" stroke="#d97706" stroke-width="2.5"/>
+              <circle cx="400" cy="78" r="4" fill="#d97706"/>
+              <text x="354" y="70" font-size="10" fill="#d97706" font-family="monospace">1.4 mg/L</text>
+            </svg>
+            <div style="display:flex;gap:16px;margin-top:8px;">
+              <span style="font-size:11px;color:var(--green)">── Baseline (2.0–2.5)</span>
+              <span style="font-size:11px;color:var(--yellow)">── Actual</span>
+              <span style="font-size:11px;color:var(--red)">- - Critical (1.0)</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Active Alerts</span><span class="card-action" onclick="showTab('alerts',document.querySelector('[onclick*=alerts]'))">View all</span></div>
+            <div class="alert-item" style="border-color:var(--yellow-border);background:var(--yellow-bg);">
+              <div class="alert-dot" style="background:var(--yellow);"></div>
+              <div class="alert-body">
+                <div class="alert-title">DO Declining</div>
+                <div class="alert-desc">Aeration underperforming. Check blower output and diffusers.</div>
+                <div class="alert-time">2h ago · <span style="color:var(--yellow)">Trust 88%</span></div>
+              </div>
+            </div>
+            <div class="alert-item" style="border-color:var(--yellow-border);">
+              <div class="alert-dot" style="background:var(--yellow);"></div>
+              <div class="alert-body">
+                <div class="alert-title">SVI Upward 8wk</div>
+                <div class="alert-desc">Filamentous bulking developing — confirm with microscopy.</div>
+                <div class="alert-time">8d trend · <span style="color:var(--yellow)">Trust 76%</span></div>
+              </div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-dot" style="background:var(--green);"></div>
+              <div class="alert-body">
+                <div class="alert-title">Flow Normal</div>
+                <div class="alert-desc">Within expected daily range for this weekday.</div>
+                <div class="alert-time">Now · <span style="color:var(--green)">Trust 96%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nav link cards -->
+        <div class="nav-link-row">
+          <div class="nav-link-card" onclick="showTab('compliance',document.querySelector('[onclick*=compliance]'))">
+            <div>
+              <div class="nav-link-label">Permit Compliance</div>
+              <div class="nav-link-title">No Exceedances This Month</div>
+              <div class="nav-link-tags">
+                <span class="tag tag-alert">TSS 93%</span>
+                <span class="tag tag-warn">NH₃ 80%</span>
+                <span class="tag tag-ok">BOD₅</span>
+                <span class="tag tag-ok">Fecal Col.</span>
+              </div>
+            </div>
+            <div class="nav-link-arrow">→</div>
+          </div>
+          <div class="nav-link-card" onclick="showTab('observations',document.querySelector('[onclick*=observations]'))">
+            <div>
+              <div class="nav-link-label">Daily Observations</div>
+              <div class="nav-link-title">Today's Log — J. Martinez</div>
+              <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">HRT 8.2 h · MLSS 2,850 mg/L · Minor foam in AB2</div>
+            </div>
+            <div class="nav-link-arrow">→</div>
+          </div>
+        </div>
+
+        <!-- Pump Status -->
+        <div class="card" style="padding:0;overflow:hidden;">
+          <div class="card-header" style="padding:14px 18px 0;"><span class="card-title">Pump Status</span><span class="tag tag-ok">All Online</span></div>
+          <div class="pump-row">
+            <div class="pump-card">
+              <div class="pump-name">Pump 1 — Influent <span class="pump-dot" style="background:var(--green)"></span></div>
+              <div class="pump-val" style="color:var(--green)">42 A</div>
+              <div class="pump-sub">6.2 h today</div>
+            </div>
+            <div class="pump-card">
+              <div class="pump-name">Pump 2 — RAS <span class="pump-dot" style="background:var(--green)"></span></div>
+              <div class="pump-val" style="color:var(--green)">38 A</div>
+              <div class="pump-sub">Continuous</div>
+            </div>
+            <div class="pump-card">
+              <div class="pump-name">Pump 3 — WAS <span class="pump-dot" style="background:var(--green)"></span></div>
+              <div class="pump-val" style="color:var(--green)">21 A</div>
+              <div class="pump-sub">0.8 h today</div>
+            </div>
+            <div class="pump-card">
+              <div class="pump-name">Blower 1 <span class="pump-dot" style="background:var(--yellow)"></span></div>
+              <div class="pump-val" style="color:var(--yellow)">61 A</div>
+              <div class="pump-sub">High draw</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ DRINKING WATER ══ -->
+      <div class="tab-view" id="tab-drinking">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><em>Drinking Water</em> Overview</div>
+            <div class="page-sub">Thursday, Mar 8 · Distribution system monitoring · 4 active zones</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="tag tag-ok">TCR Compliant</span>
+            <span class="tag tag-ai">✦ AI watching</span>
+          </div>
+        </div>
+
+        <div class="metrics-row metrics-6">
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Pump Flow</div>
+            <div class="metric-value">0.28<span class="metric-unit">MGD</span></div>
+            <div class="metric-trust trust-high">✓ Trust 96%</div>
+            <div class="metric-trend">→ Normal daily demand</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">System Pressure</div>
+            <div class="metric-value">62<span class="metric-unit">psi</span></div>
+            <div class="metric-trust trust-high">✓ Trust 92%</div>
+            <div class="metric-trend">→ Normal 55–75</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--yellow)"></div>
+            <div class="metric-label">Free Chlorine</div>
+            <div class="metric-value">0.65<span class="metric-unit">mg/L</span></div>
+            <div class="metric-trust trust-mid">⚠ Trust 89%</div>
+            <div class="metric-trend">↓ Trending low</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Turbidity</div>
+            <div class="metric-value">0.18<span class="metric-unit">NTU</span></div>
+            <div class="metric-trust trust-high">✓ Trust 94%</div>
+            <div class="metric-trend">→ Well below 1.0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">pH</div>
+            <div class="metric-value">7.4</div>
+            <div class="metric-trust trust-high">✓ Trust 90%</div>
+            <div class="metric-trend">→ Optimal 7.0–7.8</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Fluoride</div>
+            <div class="metric-value">0.7<span class="metric-unit">mg/L</span></div>
+            <div class="metric-trust trust-high">✓ Trust 88%</div>
+            <div class="metric-trend">→ On target 0.7</div>
+          </div>
+        </div>
+
+        <div class="grid-2-1">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Free Chlorine Residual — Today</span>
+              <span class="tag tag-warn">Trending low</span>
+            </div>
+            <svg width="100%" viewBox="0 0 400 100" preserveAspectRatio="none" style="height:110px;">
+              <defs>
+                <linearGradient id="chlorGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2e86ab" stop-opacity="0.18"/><stop offset="100%" stop-color="#2e86ab" stop-opacity="0"/></linearGradient>
+              </defs>
+              <line x1="0" y1="20" x2="400" y2="20" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+              <text x="6" y="17" font-size="9" fill="#dc2626" opacity="0.7" font-family="monospace">MIN 0.20 mg/L</text>
+              <line x1="0" y1="45" x2="400" y2="45" stroke="#27ae60" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+              <text x="6" y="42" font-size="9" fill="#27ae60" opacity="0.7" font-family="monospace">TARGET 0.80 mg/L</text>
+              <path d="M0,48 C30,47 60,46 100,49 C140,52 180,55 220,58 C260,61 300,63 340,66 C370,68 390,70 400,72 L400,110 L0,110 Z" fill="url(#chlorGrad)"/>
+              <path d="M0,48 C30,47 60,46 100,49 C140,52 180,55 220,58 C260,61 300,63 340,66 C370,68 390,70 400,72" fill="none" stroke="#2e86ab" stroke-width="2.5"/>
+              <circle cx="400" cy="72" r="4" fill="#2e86ab"/>
+              <text x="352" y="65" font-size="10" fill="#2e86ab" font-family="monospace">0.65</text>
+            </svg>
+            <div style="display:flex;gap:16px;margin-top:8px;">
+              <span style="font-size:11px;color:var(--green)">- - Target (0.80)</span>
+              <span style="font-size:11px;color:var(--accent)">── Actual</span>
+              <span style="font-size:11px;color:var(--red)">- - Min (0.20)</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Active Alerts</span><span class="tag tag-warn">1 warning</span></div>
+            <div class="alert-item" style="border-color:var(--yellow-border);background:var(--yellow-bg);">
+              <div class="alert-dot" style="background:var(--yellow);"></div>
+              <div class="alert-body">
+                <div class="alert-title">Cl₂ Trending Low</div>
+                <div class="alert-desc">Residual declining toward 0.60 — inspect chlorine feed pump.</div>
+                <div class="alert-time">3h trend · <span style="color:var(--yellow)">Trust 88%</span></div>
+              </div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-dot" style="background:var(--green);"></div>
+              <div class="alert-body">
+                <div class="alert-title">Pressure Stable</div>
+                <div class="alert-desc">All zones within 55–75 psi operating range.</div>
+                <div class="alert-time">Now · <span style="color:var(--green)">Trust 95%</span></div>
+              </div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-dot" style="background:var(--green);"></div>
+              <div class="alert-body">
+                <div class="alert-title">Turbidity Normal</div>
+                <div class="alert-desc">0.18 NTU — well below 1.0 NTU threshold.</div>
+                <div class="alert-time">Now · <span style="color:var(--green)">Trust 97%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-link-row">
+          <div class="nav-link-card" onclick="showTab('compliance',document.querySelector('[onclick*=compliance]'))">
+            <div>
+              <div class="nav-link-label">Permit Compliance</div>
+              <div class="nav-link-title">No TCR Violations This Month</div>
+              <div class="nav-link-tags">
+                <span class="tag tag-ok">Turbidity</span>
+                <span class="tag tag-warn">Chlorine</span>
+                <span class="tag tag-ok">Coliform</span>
+                <span class="tag tag-ok">Fluoride</span>
+              </div>
+            </div>
+            <div class="nav-link-arrow">→</div>
+          </div>
+          <div class="card" style="margin-bottom:0;padding:0;overflow:hidden;">
+            <div class="card-header" style="padding:14px 18px 0;"><span class="card-title">Pump Status — Distribution</span><span class="tag tag-ok">All Online</span></div>
+            <div class="pump-row">
+              <div class="pump-card"><div class="pump-name">Pump 1 — Well <span class="pump-dot" style="background:var(--green)"></span></div><div class="pump-val" style="color:var(--green)">0.18</div><div class="pump-sub">MGD primary</div></div>
+              <div class="pump-card"><div class="pump-name">Pump 2 — Boost <span class="pump-dot" style="background:var(--green)"></span></div><div class="pump-val" style="color:var(--green)">62 psi</div><div class="pump-sub">Zone B booster</div></div>
+              <div class="pump-card"><div class="pump-name">Pump 3 — Backup <span class="pump-dot" style="background:var(--text-dim)"></span></div><div class="pump-val" style="color:var(--text-dim)">Standby</div><div class="pump-sub">Auto-start ready</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ DAILY OBSERVATIONS ══ -->
+      <div class="tab-view" id="tab-observations">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Daily <em>Observations</em></div>
+            <div class="page-sub">Manual process data + guardrails · Replaces paper logs &amp; spreadsheets · Syncs to compliance records</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-outline">📥 Import CSV</button>
+            <button class="btn-primary">+ Log Today's Data</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;">
+          <div class="garmin-card">
+            <div class="garmin-label">TSS · 30-day avg</div>
+            <div style="display:flex;justify-content:center;margin-bottom:4px;">
+              <svg viewBox="0 0 80 48" width="80" height="48">
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#dc2626" stroke-width="7" stroke-linecap="round" stroke-dasharray="84,100"/>
+                <text x="40" y="42" font-size="13" font-weight="600" fill="#0a1628" text-anchor="middle" font-family="DM Mono,monospace">93%</text>
+              </svg>
+            </div>
+            <div class="garmin-status" style="color:var(--red)">AT RISK</div>
+            <div class="garmin-sub">27.8 / 30 mg/L</div>
+          </div>
+          <div class="garmin-card">
+            <div class="garmin-label">NH₃ · 30-day avg</div>
+            <div style="display:flex;justify-content:center;margin-bottom:4px;">
+              <svg viewBox="0 0 80 48" width="80" height="48">
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#d97706" stroke-width="7" stroke-linecap="round" stroke-dasharray="67,100"/>
+                <text x="40" y="42" font-size="13" font-weight="600" fill="#0a1628" text-anchor="middle" font-family="DM Mono,monospace">80%</text>
+              </svg>
+            </div>
+            <div class="garmin-status" style="color:var(--yellow)">WATCH</div>
+            <div class="garmin-sub">4.0 / 5.0 mg/L</div>
+          </div>
+          <div class="garmin-card">
+            <div class="garmin-label">DO Basin 1 · avg</div>
+            <div style="display:flex;justify-content:center;margin-bottom:4px;">
+              <svg viewBox="0 0 80 48" width="80" height="48">
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#d97706" stroke-width="7" stroke-linecap="round" stroke-dasharray="56,100"/>
+                <text x="40" y="42" font-size="13" font-weight="600" fill="#0a1628" text-anchor="middle" font-family="DM Mono,monospace">1.4</text>
+              </svg>
+            </div>
+            <div class="garmin-status" style="color:var(--yellow)">LOW</div>
+            <div class="garmin-sub">Target: 1.5–2.5 mg/L</div>
+          </div>
+          <div class="garmin-card">
+            <div class="garmin-label">pH Effluent · avg</div>
+            <div style="display:flex;justify-content:center;margin-bottom:4px;">
+              <svg viewBox="0 0 80 48" width="80" height="48">
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#27ae60" stroke-width="7" stroke-linecap="round" stroke-dasharray="43,100"/>
+                <text x="40" y="42" font-size="13" font-weight="600" fill="#0a1628" text-anchor="middle" font-family="DM Mono,monospace">7.2</text>
+              </svg>
+            </div>
+            <div class="garmin-status" style="color:var(--green)">GOOD</div>
+            <div class="garmin-sub">Target: 6.5–8.5 S.U.</div>
+          </div>
+          <div class="garmin-card">
+            <div class="garmin-label">SVI · weekly</div>
+            <div style="display:flex;justify-content:center;margin-bottom:4px;">
+              <svg viewBox="0 0 80 48" width="80" height="48">
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>
+                <path d="M8,44 A32,32 0 0,1 72,44" fill="none" stroke="#d97706" stroke-width="7" stroke-linecap="round" stroke-dasharray="55,100"/>
+                <text x="40" y="42" font-size="13" font-weight="600" fill="#0a1628" text-anchor="middle" font-family="DM Mono,monospace">137</text>
+              </svg>
+            </div>
+            <div class="garmin-status" style="color:var(--yellow)">ELEVATED</div>
+            <div class="garmin-sub">Normal: 80–150 mL/g</div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px;">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div><span class="card-title">Process Log — Thursday, Mar 8</span><div style="font-size:11px;color:var(--text-dim);margin-top:2px;">Enter readings below · Out-of-guardrail values highlighted automatically</div></div>
+            <span class="tag tag-ok">Auto-saves to compliance record</span>
+          </div>
+          <div class="obs-grid">
+            <div class="obs-header">Parameter</div>
+            <div class="obs-header">7:00 AM</div><div class="obs-header">10:00 AM</div><div class="obs-header">1:00 PM</div>
+            <div class="obs-header">4:00 PM</div><div class="obs-header">7:00 PM</div><div class="obs-header">10:00 PM</div>
+            <div class="obs-header">Status</div>
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">Influent Flow (MGD)</div>
+            <div class="obs-cell"><input class="obs-input" value="0.42" style="border-color:var(--green-border);"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div><div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div><div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell obs-status-ok">✓ Normal</div>
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">Effluent Flow (MGD)</div>
+            <div class="obs-cell"><input class="obs-input" value="0.39" style="border-color:var(--green-border);"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div><div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div><div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell obs-status-ok">✓ Normal</div>
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">DO Basin 1 (mg/L)</div>
+            <div class="obs-cell"><input class="obs-input" value="1.4" style="border-color:var(--yellow-border);background:var(--yellow-bg);"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div><div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div><div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell obs-status-warn">⚠ Low</div>
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">pH Effluent (S.U.)</div>
+            <div class="obs-cell"><input class="obs-input" value="7.2" style="border-color:var(--green-border);"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div><div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div><div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell obs-status-ok">✓ Normal</div>
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">TSS (mg/L) · lab</div>
+            <div class="obs-cell"><input class="obs-input" placeholder="Lab result"></div>
+            <div class="obs-cell" style="background:var(--bg);font-size:10px;color:var(--text-dim);">Lab only</div>
+            <div class="obs-cell" style="background:var(--bg);font-size:10px;color:var(--text-dim);">Lab only</div>
+            <div class="obs-cell" style="background:var(--bg);font-size:10px;color:var(--text-dim);">Lab only</div>
+            <div class="obs-cell" style="background:var(--bg);font-size:10px;color:var(--text-dim);">Lab only</div>
+            <div class="obs-cell" style="background:var(--bg);font-size:10px;color:var(--text-dim);">Lab only</div>
+            <div class="obs-cell obs-status-warn">⚠ Due today</div>
+            <div class="obs-cell" style="font-weight:600;color:var(--navy);">Settled Sludge (mL/L)</div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div><div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div><div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell"><input class="obs-input" placeholder="—"></div>
+            <div class="obs-cell" style="color:var(--text-dim);font-size:11px;">Pending</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Recent Entries · Last 7 days</span><span class="card-action">Export CSV →</span></div>
+          <table class="data-table">
+            <thead><tr><th>Date</th><th>Operator</th><th>HRT</th><th>MLSS</th><th>DO avg</th><th>Notes</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Mar 7</td><td style="color:var(--text-mid)">T. Singh</td><td class="mono">7.8 h</td><td class="mono">2,720</td><td class="mono">2.1</td><td style="font-size:11px;color:var(--text-dim)">Routine</td><td><span class="tag tag-ok">Normal</span></td></tr>
+              <tr><td>Mar 6</td><td style="color:var(--text-mid)">J. Martinez</td><td class="mono">8.5 h</td><td class="mono">2,910</td><td class="mono">1.9</td><td style="font-size:11px;color:var(--text-dim)">Diffuser check B1</td><td><span class="tag tag-ok">Normal</span></td></tr>
+              <tr><td>Mar 5</td><td style="color:var(--text-mid)">T. Singh</td><td class="mono">9.1 h</td><td class="mono">2,880</td><td class="mono">2.3</td><td style="font-size:11px;color:var(--text-dim)">Rain event — I&I +22%</td><td><span class="tag tag-ok">Normal</span></td></tr>
+              <tr><td>Mar 4</td><td style="color:var(--text-mid)">J. Martinez</td><td class="mono">8.8 h</td><td class="mono">2,790</td><td class="mono" style="color:var(--yellow)">1.8</td><td style="font-size:11px;color:var(--text-dim)">DO low — extended blower</td><td><span class="tag tag-warn">Watch</span></td></tr>
+              <tr><td>Mar 3</td><td style="color:var(--text-mid)">T. Singh</td><td class="mono">8.2 h</td><td class="mono">2,830</td><td class="mono">2.0</td><td style="font-size:11px;color:var(--text-dim)">RAS adjusted 44→48%</td><td><span class="tag tag-ok">Normal</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ ALERTS ══ -->
+      <div class="tab-view" id="tab-alerts">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><em>Active</em> Alerts</div>
+            <div class="page-sub">3 active · Last updated 7:14 AM · Smart filtering — low-trust readings flagged separately</div>
+          </div>
+          <span class="tag tag-navy">All systems online</span>
+        </div>
+        <div class="card">
+          <table class="data-table">
+            <thead><tr><th>Severity</th><th>Parameter</th><th>Alert</th><th>Trust Score</th><th>Since</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="tag tag-warn">Warning</span></td><td>DO Basin 1</td>
+                <td style="font-size:11px;color:var(--text)">Below 2.0 mg/L baseline for 2+ hours · Blower output check needed</td>
+                <td><span style="color:var(--yellow);font-weight:700;font-family:'DM Mono',monospace">88%</span></td>
+                <td class="mono" style="font-size:11px">5:12 AM</td>
+                <td><button class="btn-outline" style="padding:5px 10px;font-size:11px;">Monitor</button></td>
+              </tr>
+              <tr>
+                <td><span class="tag tag-warn">Warning</span></td><td>SVI</td>
+                <td style="font-size:11px;color:var(--text)">8-week uptrend — 137 mL/g (normal: 80–120). Pull settleability test.</td>
+                <td><span style="color:var(--yellow);font-weight:700;font-family:'DM Mono',monospace">76%</span></td>
+                <td class="mono" style="font-size:11px">8 days</td>
+                <td><button class="btn-outline" style="padding:5px 10px;font-size:11px;">View trend</button></td>
+              </tr>
+              <tr>
+                <td><span class="tag tag-warn">Warning</span></td><td>Free Chlorine (DW)</td>
+                <td style="font-size:11px;color:var(--text)">Residual declining — 0.65 mg/L, trending toward minimum. Check feed rate.</td>
+                <td><span style="color:var(--yellow);font-weight:700;font-family:'DM Mono',monospace">89%</span></td>
+                <td class="mono" style="font-size:11px">3h trend</td>
+                <td><button class="btn-primary" style="padding:5px 10px;font-size:11px;">Action</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ CAMERAS ══ -->
+      <div class="tab-view" id="tab-cameras">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><em>Visual</em> Monitoring</div>
+            <div class="page-sub">AI-powered change detection · Basin foaming · Equipment anomalies · Reduces site visits</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="tag tag-ai">✦ AI Detection Active</span>
+            <span class="tag tag-ok">6 cameras online</span>
+          </div>
+        </div>
+        <div class="camera-grid">
+          <div class="camera-card">
+            <div class="camera-feed">
+              <div class="camera-sim"><div class="basin-bg"><div class="basin-water"><div class="basin-foam"></div><div class="basin-bubble" style="left:20%;bottom:40%;width:8px;height:8px;animation-delay:0s;"></div><div class="basin-bubble" style="left:50%;bottom:30%;width:5px;height:5px;animation-delay:1s;"></div><div class="basin-bubble" style="left:75%;bottom:50%;width:6px;height:6px;animation-delay:2s;"></div><div style="position:absolute;top:2%;left:10%;width:80%;height:30%;border:2px dashed rgba(229,162,51,0.9);border-radius:4px;"></div></div></div></div>
+              <div class="camera-scanline"></div>
+              <div class="camera-overlay">
+                <div class="cam-top-row"><div class="cam-label">CAM 01 · BASIN-A</div><div class="cam-rec">● REC</div></div>
+                <div class="cam-bottom-row"><div class="cam-timestamp">2026-03-08 07:14:22</div><div class="cam-alert-badge cam-alert-warn">⚠ FOAM DETECTED</div></div>
+              </div>
+            </div>
+            <div class="camera-info"><div class="cam-name">Aeration Basin A</div><div class="cam-status warn">AI: <strong>Foam detected</strong> · elevated vs. 7-day baseline</div><div class="detection-events"><span class="det-tag det-tag-warn">Foam ↑ 34%</span><span class="det-tag det-tag-ok">No equipment anomaly</span><span class="det-tag det-tag-ok">Motion nominal</span></div></div>
+          </div>
+          <div class="camera-card">
+            <div class="camera-feed">
+              <div class="camera-sim"><div style="width:100%;height:100%;background:linear-gradient(180deg,#0a1520 0%,#0d1e2e 50%,#081018 100%);position:relative;"><div style="position:absolute;bottom:0;left:0;right:0;height:70%;background:linear-gradient(180deg,#1a3040 0%,#0d1e2e 100%);border-radius:2px 2px 0 0;"><div style="position:absolute;top:0;left:0;right:0;height:100%;background:repeating-linear-gradient(90deg,transparent,transparent 20px,rgba(46,100,140,0.1) 20px,rgba(46,100,140,0.1) 21px);"></div></div></div></div>
+              <div class="camera-scanline"></div>
+              <div class="camera-overlay">
+                <div class="cam-top-row"><div class="cam-label">CAM 02 · CLARIFIER</div><div class="cam-rec">● REC</div></div>
+                <div class="cam-bottom-row"><div class="cam-timestamp">2026-03-08 07:14:20</div><div class="cam-alert-badge cam-alert-ok">✓ NORMAL</div></div>
+              </div>
+            </div>
+            <div class="camera-info"><div class="cam-name">Secondary Clarifier</div><div class="cam-status ok">AI: <strong>No anomalies detected</strong> · scraper running normal</div><div class="detection-events"><span class="det-tag det-tag-ok">Surface normal</span><span class="det-tag det-tag-ok">Scraper rotating</span><span class="det-tag det-tag-ok">No overflow</span></div></div>
+          </div>
+          <div class="camera-card">
+            <div class="camera-feed">
+              <div class="camera-sim"><div style="width:100%;height:100%;background:linear-gradient(180deg,#0f0f14 0%,#141420 100%);position:relative;"><div style="position:absolute;bottom:10%;left:15%;width:25%;height:50%;background:rgba(40,50,80,0.6);border:1px solid rgba(100,120,180,0.2);border-radius:4px;"></div><div style="position:absolute;bottom:10%;left:55%;width:25%;height:50%;background:rgba(40,50,80,0.6);border:1px solid rgba(100,120,180,0.2);border-radius:4px;"></div><div style="position:absolute;bottom:10%;left:55%;width:25%;height:50%;border:2px dashed rgba(220,38,38,0.8);border-radius:4px;" id="vibrationBox"></div></div></div>
+              <div class="camera-scanline"></div>
+              <div class="camera-overlay">
+                <div class="cam-top-row"><div class="cam-label">CAM 04 · PUMP ROOM</div><div class="cam-rec">● REC</div></div>
+                <div class="cam-bottom-row"><div class="cam-timestamp">2026-03-08 07:14:18</div><div class="cam-alert-badge cam-alert-detect">⚠ VIBRATION</div></div>
+              </div>
+            </div>
+            <div class="camera-info"><div class="cam-name">Pump Room — Pump 2</div><div class="cam-status detect">AI: <strong>Vibration anomaly detected</strong> · correlated w/ bearing alert</div><div class="detection-events"><span class="det-tag det-tag-alert">Visual vibration ↑</span><span class="det-tag det-tag-warn">Pump 2 flagged</span><span class="det-tag det-tag-ok">Pump 1 normal</span></div></div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="audio-card">
+            <div class="card-header"><span class="card-title">🎙 Acoustic Monitoring — Pump Room</span><span class="tag tag-warn">Anomaly detected</span></div>
+            <div style="font-size:12px;color:var(--text-mid);margin-bottom:12px;">AI baseline: pump operating sound signature. Current: <strong style="color:var(--yellow)">+18% deviation</strong> in 200–400 Hz range (bearing wear signature)</div>
+            <div class="waveform" id="waveform"></div>
+            <div style="display:flex;gap:12px;margin-top:8px;font-size:11px;"><span style="color:var(--green)">── Normal range</span><span style="color:var(--red)">── Anomaly frequency</span></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Detection Summary · Today</span><span class="card-action">View log</span></div>
+            <table class="data-table">
+              <thead><tr><th>Time</th><th>Camera</th><th>Detection</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td class="mono" style="font-size:11px">07:09</td><td>Basin A</td><td><span class="tag tag-warn">Foam ↑34%</span></td><td style="font-size:11px;color:var(--text-dim)">Alert sent</td></tr>
+                <tr><td class="mono" style="font-size:11px">06:42</td><td>Pump Rm</td><td><span class="tag tag-alert">Vibration</span></td><td style="font-size:11px;color:var(--text-dim)">Alert sent</td></tr>
+                <tr><td class="mono" style="font-size:11px">03:15</td><td>Basin A</td><td><span class="tag tag-ok">Foam cleared</span></td><td style="font-size:11px;color:var(--text-dim)">Auto-resolved</td></tr>
+                <tr><td class="mono" style="font-size:11px">01:08</td><td>Clarifier</td><td><span class="tag tag-ok">Normal check</span></td><td style="font-size:11px;color:var(--text-dim)">Logged</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ TRENDS ══ -->
+      <div class="tab-view" id="tab-trends">
+        <div class="page-header">
+          <div><div class="page-title">Operational <em>Trends</em></div><div class="page-sub">8-week rolling analysis · AI pattern detection · Anomaly forecasting</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card"><div class="card-header"><span class="card-title">SVI — 8-week uptrend</span><span class="tag tag-warn">Uptrend</span></div>
+            <svg viewBox="0 0 300 80" style="width:100%;height:80px;">
+              <polyline points="10,70 45,65 80,62 115,58 150,55 185,50 220,45 255,40 290,35" fill="none" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="290" cy="35" r="4" fill="#d97706"/>
+              <text x="10" y="12" font-size="9" fill="#d97706" font-family="monospace">SVI mL/g</text>
+              <line x1="10" y1="42" x2="290" y2="42" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+              <text x="235" y="40" font-size="8" fill="#dc2626" opacity="0.7" font-family="monospace">limit 150</text>
+            </svg>
+            <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">137 mL/g and rising. Possible filamentous bulking. Pull settleability test.</div>
+          </div>
+          <div class="card"><div class="card-header"><span class="card-title">DO Basin 1 — declining</span><span class="tag tag-warn">Declining</span></div>
+            <svg viewBox="0 0 300 80" style="width:100%;height:80px;">
+              <path d="M10,25 L290,25 L290,45 L10,45 Z" fill="rgba(39,174,96,0.06)"/>
+              <line x1="10" y1="25" x2="290" y2="25" stroke="#27ae60" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+              <line x1="10" y1="45" x2="290" y2="45" stroke="#27ae60" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+              <polyline points="10,30 45,28 80,32 115,38 150,42 185,50 220,55 255,60 290,65" fill="none" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="290" cy="65" r="4" fill="#d97706"/>
+              <text x="10" y="12" font-size="9" fill="#8a9bb0" font-family="monospace">DO mg/L — Target 1.5–2.5</text>
+            </svg>
+            <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">DO gradually declining over 8 weeks. Check diffuser membrane condition.</div>
+          </div>
+          <div class="card"><div class="card-header"><span class="card-title">TSS — approaching permit limit</span><span class="tag tag-alert">At risk</span></div>
+            <svg viewBox="0 0 300 80" style="width:100%;height:80px;">
+              <line x1="10" y1="20" x2="290" y2="20" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+              <text x="215" y="17" font-size="8" fill="#dc2626" opacity="0.7" font-family="monospace">PERMIT 30</text>
+              <polyline points="10,60 45,55 80,50 115,52 150,48 185,44 220,38 255,34 290,30" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="290" cy="30" r="4" fill="#dc2626"/>
+              <text x="10" y="12" font-size="9" fill="#8a9bb0" font-family="monospace">TSS mg/L</text>
+            </svg>
+            <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">At 93% of permit limit. Forecast: potential exceedance by mid-March.</div>
+          </div>
+          <div class="card"><div class="card-header"><span class="card-title">NH₃ — seasonal variation</span><span class="tag tag-ok">Normal pattern</span></div>
+            <svg viewBox="0 0 300 80" style="width:100%;height:80px;">
+              <line x1="10" y1="15" x2="290" y2="15" stroke="#d97706" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+              <text x="220" y="12" font-size="8" fill="#d97706" opacity="0.6" font-family="monospace">PERMIT 5.0</text>
+              <polyline points="10,55 45,52 80,45 115,40 150,38 185,42 220,50 255,55 290,52" fill="none" stroke="#27ae60" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="290" cy="52" r="4" fill="#27ae60"/>
+              <text x="10" y="12" font-size="9" fill="#8a9bb0" font-family="monospace">NH₃ mg/L</text>
+            </svg>
+            <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">Seasonal rise expected. Currently 4.0 mg/L (80% of limit). Monitor through spring.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ COMPLIANCE ══ -->
+      <div class="tab-view" id="tab-compliance">
+        <div class="page-header">
+          <div><div class="page-title"><em>Compliance</em> Status</div><div class="page-sub">NPDES permit tracking · Lab calendar · Upstream watches the limits so you don't have to</div></div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div class="toggle-group">
+              <button class="toggle-btn active" id="compPermitBtn" onclick="switchCompliance('permit')">Permit Status</button>
+              <button class="toggle-btn" id="compCalBtn" onclick="switchCompliance('calendar')">Lab Calendar</button>
+            </div>
+            <button class="btn-primary">Generate Report →</button>
+          </div>
+        </div>
+        <div id="compliance-permit">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Permit Parameters — Current Cycle</span><span class="tag tag-ok">No Exceedances</span></div>
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Current avg</th><th>Permit limit</th><th>% of limit</th><th>Trend</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>TSS (mg/L)</td><td class="mono">27.8</td><td class="mono">30.0</td><td><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:93%;height:100%;background:var(--red);border-radius:3px;"></div></div><span class="mono" style="color:var(--red)">93%</span></div></td><td style="font-size:12px;color:var(--red)">↑ Rising</td><td><span class="tag tag-alert">At Risk</span></td></tr>
+                <tr><td>NH₃-N (mg/L)</td><td class="mono">4.0</td><td class="mono">5.0</td><td><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:80%;height:100%;background:var(--yellow);border-radius:3px;"></div></div><span class="mono" style="color:var(--yellow)">80%</span></div></td><td style="font-size:12px;color:var(--text-mid)">→ Stable</td><td><span class="tag tag-warn">Watch</span></td></tr>
+                <tr><td>BOD₅ (mg/L)</td><td class="mono">12.6</td><td class="mono">20.0</td><td><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:63%;height:100%;background:var(--green);border-radius:3px;"></div></div><span class="mono" style="color:var(--green)">63%</span></div></td><td style="font-size:12px;color:var(--green)">↓ Good</td><td><span class="tag tag-ok">Compliant</span></td></tr>
+                <tr><td>pH (S.U.)</td><td class="mono">7.2</td><td class="mono">6.5–8.5</td><td><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:43%;height:100%;background:var(--green);border-radius:3px;"></div></div><span class="mono" style="color:var(--green)">OK</span></div></td><td style="font-size:12px;color:var(--green)">→ Stable</td><td><span class="tag tag-ok">Compliant</span></td></tr>
+                <tr><td>Fecal Coliform (MPN)</td><td class="mono">18</td><td class="mono">200</td><td><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:9%;height:100%;background:var(--green);border-radius:3px;"></div></div><span class="mono" style="color:var(--green)">9%</span></div></td><td style="font-size:12px;color:var(--green)">→ Stable</td><td><span class="tag tag-ok">Compliant</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="compliance-calendar" style="display:none;">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Lab Sampling Calendar — March 2026</span>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-mid)"><span style="width:7px;height:7px;border-radius:50%;background:var(--yellow);display:inline-block;"></span>Upcoming</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-mid)"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span>Scheduled</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-mid)"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;"></span>Complete</div>
+              </div>
+            </div>
+            <div>
+              <div class="cal-row"><div class="cal-date" style="color:var(--yellow)">Mar 10</div><span class="tag tag-navy">Grab</span><div style="flex:1;margin-left:8px"><div style="font-size:13px;font-weight:600;color:var(--navy)">Fecal Coliform</div><div style="font-size:11px;color:var(--text-dim)">Front Range Labs</div></div><div style="font-size:11px;color:var(--text-mid)">Hold: 6h</div><div style="min-width:90px;text-align:right"><span class="tag tag-warn">Upcoming</span></div></div>
+              <div class="cal-row"><div class="cal-date" style="color:var(--yellow)">Mar 10</div><span class="tag tag-info">Composite</span><div style="flex:1;margin-left:8px"><div style="font-size:13px;font-weight:600;color:var(--navy)">BOD₅ / TSS / Ammonia-N</div><div style="font-size:11px;color:var(--text-dim)">Front Range Labs</div></div><div style="font-size:11px;color:var(--text-mid)">Hold: 48h</div><div style="min-width:90px;text-align:right"><span class="tag tag-warn">Upcoming</span></div></div>
+              <div class="cal-row"><div class="cal-date" style="color:var(--yellow)">Mar 14</div><span class="tag tag-navy">Grab</span><div style="flex:1;margin-left:8px"><div style="font-size:13px;font-weight:600;color:var(--navy)">Total Phosphorus</div><div style="font-size:11px;color:var(--text-dim)">Front Range Labs</div></div><div style="font-size:11px;color:var(--text-mid)">Hold: 28d</div><div style="min-width:90px;text-align:right"><span class="tag tag-warn">Upcoming</span></div></div>
+              <div class="cal-row"><div class="cal-date" style="color:var(--accent)">Mar 24</div><span class="tag tag-info">Composite</span><div style="flex:1;margin-left:8px"><div style="font-size:13px;font-weight:600;color:var(--navy)">BOD₅ / TSS / Ammonia-N</div><div style="font-size:11px;color:var(--text-dim)">Front Range Labs</div></div><div style="font-size:11px;color:var(--text-mid)">Hold: 48h</div><div style="min-width:90px;text-align:right"><span class="tag tag-info">Scheduled</span></div></div>
+              <div class="cal-row"><div class="cal-date" style="color:var(--green)">Feb 24</div><span class="tag tag-navy">Grab</span><div style="flex:1;margin-left:8px"><div style="font-size:13px;font-weight:600;color:var(--navy)">Fecal Coliform</div><div style="font-size:11px;color:var(--text-dim)">Front Range Labs</div></div><div style="font-size:11px;color:var(--text-mid)">—</div><div style="min-width:90px;text-align:right"><span class="tag tag-ok">Complete</span></div></div>
+              <div class="cal-row"><div class="cal-date" style="color:var(--green)">Feb 24</div><span class="tag tag-info">Composite</span><div style="flex:1;margin-left:8px"><div style="font-size:13px;font-weight:600;color:var(--navy)">BOD₅ / TSS / Ammonia-N</div><div style="font-size:11px;color:var(--text-dim)">Front Range Labs</div></div><div style="font-size:11px;color:var(--text-mid)">—</div><div style="min-width:90px;text-align:right"><span class="tag tag-ok">Complete</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ AI BRIEFING ══ -->
+      <div class="tab-view" id="tab-briefing">
+        <div class="briefing-header">
+          <div class="briefing-avatar">✦</div>
+          <div>
+            <div class="briefing-title">Morning <em>Briefing</em></div>
+            <div class="briefing-meta">Thursday, Mar 8 · 7:14 AM · Maplewood San. &amp; Water District</div>
+            <div style="margin-top:6px;display:flex;gap:6px;">
+              <span class="tag tag-ok" style="background:rgba(39,174,96,0.15);border-color:rgba(39,174,96,0.3);color:#a8e6cf;">System OK</span>
+              <span class="tag" style="background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);">2 auto-adjustments made</span>
+            </div>
+          </div>
+          <div class="briefing-trust"><div class="briefing-trust-val">87%</div><div class="briefing-trust-label">Avg data trust</div></div>
+        </div>
+        <div class="grid-2-1">
+          <div>
+            <div class="briefing-section">
+              <div class="briefing-section-title">📋 Overnight Summary</div>
+              <div class="briefing-item"><div class="briefing-item-icon">💧</div><div class="briefing-item-text">Flow spike at 2:15 AM — 0.42 to 0.61 MGD over 35 min. Consistent with overnight industrial discharge. No action needed.</div><div class="briefing-item-time">2:15 AM</div></div>
+              <div class="briefing-item"><div class="briefing-item-icon">⚠️</div><div class="briefing-item-text">DO Basin 1 dropped below 2.0 mg/L at 5:12 AM and has not recovered. Currently 1.4 mg/L. Blower check needed.</div><div class="briefing-item-time">5:12 AM</div></div>
+              <div class="briefing-item"><div class="briefing-item-icon">📷</div><div class="briefing-item-text">Camera detected foam in Aeration Basin A at 7:09 AM — 34% above 7-day baseline. Visual anomaly flagged for inspection.</div><div class="briefing-item-time">7:09 AM</div></div>
+            </div>
+            <div class="briefing-section">
+              <div class="briefing-section-title">⚡ Adjustments I Made</div>
+              <div class="briefing-item"><div class="briefing-item-icon">✓</div><div class="briefing-item-text"><strong>RAS rate increased</strong> 44% → 51% to respond to flow spike and maintain MLSS balance. <span style="color:var(--green)">Trust 89%</span> — high confidence.</div><div class="briefing-item-time">2:18 AM</div></div>
+              <div class="briefing-item"><div class="briefing-item-icon">✓</div><div class="briefing-item-text"><strong>Blower 2 runtime +90 min</strong> to compensate for low DO. Partial recovery noted before next drop. <span style="color:var(--yellow)">Trust 85%</span></div><div class="briefing-item-time">4:40 AM</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="briefing-section">
+              <div class="briefing-section-title">🎯 Your 3 Items Today</div>
+              <div class="action-item"><div class="action-num">1</div><div class="action-body"><div class="action-title">Check aeration diffusers</div><div class="action-desc">DO still below baseline after blower adjustment. Likely clogged or damaged diffuser membranes in Basin 1.</div></div></div>
+              <div class="action-item"><div class="action-num">2</div><div class="action-body"><div class="action-title">Pull settleability test</div><div class="action-desc">SVI 8-week uptrend at 137 mL/g. Test will confirm if filamentous bulking is developing.</div></div></div>
+              <div class="action-item"><div class="action-num">3</div><div class="action-body"><div class="action-title">Check chlorine feed pump (DW)</div><div class="action-desc">Free chlorine trending low at 0.65 mg/L. Inspect chlorinator feed rate before end of shift.</div></div></div>
+            </div>
+            <div class="briefing-section">
+              <div class="briefing-section-title">🌧 Weather Impact</div>
+              <div style="font-size:12px;color:var(--text-mid);line-height:1.6;">Rain Thursday–Friday, <strong>0.9–1.3 inches</strong> forecast. Expect <strong style="color:var(--yellow)">30–45% flow increase</strong> from I&I. Upstream will adjust RAS and blower automatically. I'll notify you if the increase exceeds my safe operating range.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ O&M RESOURCES ══ -->
+      <div class="tab-view" id="tab-om">
+        <div class="page-header">
+          <div><div class="page-title">O&amp;M <em>Resources</em></div><div class="page-sub">Institutional knowledge, procedures, and maintenance tracking in one place</div></div>
+          <span class="tag tag-mint">Updated Mar 6</span>
+        </div>
+        <div class="subnav">
+          <button class="subnav-btn active" onclick="switchOM('sops',this)">SOPs &amp; Procedures</button>
+          <button class="subnav-btn" onclick="switchOM('chemicals',this)">Chemical Inventory</button>
+          <button class="subnav-btn" onclick="switchOM('maint',this)">Maintenance Schedule</button>
+          <button class="subnav-btn" onclick="switchOM('manuals',this)">Equipment Manuals</button>
+        </div>
+        <div id="om-sops" class="card">
+          <div class="card-header"><span class="card-title">Standard Operating Procedures</span><button class="btn-link">+ Add SOP</button></div>
+          <div class="sop-row"><div class="sop-id">SOP-001</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Daily Plant Walkthrough Checklist</div><div style="font-size:11px;color:var(--text-dim)">Rev 4 · Updated Jan 2025</div></div><span class="tag tag-info">Operations</span><button class="btn-outline" style="padding:4px 12px;font-size:11px;margin-left:8px;">View PDF</button></div>
+          <div class="sop-row"><div class="sop-id">SOP-002</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Chlorination System Startup &amp; Shutdown</div><div style="font-size:11px;color:var(--text-dim)">Rev 2 · Updated Mar 2024</div></div><span class="tag tag-warn">Chemical</span><button class="btn-outline" style="padding:4px 12px;font-size:11px;margin-left:8px;">View PDF</button></div>
+          <div class="sop-row"><div class="sop-id">SOP-003</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Aeration Basin DO Control Procedure</div><div style="font-size:11px;color:var(--text-dim)">Rev 3 · Updated Nov 2024</div></div><span class="tag tag-info">Operations</span><button class="btn-outline" style="padding:4px 12px;font-size:11px;margin-left:8px;">View PDF</button></div>
+          <div class="sop-row"><div class="sop-id">SOP-004</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">SCADA Alarm Response — Tier 1 &amp; 2</div><div style="font-size:11px;color:var(--text-dim)">Rev 5 · Updated Feb 2025</div></div><span class="tag tag-alert">Emergency</span><button class="btn-outline" style="padding:4px 12px;font-size:11px;margin-left:8px;">View PDF</button></div>
+          <div class="sop-row"><div class="sop-id">SOP-005</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Sludge Wasting &amp; Disposal Protocol</div><div style="font-size:11px;color:var(--text-dim)">Rev 2 · Updated Oct 2024</div></div><span class="tag tag-navy">Biosolids</span><button class="btn-outline" style="padding:4px 12px;font-size:11px;margin-left:8px;">View PDF</button></div>
+          <div class="sop-row"><div class="sop-id">SOP-006</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Influent Pump Station Maintenance</div><div style="font-size:11px;color:var(--text-dim)">Rev 3 · Updated Dec 2024</div></div><span class="tag tag-mint">Maintenance</span><button class="btn-outline" style="padding:4px 12px;font-size:11px;margin-left:8px;">View PDF</button></div>
+          <div class="sop-row"><div class="sop-id">SOP-007</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Effluent Sampling — Composite &amp; Grab</div><div style="font-size:11px;color:var(--text-dim)">Rev 2 · Updated Sep 2024</div></div><span class="tag tag-ok">Compliance</span><button class="btn-outline" style="padding:4px 12px;font-size:11px;margin-left:8px;">View PDF</button></div>
+          <div class="sop-row"><div class="sop-id">SOP-008</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Chemical Spill Response Plan</div><div style="font-size:11px;color:var(--text-dim)">Rev 1 · Updated Jun 2024</div></div><span class="tag tag-alert">Emergency</span><button class="btn-outline" style="padding:4px 12px;font-size:11px;margin-left:8px;">View PDF</button></div>
+        </div>
+        <div id="om-chemicals" class="card" style="display:none;">
+          <div class="card-header"><span class="card-title">Chemical Inventory</span><span class="tag tag-alert">1 low stock</span></div>
+          <div class="chem-row"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span class="chem-name">Sodium Hypochlorite (12.5%)</span><span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--green)">240 gal</span></div><div class="chem-bar-wrap"><div class="chem-bar-fill" style="width:48%;background:var(--green);"></div><div class="chem-reorder" style="left:20%"></div></div><div class="chem-meta"><span>Reorder at 100 gal</span><span>Max 500 gal</span></div></div>
+          <div class="chem-row"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span class="chem-name">Liquid Ferric Chloride</span><span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--yellow)">85 gal</span></div><div class="chem-bar-wrap"><div class="chem-bar-fill" style="width:43%;background:var(--yellow);"></div><div class="chem-reorder" style="left:37%"></div></div><div class="chem-meta"><span>Reorder at 75 gal · <strong style="color:var(--yellow)">Near reorder</strong></span><span>Max 200 gal</span></div></div>
+          <div class="chem-row"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span class="chem-name">Polymer (Cationic)</span><span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--green)">320 lb</span></div><div class="chem-bar-wrap"><div class="chem-bar-fill" style="width:53%;background:var(--green);"></div><div class="chem-reorder" style="left:25%"></div></div><div class="chem-meta"><span>Reorder at 150 lb</span><span>Max 600 lb</span></div></div>
+          <div class="chem-row"><div style="display:flex;justify-content:space-between;margin-bottom:6px;align-items:center;"><span class="chem-name">Citric Acid (descaler) <span class="tag tag-alert" style="margin-left:6px;">⚠ Reorder Now</span></span><span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--red)">40 lb</span></div><div class="chem-bar-wrap"><div class="chem-bar-fill" style="width:20%;background:var(--red);"></div><div class="chem-reorder" style="left:25%"></div></div><div class="chem-meta"><span style="color:var(--red)">Below reorder point of 50 lb</span><span>Max 200 lb</span></div></div>
+          <div class="chem-row" style="margin-bottom:0"><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span class="chem-name">Sodium Bisulfite</span><span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--green)">180 lb</span></div><div class="chem-bar-wrap"><div class="chem-bar-fill" style="width:60%;background:var(--green);"></div><div class="chem-reorder" style="left:33%"></div></div><div class="chem-meta"><span>Reorder at 100 lb</span><span>Max 300 lb</span></div></div>
+        </div>
+        <div id="om-maint" class="card" style="display:none;">
+          <div class="card-header"><span class="card-title">Maintenance Schedule — Upcoming</span><span class="tag tag-alert">2 high priority</span></div>
+          <div class="maint-row"><div class="maint-dot" style="background:var(--red)"></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">DO probe cleaning &amp; calibration</div><div style="font-size:11px;color:var(--text-dim)">Assigned: J. Martinez</div></div><div style="text-align:right"><div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--red)">Due Mar 10</div><span class="tag tag-alert">High</span></div></div>
+          <div class="maint-row"><div class="maint-dot" style="background:var(--red)"></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Blower 1 — oil change</div><div style="font-size:11px;color:var(--text-dim)">Assigned: J. Martinez</div></div><div style="text-align:right"><div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--red)">Due Mar 12</div><span class="tag tag-alert">High</span></div></div>
+          <div class="maint-row"><div class="maint-dot" style="background:var(--yellow)"></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Influent screen — inspect/clean</div><div style="font-size:11px;color:var(--text-dim)">Assigned: T. Singh</div></div><div style="text-align:right"><div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--text-mid)">Due Mar 14</div><span class="tag tag-warn">Medium</span></div></div>
+          <div class="maint-row"><div class="maint-dot" style="background:var(--yellow)"></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">UV system — lamp check</div><div style="font-size:11px;color:var(--text-dim)">Assigned: J. Martinez</div></div><div style="text-align:right"><div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--text-mid)">Due Mar 18</div><span class="tag tag-warn">Medium</span></div></div>
+          <div class="maint-row"><div class="maint-dot" style="background:var(--green)"></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Pump 2 bearing lubrication</div><div style="font-size:11px;color:var(--text-dim)">Assigned: T. Singh</div></div><div style="text-align:right"><div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--text-mid)">Due Mar 22</div><span class="tag tag-ok">Low</span></div></div>
+          <div class="maint-row"><div class="maint-dot" style="background:var(--red)"></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Annual SCADA calibration</div><div style="font-size:11px;color:var(--text-dim)">Assigned: Contractor</div></div><div style="text-align:right"><div style="font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--text-mid)">Due Apr 1</div><span class="tag tag-alert">High</span></div></div>
+        </div>
+        <div id="om-manuals" class="card" style="display:none;">
+          <div class="card-header"><span class="card-title">Equipment Manuals &amp; Documents</span><button class="btn-link">+ Upload</button></div>
+          <div class="doc-row"><div class="doc-icon">📄</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Flygt NP 3153 Submersible Pump</div><div style="font-size:11px;color:var(--text-dim)">O&M Manual · 2019 · 4.2 MB</div></div><button class="btn-outline" style="padding:4px 12px;font-size:11px;">Download</button></div>
+          <div class="doc-row"><div class="doc-icon">📄</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Siemens SITRANS P310 Pressure Transmitter</div><div style="font-size:11px;color:var(--text-dim)">Installation Guide · 2021 · 1.8 MB</div></div><button class="btn-outline" style="padding:4px 12px;font-size:11px;">Download</button></div>
+          <div class="doc-row"><div class="doc-icon">📄</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Hach LDO101 DO Probe</div><div style="font-size:11px;color:var(--text-dim)">User Manual · 2022 · 2.1 MB</div></div><button class="btn-outline" style="padding:4px 12px;font-size:11px;">Download</button></div>
+          <div class="doc-row"><div class="doc-icon">📄</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Atlas Copco GA37 Blower</div><div style="font-size:11px;color:var(--text-dim)">Service Manual · 2020 · 9.4 MB</div></div><button class="btn-outline" style="padding:4px 12px;font-size:11px;">Download</button></div>
+          <div class="doc-row"><div class="doc-icon">📄</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">UV Technologies UV3000</div><div style="font-size:11px;color:var(--text-dim)">O&M Manual · 2018 · 6.7 MB</div></div><button class="btn-outline" style="padding:4px 12px;font-size:11px;">Download</button></div>
+          <div class="doc-row"><div class="doc-icon">📐</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy)">Chlorine Contact Basin — As-Builts</div><div style="font-size:11px;color:var(--text-dim)">Engineering Drawing · 2016 · 12.3 MB</div></div><button class="btn-outline" style="padding:4px 12px;font-size:11px;">Download</button></div>
+        </div>
+      </div>
+
+      <!-- ══ BOARD REPORTS ══ -->
+      <div class="tab-view" id="tab-reports">
+        <div class="page-header">
+          <div><div class="page-title"><em>Board</em> Reports</div><div class="page-sub">Auto-generated monthly reports · One-click export · Share with board members</div></div>
+          <button class="btn-primary">Generate Report →</button>
+        </div>
+        <div class="grid-3">
+          <div class="card"><div style="font-size:32px;margin-bottom:12px;">📊</div><div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;">February 2026 Operations</div><div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;">Monthly operations summary · 24 pages · Auto-generated</div><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag tag-ok">Compliant</span><span class="tag tag-navy">4 alerts resolved</span></div><button class="btn-outline" style="width:100%">📥 Download PDF</button></div>
+          <div class="card"><div style="font-size:32px;margin-bottom:12px;">🔧</div><div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;">Infrastructure Health Q1</div><div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;">Asset condition summary · AI maintenance forecast · 18 pages</div><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag tag-warn">2 assets watch</span><span class="tag tag-ok">4 assets healthy</span></div><button class="btn-outline" style="width:100%">📥 Download PDF</button></div>
+          <div class="card"><div style="font-size:32px;margin-bottom:12px;">🌊</div><div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;">Public Transparency Report</div><div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;">Customer-ready water quality summary · Regulation compliant</div><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag tag-ok">All parameters met</span></div><button class="btn-outline" style="width:100%">📥 Download PDF</button></div>
+        </div>
+      </div>
+
+      <!-- ══ DATA TRUST ══ -->
+      <div class="tab-view" id="tab-trust">
+        <div class="page-header">
+          <div><div class="page-title"><em>Data</em> Trust</div><div class="page-sub">Every reading scored 0–100% for reliability · Transparent calculations · Click any score to see why</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Sensor Trust Scores — Current</span><span class="card-action">Methodology →</span></div>
+          <table class="data-table">
+            <thead><tr><th>Sensor</th><th>Trust Score</th><th>Last calibration</th><th>Primary signal</th><th>Redundant check</th><th>Reason</th></tr></thead>
+            <tbody>
+              <tr><td>Flow Meter (influent)</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">96%</span></td><td class="mono">Feb 15</td><td class="mono">0.42 MGD</td><td class="mono">0.41 MGD</td><td style="font-size:11px;color:var(--text-dim)">Recent calibration, redundancy match</td></tr>
+              <tr><td>Flow Meter (effluent)</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">93%</span></td><td class="mono">Feb 15</td><td class="mono">0.39 MGD</td><td class="mono">—</td><td style="font-size:11px;color:var(--text-dim)">Calibration current, single point</td></tr>
+              <tr><td>pH Probe (effluent)</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">91%</span></td><td class="mono">Feb 20</td><td class="mono">7.2 S.U.</td><td class="mono">7.1 (lab)</td><td style="font-size:11px;color:var(--text-dim)">Tight lab correlation</td></tr>
+              <tr><td>DO Sensor (Basin 1)</td><td><span style="color:var(--yellow);font-weight:700;font-family:'DM Mono',monospace">88%</span></td><td class="mono">Jan 28</td><td class="mono">1.4 mg/L</td><td class="mono">—</td><td style="font-size:11px;color:var(--text-dim)">No redundant sensor; calibration aging</td></tr>
+              <tr><td>SVI (manual entry)</td><td><span style="color:var(--yellow);font-weight:700;font-family:'DM Mono',monospace">76%</span></td><td class="mono">Mar 3</td><td class="mono">137 mL/g</td><td class="mono">—</td><td style="font-size:11px;color:var(--text-dim)">Manual entry, uptrend flagged for review</td></tr>
+              <tr><td>Free Chlorine (DW)</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">89%</span></td><td class="mono">Feb 28</td><td class="mono">0.65 mg/L</td><td class="mono">—</td><td style="font-size:11px;color:var(--text-dim)">Calibration current, trending low flag</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Audit Trail · Last 24 hours</span><span class="card-action">Export</span></div>
+          <table class="data-table">
+            <thead><tr><th>Time</th><th>Event</th><th>Actor</th><th>Trust impact</th></tr></thead>
+            <tbody>
+              <tr><td class="mono" style="font-size:11px">07:09</td><td style="font-size:12px">Camera: foam detected Basin A</td><td style="font-size:11px;color:var(--text-dim)">AI Vision</td><td style="font-size:11px;color:var(--yellow)">Alert flagged</td></tr>
+              <tr><td class="mono" style="font-size:11px">04:40</td><td style="font-size:12px">Blower 2 runtime extended +90 min</td><td style="font-size:11px;color:var(--text-dim)">AI Autopilot</td><td style="font-size:11px;color:var(--green)">Logged (trust 85%)</td></tr>
+              <tr><td class="mono" style="font-size:11px">02:18</td><td style="font-size:12px">RAS adjusted 44%→51%</td><td style="font-size:11px;color:var(--text-dim)">AI Autopilot</td><td style="font-size:11px;color:var(--green)">Logged (trust 89%)</td></tr>
+              <tr><td class="mono" style="font-size:11px">Yesterday</td><td style="font-size:12px">Manual DO reading entered: 1.9 mg/L</td><td style="font-size:11px;color:var(--text-dim)">J. Martinez</td><td style="font-size:11px;color:var(--green)">Corroborated sensor</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ SECURE DATA LAKE ══ -->
+      <div class="tab-view" id="tab-datalake">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Secure <em>Data Lake</em></div>
+            <div class="page-sub">End-to-end encrypted SCADA ingestion · OT-DMZ air gap · Immutable audit trail · Your data never leaves your control</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="tag tag-ok">All Channels Encrypted</span>
+            <span class="tag tag-ai">✦ AI Monitoring</span>
+          </div>
+        </div>
+
+        <!-- Ingestion Metrics -->
+        <div class="metrics-row metrics-6">
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Data Points Today</div>
+            <div class="metric-value">48.2<span class="metric-unit">K</span></div>
+            <div class="metric-trust trust-high">✓ All validated</div>
+            <div class="metric-trend">↑ +12% vs yesterday</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Ingestion Latency</div>
+            <div class="metric-value">1.2<span class="metric-unit">sec</span></div>
+            <div class="metric-trust trust-high">✓ Under SLA</div>
+            <div class="metric-trend">→ Avg last 24h</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Encryption</div>
+            <div class="metric-value">AES<span class="metric-unit">256</span></div>
+            <div class="metric-trust trust-high">✓ At rest + transit</div>
+            <div class="metric-trend">→ TLS 1.3 active</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Storage Used</div>
+            <div class="metric-value">2.4<span class="metric-unit">GB</span></div>
+            <div class="metric-trust trust-high">✓ 12% of quota</div>
+            <div class="metric-trend">→ 20 GB allocated</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Uptime</div>
+            <div class="metric-value">99.97<span class="metric-unit">%</span></div>
+            <div class="metric-trust trust-high">✓ 90-day avg</div>
+            <div class="metric-trend">→ 0 outages</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-accent" style="background:var(--green)"></div>
+            <div class="metric-label">Active Sources</div>
+            <div class="metric-value">14</div>
+            <div class="metric-trust trust-high">✓ All connected</div>
+            <div class="metric-trend">→ 0 offline</div>
+          </div>
+        </div>
+
+        <!-- Architecture Diagram -->
+        <div class="card" style="padding:24px;">
+          <div class="card-header"><span class="card-title">Data Ingestion Architecture</span><span class="tag tag-ok">All Layers Secure</span></div>
+          <svg width="100%" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet" style="max-height:220px;">
+            <!-- SCADA Layer -->
+            <rect x="10" y="60" width="130" height="80" rx="8" fill="#1a3a5c" opacity="0.08" stroke="#1a3a5c" stroke-width="1.5"/>
+            <text x="75" y="85" text-anchor="middle" font-size="10" font-weight="700" fill="#1a3a5c" font-family="Inter,sans-serif">SCADA / PLC</text>
+            <text x="75" y="100" text-anchor="middle" font-size="9" fill="#4a5568" font-family="DM Mono,monospace">OT Network</text>
+            <text x="75" y="115" text-anchor="middle" font-size="8" fill="#8a9bb0" font-family="DM Mono,monospace">14 sensors</text>
+            <circle cx="75" cy="130" r="4" fill="#27ae60"/><text x="85" y="133" font-size="8" fill="#27ae60" font-family="DM Mono,monospace">Online</text>
+
+            <!-- Arrow 1 -->
+            <line x1="145" y1="100" x2="195" y2="100" stroke="#2e86ab" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <text x="170" y="90" text-anchor="middle" font-size="7" fill="#d97706" font-family="DM Mono,monospace">OT-DMZ</text>
+
+            <!-- Edge Agent -->
+            <rect x="200" y="60" width="130" height="80" rx="8" fill="rgba(46,134,171,0.08)" stroke="#2e86ab" stroke-width="1.5"/>
+            <text x="265" y="85" text-anchor="middle" font-size="10" font-weight="700" fill="#1a3a5c" font-family="Inter,sans-serif">Edge Agent</text>
+            <text x="265" y="100" text-anchor="middle" font-size="9" fill="#4a5568" font-family="DM Mono,monospace">Air-gapped relay</text>
+            <text x="265" y="115" text-anchor="middle" font-size="8" fill="#8a9bb0" font-family="DM Mono,monospace">Read-only bridge</text>
+            <circle cx="265" cy="130" r="4" fill="#27ae60"/><text x="275" y="133" font-size="8" fill="#27ae60" font-family="DM Mono,monospace">Secure</text>
+
+            <!-- Arrow 2 -->
+            <line x1="335" y1="100" x2="385" y2="100" stroke="#2e86ab" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <text x="360" y="90" text-anchor="middle" font-size="7" fill="#27ae60" font-family="DM Mono,monospace">TLS 1.3</text>
+
+            <!-- Data Lake -->
+            <rect x="390" y="40" width="160" height="120" rx="10" fill="rgba(39,174,96,0.06)" stroke="#27ae60" stroke-width="2"/>
+            <text x="470" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="#1a3a5c" font-family="Inter,sans-serif">Secure Data Lake</text>
+            <text x="470" y="82" text-anchor="middle" font-size="9" fill="#4a5568" font-family="DM Mono,monospace">AES-256 encrypted</text>
+            <rect x="405" y="92" width="50" height="28" rx="4" fill="#27ae60" opacity="0.12" stroke="#27ae60" stroke-width="1"/>
+            <text x="430" y="109" text-anchor="middle" font-size="8" font-weight="600" fill="#27ae60" font-family="DM Mono,monospace">HOT</text>
+            <rect x="460" y="92" width="42" height="28" rx="4" fill="#d97706" opacity="0.10" stroke="#d97706" stroke-width="1"/>
+            <text x="481" y="109" text-anchor="middle" font-size="8" font-weight="600" fill="#d97706" font-family="DM Mono,monospace">WARM</text>
+            <rect x="507" y="92" width="30" height="28" rx="4" fill="#8a9bb0" opacity="0.12" stroke="#8a9bb0" stroke-width="1"/>
+            <text x="522" y="109" text-anchor="middle" font-size="8" font-weight="600" fill="#8a9bb0" font-family="DM Mono,monospace">COLD</text>
+            <text x="470" y="145" text-anchor="middle" font-size="8" fill="#8a9bb0" font-family="DM Mono,monospace">Immutable audit log</text>
+
+            <!-- Arrow 3 -->
+            <line x1="555" y1="100" x2="605" y2="100" stroke="#2e86ab" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <text x="580" y="90" text-anchor="middle" font-size="7" fill="#27ae60" font-family="DM Mono,monospace">RBAC</text>
+
+            <!-- Dashboard -->
+            <rect x="610" y="60" width="130" height="80" rx="8" fill="rgba(124,58,237,0.06)" stroke="#7c3aed" stroke-width="1.5"/>
+            <text x="675" y="85" text-anchor="middle" font-size="10" font-weight="700" fill="#1a3a5c" font-family="Inter,sans-serif">Upstream AI</text>
+            <text x="675" y="100" text-anchor="middle" font-size="9" fill="#4a5568" font-family="DM Mono,monospace">Dashboard + AI</text>
+            <text x="675" y="115" text-anchor="middle" font-size="8" fill="#8a9bb0" font-family="DM Mono,monospace">Trust scoring</text>
+            <circle cx="675" cy="130" r="4" fill="#7c3aed"/><text x="685" y="133" font-size="8" fill="#7c3aed" font-family="DM Mono,monospace">Live</text>
+
+            <!-- Arrowhead marker -->
+            <defs><marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2e86ab"/></marker></defs>
+
+            <!-- Security badges below -->
+            <text x="170" y="180" text-anchor="middle" font-size="8" fill="#d97706" font-family="DM Mono,monospace">🔒 Network isolation</text>
+            <text x="360" y="180" text-anchor="middle" font-size="8" fill="#27ae60" font-family="DM Mono,monospace">🔒 End-to-end encryption</text>
+            <text x="580" y="180" text-anchor="middle" font-size="8" fill="#7c3aed" font-family="DM Mono,monospace">🔒 Role-based access</text>
+          </svg>
+        </div>
+
+        <!-- Storage Tiers -->
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Hot Storage</span><span class="tag tag-ok">Active</span></div>
+            <div style="font-size:24px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:4px;">0.8 GB</div>
+            <div style="font-size:11px;color:var(--text-mid);margin-bottom:12px;">Last 7 days · Real-time queries · &lt;100ms access</div>
+            <div style="height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);margin-bottom:8px;"><div style="width:32%;height:100%;background:var(--green);border-radius:3px;"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);"><span>0.8 / 2.5 GB</span><span style="color:var(--green)">32%</span></div>
+            <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+              <div style="font-size:10px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Contains</div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                <span class="tag tag-ok">SCADA live</span>
+                <span class="tag tag-ok">Sensor feeds</span>
+                <span class="tag tag-info">Camera AI</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Warm Storage</span><span class="tag tag-warn">Tiering</span></div>
+            <div style="font-size:24px;font-weight:700;color:var(--yellow);font-family:'DM Mono',monospace;margin-bottom:4px;">1.2 GB</div>
+            <div style="font-size:11px;color:var(--text-mid);margin-bottom:12px;">8–90 days · Trend analysis · &lt;1s access</div>
+            <div style="height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);margin-bottom:8px;"><div style="width:16%;height:100%;background:var(--yellow);border-radius:3px;"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);"><span>1.2 / 7.5 GB</span><span style="color:var(--yellow)">16%</span></div>
+            <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+              <div style="font-size:10px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Contains</div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                <span class="tag tag-warn">Historical trends</span>
+                <span class="tag tag-navy">Compliance logs</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Cold Storage</span><span class="tag tag-navy">Archive</span></div>
+            <div style="font-size:24px;font-weight:700;color:var(--text-mid);font-family:'DM Mono',monospace;margin-bottom:4px;">0.4 GB</div>
+            <div style="font-size:11px;color:var(--text-mid);margin-bottom:12px;">90+ days · Regulatory archive · &lt;30s access</div>
+            <div style="height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);margin-bottom:8px;"><div style="width:4%;height:100%;background:var(--text-dim);border-radius:3px;"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);"><span>0.4 / 10 GB</span><span>4%</span></div>
+            <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+              <div style="font-size:10px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Contains</div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                <span class="tag tag-navy">Regulatory archive</span>
+                <span class="tag tag-mint">Board reports</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Sources & Encryption -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">Data Sources &amp; Encryption Status</span><span class="tag tag-ok">All Encrypted</span></div>
+          <table class="data-table">
+            <thead><tr><th>Source</th><th>Protocol</th><th>Encryption</th><th>Last Sync</th><th>Records / day</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>SCADA — Flow Meters</td><td class="mono">Modbus → Edge</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">AES-256</span></td><td class="mono">2s ago</td><td class="mono">8,640</td><td><span class="tag tag-ok">Live</span></td></tr>
+              <tr><td>SCADA — DO Sensors</td><td class="mono">Modbus → Edge</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">AES-256</span></td><td class="mono">2s ago</td><td class="mono">8,640</td><td><span class="tag tag-ok">Live</span></td></tr>
+              <tr><td>SCADA — pH Probes</td><td class="mono">Modbus → Edge</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">AES-256</span></td><td class="mono">5s ago</td><td class="mono">8,640</td><td><span class="tag tag-ok">Live</span></td></tr>
+              <tr><td>SCADA — Pump Telemetry</td><td class="mono">Modbus → Edge</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">AES-256</span></td><td class="mono">2s ago</td><td class="mono">4,320</td><td><span class="tag tag-ok">Live</span></td></tr>
+              <tr><td>Camera AI — Basin A</td><td class="mono">RTSP → Edge</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">AES-256</span></td><td class="mono">1m ago</td><td class="mono">1,440</td><td><span class="tag tag-ok">Live</span></td></tr>
+              <tr><td>Camera AI — Clarifier</td><td class="mono">RTSP → Edge</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">AES-256</span></td><td class="mono">1m ago</td><td class="mono">1,440</td><td><span class="tag tag-ok">Live</span></td></tr>
+              <tr><td>Manual Observations</td><td class="mono">HTTPS (app)</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">TLS 1.3</span></td><td class="mono">7:00 AM</td><td class="mono">42</td><td><span class="tag tag-ok">Synced</span></td></tr>
+              <tr><td>Lab Results</td><td class="mono">HTTPS (upload)</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">TLS 1.3</span></td><td class="mono">Mar 7</td><td class="mono">~5</td><td><span class="tag tag-ok">Synced</span></td></tr>
+              <tr><td>Weather Service</td><td class="mono">HTTPS (API)</td><td><span style="color:var(--green);font-weight:700;font-family:'DM Mono',monospace">TLS 1.3</span></td><td class="mono">15m ago</td><td class="mono">96</td><td><span class="tag tag-ok">Live</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Access Control & Data Governance -->
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Access Control — RBAC</span><span class="tag tag-ok">Enforced</span></div>
+            <table class="data-table">
+              <thead><tr><th>Role</th><th>Read</th><th>Write</th><th>Export</th><th>Admin</th></tr></thead>
+              <tbody>
+                <tr><td>Operator</td><td style="color:var(--green)">✓</td><td style="color:var(--green)">✓</td><td style="color:var(--red)">—</td><td style="color:var(--red)">—</td></tr>
+                <tr><td>Lead Operator</td><td style="color:var(--green)">✓</td><td style="color:var(--green)">✓</td><td style="color:var(--green)">✓</td><td style="color:var(--red)">—</td></tr>
+                <tr><td>Manager</td><td style="color:var(--green)">✓</td><td style="color:var(--green)">✓</td><td style="color:var(--green)">✓</td><td style="color:var(--red)">—</td></tr>
+                <tr><td>Board Member</td><td style="color:var(--green)">✓</td><td style="color:var(--red)">—</td><td style="color:var(--green)">✓</td><td style="color:var(--red)">—</td></tr>
+                <tr><td>District Admin</td><td style="color:var(--green)">✓</td><td style="color:var(--green)">✓</td><td style="color:var(--green)">✓</td><td style="color:var(--green)">✓</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Data Retention Policy</span><span class="card-action">Edit policy →</span></div>
+            <div style="margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:12px;font-weight:600;color:var(--navy);">SCADA telemetry</span><span class="mono" style="color:var(--green)">7 years</span></div>
+              <div style="height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:100%;height:100%;background:var(--green);border-radius:3px;opacity:0.5;"></div></div>
+              <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">Regulatory requirement: 5 yr min · Policy: 7 yr</div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:12px;font-weight:600;color:var(--navy);">Compliance records</span><span class="mono" style="color:var(--green)">10 years</span></div>
+              <div style="height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:100%;height:100%;background:var(--green);border-radius:3px;opacity:0.5;"></div></div>
+              <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">NPDES requirement: 5 yr min · Policy: 10 yr</div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:12px;font-weight:600;color:var(--navy);">Camera AI events</span><span class="mono" style="color:var(--yellow)">90 days</span></div>
+              <div style="height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:30%;height:100%;background:var(--yellow);border-radius:3px;opacity:0.5;"></div></div>
+              <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">Metadata retained · Raw frames auto-purged</div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:12px;font-weight:600;color:var(--navy);">Audit trail</span><span class="mono" style="color:var(--green)">Immutable</span></div>
+              <div style="height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);"><div style="width:100%;height:100%;background:var(--accent);border-radius:3px;opacity:0.5;"></div></div>
+              <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">Append-only log · Cannot be modified or deleted</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Audit Trail -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">Data Lake Security Audit Trail</span><span class="card-action">Export full log</span></div>
+          <table class="data-table">
+            <thead><tr><th>Time</th><th>Event</th><th>Source</th><th>Actor</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="mono" style="font-size:11px">07:14</td><td style="font-size:12px">TLS certificate rotation completed</td><td style="font-size:11px;color:var(--text-dim)">Edge Agent</td><td style="font-size:11px;color:var(--text-dim)">System</td><td><span class="tag tag-ok">Success</span></td></tr>
+              <tr><td class="mono" style="font-size:11px">07:00</td><td style="font-size:12px">Manual observation data ingested (6 params)</td><td style="font-size:11px;color:var(--text-dim)">App</td><td style="font-size:11px;color:var(--text-dim)">J. Martinez</td><td><span class="tag tag-ok">Validated</span></td></tr>
+              <tr><td class="mono" style="font-size:11px">06:00</td><td style="font-size:12px">Hot → Warm tier migration (Feb 28 data)</td><td style="font-size:11px;color:var(--text-dim)">Data Lake</td><td style="font-size:11px;color:var(--text-dim)">Auto-tier</td><td><span class="tag tag-ok">Complete</span></td></tr>
+              <tr><td class="mono" style="font-size:11px">05:12</td><td style="font-size:12px">Anomaly: DO sensor reading flagged low-trust</td><td style="font-size:11px;color:var(--text-dim)">SCADA</td><td style="font-size:11px;color:var(--text-dim)">AI Monitor</td><td><span class="tag tag-warn">Flagged</span></td></tr>
+              <tr><td class="mono" style="font-size:11px">04:40</td><td style="font-size:12px">AI autopilot action logged (blower adjustment)</td><td style="font-size:11px;color:var(--text-dim)">Upstream AI</td><td style="font-size:11px;color:var(--text-dim)">AI Autopilot</td><td><span class="tag tag-ok">Recorded</span></td></tr>
+              <tr><td class="mono" style="font-size:11px">00:00</td><td style="font-size:12px">Daily backup completed — encrypted snapshot</td><td style="font-size:11px;color:var(--text-dim)">Data Lake</td><td style="font-size:11px;color:var(--text-dim)">System</td><td><span class="tag tag-ok">Verified</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Security Certifications -->
+        <div class="nav-link-row">
+          <div class="nav-link-card" style="cursor:default;">
+            <div>
+              <div class="nav-link-label">Network Security</div>
+              <div class="nav-link-title">OT-DMZ Air Gap Architecture</div>
+              <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">SCADA network fully isolated from IT. One-way data diode via edge agent. No inbound connections to OT network.</div>
+              <div class="nav-link-tags" style="margin-top:8px;">
+                <span class="tag tag-ok">Air-gapped</span>
+                <span class="tag tag-ok">Read-only bridge</span>
+                <span class="tag tag-ok">No cloud write-back</span>
+              </div>
+            </div>
+          </div>
+          <div class="nav-link-card" style="cursor:default;">
+            <div>
+              <div class="nav-link-label">Data Sovereignty</div>
+              <div class="nav-link-title">Your Data Stays Yours</div>
+              <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">All data stored in district-owned namespace. No third-party data sharing. Full export available anytime in open formats (CSV, JSON).</div>
+              <div class="nav-link-tags" style="margin-top:8px;">
+                <span class="tag tag-ok">District-owned</span>
+                <span class="tag tag-ok">No vendor lock-in</span>
+                <span class="tag tag-ok">Full portability</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* Gate verification loaded externally */
+function verifyAccess() {
+  var v = document.getElementById('gateInput').value.toLowerCase().trim();
+  if (v.length > 0) {
+    document.getElementById('gate').classList.add('hidden');
+    document.getElementById('app').classList.add('visible');
+    startClock(); buildWaveform();
+  } else {
+    var e = document.getElementById('gateError');
+    e.classList.add('show');
+    document.getElementById('gateInput').value = '';
+    setTimeout(function(){ e.classList.remove('show'); }, 2500);
+  }
+}
+function showTab(id, el) {
+  document.querySelectorAll('.tab-view').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.sidebar-item').forEach(function(s){ s.classList.remove('active'); });
+  var tab = document.getElementById('tab-'+id);
+  if (tab) tab.classList.add('active');
+  if (el) el.classList.add('active');
+}
+function switchCompliance(view) {
+  document.getElementById('compliance-permit').style.display = view === 'permit' ? 'block' : 'none';
+  document.getElementById('compliance-calendar').style.display = view === 'calendar' ? 'block' : 'none';
+  document.getElementById('compPermitBtn').classList.toggle('active', view === 'permit');
+  document.getElementById('compCalBtn').classList.toggle('active', view === 'calendar');
+}
+function switchOM(section, btn) {
+  ['sops','chemicals','maint','manuals'].forEach(function(s){
+    var el = document.getElementById('om-'+s);
+    if (el) el.style.display = s === section ? 'block' : 'none';
+  });
+  document.querySelectorAll('.subnav-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+}
+function startClock() {
+  function tick() {
+    var now = new Date(), h = now.getHours(), m = now.getMinutes();
+    var ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+    document.getElementById('clock').textContent = h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+  }
+  tick(); setInterval(tick, 30000);
+}
+function buildWaveform() {
+  var c = document.getElementById('waveform'); if (!c) return;
+  var heights = [20,25,18,30,22,35,28,40,32,38,45,52,48,55,60,52,48,44,38,35,30,40,45,50,55,48,42,38,32,28,24,20,22,26,30,34,28,24,20,18,22,26,30,34,28];
+  heights.forEach(function(h, i) {
+    var bar = document.createElement('div');
+    bar.className = 'wave-bar ' + (i >= 22 && i < 30 ? 'anomaly' : 'normal');
+    bar.style.height = h + 'px'; c.appendChild(bar);
+  });
+  setInterval(function(){ c.querySelectorAll('.anomaly').forEach(function(b){ b.style.height = (45 + Math.random()*20)+'px'; }); }, 350);
+}
+var s = document.createElement('style');
+s.textContent = '#vibrationBox { animation:blink 1s infinite; } @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }';
+document.head.appendChild(s);
+</script>
+</body>
+</html>
