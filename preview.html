@@ -3,914 +3,1340 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Upstream AI · Platform Preview v7</title>
+<meta name="theme-color" content="#1a3a5c">
+<title data-field="meta.pageTitle">Upstream AI · Preview</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,700&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Mono:wght@400;500&display=swap');
+
+/* ============ DESIGN TOKENS ============ */
 *{margin:0;padding:0;box-sizing:border-box;}
+*:focus{outline:none;}
+*:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px;}
+
 :root{
+  /* Brand */
   --navy:#1a3a5c;--navy-dark:#0d2440;--navy-light:#234d78;--navy-dim:rgba(255,255,255,0.12);
-  --accent:#2e86ab;--water:#a8e6cf;--water-dim:rgba(168,230,207,0.15);
-  --bg:#f4f6f8;--surface:#ffffff;--border:#e2e8f0;--border-mid:#d0d9e4;
-  --text:#0a1628;--text-mid:#4a5568;--text-dim:#8a9bb0;
-  --green:#27ae60;--green-bg:#eafaf2;--green-border:rgba(39,174,96,0.25);
-  --yellow:#d97706;--yellow-bg:#fffbeb;--yellow-border:rgba(217,119,6,0.25);
-  --red:#dc2626;--red-bg:#fff5f5;--red-border:rgba(220,38,38,0.25);
-  --purple:#7c3aed;--purple-bg:#f5f3ff;
+  --accent:#1b6a8a;
+  --water:#a8e6cf;--water-dim:rgba(168,230,207,0.15);
+
+  /* Surfaces */
+  --bg:#f4f6f8;--surface:#ffffff;--border:#e2e8f0;--border-mid:#cbd5e1;
+
+  /* Text — AA on white */
+  --text:#0a1628;
+  --text-mid:#475569;
+  --text-dim:#64748b;
+
+  /* Status */
+  --green:#15803d;--green-bg:#eafaf2;--green-border:rgba(21,128,61,0.25);
+  --yellow:#a16207;--yellow-bg:#fffbeb;--yellow-border:rgba(161,98,7,0.3);
+  --red:#b91c1c;--red-bg:#fff5f5;--red-border:rgba(185,28,28,0.25);
+  --purple:#6d28d9;--purple-bg:#f5f3ff;
+
+  /* Lab preservative codes */
+  --pres-none:#c2410c;
+  --pres-hno3:#b91c1c;
+  --pres-hcl:#1d4ed8;
+  --pres-h2so4:#a16207;
+  --pres-naoh:#15803d;
+  --pres-zn-naoh:#6d28d9;
+
+  /* Spacing */
+  --s-1:4px;--s-2:8px;--s-3:12px;--s-4:16px;--s-5:20px;--s-6:24px;--s-8:32px;
+
+  /* Type */
+  --t-xs:11px;--t-sm:12px;--t-base:13px;--t-md:14px;--t-lg:16px;--t-xl:18px;--t-2xl:24px;
 }
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;}
 
-/* GATE */
-#gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(135deg,#e8f4f8 0%,#f0f4ff 50%,#e8f8f0 100%);z-index:999;}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}
+}
+
+html{font-size:16px;}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;font-size:var(--t-base);line-height:1.5;}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+button,[role="button"],.sb-item,.fac-btn,.cal-day,.comp-task-check,.report-tile{min-height:36px;}
+@media (max-width:768px){
+  button,[role="button"],.sb-item,.fac-btn{min-height:44px;}
+}
+
+/* ============ DISTRICT SWITCHER (top of gate) ============ */
+.district-switcher{display:flex;gap:6px;justify-content:center;margin-bottom:var(--s-4);flex-wrap:wrap;}
+.ds-btn{padding:6px 12px;border:1px solid var(--border-mid);background:#fff;border-radius:14px;font-size:var(--t-xs);font-weight:600;color:var(--text-mid);cursor:pointer;font-family:'Inter',sans-serif;}
+.ds-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.ds-btn:hover:not(.active){background:var(--bg);}
+
+/* ============ GATE ============ */
+#gate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:var(--s-6);background:linear-gradient(135deg,#e8f4f8 0%,#f0f4ff 50%,#e8f8f0 100%);z-index:1000;}
 #gate.hidden{display:none;}
-.gate-box{background:#fff;border:1px solid var(--border);border-radius:20px;padding:52px 44px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(26,58,92,0.12);}
-.gate-logo{font-size:24px;font-weight:600;color:var(--navy);margin-bottom:4px;letter-spacing:-0.5px;}
+.gate-box{background:#fff;border:1px solid var(--border);border-radius:20px;padding:48px 40px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(26,58,92,0.12);}
+.gate-logo{font-size:var(--t-2xl);font-weight:600;color:var(--navy);margin-bottom:var(--s-1);letter-spacing:-0.5px;}
 .gate-logo em{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;color:var(--accent);}
-.gate-sub{font-size:13px;color:var(--text-dim);margin-bottom:10px;}
-.gate-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--green);letter-spacing:0.5px;margin-bottom:32px;text-transform:uppercase;}
+.gate-sub{font-size:var(--t-base);color:var(--text-dim);margin-bottom:10px;}
+.gate-badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:20px;padding:5px 14px;font-size:var(--t-xs);font-weight:600;color:var(--green);letter-spacing:0.5px;margin-bottom:var(--s-6);text-transform:uppercase;}
 .gate-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);}
-.gate-input{width:100%;padding:14px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Mono',monospace;font-size:16px;text-align:center;letter-spacing:3px;outline:none;transition:border-color .2s,box-shadow .2s;}
-.gate-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,134,171,0.12);}
-.gate-btn{width:100%;margin-top:12px;padding:14px;background:var(--navy);border:none;border-radius:10px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s,transform .1s;}
-.gate-btn:hover{background:var(--accent);transform:translateY(-1px);}
-.gate-error{font-size:12px;color:var(--red);margin-top:8px;display:none;}
+.gate-input{width:100%;padding:14px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Mono',monospace;font-size:var(--t-lg);text-align:center;letter-spacing:3px;}
+.gate-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(27,106,138,0.15);}
+.gate-btn{width:100%;margin-top:var(--s-3);padding:14px;background:var(--navy);border:none;border-radius:10px;color:#fff;font-size:var(--t-md);font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;min-height:48px;}
+.gate-btn:hover{background:var(--accent);}
+.gate-error{font-size:var(--t-sm);color:var(--red);margin-top:var(--s-2);display:none;}
 .gate-error.show{display:block;}
-.gate-note{font-size:11px;color:var(--text-dim);margin-top:24px;line-height:1.7;}
+.gate-note{font-size:var(--t-xs);color:var(--text-dim);margin-top:var(--s-6);line-height:1.7;}
 
-/* SIDEBAR */
-.sidebar{width:220px;height:100vh;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
-.sb-brand{padding:22px 20px 16px;border-bottom:1px solid var(--navy-dim);}
-.sb-logo{font-size:18px;font-weight:600;color:#fff;letter-spacing:-0.5px;}
+/* ============ LOADING ============ */
+#loadingState{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#f4f6f8;z-index:1001;}
+#loadingState.hidden{display:none;}
+.loading-text{font-size:var(--t-base);color:var(--text-dim);font-family:'DM Mono',monospace;}
+
+/* ============ SIDEBAR ============ */
+.sidebar{width:220px;height:100vh;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:transform .25s ease;}
+.sb-brand{padding:22px 20px 16px;border-bottom:1px solid var(--navy-dim);display:flex;align-items:center;justify-content:space-between;}
+.sb-brand-text{flex:1;}
+.sb-logo{font-size:var(--t-xl);font-weight:600;color:#fff;letter-spacing:-0.5px;}
 .sb-logo em{font-family:'Playfair Display',serif;font-style:italic;color:var(--water);font-weight:700;}
-.sb-tagline{font-size:9px;color:rgba(255,255,255,0.4);margin-top:2px;text-transform:uppercase;letter-spacing:1.2px;}
-.sb-district{margin:12px 14px;background:rgba(255,255,255,0.07);border-radius:8px;padding:10px 12px;}
-.sb-dist-name{font-size:12px;font-weight:600;color:#fff;}
-.sb-dist-sub{font-size:10px;color:rgba(255,255,255,0.4);margin-top:1px;}
+.sb-tagline{font-size:10px;color:rgba(255,255,255,0.55);margin-top:2px;text-transform:uppercase;letter-spacing:1.2px;}
+.sb-close{display:none;background:none;border:none;color:rgba(255,255,255,0.7);font-size:22px;cursor:pointer;padding:4px 8px;border-radius:6px;}
+.sb-close:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.sb-district{margin:var(--s-3) 14px;background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 12px;}
+.sb-dist-name{font-size:var(--t-sm);font-weight:600;color:#fff;}
+.sb-dist-sub{font-size:10px;color:rgba(255,255,255,0.55);margin-top:1px;}
 .sb-live{display:flex;align-items:center;gap:5px;margin-top:6px;font-size:10px;color:var(--water);font-weight:500;}
 .sb-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--water);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
-.sb-section{padding:14px 16px 4px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.28);text-transform:uppercase;letter-spacing:1.5px;}
-.sb-item{display:flex;align-items:center;gap:9px;padding:8px 14px;margin:1px 8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.55);font-size:13px;font-weight:500;transition:all .15s;user-select:none;position:relative;}
-.sb-item:hover{background:rgba(255,255,255,0.07);color:#fff;}
-.sb-item.active{background:rgba(255,255,255,0.12);color:#fff;}
-.sb-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0;}
-.sb-badge{margin-left:auto;background:var(--red);color:#fff;font-size:9px;font-weight:700;border-radius:10px;padding:2px 6px;}
-.sb-ai-badge{margin-left:auto;background:var(--purple);color:#fff;font-size:9px;font-weight:700;border-radius:10px;padding:2px 6px;}
-.sb-new{margin-left:auto;background:var(--water);color:var(--navy-dark);font-size:9px;font-weight:700;border-radius:10px;padding:2px 7px;text-transform:uppercase;}
+.sb-section{padding:14px 16px 4px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1.5px;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:10px 14px;margin:1px 8px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.75);font-size:var(--t-base);font-weight:500;transition:background .15s,color .15s;user-select:none;border:none;background:none;width:calc(100% - 16px);text-align:left;font-family:'Inter',sans-serif;}
+.sb-item:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.sb-item.active{background:rgba(255,255,255,0.15);color:#fff;}
+.sb-item:focus-visible{outline:2px solid var(--water);outline-offset:-2px;}
+.sb-icon{font-size:var(--t-base);width:16px;text-align:center;flex-shrink:0;}
+.sb-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:2px 6px;}
+.sb-pulse{margin-left:auto;width:6px;height:6px;border-radius:50%;background:var(--water);animation:pulse 2s infinite;}
+.sb-ai-badge{margin-left:auto;background:var(--purple);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:2px 6px;}
 .sb-footer{margin-top:auto;padding:14px 16px;border-top:1px solid var(--navy-dim);}
 .sb-user{display:flex;align-items:center;gap:9px;}
-.sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--water));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;}
-.sb-uname{font-size:12px;font-weight:600;color:#fff;}
-.sb-urole{font-size:10px;color:rgba(255,255,255,0.4);}
+.sb-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--water));display:flex;align-items:center;justify-content:center;font-size:var(--t-xs);font-weight:700;color:var(--navy-dark);flex-shrink:0;}
+.sb-uname{font-size:var(--t-sm);font-weight:600;color:#fff;}
+.sb-urole{font-size:10px;color:rgba(255,255,255,0.55);}
+.sb-orc-tag{display:inline-block;background:var(--water);color:var(--navy-dark);font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;margin-left:4px;letter-spacing:0.4px;}
 
+/* ============ MAIN ============ */
 .main{flex:1;min-width:0;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
-.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 22px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.topbar-title{font-size:13px;color:var(--text-dim);}
-.topbar-right{display:flex;align-items:center;gap:10px;}
-.topbar-clock{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-mid);background:var(--bg);padding:4px 9px;border-radius:6px;border:1px solid var(--border);}
-.topbar-alert{display:flex;align-items:center;gap:5px;background:var(--red-bg);border:1px solid var(--red-border);border-radius:20px;padding:4px 11px;font-size:11px;font-weight:600;color:var(--red);cursor:pointer;}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 22px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:var(--s-3);}
+.menu-btn{display:none;background:none;border:none;cursor:pointer;padding:var(--s-2);border-radius:6px;color:var(--text);font-size:20px;}
+.menu-btn:hover{background:var(--bg);}
+.topbar-title{font-size:var(--t-base);color:var(--text-dim);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.topbar-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.topbar-clock{font-family:'DM Mono',monospace;font-size:var(--t-xs);color:var(--text-mid);background:var(--bg);padding:5px 9px;border-radius:6px;border:1px solid var(--border);}
+.topbar-pull{display:flex;align-items:center;gap:6px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:20px;padding:5px 12px;font-size:var(--t-xs);font-weight:600;color:var(--green);cursor:pointer;}
+.topbar-pull-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
 
-.content{flex:1;overflow-y:auto;padding:20px 22px;position:relative;}
+.content{flex:1;overflow-y:auto;padding:var(--s-5) 22px;position:relative;}
 .view{display:none;}
 .view.active{display:block;}
+.view[hidden]{display:none!important;}
 
-.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;}
-.page-title{font-size:24px;font-weight:600;color:var(--navy);letter-spacing:-0.5px;line-height:1.2;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s-4);flex-wrap:wrap;gap:var(--s-3);}
+.page-title{font-size:var(--t-2xl);font-weight:600;color:var(--navy);letter-spacing:-0.5px;line-height:1.2;}
 .page-title em{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;}
-.page-sub{font-size:12px;color:var(--text-dim);margin-top:3px;}
-.page-actions{display:flex;gap:8px;align-items:center;}
+.page-sub{font-size:var(--t-sm);color:var(--text-dim);margin-top:3px;}
+.page-actions{display:flex;gap:var(--s-2);align-items:center;flex-wrap:wrap;}
 
-.fac-toggle{display:flex;gap:3px;background:var(--bg);border-radius:8px;padding:3px;border:1px solid var(--border);}
-.fac-btn{padding:6px 14px;border-radius:6px;border:none;background:transparent;color:var(--text-dim);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;}
-.fac-btn.active{background:#fff;color:var(--navy);box-shadow:0 1px 4px rgba(26,58,92,0.10);}
-
-.btn-primary{background:var(--navy);border:none;color:#fff;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;}
+.btn-primary{background:var(--navy);border:none;color:#fff;padding:9px 14px;border-radius:8px;font-size:var(--t-sm);font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;min-height:38px;}
 .btn-primary:hover{background:var(--accent);}
-.btn-outline{background:#fff;border:1px solid var(--border);color:var(--text-mid);padding:7px 13px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-outline{background:#fff;border:1px solid var(--border-mid);color:var(--text-mid);padding:8px 13px;border-radius:8px;font-size:var(--t-sm);font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;min-height:38px;}
+.btn-outline:hover{background:var(--bg);border-color:var(--text-dim);}
 
 .metrics-row{display:grid;gap:10px;margin-bottom:14px;}
-.m5{grid-template-columns:repeat(5,1fr);}
-.m6{grid-template-columns:repeat(6,1fr);}
 .m4{grid-template-columns:repeat(4,1fr);}
-.m3{grid-template-columns:repeat(3,1fr);}
+@media (max-width:1100px){.m4{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.m4{grid-template-columns:1fr;}}
 .metric-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;position:relative;overflow:hidden;cursor:pointer;transition:box-shadow .15s,border-color .15s;}
 .metric-card:hover{box-shadow:0 4px 16px rgba(26,58,92,0.09);border-color:var(--accent);}
 .metric-accent{position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
-.metric-label{font-size:9px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;margin-top:6px;}
-.metric-value{font-size:24px;font-weight:700;color:var(--navy);letter-spacing:-0.8px;line-height:1;font-family:'DM Mono',monospace;}
-.metric-unit{font-size:11px;font-weight:500;color:var(--text-mid);margin-left:2px;}
-.metric-trend{font-size:10px;color:var(--text-dim);margin-top:4px;font-family:'DM Mono',monospace;}
-.metric-status{font-size:10px;font-weight:600;margin-top:4px;}
+.metric-label{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;margin-top:6px;}
+.metric-value{font-size:28px;font-weight:700;color:var(--navy);letter-spacing:-0.8px;line-height:1;font-family:'DM Mono',monospace;}
+.metric-unit{font-size:var(--t-xs);font-weight:500;color:var(--text-mid);margin-left:2px;}
+.metric-trend{font-size:var(--t-xs);color:var(--text-dim);margin-top:4px;font-family:'DM Mono',monospace;}
+.metric-status{font-size:var(--t-xs);font-weight:600;margin-top:4px;}
 .ms-ok{color:var(--green)}.ms-warn{color:var(--yellow)}.ms-alert{color:var(--red)}
 
 .grid-21{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px;}
+.grid-12{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:14px;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px;}
+@media (max-width:900px){.grid-21,.grid-12,.grid-2,.grid-3{grid-template-columns:1fr;}}
 
 .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.card-title{font-size:12px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;}
-.card-action{font-size:11px;color:var(--accent);cursor:pointer;font-weight:500;}
-.card-action:hover{text-decoration:underline;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:var(--s-2);}
+.card-title{font-size:var(--t-sm);font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;}
+.card-action{font-size:var(--t-xs);color:var(--accent);cursor:pointer;font-weight:600;background:none;border:none;font-family:'Inter',sans-serif;padding:4px 6px;border-radius:4px;}
+.card-action:hover{text-decoration:underline;background:var(--bg);}
 
 .tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.4px;}
 .tag-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
 .tag-warn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border);}
 .tag-alert{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
-.tag-ai{background:var(--purple-bg);color:var(--purple);border:1px solid rgba(124,58,237,0.22);}
-.tag-navy{background:rgba(26,58,92,0.07);color:var(--navy);border:1px solid rgba(26,58,92,0.14);}
+.tag-ai{background:var(--purple-bg);color:var(--purple);border:1px solid rgba(109,40,217,0.22);}
+.tag-navy{background:rgba(26,58,92,0.08);color:var(--navy);border:1px solid rgba(26,58,92,0.16);}
 
-.ai-banner{background:var(--navy);border-radius:12px;padding:18px 20px;margin-bottom:14px;display:flex;align-items:center;gap:16px;}
-.ai-orb{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--water));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.ai-text{flex:1;}
-.ai-title{font-size:16px;font-weight:600;color:#fff;letter-spacing:-0.3px;}
-.ai-title em{font-family:'Playfair Display',serif;font-style:italic;color:var(--water);}
-.ai-sub{font-size:11px;color:rgba(255,255,255,0.55);margin-top:2px;line-height:1.5;}
-.ai-meta{text-align:right;}
-.ai-score{font-size:26px;font-weight:700;color:var(--water);font-family:'DM Mono',monospace;}
-.ai-score-label{font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;}
+/* ============ COMPLIANCE HOME ============ */
+.comp-hero{background:var(--navy);border-radius:14px;padding:22px 26px;margin-bottom:14px;color:#fff;display:flex;align-items:center;gap:var(--s-5);flex-wrap:wrap;}
+.comp-hero-icon{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--water));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;color:var(--navy-dark);font-weight:700;}
+.comp-hero-text{flex:1;min-width:240px;}
+.comp-hero-title{font-size:var(--t-xl);font-weight:600;letter-spacing:-0.3px;}
+.comp-hero-title em{font-family:'Playfair Display',serif;font-style:italic;color:var(--water);}
+.comp-hero-sub{font-size:var(--t-sm);color:rgba(255,255,255,0.8);margin-top:4px;line-height:1.55;}
+.comp-hero-stats{display:flex;gap:var(--s-6);flex-shrink:0;}
+.comp-hero-stat{text-align:center;}
+.comp-hero-num{font-size:24px;font-weight:700;color:var(--water);font-family:'DM Mono',monospace;line-height:1;}
+.comp-hero-stat-label{font-size:10px;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
 
-.trend-svg{width:100%;height:100%;}
+.thursday-banner{background:linear-gradient(90deg,var(--water-dim),rgba(168,230,207,0.05));border:1px solid var(--green-border);border-radius:10px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:11px;font-size:var(--t-sm);color:var(--text);flex-wrap:wrap;}
+.thursday-icon{width:28px;height:28px;border-radius:50%;background:var(--water-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--green);font-size:var(--t-md);font-weight:600;}
+.thursday-text{flex:1;min-width:200px;}
+.thursday-title{font-weight:600;color:var(--green);}
+.thursday-sub{font-size:var(--t-xs);color:var(--text-mid);font-family:'DM Mono',monospace;margin-top:1px;}
+.thursday-action{font-size:var(--t-xs);color:var(--accent);font-weight:600;cursor:pointer;background:none;border:none;padding:4px 8px;border-radius:4px;font-family:'Inter',sans-serif;}
+.thursday-action:hover{background:rgba(27,106,138,0.08);}
 
-.param-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);}
-.param-row:last-child{border-bottom:none;}
-.param-name{font-size:11px;font-weight:600;color:var(--navy);width:80px;flex-shrink:0;}
-.param-bar-wrap{flex:1;}
-.param-bar-bg{background:var(--bg);border-radius:4px;height:7px;overflow:hidden;border:1px solid var(--border);}
-.param-bar-fill{height:100%;border-radius:4px;transition:width .5s;}
-.param-val{font-family:'DM Mono',monospace;font-size:11px;font-weight:600;width:55px;text-align:right;flex-shrink:0;}
-.param-status{width:42px;text-align:right;flex-shrink:0;}
+.report-tile{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;text-align:left;width:100%;font-family:'Inter',sans-serif;}
+.report-tile:hover{box-shadow:0 4px 18px rgba(26,58,92,0.10);border-color:var(--accent);transform:translateY(-1px);}
+.report-tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.report-tile-accent{position:absolute;top:0;left:0;right:0;height:4px;border-radius:12px 12px 0 0;}
+.report-tile-header{display:flex;align-items:flex-start;justify-content:space-between;margin:6px 0 10px;gap:var(--s-2);}
+.report-tile-type{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;}
+.report-tile-title{font-size:var(--t-lg);font-weight:600;color:var(--navy);letter-spacing:-0.3px;line-height:1.2;}
+.report-tile-period{font-size:var(--t-xs);color:var(--text-mid);margin-top:2px;font-family:'DM Mono',monospace;}
+.report-tile-progress-row{display:flex;align-items:center;gap:var(--s-2);margin:12px 0 6px;}
+.report-tile-progress-bar{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden;}
+.report-tile-progress-fill{height:100%;border-radius:4px;}
+.report-tile-progress-text{font-size:var(--t-xs);font-weight:600;color:var(--text-mid);font-family:'DM Mono',monospace;width:54px;text-align:right;}
+.report-tile-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:var(--s-2);flex-wrap:wrap;}
+.report-tile-due{font-size:var(--t-xs);color:var(--text-mid);}
+.report-tile-due strong{color:var(--text);font-family:'DM Mono',monospace;}
 
-.alert-item{display:flex;gap:10px;padding:9px 11px;border:1px solid var(--border);border-radius:8px;margin-bottom:7px;cursor:pointer;transition:border-color .15s;}
-.alert-item:hover{border-color:var(--accent);}
-.alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;}
-.alert-body{flex:1;min-width:0;}
-.alert-title{font-size:12px;font-weight:600;color:var(--text);}
-.alert-desc{font-size:11px;color:var(--text-mid);margin-top:2px;line-height:1.4;}
-.alert-time{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:3px;}
+.comp-task-list{margin-top:8px;}
+.comp-task{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.comp-task:last-child{border-bottom:none;}
+.comp-task-check{width:22px;height:22px;border:1.5px solid var(--border-mid);border-radius:5px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:var(--t-xs);color:transparent;transition:all .15s;background:#fff;}
+.comp-task-check.done{background:var(--green);border-color:var(--green);color:#fff;}
+.comp-task-check:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.comp-task-text{flex:1;font-size:var(--t-sm);color:var(--text);}
+.comp-task-text.done{color:var(--text-dim);text-decoration:line-through;}
+.comp-task-meta{font-size:var(--t-xs);color:var(--text-dim);font-family:'DM Mono',monospace;flex-shrink:0;}
 
-.doc-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
-.doc-row:last-child{border-bottom:none;}
-.doc-icon{width:28px;height:28px;border-radius:6px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
-.doc-body{flex:1;min-width:0;}
-.doc-name{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.doc-meta{font-size:10px;color:var(--text-dim);margin-top:1px;font-family:'DM Mono',monospace;}
+/* ============ CALENDAR ============ */
+.cal-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;gap:var(--s-3);flex-wrap:wrap;}
+.cal-month-nav{display:flex;align-items:center;gap:14px;}
+.cal-month-btn{background:none;border:1px solid var(--border);color:var(--text-mid);cursor:pointer;font-size:var(--t-md);width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-family:'Inter',sans-serif;}
+.cal-month-btn:hover{background:var(--bg);}
+.cal-month-label{font-size:var(--t-md);font-weight:600;color:var(--navy);min-width:130px;text-align:center;}
+.cal-filters{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.cal-filter{font-size:var(--t-xs);font-weight:600;padding:5px 11px;border-radius:14px;border:1px solid var(--border-mid);background:#fff;color:var(--text-mid);cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;}
+.cal-filter.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.cal-filter-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
 
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.cal-day-head{background:#fff;padding:8px 8px;font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;text-align:center;}
+.cal-day{background:#fff;min-height:96px;padding:6px 7px;cursor:pointer;transition:background .12s;position:relative;border:none;width:100%;text-align:left;font-family:'Inter',sans-serif;display:block;}
+.cal-day:hover:not(.outside){background:var(--bg);}
+.cal-day.outside{background:#fafbfc;color:var(--text-dim);cursor:default;}
+.cal-day.today{background:var(--water-dim);}
+.cal-day.today .cal-day-num{color:var(--green);font-weight:700;}
+.cal-day:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;z-index:1;}
+.cal-day-num{font-size:var(--t-xs);font-weight:600;color:var(--text);font-family:'DM Mono',monospace;margin-bottom:3px;display:block;}
+.cal-event{font-size:9px;padding:2px 5px;border-radius:3px;margin-bottom:2px;line-height:1.4;color:#fff;font-weight:600;display:flex;align-items:center;gap:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cal-event-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.ev-lab-orange{background:var(--pres-none);}
+.ev-lab-red{background:var(--pres-hno3);}
+.ev-lab-blue{background:var(--pres-hcl);}
+.ev-lab-yellow{background:var(--pres-h2so4);}
+.ev-lab-green{background:var(--pres-naoh);}
+.ev-lab-purple{background:var(--pres-zn-naoh);}
+.ev-deadline{background:var(--navy);}
+.ev-renewal{background:#6d28d9;}
+.ev-survey{background:#0e7490;}
+.ev-cert{background:#7e22ce;}
+
+.legend{display:flex;flex-wrap:wrap;gap:14px 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:14px;}
+.legend-group-title{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;width:100%;margin-bottom:2px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:var(--t-xs);color:var(--text-mid);}
+.legend-swatch{width:12px;height:12px;border-radius:3px;flex-shrink:0;}
+
+/* ============ MODAL ============ */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,0.5);backdrop-filter:blur(2px);z-index:200;display:none;align-items:center;justify-content:center;padding:var(--s-4);}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:14px;max-width:520px;width:100%;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(10,22,40,0.3);animation:modalIn .2s ease-out;}
+@keyframes modalIn{from{opacity:0;transform:translateY(10px) scale(0.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+.modal-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:var(--s-3);}
+.modal-head-bar{width:5px;align-self:stretch;border-radius:3px;flex-shrink:0;}
+.modal-head-text{flex:1;}
+.modal-eyebrow{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.modal-title{font-size:var(--t-xl);font-weight:600;color:var(--navy);letter-spacing:-0.3px;line-height:1.25;}
+.modal-date{font-size:var(--t-xs);color:var(--text-mid);margin-top:3px;font-family:'DM Mono',monospace;}
+.modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-dim);width:32px;height:32px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:var(--bg);color:var(--text);}
+.modal-body{padding:var(--s-5) 22px;overflow-y:auto;}
+.modal-section{margin-bottom:var(--s-5);}
+.modal-section:last-child{margin-bottom:0;}
+.modal-section-label{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;}
+.modal-prose{font-size:var(--t-sm);color:var(--text);line-height:1.6;}
+.modal-prose strong{color:var(--navy);font-weight:600;}
+.modal-detail-grid{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;font-size:var(--t-sm);}
+.modal-detail-grid dt{color:var(--text-dim);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.6px;padding-top:2px;}
+.modal-detail-grid dd{color:var(--text);font-family:'DM Mono',monospace;font-size:var(--t-xs);}
+.modal-callout{background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:8px;padding:10px 12px;font-size:var(--t-xs);color:var(--text);line-height:1.6;display:flex;gap:8px;}
+.modal-callout-icon{color:var(--yellow);flex-shrink:0;font-size:var(--t-md);line-height:1.2;}
+.modal-callout strong{color:var(--yellow);display:block;margin-bottom:2px;font-size:var(--t-sm);}
+.modal-bottle-row{display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:8px;}
+.modal-bottle{width:42px;height:52px;border-radius:6px 6px 4px 4px;flex-shrink:0;display:flex;align-items:flex-start;justify-content:center;font-size:10px;font-weight:700;color:#fff;padding-top:4px;border:1px solid rgba(0,0,0,0.08);position:relative;}
+.modal-bottle::before{content:'';position:absolute;top:-2px;left:7px;right:7px;height:5px;border-radius:2px 2px 0 0;background:rgba(0,0,0,0.18);}
+.modal-bottle.bottle-orange{background:var(--pres-none);}
+.modal-bottle.bottle-yellow{background:var(--pres-h2so4);}
+.modal-bottle.bottle-red{background:var(--pres-hno3);}
+.modal-bottle.bottle-blue{background:var(--pres-hcl);}
+.modal-bottle.bottle-green{background:var(--pres-naoh);}
+.modal-bottle.bottle-purple{background:var(--pres-zn-naoh);}
+.modal-bottle-info{flex:1;}
+.modal-bottle-name{font-size:var(--t-sm);font-weight:600;color:var(--navy);}
+.modal-bottle-meta{font-size:var(--t-xs);color:var(--text-mid);font-family:'DM Mono',monospace;margin-top:2px;}
+.modal-foot{padding:var(--s-3) 22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:var(--s-2);flex-wrap:wrap;background:var(--bg);}
+.modal-foot-meta{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.6px;font-weight:600;}
+.modal-foot-actions{display:flex;gap:var(--s-2);}
+
+/* ============ LAB ROWS ============ */
+.sample-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border:1px solid var(--border);border-radius:9px;margin-bottom:7px;background:#fff;cursor:pointer;transition:border-color .15s;width:100%;text-align:left;font-family:'Inter',sans-serif;}
+.sample-row:hover{border-color:var(--accent);}
+.sample-row:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.sample-bottle{width:36px;height:44px;border-radius:6px 6px 4px 4px;flex-shrink:0;display:flex;align-items:flex-start;justify-content:center;font-size:9px;font-weight:700;color:#fff;padding-top:3px;border:1px solid rgba(0,0,0,0.08);position:relative;}
+.sample-bottle::before{content:'';position:absolute;top:-2px;left:6px;right:6px;height:5px;border-radius:2px 2px 0 0;background:rgba(0,0,0,0.18);}
+.bottle-orange{background:var(--pres-none);}
+.bottle-red{background:var(--pres-hno3);}
+.bottle-blue{background:var(--pres-hcl);}
+.bottle-yellow{background:var(--pres-h2so4);}
+.bottle-green{background:var(--pres-naoh);}
+.bottle-purple{background:var(--pres-zn-naoh);}
+.sample-info{flex:1;min-width:0;}
+.sample-name{font-size:var(--t-base);font-weight:600;color:var(--navy);}
+.sample-meta{font-size:var(--t-xs);color:var(--text-mid);margin-top:2px;font-family:'DM Mono',monospace;}
+.sample-hold{flex-shrink:0;text-align:right;}
+.sample-hold-time{font-size:var(--t-xs);font-weight:600;color:var(--text);font-family:'DM Mono',monospace;}
+.sample-hold-label{font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.6px;margin-top:1px;}
+
+/* ============ MOR PREP ============ */
+.dmr-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;}
+.dmr-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+.dmr-period{font-size:var(--t-base);font-weight:600;color:var(--navy);}
+.dmr-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px;}
+.dmr-table{width:100%;border-collapse:collapse;min-width:720px;}
+.dmr-table th{background:var(--bg);padding:8px 10px;font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.7px;text-align:left;border-bottom:1px solid var(--border);}
+.dmr-table td{padding:10px;font-size:var(--t-sm);color:var(--text-mid);border-bottom:1px solid var(--border);}
+.dmr-table tr:last-child td{border-bottom:none;}
+.dmr-table tr.warn-row td{background:var(--yellow-bg);}
+.dmr-table .mono{font-family:'DM Mono',monospace;font-size:var(--t-xs);}
+.dmr-table .col-param{color:var(--text);font-weight:500;}
+
+.draft-banner{background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:10px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px;}
+.draft-banner-icon{font-size:var(--t-md);line-height:1.2;color:var(--yellow);flex-shrink:0;}
+.draft-banner-text{flex:1;font-size:var(--t-xs);color:var(--text);line-height:1.6;}
+.draft-banner-text strong{color:var(--yellow);font-weight:600;display:block;font-size:var(--t-sm);}
+
+.orc-block{margin-top:14px;padding:12px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border);}
+.orc-title{font-size:var(--t-xs);font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
+.orc-body{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap;}
+.orc-text{font-size:var(--t-sm);color:var(--text-mid);line-height:1.55;flex:1;min-width:240px;}
+
+/* ============ LOG ============ */
 .log-form{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .log-section{border-bottom:1px solid var(--border);}
 .log-section:last-child{border-bottom:none;}
-.log-section-header{padding:12px 16px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
-.log-section-title{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;}
+.log-section-header{padding:12px 16px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s-2);}
+.log-section-title{font-size:var(--t-xs);font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;}
 .log-section-body{padding:12px 16px;}
 .log-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+@media (max-width:900px){.log-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.log-grid{grid-template-columns:1fr;}}
 .log-field{display:flex;flex-direction:column;gap:4px;}
 .log-label{font-size:10px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.6px;}
-.log-input{padding:7px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text);background:#fff;outline:none;transition:border-color .2s;}
-.log-input:focus{border-color:var(--accent);}
+.log-input{padding:9px 10px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Mono',monospace;font-size:var(--t-base);color:var(--text);background:#fff;}
+.log-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(27,106,138,0.12);}
 .log-input.warn{border-color:var(--yellow);background:var(--yellow-bg);}
-.log-input.alert{border-color:var(--red);background:var(--red-bg);}
+.log-input.readonly-navy{background:var(--bg);font-weight:600;color:var(--navy);}
+.log-input.readonly-yellow{background:var(--yellow-bg);font-weight:600;color:var(--yellow);}
 .log-hint{font-size:10px;color:var(--text-dim);margin-top:1px;font-family:'DM Mono',monospace;}
-.log-actions{padding:14px 16px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
-.log-ai-note{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--purple);font-weight:500;}
+.log-hint.warn{color:var(--yellow);}
+.log-actions{padding:14px 16px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);flex-wrap:wrap;gap:var(--s-3);}
 
-.dmr-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;}
-.dmr-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
-.dmr-period{font-size:13px;font-weight:600;color:var(--navy);}
-.dmr-row{display:flex;border-bottom:1px solid var(--border);}
-.dmr-cell{padding:9px 10px;font-size:12px;color:var(--text-mid);}
-.dmr-cell.mono{font-family:'DM Mono',monospace;font-size:11px;}
-.dmr-head{display:flex;border-bottom:2px solid var(--border);}
-.dmr-head-cell{padding:7px 10px;font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.7px;}
+/* ============ DOCS ============ */
+.doc-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.doc-row:last-child{border-bottom:none;}
+.doc-icon{width:32px;height:32px;border-radius:6px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:var(--t-base);flex-shrink:0;}
+.doc-body{flex:1;min-width:0;}
+.doc-name{font-size:var(--t-sm);font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.doc-meta{font-size:10px;color:var(--text-dim);margin-top:1px;font-family:'DM Mono',monospace;}
 
-.chat-bubble{position:fixed;bottom:22px;right:22px;z-index:100;}
-.chat-btn{width:52px;height:52px;border-radius:50%;background:var(--navy);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(26,58,92,0.28);transition:all .2s;position:relative;}
+/* ============ CHAT ============ */
+.chat-bubble{position:fixed;bottom:22px;right:22px;z-index:90;}
+.chat-btn{width:56px;height:56px;border-radius:50%;background:var(--navy);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(26,58,92,0.28);transition:all .2s;position:relative;color:#fff;}
 .chat-btn:hover{background:var(--accent);transform:scale(1.05);}
-.chat-btn-icon{font-size:20px;}
+.chat-btn-icon{font-size:22px;}
 .chat-badge{position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:var(--water);border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;}
 .chat-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--navy-dark);}
 
-.chat-panel{position:fixed;bottom:84px;right:22px;width:380px;background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(26,58,92,0.18);z-index:100;display:none;flex-direction:column;overflow:hidden;max-height:520px;}
+.chat-panel{position:fixed;bottom:88px;right:22px;width:380px;background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(26,58,92,0.18);z-index:90;display:none;flex-direction:column;overflow:hidden;max-height:520px;}
 .chat-panel.open{display:flex;}
+@media (max-width:520px){
+  .chat-panel{left:12px;right:12px;width:auto;bottom:84px;}
+}
 .chat-head{background:var(--navy);padding:14px 16px;display:flex;align-items:center;gap:10px;}
-.chat-head-icon{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--water));display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.chat-head-icon{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--water));display:flex;align-items:center;justify-content:center;font-size:var(--t-md);flex-shrink:0;color:var(--navy-dark);font-weight:700;}
 .chat-head-text{flex:1;}
-.chat-head-title{font-size:13px;font-weight:600;color:#fff;}
-.chat-head-sub{font-size:10px;color:rgba(255,255,255,0.5);}
-.chat-close{background:none;border:none;color:rgba(255,255,255,0.5);cursor:pointer;font-size:16px;padding:2px;}
+.chat-head-title{font-size:var(--t-base);font-weight:600;color:#fff;}
+.chat-head-sub{font-size:10px;color:rgba(255,255,255,0.6);}
+.chat-close{background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:var(--t-md);padding:4px 8px;border-radius:6px;}
+.chat-close:hover{background:rgba(255,255,255,0.1);color:#fff;}
 .chat-messages{flex:1;overflow-y:auto;padding:14px 14px 8px;}
 .chat-msg{margin-bottom:10px;}
 .chat-msg-ai{display:flex;gap:8px;align-items:flex-start;}
 .chat-msg-user{display:flex;gap:8px;align-items:flex-start;flex-direction:row-reverse;}
-.chat-bubble-ai{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:9px 12px;font-size:12px;color:var(--text);line-height:1.5;max-width:90%;}
+.chat-bubble-ai{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:var(--t-sm);color:var(--text);line-height:1.55;max-width:90%;}
 .chat-bubble-ai .cite{font-size:10px;color:var(--accent);display:block;margin-top:4px;font-weight:500;}
-.chat-bubble-user{background:var(--navy);border-radius:10px;padding:9px 12px;font-size:12px;color:#fff;line-height:1.5;max-width:85%;}
-.chat-avatar-ai{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--water));display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px;}
+.chat-bubble-user{background:var(--navy);border-radius:10px;padding:10px 12px;font-size:var(--t-sm);color:#fff;line-height:1.55;max-width:85%;}
+.chat-avatar-ai{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--water));display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px;color:var(--navy-dark);font-weight:700;}
 .chat-input-row{padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;}
-.chat-input{flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:20px;font-family:'Inter',sans-serif;font-size:12px;color:var(--text);outline:none;transition:border-color .2s;}
+.chat-input{flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:20px;font-family:'Inter',sans-serif;font-size:var(--t-sm);color:var(--text);}
 .chat-input:focus{border-color:var(--accent);}
-.chat-send{background:var(--navy);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex-shrink:0;transition:background .15s;}
+.chat-send{background:var(--navy);border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:var(--t-md);flex-shrink:0;}
 .chat-send:hover{background:var(--accent);}
 
-.data-table{width:100%;border-collapse:collapse;}
-.data-table th{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.7px;padding:0 8px 9px;text-align:left;border-bottom:1px solid var(--border);}
-.data-table td{font-size:12px;padding:8px;border-bottom:1px solid var(--border);color:var(--text-mid);}
-.data-table tr:last-child td{border-bottom:none;}
-.data-table tr:hover td{background:var(--bg);}
-.data-table td:first-child{color:var(--text);font-weight:500;}
-.mono{font-family:'DM Mono',monospace;font-size:11px;}
+.mono{font-family:'DM Mono',monospace;font-size:var(--t-xs);}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:900px){
+  .sidebar{position:fixed;top:0;left:0;bottom:0;z-index:150;transform:translateX(-100%);box-shadow:0 0 30px rgba(0,0,0,0.2);}
+  .sidebar.open{transform:translateX(0);}
+  .sb-close{display:block;}
+  .menu-btn{display:flex;align-items:center;}
+  .sidebar-backdrop{position:fixed;inset:0;background:rgba(10,22,40,0.4);z-index:140;display:none;}
+  .sidebar-backdrop.open{display:block;}
+  .topbar{padding:0 14px;}
+  .content{padding:14px;}
+  .topbar-clock{display:none;}
+  .topbar-pull{font-size:10px;padding:4px 9px;}
+  .comp-hero{padding:18px;gap:14px;}
+  .comp-hero-stats{gap:18px;}
+  .cal-day{min-height:74px;}
+  .cal-event{font-size:8px;}
+}
+@media (max-width:600px){
+  .page-title{font-size:20px;}
+  .topbar-pull span.full{display:none;}
+  .cal-day{min-height:60px;padding:4px 5px;}
+  .cal-day-num{font-size:10px;}
+  .cal-event{padding:1px 4px;font-size:8px;}
+  .modal{max-height:100vh;border-radius:14px 14px 0 0;align-self:flex-end;}
+  .modal-overlay{align-items:flex-end;padding:0;}
+}
+/* ===== framework supplement (added classes used by JS renderers) ===== */
+.submitted-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.submitted-item:last-child{border-bottom:none;}
+.submitted-icon{width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.submitted-text{flex:1;min-width:0;}
+.submitted-name{font-size:var(--t-sm);font-weight:500;color:var(--text);line-height:1.4;}
+.submitted-meta{font-size:10px;color:var(--text-dim);margin-top:2px;font-family:'DM Mono',monospace;}
+
+.modal-dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;font-size:var(--t-xs);margin:0;}
+.modal-dl dt{color:var(--text-dim);text-transform:uppercase;font-size:10px;font-weight:700;letter-spacing:0.6px;align-self:start;padding-top:2px;}
+.modal-dl dd{color:var(--text);margin:0;font-family:'DM Mono',monospace;line-height:1.55;}
+
+.chat-presets{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px;}
+.chat-preset{background:#fff;border:1px solid var(--border);border-radius:14px;padding:6px 11px;font-size:var(--t-xs);color:var(--accent);cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;}
+.chat-preset:hover{background:var(--bg);border-color:var(--accent);}
+
+.metrics-row.m4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:900px){.metrics-row.m4{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.metrics-row.m4{grid-template-columns:1fr;}}
+.metric-status{margin-top:6px;}
+
+.chart-wrap{padding:8px 0 4px;}
+.chart-foot{font-size:var(--t-xs);color:var(--text-dim);padding:8px 12px 4px;line-height:1.55;}
+
+.district-switcher{display:flex;gap:6px;justify-content:center;margin-bottom:14px;flex-wrap:wrap;}
+.ds-btn{background:#fff;border:1px solid var(--border);border-radius:18px;padding:6px 14px;font-size:var(--t-xs);color:var(--text-mid);cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;}
+.ds-btn:hover{border-color:var(--accent);color:var(--accent);}
+.ds-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+.report-tile{cursor:pointer;}
+
+.loading-text{font-size:var(--t-sm);color:var(--text-mid);text-align:center;padding:40px 20px;font-family:'Inter',sans-serif;}
+#loadingState{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(248,250,252,0.96);z-index:9000;}
+#loadingState.hidden{display:none;}
+
+body.gated{overflow:hidden;}
 </style>
 </head>
 <body>
 
-<!-- GATE -->
+<!-- ============ GATE ============ -->
 <div id="gate">
   <div class="gate-box">
-    <div class="gate-logo"><em>Upstream</em> AI</div>
-    <div class="gate-sub">Platform Preview · Confidential</div>
-    <div class="gate-badge">v7 · Dashboard Redesign</div>
-    <input type="password" class="gate-input" id="gateInput" placeholder="Enter access code" autocomplete="off" onkeydown="if(event.key==='Enter')checkPass()">
-    <div class="gate-error" id="gateError">Incorrect code. Try again.</div>
-    <button class="gate-btn" onclick="checkPass()">Enter Preview →</button>
-    <div class="gate-note">This preview is confidential and intended for authorized stakeholders only. Do not share or distribute.</div>
+    <div class="district-switcher" id="districtSwitcher">
+      <button class="ds-btn" data-district="alma" onclick="switchDistrict('alma')">Town of Alma</button>
+      <button class="ds-btn" data-district="genesee" onclick="switchDistrict('genesee')">Genesee W&S</button>
+    </div>
+    <div class="gate-logo">upstream <em>ai</em></div>
+    <div class="gate-sub">Compliance Intelligence</div>
+    <div class="gate-badge" data-field="meta.confidentialBadge">Live Customer Data</div>
+    <input type="password" class="gate-input" id="gateInput" placeholder="Access code" autocomplete="off" aria-label="Access code">
+    <button class="gate-btn" onclick="checkPass()">Enter Preview</button>
+    <div class="gate-error" id="gateError">Invalid code. Try again.</div>
+    <div class="gate-note">Confidential preview · Not for external distribution</div>
   </div>
 </div>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
+<!-- ============ LOADING ============ -->
+<div id="loadingState" class="hidden">
+  <div class="loading-text">Loading district data…</div>
+</div>
+
+<!-- ============ SIDEBAR ============ -->
+<div class="sidebar-backdrop" id="sbBackdrop" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
   <div class="sb-brand">
-    <div class="sb-logo"><em>Upstream</em> AI</div>
-    <div class="sb-tagline">Water Intelligence Platform</div>
-  </div>
-  <div class="sb-district">
-    <div class="sb-dist-name">Genesee W&S District</div>
-    <div class="sb-dist-sub">GWSD · Golden, CO</div>
-    <div class="sb-live">Live · All systems nominal</div>
+    <div class="sb-brand-text">
+      <div class="sb-logo">upstream <em>ai</em></div>
+      <div class="sb-tagline" data-field="district.tagline">Compliance Intelligence</div>
+    </div>
+    <button class="sb-close" onclick="closeSidebar()" aria-label="Close menu">✕</button>
   </div>
 
-  <div class="sb-section">Operations</div>
-  <div class="sb-item active" onclick="showView('dashboard',this)"><span class="sb-icon">⊞</span>Dashboard</div>
-  <div class="sb-item" onclick="showView('dailylog',this)"><span class="sb-icon">✏</span>Daily Log Entry</div>
-  <div class="sb-item" onclick="showView('dailyreport',this)"><span class="sb-icon">📈</span>Daily Report<span class="sb-new">New</span></div>
+  <div class="sb-district">
+    <div class="sb-dist-name" data-field="district.name">District</div>
+    <div class="sb-dist-sub" data-field="district.location">Location</div>
+    <div class="sb-live"><span data-field="today.sidebarSync">Live</span></div>
+  </div>
 
   <div class="sb-section">Compliance</div>
-  <div class="sb-item" onclick="showView('compliance',this)"><span class="sb-icon">✓</span>DMR / MOR Prep<span class="sb-badge">2</span></div>
-  <div class="sb-item" onclick="showView('survey',this)"><span class="sb-icon">🗂</span>Survey Prep</div>
+  <button class="sb-item active" data-view="compliance" onclick="showView('compliance')"><span class="sb-icon">📋</span><span>Reports & Tasks</span></button>
+  <button class="sb-item" data-view="calendar" onclick="showView('calendar')"><span class="sb-icon">📅</span><span>Calendar</span></button>
+  <button class="sb-item" data-view="dmrPrep" onclick="showView('dmrPrep')"><span class="sb-icon">📝</span><span>MOR Prep</span></button>
 
-  <div class="sb-section">Knowledge</div>
-  <div class="sb-item" onclick="showView('docs',this)"><span class="sb-icon">📄</span>Document Library</div>
-  <div class="sb-item" onclick="openChat()"><span class="sb-icon">💬</span>Ask the Library<span class="sb-ai-badge">AI</span></div>
+  <div class="sb-section">Operations</div>
+  <button class="sb-item" data-view="dailylog" onclick="showView('dailylog')"><span class="sb-icon">✏️</span><span>Daily Log</span></button>
+  <button class="sb-item" data-view="trends" onclick="showView('trends')"><span class="sb-icon">📈</span><span>Trends</span></button>
+
+  <div class="sb-section">Reference</div>
+  <button class="sb-item" data-view="docs" onclick="showView('docs')"><span class="sb-icon">📂</span><span>Documents</span></button>
+  <button class="sb-item" onclick="openChat()"><span class="sb-icon">💬</span><span>Ask Upstream</span><span class="sb-ai-badge">AI</span></button>
 
   <div class="sb-footer">
     <div class="sb-user">
-      <div class="sb-avatar">RB</div>
-      <div><div class="sb-uname">Randy B.</div><div class="sb-urole">District Foreman</div></div>
+      <div class="sb-avatar" data-field="operator.initials">--</div>
+      <div>
+        <div class="sb-uname"><span data-field="operator.name">Operator</span><span class="sb-orc-tag" data-field="operator.badge">--</span></div>
+        <div class="sb-urole" data-field="operator.role">Role</div>
+      </div>
     </div>
   </div>
-</div>
+</aside>
 
-<!-- MAIN -->
-<div class="main">
-  <div class="topbar">
-    <div class="topbar-title">Thursday, April 23, 2026 · Genesee WSD</div>
+<!-- ============ MAIN ============ -->
+<main class="main">
+  <header class="topbar">
+    <button class="menu-btn" onclick="openSidebar()" aria-label="Open menu">☰</button>
+    <div class="topbar-title" data-field="today.topbar">Today</div>
     <div class="topbar-right">
-      <div class="topbar-alert" onclick="showView('compliance',document.querySelectorAll('.sb-item')[3])">⚠ 2 DMR items need review</div>
-      <div class="topbar-clock" id="clock">07:41:22</div>
+      <div class="topbar-clock" id="topbarClock">--:--</div>
+      <button class="topbar-pull" onclick="showView('calendar')" data-field-aria="topbarPull.ariaLabel">
+        <span class="topbar-pull-dot" aria-hidden="true"></span>
+        <span class="full" data-field="topbarPull.full">Pulled</span>
+        <span data-field="topbarPull.count">--</span>
+      </button>
     </div>
-  </div>
+  </header>
 
-  <div class="content">
+  <section class="content">
 
-    <!-- DASHBOARD -->
-    <div class="view active" id="view-dashboard">
+    <!-- COMPLIANCE -->
+    <div class="view active" id="view-compliance">
       <div class="page-header">
         <div>
-          <div class="page-title"><em>Daily</em> Overview</div>
-          <div class="page-sub">Thursday, April 23 · Last updated 07:38 AM</div>
+          <h1 class="page-title">Compliance <em>Home</em></h1>
+          <div class="page-sub" data-field="compliance.pageSub">Sub</div>
         </div>
         <div class="page-actions">
-          <div class="fac-toggle">
-            <button class="fac-btn active" onclick="switchFacility('ww',this)">Wastewater</button>
-            <button class="fac-btn" onclick="switchFacility('dw',this)">Drinking Water</button>
-          </div>
-          <button class="btn-primary" onclick="showView('dailylog',document.querySelectorAll('.sb-item')[1])">+ Log Entry</button>
+          <button class="btn-outline" onclick="showView('calendar')">View calendar →</button>
         </div>
       </div>
 
-      <div class="ai-banner">
-        <div class="ai-orb">✦</div>
-        <div class="ai-text">
-          <div class="ai-title"><em>AI</em> Morning Briefing</div>
-          <div class="ai-sub" id="ai-brief-text">MLSS is trending down for the third consecutive day — now at 1,940 mg/L. Consider reviewing WAS rate. Effluent TSS and BOD remain within permit limits. DO in Zone 2 is borderline at 1.6 mg/L.</div>
+      <div class="comp-hero">
+        <div class="comp-hero-icon" aria-hidden="true">✓</div>
+        <div class="comp-hero-text">
+          <div class="comp-hero-title" data-field="compliance.heroTitle">Status</div>
+          <div class="comp-hero-sub" data-field="compliance.heroSub">Sub</div>
         </div>
-        <div class="ai-meta">
-          <div class="ai-score" id="ai-score">94</div>
-          <div class="ai-score-label">System Score</div>
-        </div>
+        <div class="comp-hero-stats" id="heroStats"></div>
       </div>
 
-      <div class="metrics-row m5" id="ww-metrics">
-        <div class="metric-card" onclick="showView('dailyreport',document.querySelectorAll('.sb-item')[2])">
-          <div class="metric-accent" style="background:var(--green)"></div>
-          <div class="metric-label">Influent Flow</div>
-          <div class="metric-value">0.42<span class="metric-unit">MGD</span></div>
-          <div class="metric-trend">↑ +0.03 vs yesterday</div>
-          <div class="metric-status ms-ok">Within range</div>
+      <div class="thursday-banner">
+        <div class="thursday-icon" aria-hidden="true">✦</div>
+        <div class="thursday-text">
+          <div class="thursday-title" data-field="compliance.pullBannerTitle">Pull</div>
+          <div class="thursday-sub" data-field="compliance.pullBannerSub">Pull details</div>
         </div>
-        <div class="metric-card" onclick="showView('dailyreport',document.querySelectorAll('.sb-item')[2])">
-          <div class="metric-accent" style="background:var(--yellow)"></div>
-          <div class="metric-label">MLSS</div>
-          <div class="metric-value">1,940<span class="metric-unit">mg/L</span></div>
-          <div class="metric-trend">↓ −180 in 3 days</div>
-          <div class="metric-status ms-warn">Watch — trending low</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-accent" style="background:var(--green)"></div>
-          <div class="metric-label">DO Zone 1</div>
-          <div class="metric-value">2.4<span class="metric-unit">mg/L</span></div>
-          <div class="metric-trend">↔ stable</div>
-          <div class="metric-status ms-ok">Optimal</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-accent" style="background:var(--yellow)"></div>
-          <div class="metric-label">DO Zone 2</div>
-          <div class="metric-value">1.6<span class="metric-unit">mg/L</span></div>
-          <div class="metric-trend">↓ −0.3 this week</div>
-          <div class="metric-status ms-warn">Borderline</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-accent" style="background:var(--green)"></div>
-          <div class="metric-label">SRT</div>
-          <div class="metric-value">11.2<span class="metric-unit">days</span></div>
-          <div class="metric-trend">↔ stable</div>
-          <div class="metric-status ms-ok">On target</div>
-        </div>
+        <button class="thursday-action" onclick="showView('calendar')">View pull log</button>
       </div>
 
-      <div id="dw-metrics" style="display:none">
-        <div class="metrics-row m5">
-          <div class="metric-card">
-            <div class="metric-accent" style="background:var(--green)"></div>
-            <div class="metric-label">Production</div>
-            <div class="metric-value">0.31<span class="metric-unit">MG</span></div>
-            <div class="metric-trend">↔ normal</div>
-            <div class="metric-status ms-ok">On target</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-accent" style="background:var(--green)"></div>
-            <div class="metric-label">Entry Pt Cl₂</div>
-            <div class="metric-value">1.2<span class="metric-unit">mg/L</span></div>
-            <div class="metric-trend">↔ stable</div>
-            <div class="metric-status ms-ok">In range</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-accent" style="background:var(--green)"></div>
-            <div class="metric-label">Turbidity</div>
-            <div class="metric-value">0.08<span class="metric-unit">NTU</span></div>
-            <div class="metric-trend">↔ normal</div>
-            <div class="metric-status ms-ok">Excellent</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-accent" style="background:var(--green)"></div>
-            <div class="metric-label">CT Achieved</div>
-            <div class="metric-value">312<span class="metric-unit">mg·min/L</span></div>
-            <div class="metric-trend">↔ stable</div>
-            <div class="metric-status ms-ok">Exceeds req.</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-accent" style="background:var(--green)"></div>
-            <div class="metric-label">Dist. Pressure</div>
-            <div class="metric-value">68<span class="metric-unit">PSI</span></div>
-            <div class="metric-trend">↔ nominal</div>
-            <div class="metric-status ms-ok">Normal</div>
-          </div>
-        </div>
-      </div>
+      <div class="grid-2" id="reportTiles"></div>
 
       <div class="grid-21">
-        <div class="card" style="margin-bottom:0">
+        <div class="card">
           <div class="card-header">
-            <div class="card-title">30-Day Parameter Trends</div>
-            <div class="card-action" onclick="showView('dailyreport',document.querySelectorAll('.sb-item')[2])">Full report →</div>
+            <span class="card-title">This Week's Tasks</span>
+            <button class="card-action" onclick="showView('calendar')">View all →</button>
           </div>
-          <svg class="trend-svg" viewBox="0 0 560 90" preserveAspectRatio="none" style="height:90px;">
-            <line x1="0" y1="65" x2="560" y2="65" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3,3"/>
-            <line x1="0" y1="30" x2="560" y2="30" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3,3"/>
-            <polyline points="0,50 40,48 80,52 120,45 160,43 200,47 240,44 280,46 320,42 360,40 400,38 440,44 480,41 520,38 560,36" fill="none" stroke="#27ae60" stroke-width="2" stroke-linejoin="round"/>
-            <polyline points="0,40 40,38 80,42 120,35 160,58 200,60 240,62 280,64 320,66 360,64 400,66 440,68 480,70 520,72 560,72" fill="none" stroke="#d97706" stroke-width="2" stroke-linejoin="round" stroke-dasharray="4,2"/>
-            <circle cx="540" cy="38" r="4" fill="#27ae60"/>
-            <circle cx="540" cy="70" r="4" fill="#d97706"/>
-          </svg>
-          <div style="display:flex;gap:16px;margin-top:6px;">
-            <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-dim)"><div style="width:12px;height:2px;background:#27ae60;border-radius:1px;"></div>DO Zone 2</div>
-            <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-dim)"><div style="width:12px;height:2px;background:#d97706;border-radius:1px;"></div>MLSS ÷ 100</div>
-          </div>
+          <div class="comp-task-list" id="taskList"></div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          <div class="card" style="margin-bottom:0;flex:1;">
-            <div class="card-header">
-              <div class="card-title">Active Alerts</div>
-              <div class="card-action" onclick="showView('compliance',document.querySelectorAll('.sb-item')[3])">View all</div>
-            </div>
-            <div class="alert-item">
-              <div class="alert-dot" style="background:var(--yellow)"></div>
-              <div class="alert-body">
-                <div class="alert-title">MLSS Trending Low</div>
-                <div class="alert-desc">3-day decline. Target 2,000–4,000 mg/L.</div>
-                <div class="alert-time">Tier 1 · Design range</div>
-              </div>
-            </div>
-            <div class="alert-item">
-              <div class="alert-dot" style="background:var(--yellow)"></div>
-              <div class="alert-body">
-                <div class="alert-title">DO Zone 2 Borderline</div>
-                <div class="alert-desc">1.6 mg/L — minimum threshold is 1.5.</div>
-                <div class="alert-time">Tier 1 · Design range</div>
-              </div>
-            </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Recently Submitted</span>
           </div>
-          <div class="card" style="margin-bottom:0">
-            <div class="card-header">
-              <div class="card-title">DMR / MOR Status</div>
-              <div class="card-action" onclick="showView('compliance',document.querySelectorAll('.sb-item')[3])">Prep now →</div>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;">
-              <span style="font-size:12px;color:var(--text-mid)">April DMR (WW)</span>
-              <span class="tag tag-warn">Draft</span>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;">
-              <span style="font-size:12px;color:var(--text-mid)">April MOR (DW)</span>
-              <span class="tag tag-warn">2 items pending</span>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;">
-              <span style="font-size:12px;color:var(--text-mid)">March DMR</span>
-              <span class="tag tag-ok">Submitted</span>
-            </div>
+          <div id="submittedList"></div>
+          <div style="margin-top:14px;padding:12px;background:var(--navy);border-radius:8px;color:#fff;">
+            <div style="font-size:10px;font-weight:700;color:var(--water);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;">Coming up</div>
+            <div style="font-size:var(--t-xs);color:rgba(255,255,255,0.85);line-height:1.65;" data-field="compliance.comingUp">Future events</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- DAILY LOG ENTRY -->
-    <div class="view" id="view-dailylog">
+    <!-- CALENDAR -->
+    <div class="view" id="view-calendar" hidden>
       <div class="page-header">
         <div>
-          <div class="page-title"><em>Daily</em> Log Entry</div>
-          <div class="page-sub">Wastewater Plant · Thursday, April 23, 2026</div>
+          <h1 class="page-title">Compliance <em>Calendar</em></h1>
+          <div class="page-sub">All deadlines, samples, and submissions · Click any item for details</div>
         </div>
         <div class="page-actions">
-          <div class="fac-toggle">
-            <button class="fac-btn active">Wastewater</button>
-            <button class="fac-btn">Drinking Water</button>
-          </div>
-        </div>
-      </div>
-      <div class="log-form">
-        <div class="log-section">
-          <div class="log-section-header">
-            <div class="log-section-title">Flow & Loading</div>
-            <span class="tag tag-ok">All clear</span>
-          </div>
-          <div class="log-section-body">
-            <div class="log-grid">
-              <div class="log-field">
-                <div class="log-label">Influent Flow (MGD)</div>
-                <input class="log-input" value="0.42" type="number" step="0.01"/>
-                <div class="log-hint">Design: 0.2 – 0.7 MGD</div>
-              </div>
-              <div class="log-field">
-                <div class="log-label">Effluent Flow (MGD)</div>
-                <input class="log-input" value="0.41" type="number" step="0.01"/>
-                <div class="log-hint">Design: 0.2 – 0.7 MGD</div>
-              </div>
-              <div class="log-field">
-                <div class="log-label">RAS Flow (GPM)</div>
-                <input class="log-input" value="185" type="number"/>
-                <div class="log-hint">Design: 100 – 300 GPM</div>
-              </div>
-              <div class="log-field">
-                <div class="log-label">WAS Flow (GPM)</div>
-                <input class="log-input" value="22" type="number"/>
-                <div class="log-hint">Target: 15 – 35 GPM</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="log-section">
-          <div class="log-section-header">
-            <div class="log-section-title">Biological Process</div>
-            <span class="tag tag-warn">1 parameter flagged</span>
-          </div>
-          <div class="log-section-body">
-            <div class="log-grid">
-              <div class="log-field">
-                <div class="log-label">MLSS (mg/L)</div>
-                <input class="log-input warn" value="1940" type="number"/>
-                <div class="log-hint" style="color:var(--yellow)">⚠ Below design min 2,000</div>
-              </div>
-              <div class="log-field">
-                <div class="log-label">DO Zone 1 (mg/L)</div>
-                <input class="log-input" value="2.4" type="number" step="0.1"/>
-                <div class="log-hint">Target: 1.5 – 4.0 mg/L</div>
-              </div>
-              <div class="log-field">
-                <div class="log-label">DO Zone 2 (mg/L)</div>
-                <input class="log-input warn" value="1.6" type="number" step="0.1"/>
-                <div class="log-hint" style="color:var(--yellow)">⚠ Near minimum 1.5</div>
-              </div>
-              <div class="log-field">
-                <div class="log-label">SRT (days)</div>
-                <input class="log-input" value="11.2" type="number" step="0.1" style="background:var(--bg);color:var(--text-dim);" readonly/>
-                <div class="log-hint">Auto-calculated</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="log-section">
-          <div class="log-section-header">
-            <div class="log-section-title">Effluent Quality</div>
-            <span class="tag tag-ok">All within permit</span>
-          </div>
-          <div class="log-section-body">
-            <div class="log-grid">
-              <div class="log-field">
-                <div class="log-label">pH (effluent)</div>
-                <input class="log-input" value="7.2" type="number" step="0.1"/>
-                <div class="log-hint">Permit: 6.0 – 9.0 SU</div>
-              </div>
-              <div class="log-field">
-                <div class="log-label">Cl₂ Residual (mg/L)</div>
-                <input class="log-input" value="0.8" type="number" step="0.1"/>
-                <div class="log-hint">Min: 0.2 mg/L</div>
-              </div>
-              <div class="log-field">
-                <div class="log-label">Ammonia Eff. (mg/L)</div>
-                <input class="log-input" value="0.4" type="number" step="0.1"/>
-                <div class="log-hint">Permit: ≤ 2.0 mg/L</div>
-              </div>
-              <div class="log-field">
-                <div class="log-label">TSS Effluent (mg/L)</div>
-                <input class="log-input" value="8" type="number"/>
-                <div class="log-hint">Permit: ≤ 30 mg/L</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="log-section">
-          <div class="log-section-header">
-            <div class="log-section-title">Notes & Observations</div>
-          </div>
-          <div class="log-section-body">
-            <textarea style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;color:var(--text);resize:vertical;min-height:70px;outline:none;" placeholder="Describe any unusual conditions, equipment issues, or observations…"></textarea>
-          </div>
-        </div>
-        <div class="log-actions">
-          <div class="log-ai-note">✦ AI summary will generate on save</div>
-          <div style="display:flex;gap:8px;">
-            <button class="btn-outline">Save Draft</button>
-            <button class="btn-primary" onclick="showView('dailyreport',document.querySelectorAll('.sb-item')[2])">Save & View Report →</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DAILY REPORT -->
-    <div class="view" id="view-dailyreport">
-      <div class="page-header">
-        <div>
-          <div class="page-title"><em>Daily</em> Report</div>
-          <div class="page-sub">Wastewater Plant · Thursday, April 23, 2026</div>
-        </div>
-        <div class="page-actions">
-          <button class="btn-outline">⬇ Export PDF</button>
-          <button class="btn-outline" onclick="showView('dailylog',document.querySelectorAll('.sb-item')[1])">Edit Entry</button>
+          <button class="btn-outline" onclick="showView('compliance')">← Back home</button>
         </div>
       </div>
 
-      <div class="ai-banner">
-        <div class="ai-orb">✦</div>
-        <div class="ai-text">
-          <div class="ai-title"><em>AI</em> Process Summary</div>
-          <div class="ai-sub">MLSS has declined 8.5% over 3 days to 1,940 mg/L — approaching the lower design threshold of 2,000 mg/L. Recommend reviewing WAS rate; current 22 GPM may be slightly high relative to loading. DO Zone 2 at 1.6 mg/L is adequate but warrants monitoring. All effluent parameters are well within permit limits.</div>
-        </div>
-        <div class="ai-meta">
-          <div class="ai-score">94</div>
-          <div class="ai-score-label">Process Score</div>
+      <div class="thursday-banner">
+        <div class="thursday-icon" aria-hidden="true">✦</div>
+        <div class="thursday-text">
+          <div class="thursday-title" data-field="calendar.pullBannerTitle">Pull</div>
+          <div class="thursday-sub" data-field="calendar.pullBannerSub">Details</div>
         </div>
       </div>
 
-      <div class="metrics-row m5">
-        <div class="metric-card"><div class="metric-accent" style="background:var(--green)"></div><div class="metric-label">Effluent TSS</div><div class="metric-value">8<span class="metric-unit">mg/L</span></div><div class="metric-trend">Permit max: 30</div><div class="metric-status ms-ok">✓ Compliant</div></div>
-        <div class="metric-card"><div class="metric-accent" style="background:var(--green)"></div><div class="metric-label">Effluent BOD</div><div class="metric-value">6<span class="metric-unit">mg/L</span></div><div class="metric-trend">Permit max: 25</div><div class="metric-status ms-ok">✓ Compliant</div></div>
-        <div class="metric-card"><div class="metric-accent" style="background:var(--yellow)"></div><div class="metric-label">MLSS</div><div class="metric-value">1,940<span class="metric-unit">mg/L</span></div><div class="metric-trend">Design: 2,000–4,000</div><div class="metric-status ms-warn">⚠ Watch</div></div>
-        <div class="metric-card"><div class="metric-accent" style="background:var(--green)"></div><div class="metric-label">Ammonia Eff.</div><div class="metric-value">0.4<span class="metric-unit">mg/L</span></div><div class="metric-trend">Permit max: 2.0</div><div class="metric-status ms-ok">✓ Compliant</div></div>
-        <div class="metric-card"><div class="metric-accent" style="background:var(--green)"></div><div class="metric-label">pH Effluent</div><div class="metric-value">7.2<span class="metric-unit">SU</span></div><div class="metric-trend">Permit: 6.0–9.0</div><div class="metric-status ms-ok">✓ Compliant</div></div>
+      <div class="cal-toolbar">
+        <div class="cal-month-nav">
+          <button class="cal-month-btn" aria-label="Previous month">‹</button>
+          <div class="cal-month-label" data-field="calendar.monthLabel">Month</div>
+          <button class="cal-month-btn" aria-label="Next month">›</button>
+        </div>
+        <div class="cal-filters">
+          <button class="cal-filter active">All</button>
+          <button class="cal-filter"><span class="cal-filter-dot" style="background:var(--pres-none);"></span>Lab</button>
+          <button class="cal-filter"><span class="cal-filter-dot" style="background:var(--navy);"></span>Deadlines</button>
+          <button class="cal-filter"><span class="cal-filter-dot" style="background:#6d28d9;"></span>Renewals</button>
+        </div>
       </div>
 
-      <div class="grid-2">
-        <div class="card" style="margin-bottom:0">
-          <div class="card-header"><div class="card-title">MLSS — 30 Day Trend</div><span class="tag tag-warn">Declining</span></div>
-          <svg viewBox="0 0 320 80" style="width:100%;height:80px;">
-            <line x1="0" y1="55" x2="320" y2="55" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="2" y="53" font-size="8" fill="#8a9bb0" font-family="DM Mono">2,000 min</text>
-            <polyline points="0,20 25,22 50,18 75,25 100,20 125,22 150,24 175,28 200,30 225,34 250,38 275,44 300,48 320,52" fill="none" stroke="#d97706" stroke-width="2.5" stroke-linejoin="round"/>
-            <circle cx="320" cy="52" r="4" fill="#d97706"/>
-          </svg>
-        </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="card-header"><div class="card-title">Effluent TSS — 30 Day Trend</div><span class="tag tag-ok">Stable</span></div>
-          <svg viewBox="0 0 320 80" style="width:100%;height:80px;">
-            <line x1="0" y1="20" x2="320" y2="20" stroke="#fca5a5" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="2" y="18" font-size="8" fill="#dc2626" font-family="DM Mono">30 limit</text>
-            <polyline points="0,58 25,55 50,60 75,52 100,56 125,54 150,58 175,55 200,57 225,54 250,58 275,56 300,54 320,55" fill="none" stroke="#27ae60" stroke-width="2.5" stroke-linejoin="round"/>
-            <circle cx="320" cy="55" r="4" fill="#27ae60"/>
-          </svg>
-        </div>
+      <div class="cal-grid" id="calGrid"></div>
+
+      <div class="legend">
+        <div class="legend-group-title">Event Types</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--navy)"></span>Deadline / Submission</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#6d28d9"></span>Renewal / Multi-year</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#0e7490"></span>Sanitary Survey</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:#7e22ce"></span>Certification</div>
+        <div class="legend-group-title" style="margin-top:6px;">Lab Sample Bottle Caps</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--pres-none)"></span>Orange · No preservative</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--pres-hno3)"></span>Red · HNO₃</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--pres-hcl)"></span>Blue · HCl</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--pres-h2so4)"></span>Yellow · H₂SO₄</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--pres-naoh)"></span>Green · NaOH</div>
+        <div class="legend-item"><span class="legend-swatch" style="background:var(--pres-zn-naoh)"></span>Purple · Zn(OAc)+NaOH or PFAS</div>
       </div>
 
       <div class="card">
-        <div class="card-header"><div class="card-title">Parameter Summary — Today vs. Permit Limits</div></div>
-        <div class="param-row"><div class="param-name">TSS Eff.</div><div class="param-bar-wrap"><div class="param-bar-bg"><div class="param-bar-fill" style="width:27%;background:var(--green)"></div></div></div><div class="param-val" style="color:var(--green)">8 mg/L</div><div class="param-status"><span class="tag tag-ok">OK</span></div></div>
-        <div class="param-row"><div class="param-name">BOD Eff.</div><div class="param-bar-wrap"><div class="param-bar-bg"><div class="param-bar-fill" style="width:24%;background:var(--green)"></div></div></div><div class="param-val" style="color:var(--green)">6 mg/L</div><div class="param-status"><span class="tag tag-ok">OK</span></div></div>
-        <div class="param-row"><div class="param-name">Ammonia</div><div class="param-bar-wrap"><div class="param-bar-bg"><div class="param-bar-fill" style="width:20%;background:var(--green)"></div></div></div><div class="param-val" style="color:var(--green)">0.4 mg/L</div><div class="param-status"><span class="tag tag-ok">OK</span></div></div>
-        <div class="param-row"><div class="param-name">pH</div><div class="param-bar-wrap"><div class="param-bar-bg"><div class="param-bar-fill" style="width:53%;background:var(--green)"></div></div></div><div class="param-val" style="color:var(--green)">7.2 SU</div><div class="param-status"><span class="tag tag-ok">OK</span></div></div>
-        <div class="param-row"><div class="param-name">MLSS</div><div class="param-bar-wrap"><div class="param-bar-bg"><div class="param-bar-fill" style="width:48%;background:var(--yellow)"></div></div></div><div class="param-val" style="color:var(--yellow)">1,940</div><div class="param-status"><span class="tag tag-warn">Low</span></div></div>
+        <div class="card-header">
+          <span class="card-title">Upcoming Lab Samples</span>
+          <span class="mono" id="samplesCount" style="color:var(--text-dim);"></span>
+        </div>
+        <div id="samplesList"></div>
       </div>
     </div>
 
-    <!-- COMPLIANCE -->
-    <div class="view" id="view-compliance">
+    <!-- MOR PREP -->
+    <div class="view" id="view-dmrPrep" hidden>
       <div class="page-header">
         <div>
-          <div class="page-title">DMR / MOR <em>Prep</em></div>
-          <div class="page-sub">Draft only — review and approve before submitting to CDPHE</div>
+          <h1 class="page-title" data-field="mor.title">MOR <em>Prep</em></h1>
+          <div class="page-sub" data-field="mor.subhead">Sub</div>
         </div>
         <div class="page-actions">
-          <div class="fac-toggle">
-            <button class="fac-btn active">Wastewater DMR</button>
-            <button class="fac-btn">Drinking Water MOR</button>
-          </div>
+          <button class="btn-outline" onclick="showView('compliance')">← Back home</button>
+          <button class="btn-primary">Export PDF</button>
         </div>
       </div>
 
-      <div style="background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-        <span style="font-size:15px;">⚠</span>
-        <div>
-          <div style="font-size:12px;font-weight:600;color:var(--yellow);">Draft / Unverified — ORC review required</div>
-          <div style="font-size:11px;color:var(--text-mid);margin-top:2px;">All calculated values are pre-filled from your log entries and SCADA data. The licensed ORC must review and approve before this report is submitted. Upstream AI is a calculation aid only.</div>
+      <div class="draft-banner">
+        <div class="draft-banner-icon">⚠</div>
+        <div class="draft-banner-text">
+          <strong data-field="mor.draftBannerTitle">Draft</strong>
+          <span data-field="mor.draftBannerBody">Body</span>
         </div>
       </div>
 
       <div class="dmr-card">
         <div class="dmr-header">
           <div>
-            <div class="dmr-period">April 2026 — Wastewater DMR</div>
-            <div style="font-size:11px;color:var(--text-dim);margin-top:2px;font-family:'DM Mono',monospace;">CDPS Permit No. CO-0XXXXX · Due May 28, 2026</div>
+            <div class="dmr-period" data-field="mor.periodHeader">Period</div>
+            <div style="font-size:var(--t-xs);color:var(--text-dim);margin-top:2px;" class="mono" data-field="mor.periodSub">Period sub</div>
           </div>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <span class="tag tag-warn">2 items need review</span>
-            <button class="btn-outline">Export Draft</button>
+          <span class="tag" data-cls-field="mor.statusTagCls" data-field="mor.statusTagText">--</span>
+        </div>
+        <div class="dmr-table-wrap">
+          <table class="dmr-table">
+            <thead>
+              <tr><th>Parameter</th><th>Limit</th><th>March Result</th><th># Samples</th><th>Detail</th><th>Status</th></tr>
+            </thead>
+            <tbody id="morRows"></tbody>
+          </table>
+        </div>
+        <div class="modal-callout" style="margin-top:14px;">
+          <div class="modal-callout-icon">⚠</div>
+          <div>
+            <strong data-field="mor.calloutTitle">Note</strong>
+            <span data-field="mor.calloutBody">Body</span>
           </div>
         </div>
-
-        <div class="dmr-head">
-          <div class="dmr-head-cell" style="width:140px;flex-shrink:0;">Parameter</div>
-          <div class="dmr-head-cell" style="flex:1;">Permit Limit</div>
-          <div class="dmr-head-cell" style="flex:1;">Calculated Value</div>
-          <div class="dmr-head-cell" style="flex:1;">Sample Count</div>
-          <div class="dmr-head-cell" style="flex:1;">Min / Max</div>
-          <div class="dmr-head-cell" style="width:90px;flex-shrink:0;">Status</div>
-        </div>
-        <div style="border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;overflow:hidden;">
-          <div class="dmr-row">
-            <div class="dmr-cell" style="width:140px;flex-shrink:0;">BOD (Monthly Avg)</div>
-            <div class="dmr-cell mono" style="flex:1;">≤ 25 mg/L</div>
-            <div class="dmr-cell mono" style="flex:1;color:var(--green);font-weight:600;">7.2 mg/L</div>
-            <div class="dmr-cell mono" style="flex:1;">4 samples</div>
-            <div class="dmr-cell mono" style="flex:1;">5.1 / 9.8</div>
-            <div class="dmr-cell" style="width:90px;flex-shrink:0;"><span class="tag tag-ok">Pass</span></div>
-          </div>
-          <div class="dmr-row">
-            <div class="dmr-cell" style="width:140px;flex-shrink:0;">TSS (Monthly Avg)</div>
-            <div class="dmr-cell mono" style="flex:1;">≤ 30 mg/L</div>
-            <div class="dmr-cell mono" style="flex:1;color:var(--green);font-weight:600;">9.4 mg/L</div>
-            <div class="dmr-cell mono" style="flex:1;">4 samples</div>
-            <div class="dmr-cell mono" style="flex:1;">6.0 / 14.0</div>
-            <div class="dmr-cell" style="width:90px;flex-shrink:0;"><span class="tag tag-ok">Pass</span></div>
-          </div>
-          <div class="dmr-row" style="background:var(--yellow-bg);">
-            <div class="dmr-cell" style="width:140px;flex-shrink:0;">Ammonia (Monthly)</div>
-            <div class="dmr-cell mono" style="flex:1;">≤ 2.0 mg/L</div>
-            <div class="dmr-cell mono" style="flex:1;color:var(--yellow);font-weight:600;">— pending</div>
-            <div class="dmr-cell mono" style="flex:1;color:var(--yellow);">2 / 4 req.</div>
-            <div class="dmr-cell mono" style="flex:1;">—</div>
-            <div class="dmr-cell" style="width:90px;flex-shrink:0;"><span class="tag tag-warn">Missing</span></div>
-          </div>
-          <div class="dmr-row">
-            <div class="dmr-cell" style="width:140px;flex-shrink:0;">E. coli (Geo. Mean)</div>
-            <div class="dmr-cell mono" style="flex:1;">≤ 126 CFU/100mL</div>
-            <div class="dmr-cell mono" style="flex:1;color:var(--green);font-weight:600;">38 CFU/100mL</div>
-            <div class="dmr-cell mono" style="flex:1;">4 samples</div>
-            <div class="dmr-cell mono" style="flex:1;">12 / 94</div>
-            <div class="dmr-cell" style="width:90px;flex-shrink:0;"><span class="tag tag-ok">Pass</span></div>
-          </div>
-          <div class="dmr-row">
-            <div class="dmr-cell" style="width:140px;flex-shrink:0;">Flow (Monthly Avg)</div>
-            <div class="dmr-cell mono" style="flex:1;">Report only</div>
-            <div class="dmr-cell mono" style="flex:1;color:var(--navy);font-weight:600;">0.41 MGD</div>
-            <div class="dmr-cell mono" style="flex:1;">Continuous</div>
-            <div class="dmr-cell mono" style="flex:1;">0.35 / 0.48</div>
-            <div class="dmr-cell" style="width:90px;flex-shrink:0;"><span class="tag tag-navy">Report</span></div>
-          </div>
-          <div class="dmr-row" style="background:var(--yellow-bg);border-bottom:none;">
-            <div class="dmr-cell" style="width:140px;flex-shrink:0;">pH (Daily Max)</div>
-            <div class="dmr-cell mono" style="flex:1;">6.0 – 9.0 SU</div>
-            <div class="dmr-cell mono" style="flex:1;color:var(--yellow);font-weight:600;">— pending</div>
-            <div class="dmr-cell mono" style="flex:1;color:var(--yellow);">18 / 30 req.</div>
-            <div class="dmr-cell mono" style="flex:1;">—</div>
-            <div class="dmr-cell" style="width:90px;flex-shrink:0;"><span class="tag tag-warn">Incomplete</span></div>
-          </div>
-        </div>
-
-        <div style="margin-top:14px;padding:12px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--border);">
-          <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">ORC Approval</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
-            <div style="font-size:12px;color:var(--text-mid);line-height:1.5;">I have reviewed all calculated values above. I am the licensed ORC for this facility and certify that this information is accurate to the best of my knowledge.</div>
-            <div style="display:flex;gap:8px;flex-shrink:0;">
-              <button class="btn-outline" style="opacity:0.5;cursor:not-allowed;" disabled>Approve & Export</button>
+        <div class="orc-block">
+          <div class="orc-title" data-field="mor.orcTitle">Approval</div>
+          <div class="orc-body">
+            <div class="orc-text"><em data-field="mor.orcText">Cert text</em></div>
+            <div style="display:flex;gap:var(--s-2);">
+              <button class="btn-outline">Save draft</button>
+              <button class="btn-primary">Approve & ready for submission</button>
             </div>
           </div>
-          <div style="font-size:10px;color:var(--text-dim);margin-top:8px;">Complete all missing samples before approval is available.</div>
         </div>
+        <div style="margin-top:14px;padding:12px;background:var(--navy);border-radius:8px;color:rgba(255,255,255,0.85);font-size:var(--t-xs);line-height:1.6;" data-field="mor.submitNote">Submit info</div>
       </div>
     </div>
 
-    <!-- SURVEY PREP -->
-    <div class="view" id="view-survey">
+    <!-- DAILY LOG -->
+    <div class="view" id="view-dailylog" hidden>
       <div class="page-header">
         <div>
-          <div class="page-title">Survey <em>Prep</em></div>
-          <div class="page-sub">Sanitary Survey — Next survey est. 2030 · 4 years to prepare</div>
+          <h1 class="page-title">Daily <em>Log</em></h1>
+          <div class="page-sub" data-field="dailyLog.subhead">Sub</div>
         </div>
         <div class="page-actions">
-          <button class="btn-primary">+ Add Document</button>
+          <button class="btn-outline" onclick="showView('compliance')">← Back home</button>
         </div>
       </div>
-      <div class="metrics-row m4">
-        <div class="metric-card"><div class="metric-accent" style="background:var(--green)"></div><div class="metric-label">Docs Uploaded</div><div class="metric-value">12</div><div class="metric-trend">of 28 recommended</div><div class="metric-status ms-warn">43% complete</div></div>
-        <div class="metric-card"><div class="metric-accent" style="background:var(--green)"></div><div class="metric-label">Categories Ready</div><div class="metric-value">3</div><div class="metric-trend">of 8 categories</div><div class="metric-status ms-warn">In progress</div></div>
-        <div class="metric-card"><div class="metric-accent" style="background:var(--yellow)"></div><div class="metric-label">Gaps Identified</div><div class="metric-value">5</div><div class="metric-trend">critical items missing</div><div class="metric-status ms-warn">Action needed</div></div>
-        <div class="metric-card"><div class="metric-accent" style="background:var(--accent)"></div><div class="metric-label">Days to Survey</div><div class="metric-value">~1,400</div><div class="metric-trend">Est. 2030</div><div class="metric-status" style="color:var(--accent)">On track</div></div>
-      </div>
-
-      <div class="card">
-        <div class="card-header"><div class="card-title">Survey Categories</div></div>
-        <table class="data-table">
-          <thead><tr><th>Category</th><th>Required Docs</th><th>Uploaded</th><th>Status</th><th>Action</th></tr></thead>
-          <tbody>
-            <tr><td>Source Water Protection</td><td class="mono">4</td><td class="mono">4</td><td><span class="tag tag-ok">Complete</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer;">View</span></td></tr>
-            <tr><td>Treatment Process</td><td class="mono">6</td><td class="mono">4</td><td><span class="tag tag-warn">2 missing</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer;">Upload</span></td></tr>
-            <tr><td>Distribution System</td><td class="mono">5</td><td class="mono">2</td><td><span class="tag tag-warn">3 missing</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer;">Upload</span></td></tr>
-            <tr><td>O&amp;M Manuals</td><td class="mono">8</td><td class="mono">2</td><td><span class="tag tag-alert">6 missing</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer;">Upload</span></td></tr>
-            <tr><td>Operator Certifications</td><td class="mono">3</td><td class="mono">3</td><td><span class="tag tag-ok">Complete</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer;">View</span></td></tr>
-            <tr><td>Cross-Connection Control</td><td class="mono">2</td><td class="mono">0</td><td><span class="tag tag-alert">Not started</span></td><td><span style="font-size:11px;color:var(--accent);cursor:pointer;">Upload</span></td></tr>
-          </tbody>
-        </table>
+      <div class="log-form" id="logForm"></div>
+      <div class="log-actions" style="background:#fff;border:1px solid var(--border);border-top:1px solid var(--border);border-radius:0 0 12px 12px;margin-top:-1px;">
+        <div style="font-size:var(--t-xs);color:var(--text-dim);" class="mono" data-field="dailyLog.footHint">Hint</div>
+        <div style="display:flex;gap:var(--s-2);">
+          <button class="btn-outline">Save & continue</button>
+          <button class="btn-primary">Submit day</button>
+        </div>
       </div>
     </div>
 
-    <!-- DOCUMENTS -->
-    <div class="view" id="view-docs">
+    <!-- TRENDS -->
+    <div class="view" id="view-trends" hidden>
       <div class="page-header">
         <div>
-          <div class="page-title">Document <em>Library</em></div>
-          <div class="page-sub">12 facility documents · 5 global references</div>
+          <h1 class="page-title">Operational <em>Trends</em></h1>
+          <div class="page-sub" data-field="trends.subhead">Sub</div>
         </div>
         <div class="page-actions">
-          <button class="btn-primary">+ Upload Document</button>
+          <button class="btn-outline" onclick="showView('compliance')">← Back home</button>
         </div>
       </div>
-      <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center;">
-        <input style="flex:1;padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'Inter',sans-serif;font-size:13px;color:var(--text);outline:none;background:#fff;" placeholder="Search documents or ask a question…" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"/>
-        <button class="btn-primary" onclick="openChat()">Ask AI →</button>
+      <div class="metrics-row m4" id="trendsMetrics"></div>
+      <div class="grid-2" id="trendsCharts"></div>
+    </div>
+
+    <!-- DOCS -->
+    <div class="view" id="view-docs" hidden>
+      <div class="page-header">
+        <div>
+          <h1 class="page-title"><em>Documents</em> Library</h1>
+          <div class="page-sub" data-field="documents.subhead">Sub</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn-outline" onclick="showView('compliance')">← Back home</button>
+          <button class="btn-primary">+ Upload</button>
+        </div>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-title">Facility Documents</div><span style="font-size:11px;color:var(--text-dim);">Genesee WSD</span></div>
-        <div class="doc-row"><div class="doc-icon">📄</div><div class="doc-body"><div class="doc-name">Wastewater Treatment Plant O&M Manual — Rev 3</div><div class="doc-meta">PDF · 4.2 MB · Uploaded Mar 2026 · READY</div></div><span class="tag tag-ok">Current</span></div>
-        <div class="doc-row"><div class="doc-icon">📄</div><div class="doc-body"><div class="doc-name">CDPS Permit CO-0XXXXX (2024 Renewal)</div><div class="doc-meta">PDF · 0.8 MB · Uploaded Jan 2026 · READY</div></div><span class="tag tag-ok">Current</span></div>
-        <div class="doc-row"><div class="doc-icon">📄</div><div class="doc-body"><div class="doc-name">Water Treatment Plant O&M Manual</div><div class="doc-meta">PDF · 6.1 MB · Uploaded Mar 2026 · READY</div></div><span class="tag tag-ok">Current</span></div>
-        <div class="doc-row"><div class="doc-icon">📄</div><div class="doc-body"><div class="doc-name">Pump Station 3 — Manufacturer Manual</div><div class="doc-meta">PDF · 2.3 MB · Uploaded Apr 2026 · READY</div></div><span class="tag tag-ok">Current</span></div>
-        <div class="doc-row"><div class="doc-icon">📄</div><div class="doc-body"><div class="doc-name">Distribution System As-Built Drawings</div><div class="doc-meta">PDF · 18.4 MB · Uploaded Feb 2026 · READY</div></div><span class="tag tag-ok">Current</span></div>
+        <div class="card-header"><span class="card-title">Facility Documents</span></div>
+        <div id="docsFacility"></div>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-title">Global Library</div><span class="tag tag-ai">AI-curated</span></div>
-        <div class="doc-row"><div class="doc-icon">🌐</div><div class="doc-body"><div class="doc-name">Activated Sludge Process Control Guide</div><div class="doc-meta">Upstream AI Global Library · WW Reference</div></div><span class="tag tag-navy">Global</span></div>
-        <div class="doc-row"><div class="doc-icon">🌐</div><div class="doc-body"><div class="doc-name">Colorado CDPS Permit Compliance Guide</div><div class="doc-meta">Upstream AI Global Library · CO Regulatory</div></div><span class="tag tag-navy">Global</span></div>
-        <div class="doc-row"><div class="doc-icon">🌐</div><div class="doc-body"><div class="doc-name">Drinking Water Disinfection &amp; CT Values</div><div class="doc-meta">Upstream AI Global Library · DW Reference</div></div><span class="tag tag-navy">Global</span></div>
+        <div class="card-header"><span class="card-title">Global References</span></div>
+        <div id="docsGlobal"></div>
       </div>
     </div>
 
+  </section>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="eventModal" onclick="if(event.target.id==='eventModal')closeEvent()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <div class="modal-head-bar" id="modalBar"></div>
+      <div class="modal-head-text">
+        <div class="modal-eyebrow"><span id="modalIcon"></span><span id="modalType"></span></div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-date" id="modalDate"></div>
+      </div>
+      <button class="modal-close" onclick="closeEvent()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot">
+      <div class="modal-foot-meta" id="modalFooter"></div>
+      <div class="modal-foot-actions">
+        <button class="btn-outline" onclick="closeEvent()">Close</button>
+        <button class="btn-primary" id="modalCTA" onclick="modalCTAClick()">View</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- CHAT BUBBLE -->
+<!-- CHAT -->
 <div class="chat-bubble">
-  <button class="chat-btn" onclick="toggleChat()">
+  <button class="chat-btn" onclick="toggleChat()" aria-label="Open Upstream AI chat">
     <span class="chat-btn-icon">💬</span>
-    <div class="chat-badge"><div class="chat-badge-dot"></div></div>
+    <span class="chat-badge"><span class="chat-badge-dot"></span></span>
   </button>
 </div>
-
 <div class="chat-panel" id="chatPanel">
   <div class="chat-head">
-    <div class="chat-head-icon">✦</div>
+    <div class="chat-head-icon">U</div>
     <div class="chat-head-text">
-      <div class="chat-head-title">Ask the Library</div>
-      <div class="chat-head-sub">AI · Searches your documents + global references</div>
+      <div class="chat-head-title">Upstream AI</div>
+      <div class="chat-head-sub">Compliance assistant · Beta</div>
     </div>
-    <button class="chat-close" onclick="toggleChat()">✕</button>
+    <button class="chat-close" onclick="toggleChat()" aria-label="Close chat">✕</button>
   </div>
-  <div class="chat-messages" id="chatMessages">
-    <div class="chat-msg chat-msg-ai">
-      <div class="chat-avatar-ai">✦</div>
-      <div class="chat-bubble-ai">Hi Randy — I can answer questions about your O&amp;M manuals, permits, and process control. What do you need?</div>
-    </div>
-    <div class="chat-msg chat-msg-user">
-      <div class="chat-bubble-user">My MLSS is dropping — should I adjust my WAS rate?</div>
-    </div>
-    <div class="chat-msg chat-msg-ai">
-      <div class="chat-avatar-ai">✦</div>
-      <div class="chat-bubble-ai">Yes. A declining MLSS typically means you're wasting more solids than you're generating. With your current MLSS at 1,940 mg/L (below the 2,000 mg/L design minimum), reducing your WAS rate from 22 GPM down to 15–18 GPM should allow MLSS to recover over 3–5 days. Monitor daily before making further adjustments.<span class="cite">📄 WW O&M Manual, p.34 · Activated Sludge Control Guide, p.8</span></div>
-    </div>
-  </div>
+  <div class="chat-messages" id="chatMessages"></div>
   <div class="chat-input-row">
-    <input class="chat-input" id="chatInput" placeholder="Ask about your documents…" onkeydown="if(event.key==='Enter')sendChatMsg()"/>
-    <button class="chat-send" onclick="sendChatMsg()">→</button>
+    <input class="chat-input" id="chatInput" placeholder="Ask about your compliance status…">
+    <button class="chat-send" onclick="sendChatMsg()" aria-label="Send">→</button>
   </div>
 </div>
 
+<!-- ============ EMBEDDED FALLBACK DATA (auto-replaced at deploy or left blank) ============ -->
+<!-- For file:// or email use, paste a JSON object here and it will load when fetch fails -->
+<script type="application/json" id="embeddedDistrict"></script>
+
 <script>
+/* =================================================================
+   UPSTREAM AI · PREVIEW FRAMEWORK
+   One template, N JSON files. URL: ?district=alma  or  ?district=genesee
+   ================================================================= */
+
+let DISTRICT = null;
+
+/* ---------- path resolver: getPath(obj, "a.b.c") ---------- */
+function getPath(obj, path) {
+  return path.split('.').reduce((o, k) => (o == null ? o : o[k]), obj);
+}
+
+/* ---------- bootstrap ---------- */
+async function loadDistrict() {
+  const params = new URLSearchParams(location.search);
+  const id = (params.get('district') || 'alma').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+  document.getElementById('loadingState').classList.remove('hidden');
+  try {
+    const res = await fetch(`data/${id}.json`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.status);
+    DISTRICT = await res.json();
+  } catch (e) {
+    // Fallback to embedded data (for file:// or single-file email distribution)
+    const embed = document.getElementById('embeddedDistrict');
+    const txt = embed && embed.textContent.trim();
+    if (txt) {
+      try { DISTRICT = JSON.parse(txt); }
+      catch (parseErr) { return showLoadError(id, parseErr); }
+    } else {
+      return showLoadError(id, e);
+    }
+  }
+  document.getElementById('loadingState').classList.add('hidden');
+  // Mark active district button in gate
+  document.querySelectorAll('.ds-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.district === id);
+  });
+  renderAll();
+}
+
+function showLoadError(id, err) {
+  document.getElementById('loadingState').innerHTML =
+    `<div class="loading-text" style="color:#b91c1c;">Could not load <code>data/${id}.json</code>.<br>` +
+    `Open via a local web server (not file://) or use the district switcher.<br>` +
+    `<small style="opacity:.6;">${(err && err.message) || err}</small></div>`;
+}
+
+function switchDistrict(id) {
+  const url = new URL(location.href);
+  url.searchParams.set('district', id);
+  location.href = url.toString();
+}
+
+/* ---------- generic template binding ---------- */
+function applyDataFields(root) {
+  root = root || document;
+  root.querySelectorAll('[data-field]').forEach(el => {
+    const v = getPath(DISTRICT, el.dataset.field);
+    if (v != null) el.innerHTML = v;
+  });
+  root.querySelectorAll('[data-field-aria]').forEach(el => {
+    const v = getPath(DISTRICT, el.dataset.fieldAria);
+    if (v != null) el.setAttribute('aria-label', v);
+  });
+  root.querySelectorAll('[data-cls-field]').forEach(el => {
+    const v = getPath(DISTRICT, el.dataset.clsField);
+    if (v != null) {
+      // Strip any previously-applied cls token starting with tag-/badge-/etc., add new
+      el.classList.add(v);
+    }
+  });
+}
+
+/* ---------- top-level render ---------- */
+function renderAll() {
+  applyDataFields();
+  renderHeroStats();
+  renderReports();
+  renderTasks();
+  renderSubmitted();
+  renderCalendar();
+  renderSamples();
+  renderMORTable();
+  renderDailyLog();
+  renderTrendsMetrics();
+  renderTrendsCharts();
+  renderDocs();
+  renderChatGreeting();
+}
+
+/* ---------- compliance hero stats ---------- */
+function renderHeroStats() {
+  const el = document.getElementById('heroStats');
+  if (!el) return;
+  el.innerHTML = (DISTRICT.compliance.heroStats || []).map(s =>
+    `<div class="comp-hero-stat"><div class="comp-hero-num">${s.num}</div><div class="comp-hero-stat-label">${s.label}</div></div>`
+  ).join('');
+}
+
+/* ---------- report tiles ---------- */
+function renderReports() {
+  const el = document.getElementById('reportTiles');
+  if (!el) return;
+  el.innerHTML = (DISTRICT.reports || []).map(r => {
+    const onclick = r.openTarget
+      ? (r.openTarget.startsWith('view:')
+          ? `onclick="showView('${r.openTarget.slice(5)}')"`
+          : `onclick="openEvent('${r.openTarget}')"`)
+      : '';
+    return `
+      <div class="report-tile" ${onclick}>
+        <div class="report-tile-accent" style="background:${r.accentColor};"></div>
+        <div class="report-tile-header">
+          <div>
+            <div class="report-tile-type">${r.type}</div>
+            <div class="report-tile-title">${r.title}</div>
+            <div class="report-tile-period">${r.period}</div>
+          </div>
+          <span class="tag ${r.tagCls}">${r.tagText}</span>
+        </div>
+        <div class="report-tile-progress-row">
+          <div class="report-tile-progress-bar"><div class="report-tile-progress-fill" style="width:${r.progress}%;background:${r.progressColor};"></div></div>
+          <div class="report-tile-progress-text">${r.progress}%</div>
+        </div>
+        <div class="report-tile-foot">
+          <span class="report-tile-due">Due <strong>${r.due}</strong>${r.daysLeft != null ? ' · ' + r.daysLeft + 'd' : ''}</span>
+          <span style="color:${r.accentColor};font-weight:600;font-size:var(--t-xs);">${r.action} →</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ---------- tasks ---------- */
+function renderTasks() {
+  const el = document.getElementById('taskList');
+  if (!el) return;
+  el.innerHTML = (DISTRICT.tasks || []).map((t, i) => `
+    <div class="comp-task" onclick="toggleTask(this)">
+      <div class="comp-task-check ${t.done ? 'done' : ''}" role="checkbox" aria-checked="${t.done}" tabindex="0">${t.done ? '✓' : ''}</div>
+      <div style="flex:1;">
+        <div class="comp-task-text ${t.done ? 'done' : ''}">${t.text}</div>
+        <div class="comp-task-meta">${t.meta}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleTask(row) {
+  const check = row.querySelector('.comp-task-check');
+  const text = row.querySelector('.comp-task-text');
+  const done = !check.classList.contains('done');
+  check.classList.toggle('done', done);
+  text.classList.toggle('done', done);
+  check.textContent = done ? '✓' : '';
+  check.setAttribute('aria-checked', done);
+}
+
+/* ---------- submitted list ---------- */
+function renderSubmitted() {
+  const el = document.getElementById('submittedList');
+  if (!el) return;
+  el.innerHTML = (DISTRICT.submitted || []).map(s => `
+    <div class="submitted-item">
+      <div class="submitted-icon">✓</div>
+      <div class="submitted-text">
+        <div class="submitted-name">${s.name}</div>
+        <div class="submitted-meta">${s.meta}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ---------- calendar ---------- */
+function renderCalendar() {
+  const el = document.getElementById('calGrid');
+  if (!el) return;
+  const heads = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let html = heads.map(h => `<div class="cal-day-head">${h}</div>`).join('');
+  (DISTRICT.calendar.days || []).forEach(day => {
+    const cls = ['cal-day'];
+    if (day.outside) cls.push('outside');
+    if (day.today) cls.push('today');
+    const events = (day.events || []).map(ev =>
+      `<span class="cal-event ${ev.cls}" onclick="event.stopPropagation();openEvent('${ev.openId}')">${ev.label}</span>`
+    ).join('');
+    html += `<div class="${cls.join(' ')}"><div class="cal-day-num">${day.num}</div>${events}</div>`;
+  });
+  el.innerHTML = html;
+}
+
+/* ---------- samples ---------- */
+function renderSamples() {
+  const el = document.getElementById('samplesList');
+  if (!el) return;
+  const samples = DISTRICT.samples || [];
+  el.innerHTML = samples.map(s => `
+    <div class="sample-row" onclick="openEvent('${s.openId}')">
+      <div class="sample-bottle ${s.bottleCls}">${s.bottleLabel}</div>
+      <div class="sample-info">
+        <div class="sample-name">${s.name}</div>
+        <div class="sample-meta">${s.meta}</div>
+      </div>
+      <div class="sample-hold">
+        <div class="sample-hold-time">${s.holdTime}</div>
+        <div class="sample-hold-label">${s.holdLabel}</div>
+      </div>
+    </div>
+  `).join('');
+  const cnt = document.getElementById('samplesCount');
+  if (cnt) cnt.textContent = samples.length ? `${samples.length} upcoming` : '';
+}
+
+/* ---------- MOR table ---------- */
+function renderMORTable() {
+  const el = document.getElementById('morRows');
+  if (!el) return;
+  el.innerHTML = (DISTRICT.mor.rows || []).map(r => `
+    <tr class="${r.warn ? 'warn-row' : ''}">
+      <td><strong>${r.param}</strong></td>
+      <td class="mono">${r.limit}</td>
+      <td class="mono" style="color:${r.resultColor || 'inherit'};font-weight:600;">${r.result}</td>
+      <td class="mono">${r.samples}</td>
+      <td class="mono" style="font-size:11px;color:var(--text-dim);">${r.detail || ''}</td>
+      <td><span class="tag ${r.statusCls}">${r.statusText}</span></td>
+    </tr>
+  `).join('');
+}
+
+/* ---------- daily log ---------- */
+function renderDailyLog() {
+  const el = document.getElementById('logForm');
+  if (!el) return;
+  el.innerHTML = (DISTRICT.dailyLog.sections || []).map(sec => {
+    const fields = (sec.fields || []).map(f => {
+      const inputCls = [];
+      if (f.warn) inputCls.push('warn');
+      if (f.highlight === 'navy' || f.readonly) inputCls.push('readonly-navy');
+      if (f.highlight === 'yellow') inputCls.push('readonly-yellow');
+      const safeVal = (f.value ?? '').toString().replace(/"/g, '&quot;');
+      return `
+        <div class="log-field">
+          <label class="log-label" for="lf-${f.id}">${f.label}</label>
+          <input id="lf-${f.id}" class="log-input ${inputCls.join(' ')}" value="${safeVal}" ${f.readonly ? 'readonly' : ''}>
+          ${f.hint ? `<div class="log-hint ${f.warn ? 'warn' : ''}">${f.hint}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+    return `
+      <fieldset class="log-section">
+        <div class="log-section-header">
+          <div class="log-section-title">${sec.title}</div>
+          ${sec.tagText ? `<span class="tag ${sec.tagCls || ''}">${sec.tagText}</span>` : ''}
+        </div>
+        <div class="log-section-body">
+          <div class="log-grid">${fields}</div>
+        </div>
+      </fieldset>
+    `;
+  }).join('');
+}
+
+/* ---------- trends metrics ---------- */
+function renderTrendsMetrics() {
+  const el = document.getElementById('trendsMetrics');
+  if (!el) return;
+  el.innerHTML = (DISTRICT.trends.metrics || []).map(m => `
+    <div class="metric-card">
+      <div class="metric-accent" style="background:${m.accent};"></div>
+      <div class="metric-label">${m.label}</div>
+      <div class="metric-value">${m.value}<span class="metric-unit">${m.unit || ''}</span></div>
+      <div class="metric-trend">${m.trend || ''}</div>
+      ${m.status ? `<div class="metric-status"><span class="tag ${m.statusCls || ''}">${m.status}</span></div>` : ''}
+    </div>
+  `).join('');
+}
+
+/* ---------- trends charts (SVG) ---------- */
+function renderTrendsCharts() {
+  const wrap = document.getElementById('trendsCharts');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  ['leftChart','rightChart'].forEach(key => {
+    const c = DISTRICT.trends[key];
+    if (!c) return;
+    wrap.insertAdjacentHTML('beforeend', renderChartCard(c));
+  });
+}
+
+function renderChartCard(c) {
+  const w = 320, h = 75, pad = 0;
+  const thresholds = (c.thresholds || []).map(t => {
+    const y = (t.y != null) ? t.y : 0;
+    return `<line x1="${pad}" y1="${y}" x2="${w - pad}" y2="${y}" stroke="${t.color}" stroke-width="${t.width || 1}" stroke-dasharray="${t.dash || '4 3'}"/>` +
+           (t.label ? `<text x="${w - 4}" y="${y - 2}" text-anchor="end" font-size="6" fill="${t.labelColor || '#64748b'}" font-family="DM Mono, monospace">${t.label}</text>` : '');
+  }).join('');
+  const markers = (c.markers || []).map(m => {
+    const cx = m.x, cy = m.y;
+    const lblX = (m.labelX != null) ? m.labelX : cx;
+    const lblY = (m.labelY != null) ? m.labelY : cy - 4;
+    return `<circle cx="${cx}" cy="${cy}" r="${m.r || 2.5}" fill="${m.color || c.strokeColor || '#0c4a6e'}"/>` +
+           (m.label ? `<text x="${lblX}" y="${lblY}" font-size="5.5" fill="${m.labelColor || m.color || '#0c4a6e'}" font-family="DM Mono, monospace" font-weight="600">${m.label}</text>` : '');
+  }).join('');
+  const poly = c.polyline
+    ? `<polyline points="${c.polyline}" fill="none" stroke="${c.strokeColor || '#0c4a6e'}" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>`
+    : '';
+  return `
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">${c.title}</span>
+        ${c.tagText ? `<span class="tag ${c.tagCls || ''}">${c.tagText}</span>` : ''}
+      </div>
+      <div class="chart-wrap">
+        <svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${c.ariaLabel || c.title}" preserveAspectRatio="none" style="width:100%;height:180px;display:block;">
+          ${thresholds}
+          ${poly}
+          ${markers}
+        </svg>
+      </div>
+      ${c.footer ? `<div class="chart-foot">${c.footer}</div>` : ''}
+    </div>
+  `;
+}
+
+/* ---------- documents ---------- */
+function renderDocs() {
+  const f = document.getElementById('docsFacility');
+  const g = document.getElementById('docsGlobal');
+  const tpl = d => `
+    <div class="doc-row">
+      <div class="doc-icon">${d.icon || '📄'}</div>
+      <div class="doc-body">
+        <div class="doc-name">${d.name}</div>
+        <div class="doc-meta">${d.meta}</div>
+      </div>
+      ${d.tagText ? `<span class="tag ${d.tagCls || ''}">${d.tagText}</span>` : ''}
+    </div>`;
+  if (f) f.innerHTML = (DISTRICT.documents.facility || []).map(tpl).join('');
+  if (g) g.innerHTML = (DISTRICT.documents.global || []).map(tpl).join('');
+}
+
+/* ---------- chat greeting ---------- */
+function renderChatGreeting() {
+  const el = document.getElementById('chatMessages');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="chat-msg chat-msg-ai">
+      <div class="chat-bubble-ai">${DISTRICT.chat.greeting || 'Hello.'}</div>
+    </div>
+    ${DISTRICT.chat.presetQ ? `
+      <div class="chat-presets">
+        <button class="chat-preset" onclick="askPreset()">${DISTRICT.chat.presetQ}</button>
+      </div>` : ''}
+  `;
+}
+
+function askPreset() {
+  const el = document.getElementById('chatMessages');
+  // Remove the preset button after click
+  const presets = el.querySelector('.chat-presets');
+  if (presets) presets.remove();
+  el.insertAdjacentHTML('beforeend', `
+    <div class="chat-msg chat-msg-user">
+      <div class="chat-bubble-user">${DISTRICT.chat.presetQ}</div>
+    </div>
+    <div class="chat-msg chat-msg-ai">
+      <div class="chat-bubble-ai">${DISTRICT.chat.presetA}${DISTRICT.chat.presetCite ? `<span class="cite">${DISTRICT.chat.presetCite}</span>` : ''}</div>
+    </div>
+  `);
+  el.scrollTop = el.scrollHeight;
+}
+
+function sendChatMsg() {
+  const input = document.getElementById('chatInput');
+  const txt = input.value.trim();
+  if (!txt) return;
+  const el = document.getElementById('chatMessages');
+  el.insertAdjacentHTML('beforeend', `
+    <div class="chat-msg chat-msg-user"><div class="chat-bubble-user">${txt.replace(/</g,'&lt;')}</div></div>
+    <div class="chat-msg chat-msg-ai"><div class="chat-bubble-ai">This is a preview. In production, Upstream AI would answer with citations from your facility's records.</div></div>
+  `);
+  input.value = '';
+  el.scrollTop = el.scrollHeight;
+}
+
+/* ---------- event modal ---------- */
+function openEvent(id) {
+  const ev = DISTRICT.events && DISTRICT.events[id];
+  if (!ev) { console.warn('Unknown event:', id); return; }
+  document.getElementById('modalBar').style.background = ev.barColor || 'var(--navy)';
+  document.getElementById('modalIcon').textContent = ev.icon || '•';
+  document.getElementById('modalType').textContent = ev.type || '';
+  document.getElementById('modalTitle').textContent = ev.title || '';
+  document.getElementById('modalDate').textContent = ev.date || '';
+  const body = document.getElementById('modalBody');
+  let html = '';
+  if (ev.what) html += `<div class="modal-section">${ev.what}</div>`;
+  if (ev.details && ev.details.length) {
+    html += '<div class="modal-section"><div class="modal-section-label">Details</div><dl class="modal-dl">';
+    ev.details.forEach(d => {
+      html += `<dt>${d[0]}</dt><dd>${d[1]}</dd>`;
+    });
+    html += '</dl></div>';
+  }
+  if (ev.callout) {
+    html += `<div class="modal-callout"><div class="modal-callout-icon">⚠</div><div>${ev.callout}</div></div>`;
+  }
+  body.innerHTML = html;
+  document.getElementById('modalFooter').innerHTML = ev.footer || '';
+  const cta = document.getElementById('modalCTA');
+  cta.textContent = (ev.cta && ev.cta.label) || 'View';
+  cta.dataset.target = (ev.primaryTarget || '');
+  document.getElementById('eventModal').classList.add('open');
+}
+
+function modalCTAClick() {
+  const t = document.getElementById('modalCTA').dataset.target;
+  closeEvent();
+  if (!t) return;
+  if (t.startsWith('view:')) showView(t.slice(5));
+}
+
+function closeEvent() {
+  document.getElementById('eventModal').classList.remove('open');
+}
+
+/* ---------- navigation, sidebar, chat ---------- */
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => {
+    const active = v.id === 'view-' + name;
+    v.classList.toggle('active', active);
+    if (active) v.removeAttribute('hidden'); else v.setAttribute('hidden', '');
+  });
+  document.querySelectorAll('.sb-item').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === name);
+  });
+  closeSidebar();
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sbBackdrop').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sbBackdrop').classList.remove('open');
+}
+
+function openChat() {
+  document.getElementById('chatPanel').classList.add('open');
+  closeSidebar();
+}
+function toggleChat() {
+  document.getElementById('chatPanel').classList.toggle('open');
+}
+
+/* ---------- gate ---------- */
 function checkPass() {
-  const val = document.getElementById('gateInput').value.trim().toLowerCase();
-  if (val === 'upstream' || val === 'demo' || val === 'preview') {
+  const v = document.getElementById('gateInput').value.trim().toLowerCase();
+  const codes = (DISTRICT && DISTRICT.meta && DISTRICT.meta.accessCodes) || ['upstream'];
+  if (codes.map(c => c.toLowerCase()).includes(v)) {
     document.getElementById('gate').classList.add('hidden');
+    document.body.classList.remove('gated');
   } else {
     document.getElementById('gateError').classList.add('show');
   }
 }
 
-function showView(id, el) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
-  if (el) {
-    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
-    el.classList.add('active');
+/* ---------- keyboard, clock ---------- */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeEvent();
+    document.getElementById('chatPanel').classList.remove('open');
+    closeSidebar();
   }
-  window.scrollTo(0,0);
-  document.querySelector('.content').scrollTop = 0;
-}
-
-function switchFacility(type, btn) {
-  btn.parentElement.querySelectorAll('.fac-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  if (type === 'ww') {
-    document.getElementById('ww-metrics').style.display = '';
-    document.getElementById('dw-metrics').style.display = 'none';
-    document.getElementById('ai-brief-text').textContent = 'MLSS is trending down for the third consecutive day — now at 1,940 mg/L. Consider reviewing WAS rate. Effluent TSS and BOD remain within permit limits. DO in Zone 2 is borderline at 1.6 mg/L.';
-    document.getElementById('ai-score').textContent = '94';
-  } else {
-    document.getElementById('ww-metrics').style.display = 'none';
-    document.getElementById('dw-metrics').style.display = '';
-    document.getElementById('ai-brief-text').textContent = 'All drinking water parameters are within permit limits. CT achieved at 312 mg·min/L exceeds the required minimum. Entry point chlorine residual is holding steady at 1.2 mg/L. No concerns today.';
-    document.getElementById('ai-score').textContent = '99';
+  if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'gateInput') {
+    checkPass();
   }
-}
+  if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'chatInput') {
+    sendChatMsg();
+  }
+});
 
-function openChat() {
-  document.getElementById('chatPanel').classList.add('open');
-}
-
-function toggleChat() {
-  document.getElementById('chatPanel').classList.toggle('open');
-}
-
-function sendChatMsg() {
-  const input = document.getElementById('chatInput');
-  const val = input.value.trim();
-  if (!val) return;
-  const msgs = document.getElementById('chatMessages');
-  msgs.insertAdjacentHTML('beforeend', '<div class="chat-msg chat-msg-user"><div class="chat-bubble-user">' + val + '</div></div>');
-  input.value = '';
-  setTimeout(function() {
-    msgs.insertAdjacentHTML('beforeend', '<div class="chat-msg chat-msg-ai"><div class="chat-avatar-ai">✦</div><div class="chat-bubble-ai"><div style="color:var(--yellow);font-size:10px;font-weight:600;margin-bottom:4px;">⚠ General knowledge — not from your facility documents</div>Searching your document library… If no relevant document is found, I will answer from general wastewater engineering knowledge with that disclosure shown above.<span class="cite">📎 Upload your O&M manual to get facility-specific answers</span></div></div>');
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 700);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-setInterval(function() {
+function tickClock() {
   const now = new Date();
-  const el = document.getElementById('clock');
-  if (el) el.textContent = now.toTimeString().slice(0,8);
-}, 1000);
+  const hh = now.getHours().toString().padStart(2,'0');
+  const mm = now.getMinutes().toString().padStart(2,'0');
+  const el = document.getElementById('topbarClock');
+  if (el) el.textContent = `${hh}:${mm}`;
+}
+setInterval(tickClock, 30000);
+
+/* ---------- go ---------- */
+document.body.classList.add('gated');
+loadDistrict().then(tickClock);
 </script>
 </body>
 </html>
