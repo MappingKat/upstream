@@ -708,8 +708,9 @@ tr.expanded .j-expand{transform:rotate(90deg);color:var(--accent);}
 .topbar-mode-dot.all{background:linear-gradient(135deg,#2563eb 50%,#16a34a 50%);}
 
 /* Mode-specific content visibility (toggled via JS) */
-.dw-only.mode-ww-active{display:none !important;}
-.ww-only.mode-dw-active{display:none !important;}
+/* body gets the mode-{x}-active class; elements have dw-only or ww-only */
+body.mode-ww-active .dw-only{display:none !important;}
+body.mode-dw-active .ww-only{display:none !important;}
 
 /* ============ NODI COLOR SYSTEM (Upstream-designed) ============ */
 .gap-select{background-image:none;}
