@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1a3a5c">
-<title>Upstream AI · DMR-First Redesign · Town of Alma</title>
+<title>Upstream AI · v13 Operator-First Redesign · Town of Alma</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Mono:wght@400;500&display=swap');
 
@@ -28,22 +28,21 @@
 }
 
 html{font-size:16px;}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;font-size:var(--t-base);line-height:1.5;}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column;font-size:var(--t-base);line-height:1.5;}
 
 /* ============ MOCKUP CHROME ============ */
 .mockup-banner{
-  position:fixed;top:0;left:0;right:0;z-index:200;
   background:linear-gradient(90deg,#fffbeb 0%,#fefce8 100%);
   border-bottom:1px solid var(--yellow-border);
   padding:8px 18px;display:flex;align-items:center;gap:12px;
-  font-size:var(--t-xs);
+  font-size:var(--t-xs);flex-shrink:0;
 }
 .mockup-banner strong{color:var(--yellow);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;font-size:10px;}
 .mockup-banner span{color:var(--text-mid);}
-.mockup-content{padding-top:34px;display:flex;width:100%;height:100vh;}
+.mockup-content{display:flex;width:100%;flex:1;min-height:0;}
 
 /* ============ SIDEBAR ============ */
-.sidebar{width:220px;height:calc(100vh - 34px);background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
+.sidebar{width:220px;height:100%;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
 .sb-brand{padding:22px 20px 16px;border-bottom:1px solid var(--navy-dim);}
 .sb-logo{font-size:var(--t-xl);font-weight:600;color:#fff;letter-spacing:-0.5px;}
 .sb-logo em{font-family:'Playfair Display',serif;font-style:italic;color:var(--water);font-weight:700;}
@@ -69,7 +68,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .sb-urole{font-size:10px;color:rgba(255,255,255,0.55);}
 
 /* ============ MAIN ============ */
-.main{flex:1;min-width:0;display:flex;flex-direction:column;height:calc(100vh - 34px);overflow:hidden;}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;height:100%;overflow:hidden;}
 .topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 22px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:var(--s-3);}
 .topbar-title{font-size:var(--t-base);color:var(--text-dim);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .topbar-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
@@ -803,6 +802,202 @@ body.mode-dw-active .ww-only{display:none !important;}
 .integ-issue-meta{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:6px;}
 
 
+/* ════════════════════════════════════════════════════════════════
+   v13 — OFFLINE-FIRST · ONE-CLICK COMPLIANCE · SCADA EXCEPTION ·
+         PREDICTIVE FORECAST · OPERATOR/MANAGER MODE
+   ════════════════════════════════════════════════════════════════ */
+
+/* ============ TOPBAR: SYNC STATUS CHIP ============ */
+.topbar-sync{display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;border:1px solid;cursor:pointer;font-family:'Inter',sans-serif;}
+.topbar-sync.synced{background:var(--green-bg);color:var(--green);border-color:var(--green-border);}
+.topbar-sync.offline{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow-border);}
+.topbar-sync.stale{background:var(--red-bg);color:var(--red);border-color:var(--red-border);animation:syncWarn 2.5s ease-in-out infinite;}
+.topbar-sync-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.topbar-sync.synced .topbar-sync-dot{animation:pulse 2s infinite;}
+.topbar-sync-detail{font-family:'DM Mono',monospace;font-weight:600;text-transform:none;letter-spacing:0;opacity:0.85;margin-left:2px;}
+.topbar-sync-count{background:currentColor;color:#fff;border-radius:9px;padding:1px 6px;font-family:'DM Mono',monospace;font-size:9px;font-weight:700;margin-left:3px;}
+.topbar-sync.synced .topbar-sync-count{color:var(--green);}
+.topbar-sync.offline .topbar-sync-count{color:var(--yellow);}
+.topbar-sync.stale .topbar-sync-count{color:var(--red);}
+.topbar-sync-retry{background:rgba(255,255,255,0.6);border:none;color:currentColor;font-size:9px;font-weight:700;padding:2px 7px;border-radius:9px;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;font-family:'Inter',sans-serif;margin-left:4px;}
+.topbar-sync-retry:hover{background:#fff;}
+@keyframes syncWarn{0%,100%{opacity:1}50%{opacity:0.75}}
+
+/* ============ SIDEBAR: ROLE VIEW TOGGLE ============ */
+.role-toggle-wrap{padding:10px 14px 12px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.role-toggle{display:flex;background:rgba(0,0,0,0.25);border-radius:7px;padding:3px;gap:1px;}
+.role-btn{flex:1;padding:7px 6px;background:none;border:none;font-family:'Inter',sans-serif;font-size:10px;font-weight:600;color:rgba(255,255,255,0.65);cursor:pointer;border-radius:5px;text-transform:uppercase;letter-spacing:0.6px;display:flex;align-items:center;justify-content:center;gap:5px;}
+.role-btn:hover{color:#fff;}
+.role-btn.active{background:rgba(168,230,207,0.18);color:var(--water);box-shadow:inset 0 0 0 1px rgba(168,230,207,0.35);}
+body.role-mgr .operator-only{display:none !important;}
+body.role-op .manager-only{display:none !important;}
+
+/* ============ TODAY'S FOCUS HERO ============ */
+.focus-hero{background:linear-gradient(135deg,#fffbeb 0%,#fff 60%);border:1.5px solid var(--yellow-border);border-radius:14px;padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;gap:var(--s-4);flex-wrap:wrap;position:relative;overflow:hidden;}
+.focus-hero::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--yellow) 0%,#f59e0b 100%);}
+.focus-hero-icon{width:46px;height:46px;border-radius:50%;background:var(--yellow);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.focus-hero-text{flex:1;min-width:260px;}
+.focus-hero-eyebrow{font-size:9px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:1.5px;}
+.focus-hero-title{font-size:var(--t-lg);font-weight:700;color:var(--navy);margin-top:3px;line-height:1.3;}
+.focus-hero-sub{font-size:var(--t-xs);color:var(--text-mid);margin-top:4px;line-height:1.55;}
+.focus-hero-cta{padding:11px 18px;background:var(--navy);color:#fff;border:none;border-radius:9px;font-family:'Inter',sans-serif;font-size:var(--t-sm);font-weight:700;cursor:pointer;flex-shrink:0;min-height:42px;}
+.focus-hero-cta:hover{background:var(--accent);}
+.focus-hero.ok{background:linear-gradient(135deg,var(--green-bg) 0%,#fff 60%);border-color:var(--green-border);}
+.focus-hero.ok::before{background:linear-gradient(180deg,var(--green) 0%,#22c55e 100%);}
+.focus-hero.ok .focus-hero-icon{background:var(--green);}
+.focus-hero.ok .focus-hero-eyebrow{color:var(--green);}
+
+/* ============ ONE-CLICK STATE FORM CARD ============ */
+.state-form-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;display:grid;grid-template-columns:1fr 200px;gap:var(--s-5);align-items:center;}
+@media (max-width:768px){.state-form-card{grid-template-columns:1fr;}}
+.state-form-info-eyebrow{font-size:9px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;}
+.state-form-info-title{font-size:var(--t-xl);font-weight:600;color:var(--navy);margin-top:4px;letter-spacing:-0.3px;line-height:1.25;}
+.state-form-info-title em{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;}
+.state-form-info-meta{font-size:var(--t-xs);color:var(--text-mid);margin-top:6px;line-height:1.55;font-family:'DM Mono',monospace;}
+.state-form-info-status{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:var(--t-xs);color:var(--text);background:var(--bg);padding:5px 10px;border-radius:14px;border:1px solid var(--border);}
+.state-form-info-status .dot{width:7px;height:7px;border-radius:50%;background:var(--yellow);}
+.state-form-info-actions{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
+.state-form-btn-primary{padding:11px 18px;background:var(--navy);color:#fff;border:none;border-radius:9px;font-family:'Inter',sans-serif;font-size:var(--t-sm);font-weight:700;cursor:pointer;min-height:42px;}
+.state-form-btn-primary:hover{background:var(--accent);}
+.state-form-btn-secondary{padding:10px 14px;background:#fff;border:1.5px solid var(--border-mid);color:var(--text-mid);border-radius:9px;font-family:'Inter',sans-serif;font-size:var(--t-sm);font-weight:600;cursor:pointer;min-height:42px;}
+.state-form-btn-secondary:hover{background:var(--bg);border-color:var(--text-dim);}
+.state-form-btn-tertiary{padding:8px 12px;background:none;border:none;color:var(--accent);font-family:'Inter',sans-serif;font-size:var(--t-xs);font-weight:600;cursor:pointer;text-decoration:underline;}
+.state-form-preview{background:linear-gradient(180deg,#fafbfc 0%,#fff 100%);border:1px solid var(--border-mid);border-radius:9px;padding:14px 12px;cursor:pointer;transition:all .2s;position:relative;}
+.state-form-preview:hover{border-color:var(--accent);box-shadow:0 4px 14px rgba(26,58,92,0.10);}
+.state-form-preview-label{font-size:8px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:6px;}
+.state-form-preview-page{background:#fff;border:1px solid var(--border);border-radius:5px;padding:10px 8px;height:170px;display:flex;flex-direction:column;gap:4px;position:relative;}
+.state-form-preview-page::before{content:'CDPHE';position:absolute;top:6px;right:6px;font-size:7px;font-weight:700;color:var(--accent);}
+.sfp-bar{height:5px;background:var(--bg);border-radius:2px;}
+.sfp-bar.short{width:38%;}
+.sfp-bar.med{width:60%;}
+.sfp-bar.long{width:88%;}
+.sfp-bar.title{height:7px;background:var(--navy);width:55%;margin-bottom:3px;}
+.sfp-bar.filled{background:linear-gradient(90deg,var(--accent) 0%,var(--accent) 70%,var(--bg) 70%);}
+.sfp-gap{height:5px;background:var(--yellow-bg);border:1px dashed var(--yellow);border-radius:2px;width:42%;}
+.state-form-preview-foot{font-size:9px;color:var(--text-mid);text-align:center;margin-top:8px;font-family:'DM Mono',monospace;}
+
+/* ============ SCADA-DRIVEN DAILY LOG ============ */
+.dl-cell-live{background:var(--green-bg);color:var(--green);font-weight:700;padding:7px 6px;font-family:'DM Mono',monospace;font-size:11px;text-align:center;border:1.5px solid var(--green-border);border-radius:5px;display:flex;align-items:center;justify-content:center;gap:4px;position:relative;cursor:default;}
+.dl-cell-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0;}
+.dl-cell-live-override{position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;background:#fff;border:1px solid var(--border-mid);color:var(--text-mid);font-size:9px;cursor:pointer;display:none;align-items:center;justify-content:center;font-family:'Inter',sans-serif;}
+.dl-cell-live:hover .dl-cell-live-override{display:flex;}
+.dl-cell-live-override:hover{border-color:var(--yellow);color:var(--yellow);}
+.dl-cell-flagged{background:var(--red-bg);color:var(--red);border:1.5px solid var(--red-border);font-weight:700;padding:5px 6px;font-family:'DM Mono',monospace;font-size:11px;text-align:center;border-radius:5px;}
+.dl-cell-flagged-tag{font-size:8px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.6px;margin-top:2px;display:block;}
+.dl-source-legend{display:flex;gap:14px;font-size:10px;color:var(--text-mid);padding:8px 14px;background:var(--bg);border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap;}
+.dl-source-legend-item{display:inline-flex;align-items:center;gap:5px;}
+.dl-source-legend-swatch{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+.dl-source-legend-swatch.live{background:var(--green-bg);border:1.5px solid var(--green-border);}
+.dl-source-legend-swatch.manual{background:#fff;border:1.5px solid var(--border-mid);}
+.dl-source-legend-swatch.override{background:#fff;border:1.5px dashed var(--yellow);}
+.dl-source-legend-swatch.flagged{background:var(--red-bg);border:1.5px solid var(--red-border);}
+.dl-savings-banner{background:linear-gradient(135deg,var(--water-dim),rgba(168,230,207,0.05));border:1px solid var(--green-border);border-radius:10px;padding:11px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-size:var(--t-xs);color:var(--text);}
+.dl-savings-banner strong{color:var(--green);font-weight:700;}
+
+/* ============ PREDICTIVE FORECAST OVERLAY ============ */
+.forecast-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px;}
+.forecast-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:var(--s-3);}
+.forecast-title{font-size:var(--t-sm);font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;display:flex;align-items:center;gap:8px;}
+.forecast-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:14px;background:var(--purple-bg);color:var(--purple);border:1px solid rgba(109,40,217,0.22);text-transform:uppercase;letter-spacing:0.5px;}
+.forecast-sub{font-size:10px;color:var(--text-dim);font-family:'DM Mono',monospace;margin-top:4px;}
+.forecast-action{padding:10px 14px;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:var(--t-xs);font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;min-height:40px;display:inline-flex;align-items:center;gap:6px;}
+.forecast-action:hover{background:#991b1b;}
+.forecast-action.warn{background:var(--yellow);color:#fff;}
+.forecast-action.warn:hover{background:#854d0e;}
+.forecast-callout{background:var(--red-bg);border:1px solid var(--red-border);border-radius:9px;padding:10px 13px;margin-top:12px;font-size:var(--t-xs);color:var(--text);line-height:1.55;display:flex;align-items:flex-start;gap:9px;}
+.forecast-callout-icon{font-size:14px;color:var(--red);flex-shrink:0;margin-top:1px;}
+.forecast-callout strong{color:var(--red);}
+.forecast-confidence{font-size:10px;color:var(--text-mid);margin-top:8px;font-family:'DM Mono',monospace;display:flex;gap:14px;flex-wrap:wrap;}
+
+/* ============ SIDEBAR DISTRICT: ENHANCED OFFLINE ============ */
+.sb-district .sb-live.offline{color:var(--yellow);}
+.sb-district .sb-live.stale{color:#fca5a5;}
+
+/* ════════════════════════════════════════════════════════════════
+   v13 — OPERATOR FEEDBACK CAPTURE
+   Banner + Floating Action Button + Modal survey. Used during
+   utility review sessions to capture answers to open build
+   questions. Answers persist to localStorage and export to CSV.
+   ════════════════════════════════════════════════════════════════ */
+
+/* Top banner — in-flow so it pushes content down naturally */
+.fb-banner{background:linear-gradient(90deg,#1b6a8a 0%,#234d78 100%);color:#fff;padding:9px 18px;display:flex;align-items:center;gap:12px;font-size:var(--t-sm);box-shadow:0 1px 4px rgba(0,0,0,0.10);flex-shrink:0;}
+.fb-banner.hidden{display:none;}
+.fb-banner-icon{font-size:18px;flex-shrink:0;}
+.fb-banner-text{flex:1;min-width:0;line-height:1.4;}
+.fb-banner-text strong{font-weight:700;}
+.fb-banner-cta{background:#fff;color:var(--navy);border:none;padding:7px 14px;border-radius:7px;font-family:'Inter',sans-serif;font-size:var(--t-xs);font-weight:700;cursor:pointer;flex-shrink:0;text-transform:uppercase;letter-spacing:0.5px;}
+.fb-banner-cta:hover{background:var(--water);}
+.fb-banner-dismiss{background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:18px;padding:4px 8px;border-radius:6px;font-family:'Inter',sans-serif;line-height:1;}
+.fb-banner-dismiss:hover{background:rgba(255,255,255,0.12);color:#fff;}
+
+/* Persistent floating action button — bottom right */
+.fb-fab{position:fixed;bottom:22px;right:22px;z-index:115;background:var(--navy);color:#fff;border:none;padding:14px 20px;border-radius:30px;font-family:'Inter',sans-serif;font-size:var(--t-sm);font-weight:700;cursor:pointer;display:flex;align-items:center;gap:9px;box-shadow:0 6px 22px rgba(26,58,92,0.30);transition:all 0.18s;min-height:50px;}
+.fb-fab:hover{background:var(--accent);transform:translateY(-1px);box-shadow:0 8px 28px rgba(26,58,92,0.40);}
+.fb-fab-icon{font-size:18px;}
+.fb-fab-count{background:var(--water);color:var(--navy-dark);padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;font-family:'DM Mono',monospace;}
+
+/* Modal overlay */
+.fb-overlay{position:fixed;inset:0;z-index:300;background:rgba(13,36,64,0.55);display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(2px);}
+.fb-overlay.open{display:flex;}
+.fb-modal{background:#fff;border-radius:14px;max-width:680px;width:100%;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,0.30);}
+
+/* Modal header */
+.fb-head{padding:20px 26px 14px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#fafbfc 0%,#fff 100%);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-shrink:0;}
+.fb-head-text{flex:1;}
+.fb-eyebrow{font-size:9px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;}
+.fb-head-title{font-size:var(--t-xl);font-weight:600;color:var(--navy);margin-top:4px;letter-spacing:-0.3px;line-height:1.25;}
+.fb-head-title em{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;}
+.fb-head-sub{font-size:var(--t-xs);color:var(--text-mid);margin-top:6px;line-height:1.55;}
+.fb-close{background:none;border:none;color:var(--text-dim);font-size:24px;cursor:pointer;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;line-height:1;flex-shrink:0;}
+.fb-close:hover{background:var(--bg);color:var(--text);}
+
+/* Modal body — scrolls */
+.fb-body{padding:20px 26px;overflow-y:auto;flex:1;}
+
+/* Identifier section */
+.fb-section{margin-bottom:22px;}
+.fb-section-title{font-size:10px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px dashed var(--border);}
+.fb-id-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+@media (max-width:600px){.fb-id-grid{grid-template-columns:1fr;}}
+.fb-id-field label{display:block;font-size:11px;font-weight:600;color:var(--text-mid);margin-bottom:5px;}
+.fb-id-field input,.fb-id-field select{width:100%;padding:9px 11px;border:1.5px solid var(--border-mid);border-radius:7px;font-family:'Inter',sans-serif;font-size:var(--t-sm);color:var(--text);background:#fff;outline:none;font-weight:500;}
+.fb-id-field input:focus,.fb-id-field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(27,106,138,0.12);}
+
+/* Question block */
+.fb-q{margin-bottom:20px;}
+.fb-q-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--bg);color:var(--text-mid);font-size:11px;font-weight:700;font-family:'DM Mono',monospace;margin-right:8px;border:1px solid var(--border);}
+.fb-q-prompt{font-size:var(--t-base);font-weight:600;color:var(--text);line-height:1.45;display:flex;align-items:flex-start;}
+.fb-q-prompt-text{flex:1;}
+.fb-q-why{font-size:10px;color:var(--text-dim);margin:6px 0 10px 30px;font-style:italic;line-height:1.5;}
+.fb-q-options{display:flex;flex-wrap:wrap;gap:7px;margin-left:30px;}
+.fb-q-option{padding:9px 14px;border:1.5px solid var(--border-mid);border-radius:8px;font-family:'Inter',sans-serif;font-size:var(--t-sm);color:var(--text-mid);background:#fff;cursor:pointer;font-weight:500;min-height:40px;display:inline-flex;align-items:center;transition:all 0.12s;}
+.fb-q-option:hover{border-color:var(--accent);color:var(--accent);background:rgba(27,106,138,0.04);}
+.fb-q-option.selected{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:600;}
+.fb-q-textarea,.fb-q-number{width:calc(100% - 30px);margin-left:30px;padding:10px 12px;border:1.5px solid var(--border-mid);border-radius:7px;font-family:'Inter',sans-serif;font-size:var(--t-sm);color:var(--text);background:#fff;outline:none;font-weight:500;}
+.fb-q-textarea{min-height:80px;resize:vertical;line-height:1.5;}
+.fb-q-textarea:focus,.fb-q-number:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(27,106,138,0.12);}
+
+/* Modal footer */
+.fb-foot{padding:16px 26px;border-top:1px solid var(--border);background:var(--bg);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap;}
+.fb-progress{font-size:var(--t-xs);color:var(--text-mid);font-family:'DM Mono',monospace;}
+.fb-progress strong{color:var(--text);font-weight:700;}
+.fb-actions{display:flex;gap:9px;align-items:center;}
+.fb-btn-secondary{padding:10px 14px;background:#fff;border:1.5px solid var(--border-mid);color:var(--text-mid);border-radius:8px;font-family:'Inter',sans-serif;font-size:var(--t-sm);font-weight:600;cursor:pointer;min-height:40px;}
+.fb-btn-secondary:hover{background:#fff;border-color:var(--text-dim);}
+.fb-btn-primary{padding:11px 18px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:var(--t-sm);font-weight:700;cursor:pointer;min-height:40px;}
+.fb-btn-primary:hover{background:var(--accent);}
+.fb-btn-primary:disabled{background:var(--text-dim);cursor:not-allowed;opacity:0.6;}
+
+/* Thank-you state */
+.fb-thanks{padding:50px 26px;text-align:center;}
+.fb-thanks-icon{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--green) 0%,#22c55e 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 18px;}
+.fb-thanks-title{font-size:var(--t-xl);font-weight:600;color:var(--navy);letter-spacing:-0.3px;}
+.fb-thanks-sub{font-size:var(--t-sm);color:var(--text-mid);margin-top:10px;line-height:1.6;max-width:440px;margin-left:auto;margin-right:auto;}
+.fb-thanks-stats{margin-top:22px;padding:14px;background:var(--bg);border-radius:9px;display:inline-flex;gap:24px;font-size:var(--t-xs);color:var(--text-mid);font-family:'DM Mono',monospace;}
+.fb-thanks-stats strong{color:var(--navy);}
+.fb-thanks-actions{margin-top:24px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+
 @media (max-width:900px){
   .sidebar{display:none;}
   .topbar{padding:0 14px;}
@@ -826,8 +1021,20 @@ body.mode-dw-active .ww-only{display:none !important;}
 
 <!-- ============ MOCKUP CHROME ============ -->
 <div class="mockup-banner">
-  <strong>Mockup · v12</strong>
-  <span>System mode toggle (DW · WW · Both) · expanded NODI codes with Upstream color system · Lab Samples · integrations health · for Town of Alma review</span>
+  <strong>Mockup for review</strong>
+  <span>The buttons and search features may not work because this is just a visual preview. Once we have confirmed features, then we will go to the build stage.</span>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     v13 — OPERATOR FEEDBACK BANNER (dismissable, persists)
+     ════════════════════════════════════════════════════════════════ -->
+<div class="fb-banner" id="fbBanner">
+  <span class="fb-banner-icon">💬</span>
+  <div class="fb-banner-text">
+    <strong>Help shape this build — 7 quick questions about your MOR workflow.</strong> Your answers stay on this device and tell Upstream what to build first.
+  </div>
+  <button class="fb-banner-cta" onclick="openFeedback()">Start · ~4 min</button>
+  <button class="fb-banner-dismiss" onclick="dismissBanner()" title="Dismiss banner">×</button>
 </div>
 
 <div class="mockup-content">
@@ -841,7 +1048,7 @@ body.mode-dw-active .ww-only{display:none !important;}
     <div class="sb-district">
       <div class="sb-dist-name">Town of Alma</div>
       <div class="sb-dist-sub">PWS CO0147001 · COG591177</div>
-      <div class="sb-live">Live · last pull 7:34 AM</div>
+      <div class="sb-live offline" id="sbLive">Working offline · 4 queued · last sync 2h ago</div>
     </div>
 
     <!-- ════════ SYSTEM MODE TOGGLE ════════ -->
@@ -856,6 +1063,19 @@ body.mode-dw-active .ww-only{display:none !important;}
         </button>
         <button class="mode-btn" data-mode="ww" onclick="setMode('ww')">
           <span class="mode-btn-icon">🌊</span>WW
+        </button>
+      </div>
+    </div>
+
+    <!-- ════════ ROLE VIEW TOGGLE (v13) ════════ -->
+    <div class="role-toggle-wrap">
+      <div class="mode-toggle-label">Role view</div>
+      <div class="role-toggle" id="roleToggle">
+        <button class="role-btn active" data-role="op" onclick="setRole('op')">
+          <span class="mode-btn-icon">🔧</span>Operator
+        </button>
+        <button class="role-btn" data-role="mgr" onclick="setRole('mgr')">
+          <span class="mode-btn-icon">📊</span>Manager
         </button>
       </div>
     </div>
@@ -899,12 +1119,13 @@ body.mode-dw-active .ww-only{display:none !important;}
     </button>
 
     <div class="sb-footer">
-      <div class="sb-user">
-        <div class="sb-avatar">KB</div>
-        <div>
-          <div class="sb-uname">Kat &amp; Bobby</div>
-          <div class="sb-urole">Public Works + Operator</div>
+      <div class="sb-user" id="sbUser" style="cursor:pointer;" title="Switch user">
+        <div class="sb-avatar" id="sbAvatar">BJ</div>
+        <div style="flex:1;min-width:0;">
+          <div class="sb-uname" id="sbUname">Bobby Jensen</div>
+          <div class="sb-urole" id="sbUrole">Lead Operator · signed in</div>
         </div>
+        <div style="color:rgba(255,255,255,0.4);font-size:11px;">⇅</div>
       </div>
     </div>
   </aside>
@@ -914,6 +1135,13 @@ body.mode-dw-active .ww-only{display:none !important;}
     <div class="topbar">
       <div class="topbar-title">Friday, April 3, 2026 · Town of Alma</div>
       <div class="topbar-right">
+        <button class="topbar-sync offline" id="topbarSync" onclick="cycleSyncState()" title="Click to cycle sync state (mockup demo)">
+          <span class="topbar-sync-dot"></span>
+          <span id="topbarSyncLabel">Working offline</span>
+          <span class="topbar-sync-detail" id="topbarSyncDetail">· last sync 2h ago</span>
+          <span class="topbar-sync-count" id="topbarSyncCount">4 queued</span>
+          <span class="topbar-sync-retry" onclick="event.stopPropagation();alert('Retry sync (mockup)');">Retry</span>
+        </button>
         <span class="topbar-mode" id="topbarMode">
           <span class="topbar-mode-dot all" id="topbarModeDot"></span>
           <span id="topbarModeLabel">All systems</span>
@@ -936,6 +1164,56 @@ body.mode-dw-active .ww-only{display:none !important;}
           <div class="page-actions">
             <button class="btn-outline" onclick="showView('calendar')">📅 View calendar →</button>
             <button class="btn-primary" onclick="showView('ask')">💬 Ask Upstream</button>
+          </div>
+        </div>
+
+        <!-- ═══════ TODAY'S FOCUS (v13 — single next action) ═══════ -->
+        <div class="focus-hero" id="focusHero">
+          <div class="focus-hero-icon">⚡</div>
+          <div class="focus-hero-text">
+            <div class="focus-hero-eyebrow">Today's focus · 7:34 AM</div>
+            <div class="focus-hero-title">2 chlorine readings need a NODI code before the March DMR is ready.</div>
+            <div class="focus-hero-sub">Mar 11 (block 04:00–08:00) unresolved · Mar 19 (block 12:00–16:00) pending review · everything else is on track.</div>
+          </div>
+          <button class="focus-hero-cta" onclick="showView('dmr')">Resolve gaps →</button>
+        </div>
+
+        <!-- ═══════ ONE-CLICK STATE FORM CARD (v13) ═══════ -->
+        <div class="state-form-card">
+          <div>
+            <div class="state-form-info-eyebrow">📄 One-click compliance</div>
+            <div class="state-form-info-title">March DMR — <em>CDPHE</em> form auto-filled</div>
+            <div class="state-form-info-meta">
+              CDPS Permit COG591177 · Form WQCD-DMR · 26 / 28 fields complete<br>
+              EPA NetDMR-ready · routes to Colorado WQCD on submit
+            </div>
+            <div class="state-form-info-status">
+              <span class="dot"></span>2 gaps remaining · ready to review once resolved
+            </div>
+            <div class="state-form-info-actions">
+              <button class="state-form-btn-primary" onclick="showView('dmr')">📋 Review filled form</button>
+              <button class="state-form-btn-secondary" onclick="alert('Submit to NetDMR (mockup)');">↗ Submit to NetDMR</button>
+              <button class="state-form-btn-tertiary" onclick="alert('Download .xlsx (mockup)');">Download Excel for records</button>
+            </div>
+          </div>
+          <div class="state-form-preview" onclick="showView('dmr')" title="Click to open filled form">
+            <div class="state-form-preview-label">Form preview · pg 1</div>
+            <div class="state-form-preview-page">
+              <div class="sfp-bar title"></div>
+              <div class="sfp-bar long"></div>
+              <div class="sfp-bar med"></div>
+              <div class="sfp-bar long filled"></div>
+              <div class="sfp-bar short filled"></div>
+              <div class="sfp-bar med filled"></div>
+              <div class="sfp-bar long filled"></div>
+              <div class="sfp-gap"></div>
+              <div class="sfp-bar med filled"></div>
+              <div class="sfp-bar short filled"></div>
+              <div class="sfp-gap"></div>
+              <div class="sfp-bar long filled"></div>
+              <div class="sfp-bar med filled"></div>
+            </div>
+            <div class="state-form-preview-foot">2 gaps · 26 of 28 filled</div>
           </div>
         </div>
 
@@ -983,46 +1261,71 @@ body.mode-dw-active .ww-only{display:none !important;}
           </div>
         </div>
 
-        <!-- ═══════ TREND CHART (no on-time filing — added TDS + Solids) ═══════ -->
-        <div class="trend-chart-card">
-          <div class="trend-chart-head">
+        <!-- ═══════ PREDICTIVE TREND CHART (v13 — forecast + work order CTA) ═══════ -->
+        <div class="forecast-card">
+          <div class="forecast-head">
             <div>
-              <div class="trend-chart-title">6-month parameter trend</div>
-              <div style="font-size:10px;color:var(--text-dim);font-family:'DM Mono',monospace;margin-top:3px;">Oct 2025 — Mar 2026 · margin to permit limit (% headroom)</div>
+              <div class="forecast-title">
+                6-month trend + 8-week forecast
+                <span class="forecast-badge">⚡ Predictive</span>
+              </div>
+              <div class="forecast-sub">Oct 2025 — May 2026 · % headroom to permit limit · forecast uses 6-month regression + seasonal adjustment</div>
             </div>
-            <div class="trend-chart-legend">
-              <div class="trend-legend-item dw-only"><span class="trend-legend-dot" style="background:var(--accent);"></span>Cl₂ (DW)</div>
-              <div class="trend-legend-item ww-only"><span class="trend-legend-dot" style="background:#7c3aed;"></span>BOD₅ (WW)</div>
-              <div class="trend-legend-item ww-only"><span class="trend-legend-dot" style="background:var(--yellow);"></span>TSS (WW)</div>
-              <div class="trend-legend-item dw-only"><span class="trend-legend-dot" style="background:var(--green);"></span>TDS (DW)</div>
-            </div>
+            <button class="forecast-action" onclick="alert('Work order draft created: inspect chlorinator feed pump (mockup)');">
+              🔧 Create work order: inspect chlorinator
+            </button>
           </div>
-          <svg class="trend-chart-svg" viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <svg class="trend-chart-svg" viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- VIOLATION ZONE (below 0% headroom = below permit limit) -->
+            <rect x="540" y="120" width="170" height="32" fill="#b91c1c" fill-opacity="0.10"/>
+            <text x="625" y="148" text-anchor="middle" font-family="Inter" font-size="8" fill="#b91c1c" font-weight="700" letter-spacing="0.5">↓ BELOW PERMIT LIMIT ↓</text>
+            <!-- Forecast region background tint -->
+            <rect x="535" y="20" width="175" height="100" fill="#f5f3ff" fill-opacity="0.5"/>
+            <line x1="535" y1="18" x2="535" y2="122" stroke="#a78bfa" stroke-width="1" stroke-dasharray="1,3"/>
+            <text x="538" y="28" font-family="Inter" font-size="8" fill="#6d28d9" font-weight="700" letter-spacing="0.5">FORECAST →</text>
             <!-- gridlines -->
-            <line x1="40" y1="20" x2="600" y2="20" stroke="#e2e8f0" stroke-width="0.5"/>
-            <line x1="40" y1="55" x2="600" y2="55" stroke="#e2e8f0" stroke-width="0.5"/>
-            <line x1="40" y1="90" x2="600" y2="90" stroke="#e2e8f0" stroke-width="0.5"/>
-            <line x1="40" y1="120" x2="600" y2="120" stroke="#cbd5e1" stroke-width="1"/>
+            <line x1="40" y1="20" x2="710" y2="20" stroke="#e2e8f0" stroke-width="0.5"/>
+            <line x1="40" y1="55" x2="710" y2="55" stroke="#e2e8f0" stroke-width="0.5"/>
+            <line x1="40" y1="90" x2="710" y2="90" stroke="#e2e8f0" stroke-width="0.5"/>
+            <line x1="40" y1="120" x2="710" y2="120" stroke="#b91c1c" stroke-width="1.5" stroke-dasharray="3,2"/>
             <!-- y-axis labels -->
             <text x="32" y="24" text-anchor="end" font-family="DM Mono" font-size="9" fill="#94a3b8">100%</text>
             <text x="32" y="59" text-anchor="end" font-family="DM Mono" font-size="9" fill="#94a3b8">75%</text>
             <text x="32" y="94" text-anchor="end" font-family="DM Mono" font-size="9" fill="#94a3b8">50%</text>
+            <text x="32" y="124" text-anchor="end" font-family="DM Mono" font-size="9" fill="#b91c1c" font-weight="700">LIMIT</text>
             <!-- x-axis labels -->
             <text x="80" y="135" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#64748b">Oct</text>
             <text x="170" y="135" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#64748b">Nov</text>
             <text x="260" y="135" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#64748b">Dec</text>
             <text x="350" y="135" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#64748b">Jan</text>
             <text x="440" y="135" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#64748b">Feb</text>
-            <text x="530" y="135" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#64748b">Mar</text>
-            <!-- Cl2 margin (accent blue, declining) DW -->
-            <polyline points="80,38 170,42 260,48 350,58 440,75 530,95" fill="none" stroke="#1b6a8a" stroke-width="2"/>
+            <text x="530" y="135" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#64748b" font-weight="700">Mar</text>
+            <text x="620" y="135" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#6d28d9">Apr</text>
+            <text x="700" y="135" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#6d28d9">May</text>
+
+            <!-- ═══ Cl₂ CONFIDENCE BAND (widens into future) ═══ -->
+            <polygon points="530,95 620,108 700,123 700,138 620,118 530,95" fill="#1b6a8a" fill-opacity="0.12"/>
+
+            <!-- Cl2 historical (solid) -->
+            <polyline points="80,38 170,42 260,48 350,58 440,75 530,95" fill="none" stroke="#1b6a8a" stroke-width="2.5"/>
             <circle cx="80" cy="38" r="3" fill="#1b6a8a"/>
             <circle cx="170" cy="42" r="3" fill="#1b6a8a"/>
             <circle cx="260" cy="48" r="3" fill="#1b6a8a"/>
             <circle cx="350" cy="58" r="3" fill="#1b6a8a"/>
             <circle cx="440" cy="75" r="3" fill="#1b6a8a"/>
             <circle cx="530" cy="95" r="3" fill="#1b6a8a"/>
-            <!-- BOD5 margin (purple, stable around 65%) WW -->
+            <!-- Cl2 forecast (dashed, projected) -->
+            <polyline points="530,95 620,113 700,131" fill="none" stroke="#1b6a8a" stroke-width="2.5" stroke-dasharray="5,3"/>
+            <circle cx="620" cy="113" r="3" fill="#fff" stroke="#1b6a8a" stroke-width="2"/>
+            <circle cx="700" cy="131" r="3" fill="#fff" stroke="#1b6a8a" stroke-width="2"/>
+
+            <!-- Crossing-point annotation -->
+            <circle cx="657" cy="120" r="5" fill="#b91c1c" stroke="#fff" stroke-width="2"/>
+            <line x1="657" y1="115" x2="657" y2="48" stroke="#b91c1c" stroke-width="1" stroke-dasharray="2,2"/>
+            <rect x="608" y="36" width="98" height="14" fill="#fff" stroke="#b91c1c" stroke-width="1" rx="2"/>
+            <text x="657" y="46" text-anchor="middle" font-family="Inter" font-size="8.5" fill="#b91c1c" font-weight="700">Crossing ~Apr 22</text>
+
+            <!-- BOD5 historical (solid) -->
             <polyline points="80,38 170,40 260,42 350,40 440,44 530,40" fill="none" stroke="#7c3aed" stroke-width="2"/>
             <circle cx="80" cy="38" r="3" fill="#7c3aed"/>
             <circle cx="170" cy="40" r="3" fill="#7c3aed"/>
@@ -1030,28 +1333,52 @@ body.mode-dw-active .ww-only{display:none !important;}
             <circle cx="350" cy="40" r="3" fill="#7c3aed"/>
             <circle cx="440" cy="44" r="3" fill="#7c3aed"/>
             <circle cx="530" cy="40" r="3" fill="#7c3aed"/>
-            <!-- TSS margin (yellow, stable around 73%) WW -->
-            <polyline points="80,30 170,32 260,28 350,32 440,30 530,32" fill="none" stroke="#a16207" stroke-width="2" stroke-dasharray="4,2"/>
+            <!-- BOD5 forecast (dashed, flat) -->
+            <polyline points="530,40 620,42 700,41" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5,3" stroke-opacity="0.7"/>
+
+            <!-- TSS historical (solid) — changed from dashed to solid for v13 -->
+            <polyline points="80,30 170,32 260,28 350,32 440,30 530,32" fill="none" stroke="#a16207" stroke-width="2"/>
             <circle cx="80" cy="30" r="3" fill="#a16207"/>
             <circle cx="170" cy="32" r="3" fill="#a16207"/>
             <circle cx="260" cy="28" r="3" fill="#a16207"/>
             <circle cx="350" cy="32" r="3" fill="#a16207"/>
             <circle cx="440" cy="30" r="3" fill="#a16207"/>
             <circle cx="530" cy="32" r="3" fill="#a16207"/>
-            <!-- TDS margin (green, stable around 80%) DW -->
-            <polyline points="80,22 170,25 260,22 350,28 440,24 530,26" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="2,3"/>
+            <!-- TSS forecast (dashed, flat) -->
+            <polyline points="530,32 620,33 700,33" fill="none" stroke="#a16207" stroke-width="2" stroke-dasharray="5,3" stroke-opacity="0.7"/>
+
+            <!-- TDS historical (solid) -->
+            <polyline points="80,22 170,25 260,22 350,28 440,24 530,26" fill="none" stroke="#16a34a" stroke-width="2"/>
             <circle cx="80" cy="22" r="3" fill="#16a34a"/>
             <circle cx="170" cy="25" r="3" fill="#16a34a"/>
             <circle cx="260" cy="22" r="3" fill="#16a34a"/>
             <circle cx="350" cy="28" r="3" fill="#16a34a"/>
             <circle cx="440" cy="24" r="3" fill="#16a34a"/>
             <circle cx="530" cy="26" r="3" fill="#16a34a"/>
-            <!-- callout on Mar Cl2 -->
-            <line x1="530" y1="95" x2="530" y2="115" stroke="#1b6a8a" stroke-width="1" stroke-dasharray="2,2"/>
-            <text x="530" y="113" text-anchor="middle" font-family="Inter" font-size="9" fill="#1b6a8a" font-weight="700">30%</text>
+            <!-- TDS forecast (dashed, flat) -->
+            <polyline points="530,26 620,27 700,27" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="5,3" stroke-opacity="0.7"/>
+
+            <!-- Mar Cl2 30% callout -->
+            <text x="510" y="92" text-anchor="end" font-family="Inter" font-size="9" fill="#1b6a8a" font-weight="700">30% today</text>
           </svg>
-          <div style="font-size:10px;color:var(--text-mid);margin-top:8px;line-height:1.55;padding-top:8px;border-top:1px solid var(--border);">
-            <strong style="color:var(--navy);">Pattern worth flagging:</strong> Cl₂ residual margin has declined steadily since November — from 80% headroom to 30%. BOD₅, TSS, and TDS all remain stable at 65–80% headroom. Recommend chlorinator feed-rate inspection before April readings.
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:8px;">
+            <div class="trend-chart-legend" style="margin:0;">
+              <div class="trend-legend-item dw-only"><span class="trend-legend-dot" style="background:var(--accent);"></span>Cl₂ (DW)</div>
+              <div class="trend-legend-item ww-only"><span class="trend-legend-dot" style="background:#7c3aed;"></span>BOD₅ (WW)</div>
+              <div class="trend-legend-item ww-only"><span class="trend-legend-dot" style="background:var(--yellow);"></span>TSS (WW)</div>
+              <div class="trend-legend-item dw-only"><span class="trend-legend-dot" style="background:var(--green);"></span>TDS (DW)</div>
+            </div>
+            <div class="forecast-confidence">
+              <span>━ Actual</span>
+              <span style="letter-spacing:1px;">┄ ┄ Forecast</span>
+              <span>▒ 80% confidence band</span>
+            </div>
+          </div>
+          <div class="forecast-callout">
+            <span class="forecast-callout-icon">⚠</span>
+            <div>
+              <strong>Predicted permit violation:</strong> Cl₂ residual margin is projected to cross the 0.2 mg/L permit limit on or about <strong>Apr 19–24, 2026</strong> (80% confidence). Margin has dropped from 80% headroom in Oct to 30% today — a steady 12%/month decline. BOD₅, TSS, and TDS forecasts remain stable at 65–80% headroom. <strong>Recommended:</strong> chlorinator feed-pump inspection within the next 7 days to prevent violation before the April reading window.
+            </div>
           </div>
         </div>
 
@@ -2086,15 +2413,30 @@ body.mode-dw-active .ww-only{display:none !important;}
           </div>
         </div>
 
+        <!-- v13 SCADA-driven exception entry banner -->
+        <div class="dl-savings-banner">
+          <span style="font-size:18px;">⚡</span>
+          <div style="flex:1;">
+            <strong>SCADA auto-fill saved Bobby ~38 min today.</strong> 14 of 18 readings pulled automatically · 4 manual entries needed · 1 out-of-range flag for review.
+          </div>
+          <button class="btn-tiny" onclick="alert('SCADA tag mapping (mockup)');">Manage tags</button>
+        </div>
+
         <!-- Drinking water turbidity + Cl2 -->
         <div class="dl-section dw-only">
           <div class="dl-section-head">
             <div class="dl-section-icon">💧</div>
             <div>
               <div class="dl-section-title">Drinking water — 4-hour blocks</div>
-              <div class="dl-section-sub">CFE turbidity + Cl₂ residual entering distribution · 6 blocks per day</div>
+              <div class="dl-section-sub">CFE turbidity + Cl₂ residual entering distribution · SCADA-tagged where available</div>
             </div>
-            <div class="dl-section-status"><span class="tag tag-ok">5 / 6 complete</span></div>
+            <div class="dl-section-status"><span class="tag tag-ok">5 / 6 complete · 4 from SCADA</span></div>
+          </div>
+          <div class="dl-source-legend">
+            <span class="dl-source-legend-item"><span class="dl-source-legend-swatch live"></span>Live SCADA</span>
+            <span class="dl-source-legend-item"><span class="dl-source-legend-swatch manual"></span>Manual entry</span>
+            <span class="dl-source-legend-item"><span class="dl-source-legend-swatch override"></span>Operator override</span>
+            <span class="dl-source-legend-item"><span class="dl-source-legend-swatch flagged"></span>Out-of-range · review</span>
           </div>
           <div class="dl-section-body">
             <table class="dl-grid">
@@ -2111,27 +2453,31 @@ body.mode-dw-active .ww-only{display:none !important;}
               </thead>
               <tbody>
                 <tr>
-                  <td>CFE Turbidity <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);font-weight:400;">(NTU · ≤ 1)</span></td>
-                  <td><input class="dl-input filled" value="0.32"></td>
-                  <td><input class="dl-input filled" value="0.28"></td>
-                  <td><input class="dl-input filled" value="0.31"></td>
-                  <td><input class="dl-input filled" value="0.41"></td>
-                  <td><input class="dl-input filled" value="0.38"></td>
-                  <td><input class="dl-input" placeholder="—"></td>
+                  <td>CFE Turbidity <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);font-weight:400;">(NTU · ≤ 1)<br>📡 SCADA tag TURB-CFE-01</span></td>
+                  <td><div class="dl-cell-live">0.32<button class="dl-cell-live-override" title="Override SCADA reading">✎</button></div></td>
+                  <td><div class="dl-cell-live">0.28<button class="dl-cell-live-override" title="Override SCADA reading">✎</button></div></td>
+                  <td><div class="dl-cell-live">0.31<button class="dl-cell-live-override" title="Override SCADA reading">✎</button></div></td>
+                  <td><div class="dl-cell-live">0.41<button class="dl-cell-live-override" title="Override SCADA reading">✎</button></div></td>
+                  <td><div class="dl-cell-live">0.38<button class="dl-cell-live-override" title="Override SCADA reading">✎</button></div></td>
+                  <td><input class="dl-input" placeholder="awaiting sync"></td>
                 </tr>
                 <tr>
-                  <td>Cl₂ residual <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);font-weight:400;">(mg/L · ≥ 0.2)</span></td>
+                  <td>Cl₂ residual <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);font-weight:400;">(mg/L · ≥ 0.2)<br>✋ Manual (DPD kit · no tag)</span></td>
                   <td><input class="dl-input filled" value="0.84"></td>
-                  <td><input class="dl-input warn" value="0.82"></td>
+                  <td>
+                    <div class="dl-cell-flagged" title="SCADA read 0.04 — outside expected range. Manual entry required.">0.04 → mnl
+                    <span class="dl-cell-flagged-tag">probe fouled</span>
+                    </div>
+                  </td>
                   <td><input class="dl-input filled" value="0.86"></td>
                   <td><input class="dl-input filled" value="0.91"></td>
                   <td><input class="dl-input filled" value="0.88"></td>
                   <td><input class="dl-input" placeholder="—"></td>
                 </tr>
                 <tr>
-                  <td>Operator initials</td>
+                  <td>Operator initials <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);font-weight:400;">(audit trail)</span></td>
                   <td><input class="dl-input-c dl-input filled" value="BJ"></td>
-                  <td><input class="dl-input-c dl-input filled" value="BJ"></td>
+                  <td><input class="dl-input-c dl-input filled" value="BJ*"></td>
                   <td><input class="dl-input-c dl-input filled" value="BJ"></td>
                   <td><input class="dl-input-c dl-input filled" value="BJ"></td>
                   <td><input class="dl-input-c dl-input filled" value="BJ"></td>
@@ -2139,6 +2485,9 @@ body.mode-dw-active .ww-only{display:none !important;}
                 </tr>
               </tbody>
             </table>
+            <div style="font-size:10px;color:var(--text-mid);padding:8px 14px;background:var(--bg);border-top:1px solid var(--border);line-height:1.5;">
+              <strong style="color:var(--text);">BJ*</strong> on 04:00–08:00 indicates a manual override of an out-of-range SCADA reading. Reason recorded in audit trail: <em>"probe fouled, scheduled cleaning 11:30 AM."</em> All overrides require a written reason for the inspector.
+            </div>
             <div class="dl-summary-row">
               <div class="dl-summary">
                 <div class="dl-summary-label">Day high turbidity</div>
@@ -2166,31 +2515,35 @@ body.mode-dw-active .ww-only{display:none !important;}
             <div class="dl-section-icon">🌊</div>
             <div>
               <div class="dl-section-title">Wastewater — lagoon &amp; effluent</div>
-              <div class="dl-section-sub">Bench readings · effluent grab samples · SCADA pulls flow automatically</div>
+              <div class="dl-section-sub">Bench readings (manual) · SCADA pulls flow + DO automatically</div>
             </div>
-            <div class="dl-section-status"><span class="tag tag-ok">Complete</span></div>
+            <div class="dl-section-status"><span class="tag tag-ok">Complete · 2 from SCADA</span></div>
+          </div>
+          <div class="dl-source-legend">
+            <span class="dl-source-legend-item"><span class="dl-source-legend-swatch live"></span>Live SCADA (read-only · click ✎ to override)</span>
+            <span class="dl-source-legend-item"><span class="dl-source-legend-swatch manual"></span>Manual bench entry</span>
           </div>
           <div class="dl-section-body">
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
               <div>
-                <div class="dl-summary-label">DO (effluent)</div>
-                <input class="dl-input filled" value="6.8" style="width:100%;margin-top:4px;">
-                <div style="font-size:10px;color:var(--text-dim);margin-top:3px;font-family:'DM Mono',monospace;">mg/L · ≥ 6.0</div>
+                <div class="dl-summary-label">DO (effluent) <span style="font-weight:400;color:var(--text-dim);">· 📡 SCADA</span></div>
+                <div class="dl-cell-live" style="width:100%;margin-top:4px;">6.8<button class="dl-cell-live-override">✎</button></div>
+                <div style="font-size:10px;color:var(--text-dim);margin-top:3px;font-family:'DM Mono',monospace;">mg/L · ≥ 6.0 · live 11:42</div>
               </div>
               <div>
-                <div class="dl-summary-label">pH (effluent)</div>
+                <div class="dl-summary-label">pH (effluent) <span style="font-weight:400;color:var(--text-dim);">· ✋ manual</span></div>
                 <input class="dl-input filled" value="7.6" style="width:100%;margin-top:4px;">
-                <div style="font-size:10px;color:var(--text-dim);margin-top:3px;font-family:'DM Mono',monospace;">SU · 6.5 – 9.0</div>
+                <div style="font-size:10px;color:var(--text-dim);margin-top:3px;font-family:'DM Mono',monospace;">SU · 6.5 – 9.0 · no tag</div>
               </div>
               <div>
-                <div class="dl-summary-label">Temperature</div>
+                <div class="dl-summary-label">Temperature <span style="font-weight:400;color:var(--text-dim);">· ✋ manual</span></div>
                 <input class="dl-input filled" value="11.2" style="width:100%;margin-top:4px;">
                 <div style="font-size:10px;color:var(--text-dim);margin-top:3px;font-family:'DM Mono',monospace;">°C · report only</div>
               </div>
               <div>
-                <div class="dl-summary-label">Flow (SCADA)</div>
-                <div class="dl-input filled" style="width:100%;margin-top:4px;background:var(--green-bg);color:var(--green);font-weight:700;padding:5px 6px;font-family:'DM Mono',monospace;font-size:11px;text-align:center;">0.087 auto</div>
-                <div style="font-size:10px;color:var(--text-dim);margin-top:3px;font-family:'DM Mono',monospace;">MGD · pulled 11:42</div>
+                <div class="dl-summary-label">Flow (effluent) <span style="font-weight:400;color:var(--text-dim);">· 📡 SCADA</span></div>
+                <div class="dl-cell-live" style="width:100%;margin-top:4px;">0.087<button class="dl-cell-live-override">✎</button></div>
+                <div style="font-size:10px;color:var(--text-dim);margin-top:3px;font-family:'DM Mono',monospace;">MGD · live 11:42 · tag FE-01</div>
               </div>
             </div>
           </div>
@@ -2976,12 +3329,488 @@ function setMode(mode) {
   }
 }
 
+/* ───────────────────────────────────────────────────────────────────────────
+   v13 — ROLE VIEW TOGGLE (Operator / Manager)
+   Adds role-op or role-mgr class to <body>. CSS hides .manager-only when
+   role-op is active and .operator-only when role-mgr is active. Default
+   landing emphasis differs per role.
+   ─────────────────────────────────────────────────────────────────────────── */
+function setRole(role) {
+  document.body.classList.remove('role-op', 'role-mgr');
+  document.body.classList.add('role-' + role);
+  document.querySelectorAll('.role-btn').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-role') === role);
+  });
+  // Swap signed-in user display to reflect a plausible operator vs manager
+  const avatar = document.getElementById('sbAvatar');
+  const uname  = document.getElementById('sbUname');
+  const urole  = document.getElementById('sbUrole');
+  if (role === 'op') {
+    avatar.textContent = 'BJ';
+    uname.textContent  = 'Bobby Jensen';
+    urole.textContent  = 'Lead Operator · signed in';
+  } else {
+    avatar.textContent = 'KE';
+    uname.textContent  = 'Katrina Engelsted';
+    urole.textContent  = 'Public Works · signed in';
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   v13 — OFFLINE SYNC INDICATOR (mockup state cycler)
+   Three states: synced / offline / stale. In production, this would be
+   driven by the actual sync queue length and last-sync timestamp.
+   ─────────────────────────────────────────────────────────────────────────── */
+const SYNC_STATES = [
+  { cls: 'synced',  label: 'Synced',           detail: '· 0:02 ago',          count: ''         },
+  { cls: 'offline', label: 'Working offline',  detail: '· last sync 2h ago',  count: '4 queued' },
+  { cls: 'stale',   label: 'Offline 6h+',      detail: '· check connection',  count: '12 queued'}
+];
+let syncIdx = 1;
+function cycleSyncState() {
+  syncIdx = (syncIdx + 1) % SYNC_STATES.length;
+  applySyncState();
+}
+function applySyncState() {
+  const s = SYNC_STATES[syncIdx];
+  const chip = document.getElementById('topbarSync');
+  chip.className = 'topbar-sync ' + s.cls;
+  document.getElementById('topbarSyncLabel').textContent = s.label;
+  document.getElementById('topbarSyncDetail').textContent = s.detail;
+  const countEl = document.getElementById('topbarSyncCount');
+  countEl.textContent = s.count;
+  countEl.style.display = s.count ? '' : 'none';
+  // mirror in sidebar
+  const sbLive = document.getElementById('sbLive');
+  if (s.cls === 'synced') {
+    sbLive.className = 'sb-live';
+    sbLive.textContent = 'Live · last pull just now';
+  } else if (s.cls === 'offline') {
+    sbLive.className = 'sb-live offline';
+    sbLive.textContent = 'Working offline · 4 queued · last sync 2h ago';
+  } else {
+    sbLive.className = 'sb-live stale';
+    sbLive.textContent = 'Offline 6h+ · 12 queued · check connection';
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   v13 — OPERATOR FEEDBACK CAPTURE
+   8 questions + 3 identifier fields. Persists to localStorage so a single
+   device can collect responses from multiple operators across a day of
+   reviews, then exports to CSV for the Upstream product team.
+
+   Edit the FB_QUESTIONS array below to swap any question — the HTML
+   form renders from it on demand.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ─── FORMSPREE ENDPOINT ──────────────────────────────────────────────
+   Submissions POST here AND are stored locally as a backup. If POST
+   fails (offline / network error), the record stays queued in
+   localStorage and is retried automatically on next page load.
+   To use a different Formspree form, just replace the URL below.
+   ─────────────────────────────────────────────────────────────────── */
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mbdbqprq';
+
+const FB_QUESTIONS = [
+  {
+    id: 'q1_offline',
+    prompt: 'How often do you work somewhere with poor or no internet?',
+    why: "Tells us how aggressively we need to build offline-first vs. nice-to-have.",
+    type: 'choice',
+    options: ['Every day', 'A few times a week', 'A few times a month', 'Rarely / never']
+  },
+  {
+    id: 'q2_reporting_hours',
+    prompt: 'Roughly how many hours per month do you spend on the MOR (and DMR if you have one)?',
+    why: "Validates the ROI of automating MOR/DMR prep — and sizes the time-saved promise.",
+    type: 'number',
+    placeholder: 'e.g., 12'
+  },
+  {
+    id: 'q3_mor_workflow',
+    prompt: 'How do you fill out your monthly MOR today?',
+    why: "We want to understand the actual Colorado MOR workflow — paper template, CDPHE portal, Excel, or something else — so we know what Upstream has to replace or hook into.",
+    type: 'choice',
+    options: [
+      'Paper template downloaded from CDPHE',
+      'Excel or Word template our system built',
+      'CDPHE online portal',
+      'A spreadsheet shared with other systems',
+      'Other / mix of the above'
+    ]
+  },
+  {
+    id: 'q4_mor_hardest',
+    prompt: 'What part of preparing the MOR each month takes you the most time?',
+    why: "Pinpoints where Upstream's auto-fill creates real value vs. where it would be cosmetic.",
+    type: 'choice',
+    options: [
+      'Gathering daily readings into one place',
+      'Calculating monthly averages, totals, or % compliance',
+      'Filling out the form fields by hand',
+      'Catching missing data or out-of-range readings',
+      'Submitting to / signing off with CDPHE',
+      'Other'
+    ]
+  },
+  {
+    id: 'q5_mor_format_need',
+    prompt: 'If software auto-filled most of your MOR for you, does the output need to look exactly like the CDPHE template?',
+    why: "Critical for build scope — recreating the exact template is much heavier work than producing a CDPHE-acceptable equivalent.",
+    type: 'choice',
+    options: [
+      'Yes — has to match the CDPHE template exactly',
+      'No — any format that contains the right data is fine',
+      'Not sure — depends on the inspector / reviewer'
+    ]
+  },
+  {
+    id: 'q6_predict_priority',
+    prompt: 'If software could predict ONE thing in advance, which would matter most to you?',
+    why: "Tells us which trend to invest machine-learning effort in first. Pick the single biggest payoff.",
+    type: 'choice',
+    options: [
+      'Chlorine residual decline (DW)',
+      'Turbidity excursions from source water (DW)',
+      'DBP exceedances (TTHM / HAA5)',
+      'Equipment failure (pumps, chlorinators, blowers)',
+      'Lab sample due dates I might miss',
+      'Compliance / reporting deadlines',
+      'None of these would change how I work'
+    ]
+  },
+  {
+    id: 'q7_pain',
+    prompt: "What's the ONE thing about compliance reporting that takes the most time or stress today?",
+    why: "Open-ended catch — tells us what we might have missed in the questions above.",
+    type: 'text',
+    placeholder: 'e.g., chasing down lab results from the contract lab, deciphering NODI codes, training a new operator on the MOR...'
+  }
+];
+
+const FB_STORE_KEY = 'upstream.feedback.v13';
+const FB_BANNER_KEY = 'upstream.feedback.bannerDismissed';
+
+let fbCurrentAnswers = {};
+
+function fbLoadResponses() {
+  try { return JSON.parse(localStorage.getItem(FB_STORE_KEY) || '[]'); }
+  catch (e) { return []; }
+}
+
+function fbSaveResponse(record) {
+  const all = fbLoadResponses();
+  all.push(record);
+  localStorage.setItem(FB_STORE_KEY, JSON.stringify(all));
+}
+
+function fbMarkSynced(recordId) {
+  const all = fbLoadResponses();
+  const updated = all.map(r => r.id === recordId ? { ...r, sentToFormspree: true } : r);
+  localStorage.setItem(FB_STORE_KEY, JSON.stringify(updated));
+}
+
+/* Build a Formspree-friendly payload: flat keys, readable subject,
+   plus a single "summary" field with the full Q&A for easy email reading. */
+function fbBuildPayload(record) {
+  const subject = `Upstream feedback — ${record.initials || 'anonymous'}${record.role ? ' ('+record.role+')' : ''}`;
+  const summary = FB_QUESTIONS.map((q, i) =>
+    `Q${i+1}. ${q.prompt}\nA: ${record.answers[q.id] || '(skipped)'}`
+  ).join('\n\n');
+  const payload = {
+    _subject:    subject,
+    submitted_at: record.submittedAt,
+    initials:    record.initials || '',
+    role:        record.role || '',
+    years:       record.years || '',
+    summary:     summary
+  };
+  FB_QUESTIONS.forEach((q, i) => {
+    payload[`Q${i+1}_${q.id}`] = record.answers[q.id] || '';
+  });
+  return payload;
+}
+
+async function fbPostToFormspree(record) {
+  if (!FORMSPREE_ENDPOINT) return { ok: false, reason: 'no-endpoint' };
+  try {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(fbBuildPayload(record))
+    });
+    return { ok: res.ok, status: res.status };
+  } catch (e) {
+    return { ok: false, reason: 'network', error: String(e) };
+  }
+}
+
+/* On page load (or visibility change), replay any local records that
+   weren't successfully sent to Formspree on first submit. */
+async function fbReplayUnsynced() {
+  if (!FORMSPREE_ENDPOINT) return;
+  const all = fbLoadResponses();
+  const unsynced = all.filter(r => !r.sentToFormspree);
+  for (const r of unsynced) {
+    const result = await fbPostToFormspree(r);
+    if (result.ok) fbMarkSynced(r.id);
+  }
+}
+
+function fbUpdateCount() {
+  const n = fbLoadResponses().length;
+  const el = document.getElementById('fbFabCount');
+  if (el) el.textContent = n;
+  if (el) el.style.display = n > 0 ? '' : 'none';
+}
+
+function dismissBanner() {
+  localStorage.setItem(FB_BANNER_KEY, '1');
+  document.getElementById('fbBanner').classList.add('hidden');
+}
+
+function openFeedback() {
+  fbCurrentAnswers = {};
+  fbRenderForm();
+  document.getElementById('fbOverlay').classList.add('open');
+  document.getElementById('fbModalBody').scrollTop = 0;
+}
+
+function closeFeedback() {
+  document.getElementById('fbOverlay').classList.remove('open');
+}
+
+function fbRenderForm() {
+  const body = document.getElementById('fbModalBody');
+  body.innerHTML = `
+    <div class="fb-section">
+      <div class="fb-section-title">About you (optional)</div>
+      <div class="fb-id-grid">
+        <div class="fb-id-field">
+          <label for="fbInitials">Your initials</label>
+          <input id="fbInitials" type="text" maxlength="4" placeholder="e.g., BJ">
+        </div>
+        <div class="fb-id-field">
+          <label for="fbRole">Role</label>
+          <select id="fbRole">
+            <option value="">—</option>
+            <option value="operator">Operator</option>
+            <option value="lead-operator">Lead operator</option>
+            <option value="manager">Manager / Public Works</option>
+            <option value="inspector">Inspector / 3rd party</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="fb-id-field">
+          <label for="fbYears">Years in role</label>
+          <select id="fbYears">
+            <option value="">—</option>
+            <option value="<1">Less than 1</option>
+            <option value="1-5">1 to 5</option>
+            <option value="5-15">5 to 15</option>
+            <option value="15+">15+</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="fb-section">
+      <div class="fb-section-title">7 questions to help us build the right thing</div>
+      ${FB_QUESTIONS.map((q, i) => fbRenderQuestion(q, i + 1)).join('')}
+    </div>
+  `;
+  // Update footer to default
+  document.getElementById('fbFoot').innerHTML = `
+    <div class="fb-progress" id="fbProgress"><strong>0</strong> of ${FB_QUESTIONS.length} answered</div>
+    <div class="fb-actions">
+      <button class="fb-btn-secondary" onclick="closeFeedback()">Cancel</button>
+      <button class="fb-btn-primary" onclick="fbSubmit()" id="fbSubmitBtn">Submit feedback</button>
+    </div>
+  `;
+  fbAttachOptionHandlers();
+  fbUpdateProgress();
+}
+
+function fbRenderQuestion(q, num) {
+  let body = '';
+  if (q.type === 'choice') {
+    body = `<div class="fb-q-options" data-qid="${q.id}">
+      ${q.options.map(o => `<button type="button" class="fb-q-option" data-value="${o.replace(/"/g,'&quot;')}">${o}</button>`).join('')}
+    </div>`;
+  } else if (q.type === 'number') {
+    body = `<input type="number" min="0" step="1" class="fb-q-number" data-qid="${q.id}" placeholder="${q.placeholder || ''}" oninput="fbSetAnswer('${q.id}', this.value); fbUpdateProgress();">`;
+  } else if (q.type === 'text') {
+    body = `<textarea class="fb-q-textarea" data-qid="${q.id}" placeholder="${q.placeholder || ''}" oninput="fbSetAnswer('${q.id}', this.value); fbUpdateProgress();"></textarea>`;
+  }
+  return `
+    <div class="fb-q">
+      <div class="fb-q-prompt"><span class="fb-q-num">${num}</span><span class="fb-q-prompt-text">${q.prompt}</span></div>
+      <div class="fb-q-why">${q.why}</div>
+      ${body}
+    </div>
+  `;
+}
+
+function fbAttachOptionHandlers() {
+  document.querySelectorAll('.fb-q-options').forEach(group => {
+    const qid = group.getAttribute('data-qid');
+    group.querySelectorAll('.fb-q-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.fb-q-option').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        fbSetAnswer(qid, btn.getAttribute('data-value'));
+        fbUpdateProgress();
+      });
+    });
+  });
+}
+
+function fbSetAnswer(qid, value) {
+  if (value === '' || value === null || value === undefined) {
+    delete fbCurrentAnswers[qid];
+  } else {
+    fbCurrentAnswers[qid] = value;
+  }
+}
+
+function fbUpdateProgress() {
+  const n = Object.keys(fbCurrentAnswers).length;
+  const el = document.getElementById('fbProgress');
+  if (el) el.innerHTML = `<strong>${n}</strong> of ${FB_QUESTIONS.length} answered`;
+}
+
+async function fbSubmit() {
+  const initials = (document.getElementById('fbInitials').value || '').trim();
+  const role = document.getElementById('fbRole').value;
+  const years = document.getElementById('fbYears').value;
+  const record = {
+    id: 'fb_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+    submittedAt: new Date().toISOString(),
+    initials, role, years,
+    answers: { ...fbCurrentAnswers },
+    sentToFormspree: false
+  };
+  // 1) Save local copy immediately (offline-safe, never lost)
+  fbSaveResponse(record);
+  fbUpdateCount();
+  fbShowThanks(record);
+  // 2) Fire-and-forget POST to Formspree; mark synced on success.
+  //    If offline, the record stays queued and is retried on page reload.
+  const result = await fbPostToFormspree(record);
+  if (result.ok) fbMarkSynced(record.id);
+}
+
+function fbShowThanks(record) {
+  const total = fbLoadResponses().length;
+  const answered = Object.keys(record.answers).length;
+  document.getElementById('fbModalBody').innerHTML = `
+    <div class="fb-thanks">
+      <div class="fb-thanks-icon">✓</div>
+      <div class="fb-thanks-title">Thanks — saved to this device.</div>
+      <div class="fb-thanks-sub">
+        Your answers are stored locally. Town of Alma can export all responses to share with the Upstream team — no data leaves this device until you choose to send it.
+      </div>
+      <div class="fb-thanks-stats">
+        <span><strong>${answered}</strong> of ${FB_QUESTIONS.length} answered</span>
+        <span><strong>${total}</strong> response${total === 1 ? '' : 's'} on this device</span>
+      </div>
+      <div class="fb-thanks-actions">
+        <button class="fb-btn-secondary" onclick="openFeedback()">+ Add another response</button>
+        <button class="fb-btn-primary" onclick="fbExportCsv()">⬇ Export all responses (CSV)</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('fbFoot').innerHTML = `
+    <div class="fb-progress">All responses stay on this device until you export.</div>
+    <div class="fb-actions">
+      <button class="fb-btn-secondary" onclick="closeFeedback()">Close</button>
+    </div>
+  `;
+}
+
+function fbExportCsv() {
+  const responses = fbLoadResponses();
+  if (!responses.length) { alert('No responses to export yet.'); return; }
+  const headers = ['submittedAt','sentToFormspree','initials','role','years', ...FB_QUESTIONS.map(q => q.id)];
+  const escape = v => {
+    const s = (v === null || v === undefined) ? '' : String(v);
+    return '"' + s.replace(/"/g, '""') + '"';
+  };
+  const rows = [headers.join(',')];
+  responses.forEach(r => {
+    const row = [
+      escape(r.submittedAt),
+      escape(r.sentToFormspree ? 'yes' : 'no'),
+      escape(r.initials || ''),
+      escape(r.role || ''),
+      escape(r.years || ''),
+      ...FB_QUESTIONS.map(q => escape(r.answers[q.id] || ''))
+    ];
+    rows.push(row.join(','));
+  });
+  const csv = rows.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `upstream_operator-feedback_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Init banner state on load
+function fbInitBanner() {
+  if (localStorage.getItem(FB_BANNER_KEY) === '1') {
+    document.getElementById('fbBanner').classList.add('hidden');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderJournal();
-  setMode('all');  // default
+  setMode('all');     // default system view
+  setRole('op');      // v13 default = Operator role
+  applySyncState();   // v13 default = offline (for demo)
+  fbInitBanner();
+  fbUpdateCount();
+  // Replay any feedback that was saved locally but never reached Formspree
+  // (e.g. operator submitted while the device was offline). Runs in background.
+  setTimeout(fbReplayUnsynced, 1500);
 });
 renderJournal();
 </script>
+
+<!-- ════════════════════════════════════════════════════════════════
+     v13 — FEEDBACK CAPTURE: FAB + MODAL
+     The FAB stays visible across all views. Modal body and footer
+     are rendered by JS so the question list can be edited in one
+     place (FB_QUESTIONS array in the script block).
+     ════════════════════════════════════════════════════════════════ -->
+<button class="fb-fab" id="fbFab" onclick="openFeedback()" title="Help shape this build — 7 questions">
+  <span class="fb-fab-icon">💬</span>
+  <span>Give feedback</span>
+  <span class="fb-fab-count" id="fbFabCount" style="display:none;">0</span>
+</button>
+
+<div class="fb-overlay" id="fbOverlay" onclick="if(event.target===this)closeFeedback();">
+  <div class="fb-modal" role="dialog" aria-modal="true" aria-labelledby="fbHeadTitle">
+    <div class="fb-head">
+      <div class="fb-head-text">
+        <div class="fb-eyebrow">💬 Operator feedback</div>
+        <div class="fb-head-title" id="fbHeadTitle">Help us build the <em>right thing</em></div>
+        <div class="fb-head-sub">7 quick questions about your MOR / compliance workflow, plus 3 optional identifiers. Your answers stay on this device — Town of Alma can export them as a CSV when ready. ~4 minutes.</div>
+      </div>
+      <button class="fb-close" onclick="closeFeedback()" aria-label="Close">×</button>
+    </div>
+    <div class="fb-body" id="fbModalBody">
+      <!-- rendered by JS -->
+    </div>
+    <div class="fb-foot" id="fbFoot">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
