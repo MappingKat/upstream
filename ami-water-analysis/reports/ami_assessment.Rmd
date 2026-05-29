@@ -145,6 +145,32 @@ if (file.exists(gt_path)) {
 }
 ```
 
+### Spatial view (GIS)
+
+Mapping flagged meters by location helps spot geographic clustering — for
+example, several leaks on one route can point to aging infrastructure in a
+specific district-metered area. Meter coordinates here are synthetic.
+
+```{r map}
+map_df <- anomalies %>%
+  mutate(status = if_else(any_anomaly, primary_anomaly, "normal"),
+         sz = if_else(primary_anomaly == "leak", pmax(est_wasted_gallons, 1), 1))
+ggplot() +
+  geom_point(data = filter(map_df, !any_anomaly),
+             aes(longitude, latitude), color = "grey75", size = 1.6, alpha = 0.7) +
+  geom_point(data = filter(map_df, any_anomaly),
+             aes(longitude, latitude, color = status, size = sz)) +
+  scale_color_manual(values = pal, name = "Anomaly") +
+  scale_size_continuous(range = c(2, 8), guide = "none") +
+  coord_quickmap() +
+  labs(x = "Longitude", y = "Latitude",
+       title = "Service-area map of flagged meters",
+       subtitle = "Grey = normal; colored = anomalies (leaks sized by est. waste)")
+```
+
+> *Tip:* with the `leaflet` package installed, swap this static map for an
+> interactive, zoomable web map — the dashboard includes the code.
+
 ### Highest-priority leaks
 
 Estimated wasted volume helps prioritize field crews and customer outreach.

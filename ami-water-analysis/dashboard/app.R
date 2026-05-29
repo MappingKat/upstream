@@ -101,6 +101,12 @@ ui <- fluidPage(
             column(6, plotOutput("pattern_plot", height = "300px"))),
           hr(),
           DTOutput("seg_table")),
+        tabPanel("Map",
+          br(),
+          helpText("Service-area map of meters. Grey = normal; colored points",
+                   "are flagged anomalies (leaks sized by estimated waste).",
+                   "Filters in the sidebar apply."),
+          plotOutput("map_plot", height = "520px")),
         tabPanel("Non-revenue water",
           br(),
           plotOutput("nrw_plot", height = "320px"),
@@ -209,6 +215,31 @@ server <- function(input, output, session) {
                 summer_ratio = round(summer_ratio, 2)) %>%
       datatable(rownames = FALSE, options = list(pageLength = 8))
   })
+
+  output$map_plot <- renderPlot({
+    md <- f_anomalies() %>%
+      mutate(status = if_else(any_anomaly, primary_anomaly, "normal"),
+             sz = if_else(primary_anomaly == "leak",
+                          pmax(est_wasted_gallons, 1), 1))
+    ggplot() +
+      geom_point(data = filter(md, !any_anomaly),
+                 aes(longitude, latitude), color = "grey75", size = 2, alpha = 0.7) +
+      geom_point(data = filter(md, any_anomaly),
+                 aes(longitude, latitude, color = status, size = sz)) +
+      scale_color_manual(values = pal, name = "Anomaly") +
+      scale_size_continuous(range = c(2.5, 9), guide = "none") +
+      coord_quickmap() +
+      labs(x = "Longitude", y = "Latitude", title = "Flagged meters by location")
+  })
+  # Interactive upgrade: with the `leaflet` package installed, replace the tab's
+  # plotOutput("map_plot") with leafletOutput("map_leaflet") and use:
+  #   output$map_leaflet <- leaflet::renderLeaflet({
+  #     md <- f_anomalies()
+  #     leaflet::leaflet(md) |> leaflet::addTiles() |>
+  #       leaflet::addCircleMarkers(~longitude, ~latitude,
+  #         color = ~ifelse(any_anomaly, "red", "steelblue"),
+  #         radius = 5, label = ~paste(meter_id, primary_anomaly))
+  #   })
 
   output$nrw_plot <- renderPlot({
     if (is.null(nrw)) return(NULL)

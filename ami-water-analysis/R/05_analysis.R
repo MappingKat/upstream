@@ -129,4 +129,27 @@ p_anom <- anomalies %>%
   labs(title = "Flagged meters by anomaly type", x = NULL, y = "Meters")
 ggsave("output/fig_anomalies.png", p_anom, width = 7, height = 4, dpi = 120)
 
+# 5d. Spatial map of flagged meters (GIS view)
+# Plots every service connection by location; anomalies are highlighted and
+# sized by estimated wasted volume so field crews can see clustering at a glance.
+map_df <- anomalies %>%
+  mutate(
+    status = if_else(any_anomaly, primary_anomaly, "normal"),
+    sz = if_else(primary_anomaly == "leak", pmax(est_wasted_gallons, 1), 1)
+  )
+p_map <- ggplot() +
+  geom_point(data = filter(map_df, !any_anomaly),
+             aes(longitude, latitude), color = "grey75", size = 1.6, alpha = 0.7) +
+  geom_point(data = filter(map_df, any_anomaly),
+             aes(longitude, latitude, color = status, size = sz)) +
+  scale_color_manual(values = c(leak = "#d7301f", continuous = "#fc8d59",
+                                stuck = "#7a0177", meter_error = "#000000",
+                                spike = "#fdae61"), name = "Anomaly") +
+  scale_size_continuous(range = c(2, 8), guide = "none") +
+  coord_quickmap() +
+  labs(title = "Service-area map: flagged meters",
+       subtitle = "Grey = normal; colored points = anomalies (leaks sized by est. waste)",
+       x = "Longitude", y = "Latitude")
+ggsave("output/fig_meter_map.png", p_map, width = 8, height = 6, dpi = 120)
+
 cat("\nDone. Result tables and figures written to output/.\n")

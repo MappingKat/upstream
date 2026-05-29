@@ -7,10 +7,13 @@ water-use trends, automated anomaly detection (leaks, continuous use, meter
 errors), customer segmentation, and non-revenue water (NRW) analysis — delivered
 as reusable scripts, a knitted report, and an interactive dashboard.
 
-> **Portfolio note.** This was built as a work sample for a Water Resources
+> **Portfolio note.** Built May 2026 as a work sample for a Water Resources
 > Analyst role. It runs on a realistic **synthetic** AMI dataset (no client data
 > is exposed) and is fully reproducible. The *same* code reads from a live
 > Snowflake warehouse when credentials are configured.
+
+📊 **Live report:** once GitHub Pages is enabled (see below), the knitted
+assessment is viewable at `https://<username>.github.io/water-use-analytics/`.
 
 ---
 
@@ -28,6 +31,7 @@ It demonstrates each core responsibility of the role, mapped to concrete code:
 | **Customer classification** methods reusable across clients | `R/04_customer_classification.R` |
 | Troubleshoot **data-quality issues**, identify gaps | meter-error/stuck detectors + `sql/03` data-quality screens |
 | **Non-revenue water loss** analysis | NRW section in `R/05` & the report |
+| **GIS** — spatial view of flagged meters | map in `R/05_analysis.R`, report, and dashboard |
 
 ---
 
@@ -146,6 +150,29 @@ Requires the [Snowflake ODBC driver](https://docs.snowflake.com/en/developer-gui
 and the R `odbc` package.
 
 ---
+
+## Publishing the report with GitHub Pages
+
+The knitted report is copied to `docs/index.html` so it can be served as a web
+page — handy for linking directly in a job application.
+
+1. Push the repo to GitHub.
+2. Repo **Settings → Pages → Build and deployment**: set **Source = Deploy from
+   a branch**, **Branch = `main`**, **Folder = `/docs`**, then **Save**.
+3. After a minute the report is live at
+   `https://<username>.github.io/water-use-analytics/`.
+
+To refresh it after changing the analysis: re-knit the report and re-copy it:
+```r
+rmarkdown::render("reports/ami_assessment.Rmd")
+file.copy("reports/ami_assessment.html", "docs/index.html", overwrite = TRUE)
+```
+
+## Optional: interactive map (leaflet)
+
+The GIS view ships as a static `ggplot` map (no extra dependencies). For a
+zoomable, web-style map install `leaflet` (`install.packages("leaflet")`) and
+uncomment the `leaflet` block in `dashboard/app.R`.
 
 ## Data dictionary (synthetic)
 
