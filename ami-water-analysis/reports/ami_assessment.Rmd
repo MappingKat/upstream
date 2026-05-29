@@ -1,0 +1,235 @@
+---
+title: "AMI Program Implementation Assessment"
+subtitle: "Water-use analysis, anomaly detection, and conservation targeting"
+author: "Prepared with R + Snowflake"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float: true
+    df_print: paged
+    fig_width: 9
+    fig_height: 4.5
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::opts_knit$set(root.dir = normalizePath(".."))  # knit from project root
+```
+
+```{r load, include=FALSE}
+suppressPackageStartupMessages({
+  library(dplyr); library(tidyr); library(readr); library(lubridate)
+  library(ggplot2); library(scales)
+})
+source("R/02_snowflake_connect.R")
+source("R/03_anomaly_detection.R")
+source("R/04_customer_classification.R")
+
+reads  <- load_interval_reads(source = "auto")
+meters <- load_meters()
+theme_set(theme_minimal(base_size = 12))
+pal <- c(normal = "#2c7fb8", leak = "#d7301f", continuous = "#fc8d59",
+         stuck = "#7a0177", meter_error = "#000000", spike = "#fdae61")
+```
+
+## Executive summary
+
+This assessment demonstrates an end-to-end Advanced Metering Infrastructure
+(AMI) analysis workflow built in **R** on data managed in **Snowflake**. It
+processes hourly interval reads to (1) characterize water-use patterns,
+(2) automatically flag anomalies such as leaks and meter errors, (3) segment
+customers for targeted conservation, and (4) quantify non-revenue water (NRW).
+
+```{r summary-stats}
+n_meters <- n_distinct(reads$meter_id)
+n_reads  <- nrow(reads)
+date_rng <- range(as_date(reads$read_ts))
+total_gal <- sum(reads$consumption_gallons[reads$consumption_gallons > 0], na.rm = TRUE)
+
+knitr::kable(
+  tibble(
+    Metric = c("Meters analyzed", "Hourly interval reads",
+               "Period", "Total metered volume (gal)"),
+    Value  = c(comma(n_meters), comma(n_reads),
+               paste(date_rng, collapse = " to "), comma(round(total_gal)))
+  ),
+  caption = "Dataset at a glance"
+)
+```
+
+> **Note on data.** This report runs on a realistic *synthetic* AMI dataset so
+> it is fully reproducible without exposing client data. The identical workflow
+> reads from a live Snowflake warehouse when credentials are configured
+> (`source = "snowflake"`). See `README.md` for the data dictionary and the
+> Snowflake DDL in `sql/`.
+
+## 1. Water-use patterns
+
+### System-wide daily demand
+
+```{r daily-demand}
+reads %>%
+  mutate(read_date = as_date(read_ts)) %>%
+  group_by(read_date) %>%
+  summarise(gal = sum(consumption_gallons, na.rm = TRUE), .groups = "drop") %>%
+  ggplot(aes(read_date, gal)) +
+  geom_line(color = "#2c7fb8", linewidth = 0.7) +
+  scale_y_continuous(labels = comma) +
+  labs(x = NULL, y = "Gallons / day",
+       title = "System-wide daily metered demand",
+       subtitle = "Seasonal ramp into summer reflects outdoor/irrigation demand")
+```
+
+### Diurnal profile by customer class
+
+Different customer classes have distinct daily signatures. Residential demand is
+twin-peaked (morning and evening); commercial accounts plateau through business
+hours; irrigation concentrates in pre-dawn and evening watering windows. These
+shapes drive both demand forecasting and anomaly baselines.
+
+```{r diurnal}
+reads %>%
+  left_join(meters %>% select(meter_id, customer_class), by = "meter_id") %>%
+  mutate(hr = hour(read_ts)) %>%
+  group_by(customer_class, hr) %>%
+  summarise(gal = mean(consumption_gallons, na.rm = TRUE), .groups = "drop") %>%
+  ggplot(aes(hr, gal, color = customer_class)) +
+  geom_line(linewidth = 0.9) +
+  labs(x = "Hour of day", y = "Mean gallons / hour", color = NULL,
+       title = "Average hourly use profile by customer class")
+```
+
+## 2. Anomaly detection
+
+We run four transparent, parameterized detectors over the interval reads. Each
+is designed to be **replicable across clients** by adjusting thresholds:
+
+| Detector | Signal | Typical cause |
+|---|---|---|
+| **Leak** | Sustained step-up in overnight minimum flow (net of seasonal growth) | Underground/service-line leak, stuck fixture |
+| **Continuous use** | Meter essentially never reads zero | Running toilet, stuck valve, process load |
+| **Stuck meter** | Long run of identical/zero reads | Register failure, lost AMI comms, vacancy |
+| **Meter error** | Negative or physically impossible reads | Register rollover, AMI decode error |
+
+```{r detect}
+anomalies <- run_all_detectors(reads) %>%
+  left_join(meters, by = "meter_id")
+
+anomalies %>%
+  filter(any_anomaly) %>%
+  count(primary_anomaly, name = "meters") %>%
+  ggplot(aes(reorder(primary_anomaly, meters), meters, fill = primary_anomaly)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_manual(values = pal) +
+  coord_flip() +
+  labs(x = NULL, y = "Meters flagged", title = "Flagged meters by anomaly type")
+```
+
+### Detector validation
+
+Because the synthetic data carries known *ground-truth* anomalies, we can score
+the detectors directly — evidence the methods actually work rather than just
+producing plausible-looking output.
+
+```{r validate}
+gt_path <- "data/ground_truth_anomalies.csv"
+if (file.exists(gt_path)) {
+  ground_truth <- read_csv(gt_path, show_col_types = FALSE)
+  scores <- score_detections(anomalies, ground_truth)
+  knitr::kable(scores, digits = 2,
+               caption = "Detection performance vs. injected ground truth")
+} else {
+  cat("Ground truth not available (live Snowflake mode).")
+}
+```
+
+### Highest-priority leaks
+
+Estimated wasted volume helps prioritize field crews and customer outreach.
+
+```{r leak-table}
+anomalies %>%
+  filter(primary_anomaly == "leak") %>%
+  transmute(meter_id, customer_class, route_id,
+            median_overnight_flow_gph = round(median_night_flow, 2),
+            est_wasted_gallons = round(est_wasted_gallons)) %>%
+  arrange(desc(est_wasted_gallons)) %>%
+  head(10) %>%
+  knitr::kable(caption = "Top leak candidates by estimated wasted volume")
+```
+
+## 3. Customer segmentation
+
+Behavioural features (peakiness, overnight share, weekday/weekend ratio,
+seasonal sensitivity) classify customers independent of their billing class —
+portable across utilities. We show a transparent rule-based tiering plus an
+unsupervised k-means discovery view.
+
+```{r segments}
+features <- build_usage_features(reads)
+seg <- classify_rule_based(features) %>%
+  left_join(meters %>% select(meter_id, customer_class), by = "meter_id")
+
+seg %>%
+  count(usage_tier, usage_pattern) %>%
+  ggplot(aes(usage_tier, n, fill = usage_pattern)) +
+  geom_col() +
+  labs(x = "Usage tier", y = "Meters", fill = "Behavioural pattern",
+       title = "Customer segments by usage tier and behaviour")
+```
+
+```{r kmeans}
+km <- classify_kmeans(features, k = 4)
+knitr::kable(km$profile, caption = "K-means cluster profiles (mean feature values)")
+```
+
+## 4. Non-revenue water (NRW)
+
+NRW is the gap between water supplied into the system and water metered to
+customers — a key efficiency and loss-control metric.
+
+```{r nrw}
+supply_path <- "data/system_supply.csv"
+if (file.exists(supply_path)) {
+  supply <- read_csv(supply_path, show_col_types = FALSE)
+  daily_metered <- reads %>%
+    mutate(supply_date = as_date(read_ts)) %>%
+    group_by(supply_date) %>%
+    summarise(metered_gallons = sum(consumption_gallons, na.rm = TRUE),
+              .groups = "drop")
+  nrw <- supply %>%
+    mutate(supply_date = as_date(supply_date)) %>%
+    inner_join(daily_metered, by = "supply_date") %>%
+    mutate(nrw_percent = 100 * (supplied_gallons - metered_gallons) / supplied_gallons)
+
+  ggplot(nrw, aes(supply_date, nrw_percent)) +
+    geom_line(color = "#d7301f", linewidth = 0.6) +
+    geom_hline(yintercept = mean(nrw$nrw_percent), linetype = "dashed") +
+    labs(x = NULL, y = "Non-revenue water (%)",
+         title = "Daily non-revenue water",
+         subtitle = sprintf("Average %.1f%% over the period", mean(nrw$nrw_percent)))
+}
+```
+
+## 5. Recommendations
+
+Typical roadmap actions an analyst would draw from these results:
+
+1. **Dispatch leak investigations** to the top-ranked overnight-flow meters,
+   starting with the highest estimated wasted volume.
+2. **Customer outreach** to continuous-use and high-overnight accounts (often a
+   running toilet — a low-cost, high-impact fix).
+3. **Data-quality remediation** for meters reporting negative/stuck reads before
+   they corrupt billing and downstream analytics.
+4. **Targeted conservation** to "Very High" tier and irrigation-driven segments,
+   where per-account savings potential is largest.
+5. **Track NRW** against the dashed baseline; sustained increases warrant a
+   district-metered-area (DMA) loss audit.
+
+---
+
+*Reproduce this report:* run `R/01_generate_synthetic_ami.R` then knit this file
+(`rmarkdown::render("reports/ami_assessment.Rmd")`), or point it at Snowflake by
+configuring `config.yml` and setting `SNOWFLAKE_PASSWORD`.

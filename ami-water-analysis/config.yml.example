@@ -1,0 +1,18 @@
+# config.yml.example ---------------------------------------------------------
+# Copy this file to `config.yml` and fill in your Snowflake details.
+# `config.yml` is git-ignored so credentials never get committed.
+# The password is NOT stored here -- set the SNOWFLAKE_PASSWORD environment
+# variable instead (e.g. in ~/.Renviron or your shell profile).
+#
+# With no config.yml present, the project runs entirely on the local synthetic
+# CSVs in data/ -- no Snowflake required.
+# ---------------------------------------------------------------------------
+
+default:
+  snowflake:
+    account:   "ab12345.us-east-1"   # your Snowflake account identifier
+    user:      "WRA_ANALYST"
+    warehouse: "ANALYTICS_WH"
+    database:  "WATER"
+    schema:    "AMI"
+    role:      "ANALYST_ROLE"

@@ -1,0 +1,16 @@
+# Secrets -- never commit real Snowflake credentials
+config.yml
+.Renviron
+
+# R session / RStudio cruft
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj.user
+
+# OS files
+.DS_Store
+
+# Note: data/, output/, and reports/*.html ARE committed on purpose so the
+# project runs and the results are viewable without executing any R code.
