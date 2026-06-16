@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — Upstream AI</title>
+    <meta name="description" content="Privacy Policy for Upstream AI. How we collect, use, and protect your personal data in compliance with the Colorado Privacy Act (CPA).">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0f1a;
+            --bg-surface: #111827;
+            --bg-surface-raised: #1a2236;
+            --border: rgba(255,255,255,0.08);
+            --border-accent: rgba(56,189,248,0.25);
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-faint: #64748b;
+            --accent: #38bdf8;
+            --accent-dim: rgba(56,189,248,0.12);
+            --green: #34d399;
+            --amber: #fbbf24;
+            --serif: 'Newsreader', Georgia, serif;
+            --sans: 'Inter', -apple-system, sans-serif;
+            --max-w: 760px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 16px;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10,15,26,0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+        nav .nav-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: var(--sans);
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+        .nav-logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 1.75rem; }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: #fff; }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 10rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(56,189,248,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--border-accent);
+            border-radius: 100px;
+            padding: 0.35rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.02em;
+        }
+        .hero h1 {
+            font-family: var(--sans);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            line-height: 1.15;
+            color: #fff;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+        .hero h1 em {
+            font-family: var(--serif);
+            font-style: italic;
+            color: var(--accent);
+        }
+        .hero-sub {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 540px;
+            margin: 0 auto;
+        }
+        .effective-date {
+            margin-top: 1.25rem;
+            font-size: 0.85rem;
+            color: var(--text-faint);
+        }
+
+        /* ── TABLE OF CONTENTS ── */
+        .toc-wrapper {
+            max-width: var(--max-w);
+            margin: 0 auto 3rem;
+            padding: 0 2rem;
+        }
+        .toc {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.75rem 2rem;
+        }
+        .toc h2 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-faint);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .toc ol {
+            list-style: none;
+            counter-reset: toc-counter;
+            columns: 2;
+            column-gap: 2rem;
+        }
+        .toc li {
+            counter-increment: toc-counter;
+            margin-bottom: 0.5rem;
+            break-inside: avoid;
+        }
+        .toc li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        .toc li a::before {
+            content: counter(toc-counter, decimal-leading-zero);
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+        }
+        .toc li a:hover { color: #fff; }
+
+        /* ── CONTENT ── */
+        .content {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+        }
+
+        .section {
+            margin-bottom: 3.5rem;
+            scroll-margin-top: 5rem;
+        }
+
+        .section h2 {
+            font-family: var(--sans);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: baseline;
+            gap: 0.65rem;
+        }
+        .section h2 .num {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .section h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin: 1.75rem 0 0.5rem;
+        }
+
+        .section p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .section ul, .section ol {
+            color: var(--text-muted);
+            margin: 0 0 1rem 1.25rem;
+        }
+        .section li {
+            margin-bottom: 0.4rem;
+        }
+
+        .section a {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .section a:hover { color: #7dd3fc; }
+
+        /* ── INFO CARDS ── */
+        .info-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            margin: 1.25rem 0;
+        }
+        .info-card.accent {
+            border-color: var(--border-accent);
+            background: var(--accent-dim);
+        }
+        .info-card h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .info-card p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* ── DATA TABLE ── */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25rem 0;
+            font-size: 0.9rem;
+        }
+        .data-table th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            background: var(--bg-surface);
+            color: var(--text-faint);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+        .data-table td {
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .data-table tr:last-child td { border-bottom: none; }
+
+        /* ── RIGHTS GRID ── */
+        .rights-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.25rem 0;
+        }
+        .right-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.15rem 1.25rem;
+        }
+        .right-item .icon {
+            font-size: 1.2rem;
+            margin-bottom: 0.4rem;
+        }
+        .right-item h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.35rem;
+        }
+        .right-item p {
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: var(--text-faint);
+            margin: 0;
+        }
+
+        /* ── CONTACT BLOCK ── */
+        .contact-block {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-accent);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2.5rem 0;
+        }
+        .contact-block h3 {
+            color: #fff;
+            margin: 0 0 0.5rem;
+        }
+        .contact-block p {
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+        .contact-block .email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 2rem;
+            text-align: center;
+        }
+        footer p {
+            color: var(--text-faint);
+            font-size: 0.8rem;
+        }
+        footer a { color: var(--text-muted); text-decoration: none; }
+        footer a:hover { color: #fff; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 640px) {
+            .toc ol { columns: 1; }
+            .rights-grid { grid-template-columns: 1fr; }
+            .nav-links { gap: 1rem; }
+            .nav-links a { font-size: 0.8rem; }
+            .hero { padding-top: 7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a href="https://getupstream.ai/index.html" class="nav-logo">Upstream <span>AI</span></a>
+        <div class="nav-links">
+            <a href="https://getupstream.ai/index.html#how">How it works</a>
+            <a href="https://getupstream.ai/index.html#solve">Solutions</a>
+            <a href="https://getupstream.ai/about.html">About</a>
+            <a href="https://getupstream.ai/security.html">Security</a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+    <div class="hero-badge">📄 Legal</div>
+    <h1>Privacy <em>Policy</em></h1>
+    <p class="hero-sub">How Upstream AI collects, uses, and protects your personal data — including your rights under the Colorado Privacy Act.</p>
+    <p class="effective-date">Effective Date: March 16, 2026 &nbsp;·&nbsp; Last Updated: March 16, 2026</p>
+</header>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc-wrapper">
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ol>
+            <li><a href="#who-we-are">Who We Are</a></li>
+            <li><a href="#scope">Scope of This Policy</a></li>
+            <li><a href="#data-we-collect">Data We Collect</a></li>
+            <li><a href="#how-we-use">How We Use Your Data</a></li>
+            <li><a href="#legal-basis">Legal Basis for Processing</a></li>
+            <li><a href="#analytics">Analytics &amp; Tracking</a></li>
+            <li><a href="#cookies">Cookies &amp; Similar Technologies</a></li>
+            <li><a href="#third-parties">Third-Party Service Providers</a></li>
+            <li><a href="#data-sharing">Data Sharing &amp; Sales</a></li>
+            <li><a href="#colorado-rights">Your Rights Under the CPA</a></li>
+            <li><a href="#opt-out">Universal Opt-Out Mechanisms</a></li>
+            <li><a href="#data-security">Data Security</a></li>
+            <li><a href="#retention">Data Retention</a></li>
+            <li><a href="#children">Children's Privacy</a></li>
+            <li><a href="#changes">Changes to This Policy</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+        </ol>
+    </div>
+</div>
+
+<!-- CONTENT -->
+<main class="content">
+
+    <!-- 1 -->
+    <section class="section" id="who-we-are">
+        <h2><span class="num">01</span> Who We Are</h2>
+        <p>Upstream AI ("Upstream," "we," "us," or "our") is a Colorado-based technology company building predictive intelligence and data trust tools for small water and wastewater utilities. Our website is located at <a href="https://getupstream.ai">getupstream.ai</a>, and our principal place of business is in Glenwood Springs, Colorado.</p>
+        <p>For the purposes of the Colorado Privacy Act (CPA), C.R.S. § 6-1-1301 et seq., Upstream AI acts as a <strong>controller</strong> of the personal data we collect through our website and marketing activities.</p>
+    </section>
+
+    <!-- 2 -->
+    <section class="section" id="scope">
+        <h2><span class="num">02</span> Scope of This Policy</h2>
+        <p>This Privacy Policy applies to personal data collected through:</p>
+        <ul>
+            <li>Our website at getupstream.ai and associated subdomains</li>
+            <li>Our product-market fit survey at upstream-survey.netlify.app</li>
+            <li>Contact forms, early access requests, and email communications</li>
+            <li>Conference interactions and lead capture activities</li>
+        </ul>
+        <p>This policy does not cover operational SCADA or sensor data processed by the Upstream AI platform on behalf of utility customers. That data is governed by separate customer agreements and our <a href="https://getupstream.ai/security.html">Security page</a>.</p>
+    </section>
+
+    <!-- 3 -->
+    <section class="section" id="data-we-collect">
+        <h2><span class="num">03</span> Data We Collect</h2>
+
+        <h3>Information you provide directly</h3>
+        <table class="data-table">
+            <thead>
+                <tr><th>Category</th><th>Examples</th><th>Source</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Contact information</td>
+                    <td>Name, email, phone number</td>
+                    <td>Forms, email, conferences</td>
+                </tr>
+                <tr>
+                    <td>Professional information</td>
+                    <td>Job title/role, utility name, plant capacity</td>
+                    <td>Early access form, survey</td>
+                </tr>
+                <tr>
+                    <td>Survey responses</td>
+                    <td>Operational challenges, tool preferences, role-based feedback</td>
+                    <td>Product-market fit survey</td>
+                </tr>
+                <tr>
+                    <td>Communications</td>
+                    <td>Message content, feedback, questions</td>
+                    <td>Contact form, email</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Information collected automatically</h3>
+        <table class="data-table">
+            <thead>
+                <tr><th>Category</th><th>Examples</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Device &amp; browser data</td>
+                    <td>Browser type, operating system, screen resolution</td>
+                    <td>Site functionality &amp; analytics</td>
+                </tr>
+                <tr>
+                    <td>Usage data</td>
+                    <td>Pages visited, time on page, click interactions, referral source</td>
+                    <td>Product &amp; UX improvement</td>
+                </tr>
+                <tr>
+                    <td>Approximate location</td>
+                    <td>Country, state, city (derived from IP)</td>
+                    <td>Regional analytics</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-card">
+            <h4>What we do not collect</h4>
+            <p>We do not collect sensitive personal data as defined by the CPA (racial or ethnic origin, religious beliefs, health conditions, sexual orientation, citizenship status, genetic or biometric data). We do not collect financial information, government IDs, or precise geolocation.</p>
+        </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="section" id="how-we-use">
+        <h2><span class="num">04</span> How We Use Your Data</h2>
+        <p>We process your personal data for the following purposes:</p>
+        <ul>
+            <li><strong>Respond to your inquiries</strong> — replying to contact form submissions, early access requests, and survey participation</li>
+            <li><strong>Improve our website and product</strong> — understanding how visitors interact with our site and identifying the features and messaging that resonate with utility operators</li>
+            <li><strong>Communicate with you</strong> — sending follow-up emails about early access, pilot opportunities, or product updates you've expressed interest in</li>
+            <li><strong>Conduct product-market research</strong> — analyzing survey responses to shape our product roadmap around real operator needs</li>
+            <li><strong>Ensure security</strong> — protecting against spam, abuse, and unauthorized access to our site</li>
+        </ul>
+        <p>We do not use your personal data for automated decision-making or profiling that produces legal or similarly significant effects.</p>
+    </section>
+
+    <!-- 5 -->
+    <section class="section" id="legal-basis">
+        <h2><span class="num">05</span> Legal Basis for Processing</h2>
+        <p>Under the CPA, we process personal data based on the following lawful grounds:</p>
+        <ul>
+            <li><strong>Consent</strong> — when you voluntarily submit a form, complete our survey, or sign up for communications</li>
+            <li><strong>Legitimate interest</strong> — to improve our website, understand our audience, and develop our product, where such interests are not overridden by your data protection rights</li>
+            <li><strong>Contractual necessity</strong> — to fulfill early access or pilot program commitments</li>
+        </ul>
+    </section>
+
+    <!-- 6 -->
+    <section class="section" id="analytics">
+        <h2><span class="num">06</span> Analytics &amp; Tracking</h2>
+        <p>We use <strong>PostHog</strong> as our web and product analytics platform. PostHog helps us understand how visitors use our website so we can improve the experience for utility operators and stakeholders.</p>
+
+        <h3>What PostHog collects</h3>
+        <ul>
+            <li>Page views, click events, and session duration</li>
+            <li>Referral source (how you found our site)</li>
+            <li>Device type, browser, and screen size</li>
+            <li>Approximate geographic location (country/state level, derived from IP)</li>
+            <li>Interaction events we've defined (e.g., form submissions, CTA clicks, persona segment selections)</li>
+        </ul>
+
+        <h3>What PostHog does not collect</h3>
+        <ul>
+            <li>Keystrokes, form field contents, or passwords</li>
+            <li>Personal identifiers like your name or email (unless submitted through a form event)</li>
+            <li>Cross-site tracking or third-party advertising data</li>
+        </ul>
+
+        <div class="info-card accent">
+            <h4>Our analytics philosophy</h4>
+            <p>We chose PostHog specifically because it allows us to do web analytics and product analytics without relying on third-party advertising networks. We do not run ads, we do not sell your data, and we do not build advertising profiles. Our analytics exist solely to build a better product for small utility teams.</p>
+        </div>
+
+        <h3>How to opt out of analytics</h3>
+        <p>You can opt out of PostHog analytics tracking by:</p>
+        <ul>
+            <li>Enabling the <strong>Global Privacy Control (GPC)</strong> signal in your browser — we honor this as a universal opt-out mechanism as required by the CPA</li>
+            <li>Using a browser extension that blocks analytics scripts (e.g., uBlock Origin, Privacy Badger)</li>
+            <li>Contacting us at <a href="mailto:privacy@getupstream.ai">privacy@getupstream.ai</a> to request opt-out</li>
+        </ul>
+    </section>
+
+    <!-- 7 -->
+    <section class="section" id="cookies">
+        <h2><span class="num">07</span> Cookies &amp; Similar Technologies</h2>
+        <p>We use a minimal set of cookies and local storage mechanisms:</p>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>Cookie / Technology</th><th>Type</th><th>Purpose</th><th>Duration</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PostHog analytics</td>
+                    <td>First-party</td>
+                    <td>Anonymous session identification for usage analytics</td>
+                    <td>Session / 1 year</td>
+                </tr>
+                <tr>
+                    <td>Formspree</td>
+                    <td>Third-party</td>
+                    <td>Form submission processing and spam prevention</td>
+                    <td>Session</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>We do not use third-party advertising cookies, social media tracking pixels, or cross-site tracking technologies.</p>
+    </section>
+
+    <!-- 8 -->
+    <section class="section" id="third-parties">
+        <h2><span class="num">08</span> Third-Party Service Providers</h2>
+        <p>We use a limited number of third-party processors to operate our website and manage leads. Each is contractually obligated to handle your data in accordance with this policy.</p>
+
+        <table class="data-table">
+            <thead>
+                <tr><th>Provider</th><th>Purpose</th><th>Data Processed</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PostHog</td>
+                    <td>Web &amp; product analytics</td>
+                    <td>Usage events, device info, approximate location</td>
+                </tr>
+                <tr>
+                    <td>Formspree</td>
+                    <td>Form submission routing</td>
+                    <td>Name, email, message content</td>
+                </tr>
+                <tr>
+                    <td>Zapier</td>
+                    <td>Workflow automation (form → CRM)</td>
+                    <td>Form submission data</td>
+                </tr>
+                <tr>
+                    <td>Airtable</td>
+                    <td>Lead CRM &amp; survey response database</td>
+                    <td>Contact info, role, survey responses</td>
+                </tr>
+                <tr>
+                    <td>Netlify</td>
+                    <td>Survey page hosting</td>
+                    <td>Standard web server logs</td>
+                </tr>
+                <tr>
+                    <td>GitHub Pages</td>
+                    <td>Website hosting</td>
+                    <td>Standard web server logs</td>
+                </tr>
+                <tr>
+                    <td>Cloudflare</td>
+                    <td>CDN, DNS, and DDoS protection</td>
+                    <td>IP address, request metadata</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>We review our service providers periodically and will update this list as our stack evolves. We do not share your data with any providers for advertising or marketing purposes unrelated to our direct communications with you.</p>
+    </section>
+
+    <!-- 9 -->
+    <section class="section" id="data-sharing">
+        <h2><span class="num">09</span> Data Sharing &amp; Sales</h2>
+
+        <div class="info-card accent">
+            <h4>We do not sell your personal data</h4>
+            <p>Upstream AI does not sell, rent, lease, or trade your personal data to any third party for monetary or other valuable consideration. We never have and never will. We also do not share personal data for third-party targeted advertising purposes.</p>
+        </div>
+
+        <p>We may disclose personal data in the following limited circumstances:</p>
+        <ul>
+            <li><strong>Service providers</strong> — as described in Section 08, strictly for operating our website and managing communications</li>
+            <li><strong>Legal obligation</strong> — if required by law, subpoena, or court order</li>
+            <li><strong>Safety</strong> — to protect the rights, safety, or property of Upstream AI, our users, or the public</li>
+            <li><strong>Business transfer</strong> — in the event of a merger, acquisition, or sale of assets, with advance notice provided to affected individuals</li>
+        </ul>
+    </section>
+
+    <!-- 10 -->
+    <section class="section" id="colorado-rights">
+        <h2><span class="num">10</span> Your Rights Under the Colorado Privacy Act</h2>
+        <p>If you are a Colorado resident, the CPA grants you the following rights with respect to your personal data:</p>
+
+        <div class="rights-grid">
+            <div class="right-item">
+                <div class="icon">🔍</div>
+                <h4>Right to Know &amp; Access</h4>
+                <p>Confirm whether we are processing your personal data and access the data we hold about you.</p>
+            </div>
+            <div class="right-item">
+                <div class="icon">✏️</div>
+                <h4>Right to Correct</h4>
+                <p>Request correction of inaccurate personal data we hold about you.</p>
+            </div>
+            <div class="right-item">
+                <div class="icon">🗑️</div>
+                <h4>Right to Delete</h4>
+                <p>Request deletion of your personal data from our systems and third-party processors.</p>
+            </div>
+            <div class="right-item">
+                <div class="icon">📦</div>
+                <h4>Right to Portability</h4>
+                <p>Obtain a copy of your personal data in a commonly used, machine-readable format.</p>
+            </div>
+            <div class="right-item">
+                <div class="icon">🚫</div>
+                <h4>Right to Opt Out</h4>
+                <p>Opt out of the sale of personal data, targeted advertising, or certain profiling activities.</p>
+            </div>
+            <div class="right-item">
+                <div class="icon">⚖️</div>
+                <h4>Right to Non-Discrimination</h4>
+                <p>Exercise your rights without receiving discriminatory treatment from us.</p>
+            </div>
+        </div>
+
+        <h3>How to exercise your rights</h3>
+        <p>To submit a data rights request, contact us at <a href="mailto:privacy@getupstream.ai">privacy@getupstream.ai</a>. We will verify your identity and respond within 45 days. If we need additional time, we will notify you of the extension (up to 45 additional days) and the reason.</p>
+
+        <h3>Right to appeal</h3>
+        <p>If we decline your request, you have the right to appeal. Submit your appeal to <a href="mailto:privacy@getupstream.ai">privacy@getupstream.ai</a> with "Privacy Appeal" in the subject line. We will respond within 45 days. If your appeal is denied, you may contact the Colorado Attorney General at <a href="https://coag.gov/resources/colorado-privacy-act/">coag.gov</a>.</p>
+    </section>
+
+    <!-- 11 -->
+    <section class="section" id="opt-out">
+        <h2><span class="num">11</span> Universal Opt-Out Mechanisms</h2>
+        <p>In accordance with the CPA (C.R.S. § 6-1-1306(1)(a)(IV)), we honor the <strong>Global Privacy Control (GPC)</strong> as a valid universal opt-out mechanism. When we detect a GPC signal from your browser, we will treat it as a request to opt out of:</p>
+        <ul>
+            <li>The sale of personal data (though we do not sell data)</li>
+            <li>Processing of personal data for targeted advertising</li>
+        </ul>
+        <p>You can enable GPC in browsers such as Firefox, Brave, and DuckDuckGo, or via browser extensions like Privacy Badger. Learn more at <a href="https://globalprivacycontrol.org" target="_blank" rel="noopener">globalprivacycontrol.org</a>.</p>
+    </section>
+
+    <!-- 12 -->
+    <section class="section" id="data-security">
+        <h2><span class="num">12</span> Data Security</h2>
+        <p>We implement reasonable administrative, technical, and physical safeguards to protect your personal data, including:</p>
+        <ul>
+            <li>TLS encryption for all data in transit across our website</li>
+            <li>Access controls limiting who within our organization can view personal data</li>
+            <li>Secure, reputable third-party processors with their own security certifications</li>
+            <li>Regular review of our data handling practices</li>
+        </ul>
+        <p>For details on how we protect operational SCADA data within our product, see our <a href="https://getupstream.ai/security.html">Security page</a>.</p>
+    </section>
+
+    <!-- 13 -->
+    <section class="section" id="retention">
+        <h2><span class="num">13</span> Data Retention</h2>
+        <p>We retain personal data only as long as necessary for the purposes described in this policy:</p>
+        <ul>
+            <li><strong>Contact &amp; lead data:</strong> retained for the duration of our business relationship and up to 24 months after last contact, unless you request earlier deletion</li>
+            <li><strong>Survey responses:</strong> retained for product research purposes, anonymized after 24 months</li>
+            <li><strong>Analytics data:</strong> aggregated and anonymized in accordance with PostHog retention settings, typically within 12 months</li>
+            <li><strong>Server logs:</strong> retained by hosting providers per their standard retention policies (typically 30–90 days)</li>
+        </ul>
+        <p>You may request deletion of your data at any time by contacting <a href="mailto:privacy@getupstream.ai">privacy@getupstream.ai</a>.</p>
+    </section>
+
+    <!-- 14 -->
+    <section class="section" id="children">
+        <h2><span class="num">14</span> Children's Privacy</h2>
+        <p>Our website and services are not directed at individuals under the age of 18. We do not knowingly collect personal data from minors. If we become aware that we have inadvertently collected data from a child, we will promptly delete it. If you believe a minor has provided us with personal data, please contact us at <a href="mailto:privacy@getupstream.ai">privacy@getupstream.ai</a>.</p>
+    </section>
+
+    <!-- 15 -->
+    <section class="section" id="changes">
+        <h2><span class="num">15</span> Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, or legal requirements. When we make material changes, we will update the "Last Updated" date at the top of this page and, where appropriate, notify you via email or a prominent notice on our website.</p>
+        <p>We encourage you to review this policy periodically.</p>
+    </section>
+
+    <!-- 16 -->
+    <section class="section" id="contact">
+        <h2><span class="num">16</span> Contact Us</h2>
+        <p>If you have questions about this Privacy Policy, want to exercise your data rights, or have concerns about how we handle your personal data, please reach out:</p>
+
+        <div class="contact-block">
+            <h3>Upstream AI — Privacy</h3>
+            <p>Glenwood Springs, Colorado</p>
+            <a href="mailto:privacy@getupstream.ai" class="email-link">
+                ✉ privacy@getupstream.ai
+            </a>
+        </div>
+
+        <p>For complaints that we are unable to resolve, Colorado residents may contact the <a href="https://coag.gov/resources/colorado-privacy-act/">Colorado Attorney General's Office</a>.</p>
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Upstream AI. All rights reserved. &nbsp;·&nbsp; <a href="https://getupstream.ai/index.html">Home</a> &nbsp;·&nbsp; <a href="https://getupstream.ai/security.html">Security</a> &nbsp;·&nbsp; Glenwood Springs, Colorado</p>
+</footer>
+
+</body>
+</html>

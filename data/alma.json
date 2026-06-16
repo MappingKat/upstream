@@ -1,0 +1,1558 @@
+{
+  "meta": {
+    "pageTitle": "Upstream AI · Town of Alma Preview",
+    "accessCodes": [
+      "upstream",
+      "demo",
+      "preview"
+    ],
+    "confidentialBadge": "Town of Alma · Live Customer Data"
+  },
+  "district": {
+    "name": "Town of Alma",
+    "short": "Alma",
+    "location": "Park County, CO",
+    "pwsId": "CO0147001",
+    "cdpsId": "COG591177",
+    "phone": "719-836-2712",
+    "email": "almawater@townofalma.com",
+    "submissionPortal": "wqcdcompliance.com/login",
+    "tagline": "Compliance Intelligence"
+  },
+  "operator": {
+    "name": "Kat",
+    "fullName": "Kat White",
+    "firstName": "Kat",
+    "initials": "KW",
+    "role": "Public Works",
+    "badge": "ADMIN"
+  },
+  "today": {
+    "topbar": "Friday, April 3, 2026 · Town of Alma",
+    "dailyLogDate": "Friday, April 3, 2026 · PWS CO0147001",
+    "sidebarSync": "Last sync 7:34 AM"
+  },
+  "topbarPull": {
+    "ariaLabel": "View calendar — March MOR data ingested, 31 of 31 days complete",
+    "full": "March MOR ingested ·",
+    "count": "31/31 days"
+  },
+  "compliance": {
+    "pageSub": "Reports in progress, deadlines, and required actions",
+    "heroTitle": "Compliance status — <em>March MOR ready</em>",
+    "heroSub": "31/31 sampling days complete · All TT criteria met · Lowest Cl₂ residual 0.82 mg/L (0.02 above minimum) · Highest CFE turbidity 0.414 NTU.",
+    "heroStats": [
+      {
+        "num": "2",
+        "label": "Active"
+      },
+      {
+        "num": "31",
+        "label": "Days complete"
+      },
+      {
+        "num": "186",
+        "label": "Samples taken"
+      }
+    ],
+    "pullBannerTitle": "March 2026 MOR data ingested",
+    "pullBannerSub": "CO0147001 · Bag/Cartridge facility · 186 turbidity + 186 disinfection samples · No exceedances · MOR due Apr 10",
+    "comingUp": "Mechanical WWTP commissioning <strong style=\"color:var(--water);font-family:'DM Mono',monospace;\">Q4 2026</strong> · CDPS general permit COG591177 recertification <strong style=\"color:var(--water);font-family:'DM Mono',monospace;\">2027</strong> · Sanitary survey <strong style=\"color:var(--water);font-family:'DM Mono',monospace;\">2028</strong>"
+  },
+  "reports": [
+    {
+      "type": "Drinking Water MOR",
+      "title": "March 2026",
+      "period": "PWS CO0147001 · Facility 003 (WTP)",
+      "tagText": "Ready for Admin",
+      "tagCls": "tag-ok",
+      "progress": 100,
+      "progressColor": "var(--green)",
+      "accentColor": "var(--green)",
+      "due": "Apr 10, 2026",
+      "daysLeft": "7 days",
+      "action": "Review & submit →",
+      "openTarget": "view:dmrPrep"
+    },
+    {
+      "type": "Wastewater DMR",
+      "title": "March 2026",
+      "period": "CDPS general permit COG591177 · 3-cell lagoon · Outfall 001A",
+      "tagText": "Draft",
+      "tagCls": "tag-warn",
+      "progress": 60,
+      "progressColor": "var(--yellow)",
+      "accentColor": "var(--yellow)",
+      "due": "Apr 28, 2026",
+      "daysLeft": "25 days",
+      "action": "Continue prep →",
+      "openTarget": null
+    }
+  ],
+  "tasks": [
+    {
+      "text": "Review Cl₂ residual trend — March low was 0.82 mg/L (0.02 above minimum)",
+      "meta": "Due Mon Apr 6",
+      "done": false
+    },
+    {
+      "text": "Submit March MOR via wqcdcompliance.com/login",
+      "meta": "Due Fri Apr 10",
+      "done": false
+    },
+    {
+      "text": "March turbidity + disinfection data sheets complete (186/186 samples)",
+      "meta": "Done Apr 1",
+      "done": true
+    },
+    {
+      "text": "Lagoon BOD₅ & TSS sample pickup — Colorado Analytical",
+      "meta": "Due Tue Apr 7",
+      "done": false
+    },
+    {
+      "text": "Ammonia (NH₃-N) effluent sample — Reg 85 nutrient watch",
+      "meta": "Due Thu Apr 9",
+      "done": false
+    }
+  ],
+  "submitted": [
+    {
+      "name": "February 2026 MOR",
+      "meta": "Submitted Mar 9 · No violations"
+    },
+    {
+      "name": "February 2026 DMR",
+      "meta": "Submitted Mar 25"
+    },
+    {
+      "name": "January 2026 MOR",
+      "meta": "Submitted Feb 7"
+    }
+  ],
+  "calendar": {
+    "monthLabel": "April 2026",
+    "pullBannerTitle": "Latest pull · Friday Apr 3, 7:34 AM",
+    "pullBannerSub": "March MOR ingested · Apr DMR sampling schedule updated · 5 lab pickups this month · Cl₂ residual flagged for review (March low: 0.82 mg/L)",
+    "days": [
+      {
+        "num": "29",
+        "outside": true
+      },
+      {
+        "num": "30",
+        "outside": true
+      },
+      {
+        "num": "31",
+        "outside": true
+      },
+      {
+        "num": "1",
+        "events": [
+          {
+            "label": "Mar MOR data lock",
+            "cls": "ev-deadline",
+            "openId": "mar-data-lock"
+          }
+        ]
+      },
+      {
+        "num": "2"
+      },
+      {
+        "num": "3",
+        "today": true,
+        "events": [
+          {
+            "label": "Compliance pull ✦",
+            "cls": "ev-deadline",
+            "openId": "compliance-pull"
+          },
+          {
+            "label": "Cl₂ review",
+            "cls": "ev-lab-orange",
+            "openId": "cl2-review"
+          }
+        ]
+      },
+      {
+        "num": "4"
+      },
+      {
+        "num": "5"
+      },
+      {
+        "num": "6",
+        "events": [
+          {
+            "label": "Cl₂ trend review",
+            "cls": "ev-deadline",
+            "openId": "cl2-trend-review"
+          }
+        ]
+      },
+      {
+        "num": "7",
+        "events": [
+          {
+            "label": "BOD₅ pickup",
+            "cls": "ev-lab-orange",
+            "openId": "bod5-tss-pickup"
+          },
+          {
+            "label": "TSS",
+            "cls": "ev-lab-orange",
+            "openId": "bod5-tss-pickup"
+          }
+        ]
+      },
+      {
+        "num": "8"
+      },
+      {
+        "num": "9",
+        "events": [
+          {
+            "label": "Ammonia NH₃-N",
+            "cls": "ev-lab-yellow",
+            "openId": "ammonia-apr9"
+          }
+        ]
+      },
+      {
+        "num": "10",
+        "events": [
+          {
+            "label": "Mar MOR due",
+            "cls": "ev-deadline",
+            "openId": "mar-mor-due"
+          }
+        ]
+      },
+      {
+        "num": "11"
+      },
+      {
+        "num": "12"
+      },
+      {
+        "num": "13",
+        "events": [
+          {
+            "label": "E. coli",
+            "cls": "ev-lab-orange",
+            "openId": "ecoli-apr13"
+          }
+        ]
+      },
+      {
+        "num": "14",
+        "events": [
+          {
+            "label": "BOD₅",
+            "cls": "ev-lab-orange",
+            "openId": "bod5-apr14"
+          }
+        ]
+      },
+      {
+        "num": "15",
+        "events": [
+          {
+            "label": "Op cert CEU",
+            "cls": "ev-cert",
+            "openId": "op-cert-ceu"
+          }
+        ]
+      },
+      {
+        "num": "16"
+      },
+      {
+        "num": "17",
+        "events": [
+          {
+            "label": "TSS",
+            "cls": "ev-lab-orange",
+            "openId": "tss-apr17"
+          }
+        ]
+      },
+      {
+        "num": "18"
+      },
+      {
+        "num": "19"
+      },
+      {
+        "num": "20",
+        "events": [
+          {
+            "label": "TKN quarterly",
+            "cls": "ev-lab-yellow",
+            "openId": "tkn-quarterly"
+          }
+        ]
+      },
+      {
+        "num": "21",
+        "events": [
+          {
+            "label": "BOD₅",
+            "cls": "ev-lab-orange",
+            "openId": "bod5-apr21"
+          }
+        ]
+      },
+      {
+        "num": "22",
+        "events": [
+          {
+            "label": "Ammonia",
+            "cls": "ev-lab-yellow",
+            "openId": "ammonia-apr22"
+          }
+        ]
+      },
+      {
+        "num": "23",
+        "events": [
+          {
+            "label": "E. coli",
+            "cls": "ev-lab-orange",
+            "openId": "ecoli-apr23"
+          }
+        ]
+      },
+      {
+        "num": "24"
+      },
+      {
+        "num": "25"
+      },
+      {
+        "num": "26"
+      },
+      {
+        "num": "27",
+        "events": [
+          {
+            "label": "TSS final",
+            "cls": "ev-lab-orange",
+            "openId": "tss-apr27"
+          }
+        ]
+      },
+      {
+        "num": "28",
+        "events": [
+          {
+            "label": "Mar DMR due",
+            "cls": "ev-deadline",
+            "openId": "mar-dmr-due"
+          }
+        ]
+      },
+      {
+        "num": "29"
+      },
+      {
+        "num": "30",
+        "events": [
+          {
+            "label": "Apr MOR lock",
+            "cls": "ev-deadline",
+            "openId": "apr-mor-lock"
+          }
+        ]
+      },
+      {
+        "num": "1",
+        "outside": true
+      },
+      {
+        "num": "2",
+        "outside": true
+      }
+    ]
+  },
+  "samples": [
+    {
+      "bottleCls": "bottle-orange",
+      "bottleLabel": "None",
+      "name": "BOD₅ — Lagoon Cell 3 effluent + Influent",
+      "meta": "500 mL CYL · 4°C · SM 5210-B · Due Tue Apr 7",
+      "holdTime": "48 hours",
+      "holdLabel": "Critical hold",
+      "openId": "bod5-tss-pickup"
+    },
+    {
+      "bottleCls": "bottle-orange",
+      "bottleLabel": "None",
+      "name": "TSS — Effluent",
+      "meta": "500 mL CYL · 4°C · SM 2540-D · Due Tue Apr 7",
+      "holdTime": "7 days",
+      "holdLabel": "Hold time",
+      "openId": "bod5-tss-pickup"
+    },
+    {
+      "bottleCls": "bottle-yellow",
+      "bottleLabel": "H₂SO₄",
+      "name": "Ammonia (NH₃-N) — Effluent · Reg 85 watch",
+      "meta": "500 mL CYL · 4°C, H₂SO₄ to pH<2 · SM 4500-NH3-G · Due Thu Apr 9",
+      "holdTime": "28 days",
+      "holdLabel": "Hold time",
+      "openId": "ammonia-apr9"
+    },
+    {
+      "bottleCls": "bottle-orange",
+      "bottleLabel": "None",
+      "name": "E. coli — Effluent (recreation season starting)",
+      "meta": "100 mL Sterile · 4°C, Na₂S₂O₃ · SM 9223-B · Due Mon Apr 13",
+      "holdTime": "6 hours",
+      "holdLabel": "Critical hold",
+      "openId": "ecoli-apr13"
+    },
+    {
+      "bottleCls": "bottle-yellow",
+      "bottleLabel": "H₂SO₄",
+      "name": "TKN (Total Kjeldahl N) — Quarterly effluent",
+      "meta": "500 mL CYL · 4°C, H₂SO₄ · SM 4500-Norg-B · Due Mon Apr 20",
+      "holdTime": "28 days",
+      "holdLabel": "Hold time",
+      "openId": "tkn-quarterly"
+    }
+  ],
+  "mor": {
+    "title": "March MOR <em>Prep</em>",
+    "subhead": "Town of Alma · PWS CO0147001 · Facility 003 (WTP) + 006 (Disinfection) · Due Apr 10",
+    "draftBannerTitle": "Draft / unverified — Operator review required",
+    "draftBannerBody": "Calculated from your March MOR data sheet (186 turbidity + 186 disinfection readings). Final submission via wqcdcompliance.com/login. Upstream is a calculation aid only — submission is the responsible party's responsibility.",
+    "periodHeader": "March 2026 — Monthly Operating Report (MOR)",
+    "periodSub": "PWS CO0147001 · Bag/Cartridge facility · Reporting period 2026-03-01 to 2026-03-31",
+    "statusTagText": "All TT criteria met",
+    "statusTagCls": "tag-ok",
+    "rows": [
+      {
+        "param": "CFE Turbidity — Highest",
+        "limit": "≤ 5 NTU (max)",
+        "result": "0.414 NTU",
+        "resultColor": "var(--green)",
+        "samples": "186 / 186",
+        "detail": "0 exceeding 5 NTU",
+        "statusText": "Pass",
+        "statusCls": "tag-ok",
+        "warn": false
+      },
+      {
+        "param": "CFE Turbidity — 95% ≤ 1 NTU",
+        "limit": "≥ 95% ≤ 1 NTU",
+        "result": "100%",
+        "resultColor": "var(--green)",
+        "samples": "186 / 186",
+        "detail": "0 exceeding 1 NTU",
+        "statusText": "Pass",
+        "statusCls": "tag-ok",
+        "warn": false
+      },
+      {
+        "param": "CFE Turbidity — Sampling",
+        "limit": "31 days required",
+        "result": "31 days met",
+        "resultColor": "var(--green)",
+        "samples": "186 taken / 31 req'd",
+        "detail": "0 plant offs",
+        "statusText": "Pass",
+        "statusCls": "tag-ok",
+        "warn": false
+      },
+      {
+        "param": "Disinfection — Lowest Cl₂",
+        "limit": "≥ 0.8 mg/L (min)",
+        "result": "0.82 mg/L",
+        "resultColor": "var(--yellow)",
+        "samples": "186 / 186",
+        "detail": "0 below 0.8 mg/L · margin: 0.02",
+        "statusText": "Pass · tight",
+        "statusCls": "tag-warn",
+        "warn": true
+      },
+      {
+        "param": "Disinfection — Sampling",
+        "limit": "31 days required",
+        "result": "31 days met",
+        "resultColor": "var(--green)",
+        "samples": "186 taken / 31 req'd",
+        "detail": "0 plant offs",
+        "statusText": "Pass",
+        "statusCls": "tag-ok",
+        "warn": false
+      },
+      {
+        "param": "Duration Below Minimum",
+        "limit": "Notify if > 4 hrs",
+        "result": "N/A",
+        "resultColor": "var(--green)",
+        "samples": "—",
+        "detail": "No values below minimum",
+        "statusText": "Pass",
+        "statusCls": "tag-ok",
+        "warn": false
+      }
+    ],
+    "calloutTitle": "Cl₂ residual trend — worth a look.",
+    "calloutBody": "Your lowest March residual was 0.82 mg/L on Mar 13 &amp; 14 — only 0.02 mg/L above the 0.8 mg/L minimum. CDPHE requires 24-hour notification if residual falls below 0.8 mg/L. Six days in March came in at or below 0.85 mg/L. Recommend a chlorinator feed-rate check before April readings.",
+    "orcTitle": "Operator Approval — Gary Goettelman",
+    "orcText": "\"I certify under penalty of law that this document and all attachments were prepared under my direction or supervision…\" CDPHE / SDWA signatory language applies.",
+    "submitNote": "Submit to wqcdcompliance.com/login by Apr 10. Contact: almawater@townofalma.com · 719 836-2712"
+  },
+  "dailyLog": {
+    "subhead": "Town of Alma · Friday, April 3, 2026 · PWS CO0147001",
+    "sections": [
+      {
+        "title": "CFE Turbidity (NTU) — Facility 003 · Hourly highest",
+        "tagText": "All clear",
+        "tagCls": "tag-ok",
+        "fields": [
+          {
+            "id": "t1",
+            "label": "12a – 4a",
+            "value": "0.021",
+            "hint": "Max: 5 NTU"
+          },
+          {
+            "id": "t2",
+            "label": "4a – 8a",
+            "value": "0.020",
+            "hint": "Max: 5 NTU"
+          },
+          {
+            "id": "t3",
+            "label": "8a – 12p",
+            "value": "0.021",
+            "hint": "Max: 5 NTU"
+          },
+          {
+            "id": "t4",
+            "label": "12p – 4p",
+            "value": "",
+            "hint": "Awaiting"
+          },
+          {
+            "id": "t5",
+            "label": "4p – 8p",
+            "value": "",
+            "hint": "Awaiting"
+          },
+          {
+            "id": "t6",
+            "label": "8p – 12a",
+            "value": "",
+            "hint": "Awaiting"
+          },
+          {
+            "id": "t7",
+            "label": "Highest",
+            "value": "0.021",
+            "hint": "Auto · partial",
+            "readonly": true,
+            "highlight": "navy"
+          },
+          {
+            "id": "t8",
+            "label": "Plant off?",
+            "value": "0",
+            "hint": "Hours offline"
+          }
+        ]
+      },
+      {
+        "title": "Disinfection Residual (mg/L) — Facility 006 · 4-hour periods",
+        "tagText": "Watch — last month tight",
+        "tagCls": "tag-warn",
+        "fields": [
+          {
+            "id": "d1",
+            "label": "12a – 4a",
+            "value": "C",
+            "hint": "Min: 0.8 mg/L"
+          },
+          {
+            "id": "d2",
+            "label": "4a – 8a",
+            "value": "C",
+            "hint": "\"C\" = continuous"
+          },
+          {
+            "id": "d3",
+            "label": "8a – 12p",
+            "value": "0.86",
+            "hint": "⚠ Approaching 0.8 floor",
+            "warn": true,
+            "hintWarn": true
+          },
+          {
+            "id": "d4",
+            "label": "12p – 4p",
+            "value": "",
+            "hint": "Awaiting"
+          },
+          {
+            "id": "d5",
+            "label": "4p – 8p",
+            "value": "",
+            "hint": "Awaiting"
+          },
+          {
+            "id": "d6",
+            "label": "8p – 12a",
+            "value": "",
+            "hint": "Awaiting"
+          },
+          {
+            "id": "d7",
+            "label": "Lowest",
+            "value": "0.86",
+            "hint": "Auto · partial",
+            "readonly": true,
+            "warn": true,
+            "hintWarn": true,
+            "highlight": "yellow"
+          },
+          {
+            "id": "d8",
+            "label": "Duration < 0.8",
+            "value": "0",
+            "hint": "Hours / min"
+          }
+        ]
+      },
+      {
+        "title": "Wastewater Lagoon — Operator Readings",
+        "fields": [
+          {
+            "id": "w1",
+            "label": "Influent (MGD)",
+            "value": "0.087",
+            "hint": "0.05–0.15"
+          },
+          {
+            "id": "w2",
+            "label": "Effluent (MGD)",
+            "value": "0.084",
+            "hint": "0.05–0.15"
+          },
+          {
+            "id": "w3",
+            "label": "pH eff.",
+            "value": "7.6",
+            "hint": "6.5–9.0"
+          },
+          {
+            "id": "w4",
+            "label": "DO eff.",
+            "value": "6.4",
+            "hint": "Min: 6.0"
+          },
+          {
+            "id": "w5",
+            "label": "Cell 1 DO",
+            "value": "2.8",
+            "hint": "≥ 2.0"
+          },
+          {
+            "id": "w6",
+            "label": "Cell 2 DO",
+            "value": "1.7",
+            "hint": "⚠ Below target",
+            "warn": true,
+            "hintWarn": true
+          },
+          {
+            "id": "w7",
+            "label": "Cell 3 DO",
+            "value": "3.2",
+            "hint": "Polishing"
+          },
+          {
+            "id": "w8",
+            "label": "Cl₂ eff.",
+            "value": "0.6",
+            "hint": "Min: 0.2"
+          }
+        ]
+      }
+    ],
+    "footHint": "✦ Feeds April MOR + lagoon DMR · auto-syncs to compliance home"
+  },
+  "trends": {
+    "subhead": "Town of Alma · March 2026 actuals · Auto-pulled from MOR data sheets",
+    "metrics": [
+      {
+        "accent": "var(--green)",
+        "label": "Turbidity — highest",
+        "value": "0.414",
+        "unit": "NTU",
+        "trend": "Max limit: 5 NTU",
+        "status": "✓ Mar 13 · well under",
+        "statusCls": "ms-ok"
+      },
+      {
+        "accent": "var(--green)",
+        "label": "95% TT ≤ 1 NTU",
+        "value": "100",
+        "unit": "%",
+        "trend": "Required: ≥ 95%",
+        "status": "✓ Compliant",
+        "statusCls": "ms-ok"
+      },
+      {
+        "accent": "var(--yellow)",
+        "label": "Cl₂ — lowest",
+        "value": "0.82",
+        "unit": "mg/L",
+        "trend": "Min: 0.80 mg/L",
+        "status": "⚠ Margin: 0.02",
+        "statusCls": "ms-warn"
+      },
+      {
+        "accent": "var(--green)",
+        "label": "Sampling complete",
+        "value": "31",
+        "unit": "/ 31 d",
+        "trend": "186 samples taken",
+        "status": "✓ M&R met",
+        "statusCls": "ms-ok"
+      }
+    ],
+    "leftChart": {
+      "title": "CFE Turbidity (NTU) — March 2026 daily highest",
+      "tagText": "No exceedances",
+      "tagCls": "tag-ok",
+      "ariaLabel": "March turbidity daily highest chart, range 0.02 to 0.414 NTU, all below 1 NTU treatment technique threshold",
+      "thresholds": [
+        {
+          "y": 10,
+          "color": "#fca5a5",
+          "label": "1.0 NTU · 95% TT",
+          "labelColor": "#b91c1c",
+          "width": 1
+        },
+        {
+          "y": 50,
+          "color": "#e2e8f0",
+          "label": "0.1",
+          "labelColor": "#64748b",
+          "width": 0.6
+        }
+      ],
+      "polyline": "0.0,57.8 10.7,54.4 21.3,57.4 32.0,57.8 42.7,57.8 53.3,57.9 64.0,57.9 74.7,57.9 85.3,58.0 96.0,56.2 106.7,57.8 117.3,56.2 128.0,18.6 138.7,57.9 149.3,57.8 160.0,57.8 170.7,57.8 181.3,57.9 192.0,56.6 202.7,56.3 213.3,57.8 224.0,57.9 234.7,55.6 245.3,57.8 256.0,55.8 266.7,44.6 277.3,35.5 288.0,52.6 298.7,50.5 309.3,48.5 320.0,54.8",
+      "strokeColor": "#15803d",
+      "markers": [
+        {
+          "x": 128,
+          "y": 18.6,
+          "color": "#a16207",
+          "label": "Mar 13 · 0.414",
+          "labelX": 132,
+          "labelY": 16,
+          "labelColor": "#a16207"
+        },
+        {
+          "x": 320,
+          "y": 54.8,
+          "color": "#15803d"
+        }
+      ],
+      "footer": "Mar 1 — Mar 31 · 186 samples · Plant offs: 0"
+    },
+    "rightChart": {
+      "title": "Disinfection Cl₂ (mg/L) — March 2026 daily lowest",
+      "tagText": "Tight margin",
+      "tagCls": "tag-warn",
+      "ariaLabel": "March chlorine residual chart, lowest 0.82 mg/L on March 13, six days at or below 0.85 mg/L",
+      "thresholds": [
+        {
+          "y": 35,
+          "color": "#bbf7d0",
+          "label": "1.0 target",
+          "labelColor": "#15803d",
+          "width": 1
+        },
+        {
+          "y": 47.5,
+          "color": "#fca5a5",
+          "label": "0.8 min · notify if <",
+          "labelColor": "#b91c1c",
+          "width": 1.2
+        }
+      ],
+      "polyline": "0.0,27.5 10.7,18.8 21.3,33.1 32.0,35.6 42.7,36.9 53.3,37.5 64.0,36.2 74.7,37.5 85.3,37.5 96.0,36.9 106.7,36.2 117.3,45.0 128.0,46.2 138.7,46.2 149.3,44.4 160.0,45.0 170.7,43.1 181.3,43.8 192.0,45.0 202.7,40.6 213.3,43.8 224.0,46.2 234.7,41.9 245.3,41.2 256.0,40.6 266.7,44.4 277.3,42.5 288.0,43.8 298.7,43.8 309.3,45.6 320.0,45.6",
+      "strokeColor": "#a16207",
+      "markers": [
+        {
+          "x": 128,
+          "y": 46.2,
+          "color": "#b91c1c",
+          "label": "Mar 13 · 0.82",
+          "labelX": 100,
+          "labelY": 42,
+          "labelColor": "#b91c1c"
+        },
+        {
+          "x": 320,
+          "y": 45.6,
+          "color": "#a16207"
+        }
+      ],
+      "footer": "Six days ≤ 0.85 mg/L · recommend chlorinator feed-rate check"
+    }
+  },
+  "documents": {
+    "subhead": "Town of Alma · 5 facility documents · 4 global references",
+    "facility": [
+      {
+        "icon": "📊",
+        "name": "CO0147001 — March 2026 MOR Data (CDPHERM_WTR)",
+        "meta": "XLSX · 0.1 MB · Uploaded Apr 3 · INGESTED · 31 days parsed",
+        "tagText": "Current",
+        "tagCls": "tag-ok"
+      },
+      {
+        "icon": "📄",
+        "name": "CDPS general permit COG591177 — small-system coverage",
+        "meta": "Pending upload · Required for DMR auto-prep · Kat to provide PDF",
+        "tagText": "Missing",
+        "tagCls": "tag-warn"
+      },
+      {
+        "icon": "📄",
+        "name": "Lagoon System O&M Manual",
+        "meta": "PDF · 8.4 MB · Uploaded Mar 2026 · READY",
+        "tagText": "Current",
+        "tagCls": "tag-ok"
+      },
+      {
+        "icon": "📄",
+        "name": "Mechanical Plant Design Drawings — engineering",
+        "meta": "PDF · 24.1 MB · Uploaded Apr 2026 · READY",
+        "tagText": "Active project",
+        "tagCls": "tag-navy"
+      },
+      {
+        "icon": "📄",
+        "name": "Bag/Cartridge Filter — Manufacturer O&M",
+        "meta": "PDF · 2.1 MB · Uploaded Mar 2026 · READY",
+        "tagText": "Current",
+        "tagCls": "tag-ok"
+      }
+    ],
+    "global": [
+      {
+        "icon": "🌐",
+        "name": "CDPHE Reg 11 — Colorado Primary Drinking Water Regs",
+        "meta": "Upstream Global · Colorado Regulatory"
+      },
+      {
+        "icon": "🌐",
+        "name": "CDPHE Reg 61 — CDPS Discharge Permits",
+        "meta": "Upstream Global · Colorado Regulatory"
+      },
+      {
+        "icon": "🌐",
+        "name": "CDPHE Reg 85 — Nutrient Management",
+        "meta": "Upstream Global · Applies to Alma lagoon transition"
+      },
+      {
+        "icon": "🌐",
+        "name": "MOR Submission Guide — wqcdcompliance.com",
+        "meta": "Upstream Global · Operator Reference"
+      }
+    ]
+  },
+  "chat": {
+    "greeting": "Hi Kat — I have your March MOR data ingested (PWS CO0147001, all 31 days). What do you need?",
+    "presetQ": "What was our lowest Cl₂ residual in March and how close were we to the minimum?",
+    "presetA": "Your lowest chlorine residual in March was <strong style=\"color:var(--yellow);\">0.82 mg/L</strong>, recorded on Mar 13 and Mar 22 (during 12a–4a periods). That's only <strong>0.02 mg/L above the 0.8 mg/L minimum</strong>. CDPHE requires you to notify the department within 48 hours if residual falls below 0.8 mg/L. Six days in March came in at or below 0.85 mg/L — I'd recommend a chlorinator feed-rate check before April readings.",
+    "presetCite": "📊 CO0147001 March 2026 MOR · DataSheet rows 13, 22"
+  },
+  "events": {
+    "mar-data-lock": {
+      "type": "Regulatory Deadline",
+      "barColor": "var(--navy)",
+      "icon": "🔒",
+      "title": "March 2026 MOR — Data Lock",
+      "date": "Wednesday, April 1, 2026 · End of business",
+      "what": "<strong>What this is:</strong> Hard cutoff for entering March turbidity and disinfection readings. After this point, the dataset is finalized and submitted to the MOR report builder. Late entries require a written addendum.",
+      "details": [
+        [
+          "Status",
+          "LOCKED · 186/186 samples"
+        ],
+        [
+          "Plant offs",
+          "0"
+        ],
+        [
+          "Source",
+          "Operator log + SCADA pull"
+        ],
+        [
+          "Locked by",
+          "Gary Goettelman"
+        ],
+        [
+          "Authority",
+          "CDPHE Reg 11.10"
+        ]
+      ],
+      "footer": "Source: CDPHE Reg 11 · Section 11.10 monthly reporting",
+      "cta": "View MOR Prep",
+      "primaryTarget": "dmrPrep"
+    },
+    "compliance-pull": {
+      "type": "Automated Workflow",
+      "barColor": "var(--green)",
+      "icon": "✦",
+      "title": "Weekly Compliance Pull",
+      "date": "Friday, April 3, 2026 · 7:34 AM",
+      "what": "<strong>What this is:</strong> Upstream's weekly automated ingestion of CDPHE-formatted MOR data sheets, lab returns, and SCADA exports. Refreshes your compliance status, flags anomalies, and pre-populates this week's tasks.",
+      "details": [
+        [
+          "Pulled",
+          "March MOR sheet (XLSX)"
+        ],
+        [
+          "Records",
+          "186 turbidity + 186 disinfection"
+        ],
+        [
+          "Anomalies",
+          "1 (Cl₂ tight margin)"
+        ],
+        [
+          "Next pull",
+          "Fri Apr 10, 7:30 AM"
+        ],
+        [
+          "Run time",
+          "42 seconds"
+        ]
+      ],
+      "callout": {
+        "title": "Anomaly detected",
+        "body": "Cl₂ residual trended within 0.02 mg/L of the 0.8 mg/L minimum on 6 days. Auto-task created: \"Review Cl₂ trend\" due Mon Apr 6."
+      },
+      "footer": "Automated · No operator action required",
+      "cta": "View pull log"
+    },
+    "cl2-review": {
+      "type": "Auto-Generated Task",
+      "barColor": "var(--pres-none)",
+      "icon": "⚠",
+      "title": "Cl₂ Residual Review",
+      "date": "Friday, April 3, 2026",
+      "what": "<strong>What this is:</strong> System-generated task triggered by the weekly compliance pull. March chlorine residual margins were tight (0.82 mg/L lowest, 0.02 above minimum). Recommendation: walk down the chlorinator and verify feed rate before April readings tighten further.",
+      "details": [
+        [
+          "March low",
+          "0.82 mg/L (Mar 13, Mar 22)"
+        ],
+        [
+          "Margin",
+          "0.02 mg/L above 0.8 floor"
+        ],
+        [
+          "Days ≤ 0.85",
+          "6 of 31"
+        ],
+        [
+          "CDPHE rule",
+          "Notify within 24 hrs if &lt; 0.8"
+        ],
+        [
+          "Assignee",
+          "Gary G. + ORC"
+        ]
+      ],
+      "footer": "Assigned by Upstream · Recommendation only",
+      "cta": "View trends"
+    },
+    "cl2-trend-review": {
+      "type": "Action Item",
+      "barColor": "var(--navy)",
+      "icon": "📊",
+      "title": "Cl₂ Trend Review",
+      "date": "Monday, April 6, 2026",
+      "what": "<strong>What this is:</strong> Scheduled review of March chlorine residual trend with the ORC before submitting the March MOR. Confirms whether the tight margin pattern is feed-rate, demand, or sampling-related.",
+      "details": [
+        [
+          "Trigger",
+          "Auto-generated from compliance pull"
+        ],
+        [
+          "Owner",
+          "Gary G. + ORC"
+        ],
+        [
+          "Inputs",
+          "March Cl₂ data, chlorinator log"
+        ],
+        [
+          "Outcome",
+          "Document findings in MOR notes"
+        ]
+      ],
+      "footer": "Internal review · No external submission",
+      "cta": "Open March MOR",
+      "primaryTarget": "dmrPrep"
+    },
+    "bod5-tss-pickup": {
+      "type": "Lab Sample Pickup",
+      "barColor": "var(--pres-none)",
+      "icon": "🧪",
+      "title": "BOD₅ + TSS — Lagoon Effluent",
+      "date": "Tuesday, April 7, 2026 · Colorado Analytical courier",
+      "what": "<strong>What this is:</strong> Routine weekly wastewater compliance sampling. Both samples go into the same orange-cap (no preservative) bottles. BOD₅ is your critical hold — must reach the lab within <strong>48 hours</strong>, so we recommend a morning pickup.",
+      "bottle": {
+        "type": "bottle-orange",
+        "label": "None",
+        "name": "500 mL polypropylene cylinder, orange cap",
+        "meta": "No preservative · 4°C · Colorado Analytical Labs bottle code"
+      },
+      "details": [
+        [
+          "Parameters",
+          "BOD₅ (SM 5210-B) + TSS (SM 2540-D)"
+        ],
+        [
+          "Locations",
+          "Lagoon Cell 3 effluent + WW influent"
+        ],
+        [
+          "Bottle",
+          "500 mL CYL · Orange (none)"
+        ],
+        [
+          "BOD₅ hold time",
+          "48 hours (critical)"
+        ],
+        [
+          "TSS hold time",
+          "7 days"
+        ],
+        [
+          "Storage",
+          "Iced cooler, 4°C"
+        ],
+        [
+          "Permit reg",
+          "CDPS COG591177 · Outfall 001A"
+        ]
+      ],
+      "callout": {
+        "title": "Critical hold — 48 hours",
+        "body": "BOD₅ samples held longer than 48 hrs are rejected by the lab. Drop at the WTP cooler by 9 AM for the 10 AM courier."
+      },
+      "footer": "Source: Colorado Analytical SOP + Reg 61 permit",
+      "cta": "Print pickup sheet"
+    },
+    "ammonia-apr9": {
+      "type": "Lab Sample · Reg 85 Watch",
+      "barColor": "var(--pres-h2so4)",
+      "icon": "🧪",
+      "title": "Ammonia (NH₃-N) — Effluent",
+      "date": "Thursday, April 9, 2026 · Colorado Analytical",
+      "what": "<strong>What this is:</strong> Nitrogen nutrient sampling tracked under <strong>CDPHE Regulation 85</strong>. Alma's lagoon is in the watch period ahead of the mechanical WWTP commissioning later this year — ammonia trends inform the engineering case for the transition.",
+      "bottle": {
+        "type": "bottle-yellow",
+        "label": "H₂SO₄",
+        "name": "500 mL polypropylene cylinder, yellow cap",
+        "meta": "H₂SO₄ to pH < 2 · 4°C · Colorado Analytical Labs bottle code"
+      },
+      "details": [
+        [
+          "Parameter",
+          "NH₃-N · SM 4500-NH3-G"
+        ],
+        [
+          "Bottle",
+          "500 mL CYL · Yellow (H₂SO₄)"
+        ],
+        [
+          "Preservation",
+          "H₂SO₄ to pH < 2"
+        ],
+        [
+          "Storage",
+          "4°C"
+        ],
+        [
+          "Hold time",
+          "28 days"
+        ],
+        [
+          "Regulatory driver",
+          "CDPHE Reg 85 nutrient watch"
+        ],
+        [
+          "Next quarterly",
+          "TKN — Apr 20"
+        ]
+      ],
+      "callout": {
+        "title": "Bottle prep reminder",
+        "body": "Yellow caps come pre-acidified from CAL. Do not rinse. If a bottle arrives without preservative, mark it and request replacement before sampling."
+      },
+      "footer": "Source: CDPHE Reg 85 · Mechanical WWTP transition plan",
+      "cta": "View Reg 85 doc"
+    },
+    "mar-mor-due": {
+      "type": "Regulatory Submission",
+      "barColor": "var(--navy)",
+      "icon": "📋",
+      "title": "March 2026 MOR — Submission Due",
+      "date": "Friday, April 10, 2026 · 11:59 PM",
+      "what": "<strong>What this is:</strong> Monthly Operating Report due to CDPHE for PWS CO0147001. Covers all turbidity and disinfection sampling for the reporting month. Late submissions trigger a Notice of Violation.",
+      "details": [
+        [
+          "Reporting period",
+          "March 1 – March 31, 2026"
+        ],
+        [
+          "Submit via",
+          "wqcdcompliance.com/login"
+        ],
+        [
+          "Submitter",
+          "Gary Goettelman (Town Admin)"
+        ],
+        [
+          "ORC signoff",
+          "Required before submission"
+        ],
+        [
+          "Status",
+          "100% — Ready for review"
+        ],
+        [
+          "Authority",
+          "SDWA · CDPHE Reg 11.10"
+        ]
+      ],
+      "callout": {
+        "title": "Cl₂ trend note",
+        "body": "Lowest March residual was 0.82 mg/L (0.02 above the 0.8 floor). All TT criteria met but the margin is tight — flag in the submission notes if desired."
+      },
+      "footer": "Source: CDPHE Reg 11 · Submission portal",
+      "cta": "Open March MOR",
+      "primaryTarget": "dmrPrep"
+    },
+    "ecoli-apr13": {
+      "type": "Lab Sample · Recreation Season",
+      "barColor": "var(--pres-none)",
+      "icon": "🧪",
+      "title": "E. coli — Lagoon Effluent",
+      "date": "Monday, April 13, 2026 · Colorado Analytical",
+      "what": "<strong>What this is:</strong> First effluent E. coli sample of the recreation season. South Platte recreation use kicks in April 1 each year. <strong>6-hour hold time</strong> — this is the tightest hold in the program. Same-day delivery only.",
+      "bottle": {
+        "type": "bottle-orange",
+        "label": "None",
+        "name": "100 mL sterile bottle with Na₂S₂O₃ tablet",
+        "meta": "Sodium thiosulfate dechlorinates · 4°C · Sterile"
+      },
+      "details": [
+        [
+          "Parameter",
+          "E. coli · SM 9223-B (Colilert)"
+        ],
+        [
+          "Bottle",
+          "100 mL sterile · Orange (none)"
+        ],
+        [
+          "Preservation",
+          "Na₂S₂O₃ tablet (in-bottle) · 4°C"
+        ],
+        [
+          "Hold time",
+          "6 hours (critical)"
+        ],
+        [
+          "Frequency",
+          "Weekly Apr 1 – Oct 31"
+        ],
+        [
+          "Permit driver",
+          "CDPS COG591177 recreation-season E. coli limit"
+        ]
+      ],
+      "callout": {
+        "title": "6-hour clock",
+        "body": "Once collected, the lab must begin analysis within 6 hours. Coordinate pickup with the 10 AM courier; do not collect before 8 AM."
+      },
+      "footer": "Source: CDPS permit · Reg 61 standards",
+      "cta": "View weekly schedule"
+    },
+    "bod5-apr14": {
+      "type": "Lab Sample Pickup",
+      "barColor": "var(--pres-none)",
+      "icon": "🧪",
+      "title": "BOD₅ — Lagoon Effluent",
+      "date": "Tuesday, April 14, 2026 · Colorado Analytical",
+      "what": "<strong>What this is:</strong> Weekly BOD₅ effluent sample. Permit requires weekly grab samples during operating months. <strong>48-hour critical hold.</strong>",
+      "bottle": {
+        "type": "bottle-orange",
+        "label": "None",
+        "name": "500 mL polypropylene cylinder, orange cap",
+        "meta": "No preservative · 4°C · CAL bottle code"
+      },
+      "details": [
+        [
+          "Parameter",
+          "BOD₅ · SM 5210-B"
+        ],
+        [
+          "Bottle",
+          "500 mL CYL · Orange"
+        ],
+        [
+          "Hold time",
+          "48 hours (critical)"
+        ],
+        [
+          "Storage",
+          "Iced cooler, 4°C"
+        ],
+        [
+          "Permit reg",
+          "CDPS COG591177 · Outfall 001A"
+        ]
+      ],
+      "footer": "Source: CDPS permit weekly schedule",
+      "cta": "Print pickup sheet"
+    },
+    "op-cert-ceu": {
+      "type": "Operator Certification",
+      "barColor": "#7e22ce",
+      "icon": "🎓",
+      "title": "CDPHE Operator CEU — Quarterly Credit",
+      "date": "Wednesday, April 15, 2026",
+      "what": "<strong>What this is:</strong> CDPHE drinking water and wastewater operator certifications require continuing education units (CEUs) to renew. This quarter's credit window closes mid-April. Confirm Gary's and the contract ORC's CEU logs are current.",
+      "details": [
+        [
+          "Affected operators",
+          "Gary G. (Class D pursuing C) · ORC"
+        ],
+        [
+          "Hours required",
+          "12 CEUs / 3-year cycle"
+        ],
+        [
+          "Tracking",
+          "CDPHE operator portal"
+        ],
+        [
+          "Next renewal",
+          "TBD per individual cert"
+        ],
+        [
+          "Authority",
+          "CDPHE Reg 100"
+        ]
+      ],
+      "callout": {
+        "title": "Quick check",
+        "body": "Log into the CDPHE operator portal and confirm CEU credits posted from the spring CRWA conference. CRWA usually takes 3–4 weeks to report."
+      },
+      "footer": "Source: CDPHE Reg 100 · Operator Certification",
+      "cta": "Open CDPHE portal"
+    },
+    "tss-apr17": {
+      "type": "Lab Sample Pickup",
+      "barColor": "var(--pres-none)",
+      "icon": "🧪",
+      "title": "TSS — Lagoon Effluent",
+      "date": "Friday, April 17, 2026 · Colorado Analytical",
+      "what": "<strong>What this is:</strong> Weekly TSS effluent grab sample. 7-day hold time gives some scheduling flexibility, but coordinate with BOD₅ pickups when possible to share couriers.",
+      "bottle": {
+        "type": "bottle-orange",
+        "label": "None",
+        "name": "500 mL polypropylene cylinder, orange cap",
+        "meta": "No preservative · 4°C · CAL bottle code"
+      },
+      "details": [
+        [
+          "Parameter",
+          "TSS · SM 2540-D"
+        ],
+        [
+          "Bottle",
+          "500 mL CYL · Orange"
+        ],
+        [
+          "Hold time",
+          "7 days"
+        ],
+        [
+          "Storage",
+          "4°C"
+        ],
+        [
+          "Permit reg",
+          "CDPS COG591177 · Outfall 001A"
+        ]
+      ],
+      "footer": "Source: CDPS permit weekly schedule",
+      "cta": "Print pickup sheet"
+    },
+    "tkn-quarterly": {
+      "type": "Quarterly Lab Sample · Reg 85",
+      "barColor": "var(--pres-h2so4)",
+      "icon": "🧪",
+      "title": "TKN (Total Kjeldahl Nitrogen) — Quarterly",
+      "date": "Monday, April 20, 2026 · Colorado Analytical",
+      "what": "<strong>What this is:</strong> Quarterly TKN effluent sample required under CDPHE Reg 85 nutrient management. TKN measures organic + ammonia nitrogen. The lagoon's TKN baseline data will support the mechanical plant's nitrogen removal sizing.",
+      "bottle": {
+        "type": "bottle-yellow",
+        "label": "H₂SO₄",
+        "name": "500 mL polypropylene cylinder, yellow cap",
+        "meta": "H₂SO₄ to pH < 2 · 4°C · CAL bottle code"
+      },
+      "details": [
+        [
+          "Parameter",
+          "TKN · SM 4500-Norg-B"
+        ],
+        [
+          "Bottle",
+          "500 mL CYL · Yellow (H₂SO₄)"
+        ],
+        [
+          "Preservation",
+          "H₂SO₄ to pH < 2 · 4°C"
+        ],
+        [
+          "Hold time",
+          "28 days"
+        ],
+        [
+          "Frequency",
+          "Quarterly"
+        ],
+        [
+          "Regulatory driver",
+          "CDPHE Reg 85"
+        ]
+      ],
+      "callout": {
+        "title": "Sister sample",
+        "body": "Pair this with the Apr 22 ammonia sample for a complete nitrogen picture this week. Both use yellow H₂SO₄ bottles."
+      },
+      "footer": "Source: CDPHE Reg 85 · Quarterly nutrient sampling",
+      "cta": "View Reg 85 doc"
+    },
+    "bod5-apr21": {
+      "type": "Lab Sample Pickup",
+      "barColor": "var(--pres-none)",
+      "icon": "🧪",
+      "title": "BOD₅ — Lagoon Effluent",
+      "date": "Tuesday, April 21, 2026 · Colorado Analytical",
+      "what": "<strong>What this is:</strong> Weekly BOD₅ effluent sample. 48-hour critical hold.",
+      "bottle": {
+        "type": "bottle-orange",
+        "label": "None",
+        "name": "500 mL polypropylene cylinder, orange cap",
+        "meta": "No preservative · 4°C"
+      },
+      "details": [
+        [
+          "Parameter",
+          "BOD₅ · SM 5210-B"
+        ],
+        [
+          "Bottle",
+          "500 mL CYL · Orange"
+        ],
+        [
+          "Hold time",
+          "48 hours (critical)"
+        ],
+        [
+          "Permit reg",
+          "CDPS COG591177 · Outfall 001A"
+        ]
+      ],
+      "footer": "Source: CDPS permit weekly schedule",
+      "cta": "Print pickup sheet"
+    },
+    "ammonia-apr22": {
+      "type": "Lab Sample · Reg 85 Watch",
+      "barColor": "var(--pres-h2so4)",
+      "icon": "🧪",
+      "title": "Ammonia (NH₃-N) — Effluent",
+      "date": "Wednesday, April 22, 2026 · Colorado Analytical",
+      "what": "<strong>What this is:</strong> Second monthly ammonia sample under Reg 85 watch. Pairs with the Apr 20 TKN sample for a full nitrogen profile this week.",
+      "bottle": {
+        "type": "bottle-yellow",
+        "label": "H₂SO₄",
+        "name": "500 mL polypropylene cylinder, yellow cap",
+        "meta": "H₂SO₄ to pH < 2 · 4°C"
+      },
+      "details": [
+        [
+          "Parameter",
+          "NH₃-N · SM 4500-NH3-G"
+        ],
+        [
+          "Bottle",
+          "500 mL CYL · Yellow (H₂SO₄)"
+        ],
+        [
+          "Hold time",
+          "28 days"
+        ],
+        [
+          "Regulatory driver",
+          "CDPHE Reg 85"
+        ]
+      ],
+      "footer": "Source: CDPHE Reg 85 · Mechanical WWTP transition",
+      "cta": "View Reg 85 doc"
+    },
+    "ecoli-apr23": {
+      "type": "Lab Sample · Recreation Season",
+      "barColor": "var(--pres-none)",
+      "icon": "🧪",
+      "title": "E. coli — Lagoon Effluent",
+      "date": "Thursday, April 23, 2026 · Colorado Analytical",
+      "what": "<strong>What this is:</strong> Weekly recreation-season E. coli sample. 6-hour critical hold — same-day delivery only.",
+      "bottle": {
+        "type": "bottle-orange",
+        "label": "None",
+        "name": "100 mL sterile bottle with Na₂S₂O₃ tablet",
+        "meta": "Sodium thiosulfate dechlorinates · 4°C · Sterile"
+      },
+      "details": [
+        [
+          "Parameter",
+          "E. coli · SM 9223-B"
+        ],
+        [
+          "Bottle",
+          "100 mL sterile"
+        ],
+        [
+          "Hold time",
+          "6 hours (critical)"
+        ],
+        [
+          "Permit driver",
+          "CDPS COG591177 recreation-season limit"
+        ]
+      ],
+      "footer": "Source: CDPS permit · Reg 61 standards",
+      "cta": "View weekly schedule"
+    },
+    "tss-apr27": {
+      "type": "Lab Sample Pickup",
+      "barColor": "var(--pres-none)",
+      "icon": "🧪",
+      "title": "TSS — Final April Sample",
+      "date": "Monday, April 27, 2026 · Colorado Analytical",
+      "what": "<strong>What this is:</strong> Final April TSS sample. Closes out April lagoon effluent data ahead of the April DMR submission on Apr 28.",
+      "bottle": {
+        "type": "bottle-orange",
+        "label": "None",
+        "name": "500 mL polypropylene cylinder, orange cap",
+        "meta": "No preservative · 4°C"
+      },
+      "details": [
+        [
+          "Parameter",
+          "TSS · SM 2540-D"
+        ],
+        [
+          "Bottle",
+          "500 mL CYL · Orange"
+        ],
+        [
+          "Hold time",
+          "7 days"
+        ],
+        [
+          "Permit reg",
+          "CDPS COG591177 · Outfall 001A"
+        ]
+      ],
+      "footer": "Source: CDPS permit weekly schedule",
+      "cta": "Print pickup sheet"
+    },
+    "mar-dmr-due": {
+      "type": "Regulatory Submission",
+      "barColor": "var(--navy)",
+      "icon": "📋",
+      "title": "March 2026 DMR — Submission Due",
+      "date": "Tuesday, April 28, 2026 · 11:59 PM",
+      "what": "<strong>What this is:</strong> Monthly Discharge Monitoring Report due to CDPHE Water Quality Control Division for the Alma lagoon system. Covers BOD₅, TSS, E. coli, ammonia, pH, and flow under CDPS COG591177, Outfall 001A.",
+      "details": [
+        [
+          "Reporting period",
+          "March 1 – March 31, 2026"
+        ],
+        [
+          "Submit via",
+          "NetDMR / CDPHE portal"
+        ],
+        [
+          "Submitter",
+          "Gary Goettelman"
+        ],
+        [
+          "ORC signoff",
+          "Required"
+        ],
+        [
+          "Status",
+          "60% — Draft in progress"
+        ],
+        [
+          "Authority",
+          "CDPS COG591177 · Reg 61"
+        ]
+      ],
+      "callout": {
+        "title": "Missing document",
+        "body": "CDPS permit PDF not yet uploaded to the document library. Required for full DMR auto-population. Request from Gary before Apr 24."
+      },
+      "footer": "Source: CDPS COG591177 · NetDMR",
+      "cta": "View DMR draft"
+    },
+    "apr-mor-lock": {
+      "type": "Regulatory Deadline",
+      "barColor": "var(--navy)",
+      "icon": "🔒",
+      "title": "April 2026 MOR — Data Lock",
+      "date": "Thursday, April 30, 2026 · End of business",
+      "what": "<strong>What this is:</strong> Cutoff for April turbidity and disinfection data entry. Same workflow as March: lock, then move to the MOR Prep view to review and submit by May 10.",
+      "details": [
+        [
+          "Sampling so far",
+          "3/30 days complete"
+        ],
+        [
+          "Next data check",
+          "Apr 10 (weekly pull)"
+        ],
+        [
+          "Authority",
+          "CDPHE Reg 11.10"
+        ]
+      ],
+      "footer": "Source: CDPHE Reg 11 · Monthly reporting cycle",
+      "cta": "Open Daily Log",
+      "primaryTarget": "dailylog"
+    }
+  }
+}

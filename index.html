@@ -3,610 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Upstream AI — Data Trust & Operator Intelligence for Small Water Utilities</title>
+<!-- Security meta tags — fallback for hosts without server header support -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://us-assets.i.posthog.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://formspree.io https://us.i.posthog.com https://us-assets.i.posthog.com; frame-ancestors 'none'">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+<title>Upstream AI — The Compliance Calendar for Small Water & Wastewater Utilities</title>
+<meta name="description" content="Upstream AI gives small water and wastewater utilities one screen that runs the month — MOR and DMR deadlines, lab sample logistics, permit renewals, all pre-filled from your own data and traceable to the source. Built for 1–5 person rural utility teams.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.svg">
+
+<!-- Preconnect to font origin for faster load -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+
+<!-- PostHog analytics — defer to not block render -->
+<script defer>
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog&&window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init ls vs Ce hs cs ns us capture calculateEventProperties gs register register_once register_for_session unregister unregister_for_session xs getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty ys createPersonProfile setInternalOrTestUser ws rs $s opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing fs debug M bs getPageViewId captureTraceFeedback captureTraceMetric Zr".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_ubeQWz4wP6cJf0AHoM5347Ve3dDjddR8O4i8tBTTBAT',{api_host:'https://us.i.posthog.com',defaults:'2026-01-30',person_profiles:'identified_only'});
+</script>
+
+<script>
+// Modal functions defined early so they're always available
+function openModal(){document.getElementById('earlyAccessModal').classList.add('active');document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('earlyAccessModal').classList.remove('active');document.body.style.overflow='';setTimeout(function(){var fc=document.getElementById('formContainer');var sm=document.getElementById('successMessage');var ef=document.getElementById('earlyAccessForm');var btn=document.getElementById('submitBtn');if(fc)fc.style.display='block';if(sm)sm.classList.remove('active');if(ef)ef.reset();if(btn){btn.disabled=false;btn.textContent='Request Early Access';}},350);}
+function openContact(){document.getElementById('contactModal').classList.add('active');document.body.style.overflow='hidden';}
+function closeContact(){document.getElementById('contactModal').classList.remove('active');document.body.style.overflow='';setTimeout(function(){var fc=document.getElementById('contactFormContainer');var sm=document.getElementById('contactSuccess');var ef=document.getElementById('contactForm');var btn=document.getElementById('contactSubmitBtn');if(fc)fc.style.display='block';if(sm)sm.classList.remove('active');if(ef)ef.reset();if(btn){btn.disabled=false;btn.textContent='Send message';}},350);}
+</script>
+
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
 
-  * { margin:0; padding:0; box-sizing:border-box; }
-
-  :root {
-    --black: #0a0a0a;
-    --dark: #1a1a1a;
-    --mid: #6b6b6b;
-    --dim: #a3a3a3;
-    --light: #e8e8e8;
-    --bg: #f7f7f7;
-    --white: #ffffff;
-    --accent: #1a5276;
-    --accent-light: #2e86ab;
-    --water: #a8e6cf;
+  :root{
+    --black:#0a0a0a;--dark:#1a1a1a;--mid:#6b6b6b;--dim:#a3a3a3;
+    --light:#e8e8e8;--bg:#f7f7f7;--white:#ffffff;
+    --accent:#1a5276;--accent-light:#2e86ab;--water:#a8e6cf;
   }
 
-  html { scroll-behavior: smooth; }
+  html{scroll-behavior:smooth;}
 
-  body {
-    font-family: 'Inter', sans-serif;
-    color: var(--black);
-    background: var(--white);
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
+  body{
+    font-family:'Inter',sans-serif;color:var(--black);background:var(--white);
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
   }
 
   /* ═══════════════ NAV ═══════════════ */
-  nav {
-    position: fixed; top:0; left:0; right:0; z-index:100;
-    display: flex; align-items:center; justify-content:space-between;
-    padding: 20px 48px;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(0,0,0,0.06);
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 48px;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(0,0,0,0.06);
   }
-  .nav-logo {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px; font-weight: 600; color: var(--black);
-    letter-spacing: -0.5px;
-    text-decoration:none;
-  }
-  .nav-logo .upstream { color: var(--accent-light); font-weight: 400; }
-  .nav-links {
-    display:flex; gap:32px; list-style:none;
-  }
-  .nav-links a {
-    text-decoration:none; color:var(--mid);
-    font-size:13px; font-weight:500;
-    transition: color .2s;
-  }
-  .nav-links a:hover { color:var(--black); }
-  .nav-cta {
-    background: var(--black); color:#fff;
-    border:none; padding: 10px 22px;
-    border-radius:6px; font-size:13px; font-weight:500;
-    cursor:pointer; font-family:inherit;
-    transition: background .2s;
-  }
-  .nav-cta:hover { background: var(--dark); }
+  .nav-logo{font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:var(--black);letter-spacing:-0.5px;text-decoration:none;}
+  .nav-logo .upstream{color:var(--accent-light);font-weight:400;}
+  .nav-links{display:flex;gap:32px;list-style:none;}
+  .nav-links a{text-decoration:none;color:var(--mid);font-size:13px;font-weight:500;transition:color .2s;}
+  .nav-links a:hover{color:var(--black);}
+  .nav-cta{background:var(--black);color:#fff;border:none;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:background .2s;}
+  .nav-cta:hover{background:var(--dark);}
 
   /* ═══════════════ HERO ═══════════════ */
-  .hero {
-    padding: 160px 48px 100px;
-    max-width: 1100px; margin: 0 auto;
-    text-align: center;
-  }
-  .hero-tag {
-    display:inline-flex; align-items:center; gap:8px;
-    background: var(--bg); border:1px solid var(--light);
-    border-radius: 20px; padding: 6px 14px 6px 8px;
-    margin-bottom: 32px;
-  }
-  .hero-tag .tag-dot {
-    width:8px; height:8px; border-radius:50%;
-    background: var(--accent-light);
-    box-shadow: 0 0 6px rgba(46,134,171,0.4);
-  }
-  .hero-tag span { font-size:12px; font-weight:500; color:var(--mid); }
-
-  .hero h1 {
-    font-size: clamp(42px, 6vw, 72px);
-    font-weight: 300; line-height:1.1;
-    color: var(--black); letter-spacing:-2px;
-    margin-bottom: 28px;
-  }
-  .hero h1 em {
-    font-family: 'Playfair Display', serif;
-    font-style: italic; font-weight:700;
-    color: var(--accent);
-  }
-  .hero p {
-    font-size:17px; color:var(--mid); max-width:560px;
-    margin: 0 auto 44px; line-height:1.7; font-weight:300;
-  }
-  .hero-actions {
-    display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
-  }
-  .btn-primary {
-    background:var(--black); color:#fff;
-    padding:14px 32px; border-radius:8px;
-    font-size:14px; font-weight:500; font-family:inherit;
-    border:none; cursor:pointer; text-decoration:none;
-    transition: transform .15s, box-shadow .2s;
-    display:inline-flex; align-items:center; gap:8px;
-  }
-  .btn-primary:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(0,0,0,0.15); }
-  .btn-secondary {
-    background:transparent; color:var(--black);
-    padding:14px 32px; border-radius:8px;
-    font-size:14px; font-weight:500; font-family:inherit;
-    border:1px solid var(--light); cursor:pointer; text-decoration:none;
-    transition: border-color .2s;
-  }
-  .btn-secondary:hover { border-color: var(--dim); }
+  .hero{padding:160px 48px 100px;max-width:1100px;margin:0 auto;text-align:center;}
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--light);border-radius:20px;padding:6px 14px 6px 8px;margin-bottom:32px;}
+  .hero-tag .tag-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-light);box-shadow:0 0 6px rgba(46,134,171,0.4);animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{box-shadow:0 0 6px rgba(46,134,171,0.4);}50%{box-shadow:0 0 12px rgba(46,134,171,0.7);}}
+  .hero-tag span{font-size:12px;font-weight:500;color:var(--mid);}
+  .hero h1{font-size:clamp(42px,6vw,72px);font-weight:300;line-height:1.1;color:var(--black);letter-spacing:-2px;margin-bottom:28px;}
+  .hero h1 em{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;color:var(--accent);}
+  .hero p{font-size:17px;color:var(--mid);max-width:560px;margin:0 auto 44px;line-height:1.7;font-weight:300;}
+  .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .btn-primary{background:var(--black);color:#fff;padding:14px 32px;border-radius:8px;font-size:14px;font-weight:500;font-family:inherit;border:none;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .2s;display:inline-flex;align-items:center;gap:8px;}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.15);}
+  .btn-secondary{background:transparent;color:var(--black);padding:14px 32px;border-radius:8px;font-size:14px;font-weight:500;font-family:inherit;border:1px solid var(--light);cursor:pointer;text-decoration:none;transition:border-color .2s;}
+  .btn-secondary:hover{border-color:var(--dim);}
 
   /* ═══════════════ MARQUEE ═══════════════ */
-  .marquee-wrap {
-    padding: 48px 0;
-    border-top: 1px solid var(--light);
-    border-bottom: 1px solid var(--light);
-    overflow:hidden; white-space:nowrap;
-    background: var(--white);
-  }
-  .marquee-label {
-    text-align:center; font-size:11px; font-weight:500;
-    color:var(--dim); text-transform:uppercase; letter-spacing:2px;
-    margin-bottom:20px;
-  }
-  .marquee-track {
-    display:inline-flex; gap:64px;
-    animation: marquee 30s linear infinite;
-  }
-  .marquee-track .m-item {
-    font-size:15px; font-weight:500; color:var(--light);
-    text-transform:uppercase; letter-spacing:3px;
-    white-space:nowrap; user-select:none;
-  }
-  .marquee-track .m-dot {
-    color: var(--light); font-size:10px;
-  }
-  @keyframes marquee {
-    0% { transform:translateX(0); }
-    100% { transform:translateX(-50%); }
-  }
+  .marquee-wrap{padding:48px 0;border-top:1px solid var(--light);border-bottom:1px solid var(--light);overflow:hidden;white-space:nowrap;background:var(--white);}
+  .marquee-label{text-align:center;font-size:11px;font-weight:500;color:var(--dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;}
+  .marquee-track{display:inline-flex;gap:64px;animation:marquee 30s linear infinite;}
+  .marquee-track .m-item{font-size:15px;font-weight:500;color:var(--light);text-transform:uppercase;letter-spacing:3px;white-space:nowrap;user-select:none;}
+  .marquee-track .m-dot{color:var(--light);font-size:10px;}
+  @keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
   /* ═══════════════ SECTION LAYOUT ═══════════════ */
-  .section { padding: 100px 48px; }
-  .section-inner { max-width:1060px; margin:0 auto; }
-
-  .section-label {
-    font-size:11px; font-weight:600; color:var(--accent-light);
-    text-transform:uppercase; letter-spacing:2px;
-    margin-bottom: 16px;
-  }
-  .section-title {
-    font-size: clamp(32px, 4vw, 48px);
-    font-weight:300; line-height:1.15; letter-spacing:-1.5px;
-    color:var(--black); margin-bottom: 20px;
-  }
-  .section-title em {
-    font-family:'Playfair Display',serif;
-    font-style:italic; font-weight:700; color:var(--accent);
-  }
-  .section-sub {
-    font-size:15px; color:var(--mid); max-width:520px;
-    line-height:1.7; font-weight:300;
-  }
+  .section{padding:100px 48px;}
+  .section-inner{max-width:1060px;margin:0 auto;}
+  .section-label{font-size:11px;font-weight:600;color:var(--accent-light);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
+  .section-title{font-size:clamp(32px,4vw,48px);font-weight:300;line-height:1.15;letter-spacing:-1.5px;color:var(--black);margin-bottom:20px;}
+  .section-title em{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;color:var(--accent);}
+  .section-sub{font-size:15px;color:var(--mid);max-width:520px;line-height:1.7;font-weight:300;}
 
   /* ═══════════════ HOW IT WORKS ═══════════════ */
-  .how-grid {
-    display:grid; grid-template-columns:1fr 1fr 1fr;
-    gap:40px; margin-top:64px;
-  }
-  .how-card { position:relative; }
-  .how-num {
-    font-family:'Playfair Display',serif;
-    font-size:64px; font-weight:700;
-    color: var(--light); line-height:1;
-    margin-bottom:16px; letter-spacing:-2px;
-  }
-  .how-card h3 {
-    font-size:18px; font-weight:600; margin-bottom:10px;
-    color:var(--black); letter-spacing:-0.3px;
-  }
-  .how-card p {
-    font-size:13px; color:var(--mid); line-height:1.7;
-  }
-  .how-card .how-icon {
-    width:44px; height:44px; border-radius:10px;
-    background:var(--bg); border:1px solid var(--light);
-    display:flex; align-items:center; justify-content:center;
-    font-size:20px; margin-bottom:20px;
-  }
+  .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:64px;}
+  .how-card{position:relative;}
+  .how-num{font-family:'Playfair Display',serif;font-size:64px;font-weight:700;color:var(--light);line-height:1;margin-bottom:16px;letter-spacing:-2px;}
+  .how-card h3{font-size:18px;font-weight:600;margin-bottom:10px;color:var(--black);letter-spacing:-0.3px;}
+  .how-card p{font-size:13px;color:var(--mid);line-height:1.7;}
+  .how-card .how-icon{width:44px;height:44px;border-radius:10px;background:var(--bg);border:1px solid var(--light);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:20px;}
 
   /* ═══════════════ WHAT WE SOLVE ═══════════════ */
-  .solve-section { background: var(--bg); }
-  .solve-grid {
-    display:grid; grid-template-columns:1fr 1fr;
-    gap:24px; margin-top:56px;
-  }
-  .solve-card {
-    background:var(--white); border:1px solid var(--light);
-    border-radius:12px; padding:32px;
-    transition: box-shadow .25s;
-  }
-  .solve-card:hover { box-shadow: 0 8px 40px rgba(0,0,0,0.06); }
-  .solve-card .solve-tag {
-    display:inline-block; font-size:10px; font-weight:600;
-    text-transform:uppercase; letter-spacing:1.5px;
-    color:var(--accent-light);
-    background: rgba(46,134,171,0.08);
-    padding: 4px 10px; border-radius:20px;
-    margin-bottom:16px;
-  }
-  .solve-card h3 {
-    font-size:17px; font-weight:600; color:var(--black);
-    margin-bottom:8px; letter-spacing:-0.3px;
-  }
-  .solve-card p {
-    font-size:13px; color:var(--mid); line-height:1.7;
-  }
-  .solve-card .solve-stat {
-    margin-top:18px; padding-top:18px;
-    border-top:1px solid var(--light);
-    display:flex; align-items:baseline; gap:8px;
-  }
-  .solve-stat .stat-num {
-    font-size:28px; font-weight:600; color:var(--accent);
-    letter-spacing:-1px;
-  }
-  .solve-stat .stat-label {
-    font-size:11px; color:var(--dim); font-weight:500;
-  }
+  .solve-section{background:var(--bg);}
+  .solve-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:56px;}
+  .solve-card{background:var(--white);border:1px solid var(--light);border-radius:12px;padding:32px;transition:box-shadow .25s;}
+  .solve-card:hover{box-shadow:0 8px 40px rgba(0,0,0,0.06);}
+  .solve-card .solve-tag{display:inline-block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent-light);background:rgba(46,134,171,0.08);padding:4px 10px;border-radius:20px;margin-bottom:16px;}
+  .solve-card h3{font-size:17px;font-weight:600;color:var(--black);margin-bottom:8px;letter-spacing:-0.3px;}
+  .solve-card p{font-size:13px;color:var(--mid);line-height:1.7;}
+  .solve-card .solve-stat{margin-top:18px;padding-top:18px;border-top:1px solid var(--light);display:flex;align-items:baseline;gap:8px;}
+  .solve-stat .stat-num{font-size:28px;font-weight:600;color:var(--accent);letter-spacing:-1px;}
+  .solve-stat .stat-label{font-size:11px;color:var(--dim);font-weight:500;}
 
   /* ═══════════════ CASE STUDY STRIP ═══════════════ */
-  .case-strip {
-    display:grid; grid-template-columns:1fr 1fr 1fr;
-    gap:0;
-  }
-  .case-item {
-    padding: 48px 36px;
-    border-right: 1px solid var(--light);
-    position:relative;
-  }
-  .case-item:last-child { border-right:none; }
-  .case-item .case-utility {
-    font-size:11px; font-weight:600; color:var(--dim);
-    text-transform:uppercase; letter-spacing:1.5px;
-    margin-bottom:12px;
-  }
-  .case-item blockquote {
-    font-size:15px; color:var(--black); line-height:1.6;
-    font-weight:300; font-style:italic; margin-bottom:20px;
-  }
-  .case-item .case-meta {
-    font-size:12px; color:var(--dim);
-  }
-  .case-item .case-meta strong { color:var(--mid); font-weight:500; }
+  .case-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
+  .case-item{padding:48px 36px;border-right:1px solid var(--light);position:relative;}
+  .case-item:last-child{border-right:none;}
+  .case-item .case-utility{font-size:11px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+  .case-item blockquote{font-size:15px;color:var(--black);line-height:1.6;font-weight:300;font-style:italic;margin-bottom:20px;}
+  .case-item .case-meta{font-size:12px;color:var(--dim);}
+  .case-item .case-meta strong{color:var(--mid);font-weight:500;}
 
   /* ═══════════════ ARCHITECTURE PREVIEW ═══════════════ */
-  .arch-section { background: var(--black); color:#fff; }
-  .arch-section .section-title { color:#fff; }
-  .arch-section .section-title em { color: var(--water); }
-  .arch-section .section-sub { color:rgba(255,255,255,0.45); }
-  .arch-section .section-label { color: var(--water); }
+  .arch-section{background:var(--black);color:#fff;}
+  .arch-section .section-title{color:#fff;}
+  .arch-section .section-title em{color:var(--water);}
+  .arch-section .section-sub{color:rgba(255,255,255,0.45);}
+  .arch-section .section-label{color:var(--water);}
+  .arch-layers{margin-top:56px;display:flex;flex-direction:column;gap:3px;}
+  .arch-layer{display:grid;grid-template-columns:80px 1fr auto;align-items:center;gap:20px;padding:18px 24px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);transition:background .2s;}
+  .arch-layer:hover{background:rgba(255,255,255,0.07);}
+  .arch-layer .al-num{font-size:11px;font-weight:600;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;}
+  .arch-layer .al-content{display:flex;align-items:center;gap:14px;}
+  .arch-layer .al-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .arch-layer .al-name{font-size:15px;font-weight:500;color:#fff;}
+  .arch-layer .al-desc{font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px;}
+  .arch-layer .al-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
+  .arch-layer .al-tag{font-size:10px;font-weight:500;padding:3px 9px;border-radius:12px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);white-space:nowrap;}
+  .arch-arrow{text-align:center;color:rgba(255,255,255,0.15);font-size:18px;padding:2px 0;}
 
-  .arch-layers {
-    margin-top:56px;
-    display:flex; flex-direction:column; gap:3px;
-  }
-  .arch-layer {
-    display:grid;
-    grid-template-columns: 80px 1fr auto;
-    align-items:center; gap:20px;
-    padding: 18px 24px;
-    border-radius:10px;
-    background: rgba(255,255,255,0.04);
-    border:1px solid rgba(255,255,255,0.07);
-    transition: background .2s;
-  }
-  .arch-layer:hover { background:rgba(255,255,255,0.07); }
-  .arch-layer .al-num {
-    font-size:11px; font-weight:600; color:rgba(255,255,255,0.3);
-    text-transform:uppercase; letter-spacing:1px;
-  }
-  .arch-layer .al-content { display:flex; align-items:center; gap:14px; }
-  .arch-layer .al-dot {
-    width:10px; height:10px; border-radius:50%; flex-shrink:0;
-  }
-  .arch-layer .al-name {
-    font-size:15px; font-weight:500; color:#fff;
-  }
-  .arch-layer .al-desc {
-    font-size:12px; color:rgba(255,255,255,0.35);
-    margin-top:2px;
-  }
-  .arch-layer .al-tags {
-    display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;
-  }
-  .arch-layer .al-tag {
-    font-size:10px; font-weight:500; padding:3px 9px; border-radius:12px;
-    background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.5);
-    white-space:nowrap;
-  }
-  .arch-arrow {
-    text-align:center; color:rgba(255,255,255,0.15);
-    font-size:18px; padding:2px 0; letter-spacing:0;
-  }
+  /* ═══════════════ PERSONAS ═══════════════ */
+  .personas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
+  .persona-card{border:1px solid var(--light);border-radius:16px;padding:32px;transition:box-shadow .3s,transform .2s;text-decoration:none;color:inherit;display:block;}
+  .persona-card:hover{box-shadow:0 8px 40px rgba(0,0,0,0.08);transform:translateY(-3px);}
+  .persona-icon{width:48px;height:48px;background:rgba(46,134,171,0.08);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px;}
+  .persona-card h3{font-size:1.25rem;font-weight:600;margin-bottom:8px;}
+  .persona-card p{font-size:14px;color:var(--mid);line-height:1.6;}
+  .persona-link{display:inline-flex;align-items:center;gap:4px;margin-top:16px;font-size:13px;font-weight:500;color:var(--accent-light);text-decoration:none;}
 
   /* ═══════════════ PRICING ═══════════════ */
-  .pricing-grid {
-    display:grid; grid-template-columns:1fr 1fr 1fr;
-    gap:20px; margin-top:60px;
-  }
-  .price-card {
-    border:1px solid var(--light); border-radius:14px;
-    padding:36px 28px; background:var(--white);
-    position:relative; transition: box-shadow .25s;
-  }
-  .price-card:hover { box-shadow:0 8px 48px rgba(0,0,0,0.07); }
-  .price-card.featured {
-    border-color: var(--accent);
-    background: var(--accent);
-    color:#fff;
-  }
-  .price-card .price-badge {
-    position:absolute; top:-12px; left:50%; transform:translateX(-50%);
-    background:var(--black); color:#fff;
-    font-size:10px; font-weight:600; letter-spacing:1.5px;
-    text-transform:uppercase; padding:5px 14px; border-radius:20px;
-  }
-  .price-card .price-tier {
-    font-size:13px; font-weight:600; color:var(--dim);
-    text-transform:uppercase; letter-spacing:1.5px;
-    margin-bottom:12px;
-  }
-  .price-card.featured .price-tier { color:rgba(255,255,255,0.6); }
-
-  .price-card .price-amount {
-    font-size:40px; font-weight:300; letter-spacing:-2px;
-    margin-bottom:4px; color:var(--black);
-  }
-  .price-card.featured .price-amount { color:#fff; }
-  .price-card .price-period {
-    font-size:12px; color:var(--dim); margin-bottom:24px;
-  }
-  .price-card.featured .price-period { color:rgba(255,255,255,0.5); }
-
-  .price-card .price-list {
-    list-style:none; margin-bottom:28px;
-  }
-  .price-card .price-list li {
-    font-size:13px; color:var(--mid); padding:7px 0;
-    border-bottom:1px solid var(--light);
-    display:flex; align-items:center; gap:10px;
-  }
-  .price-card.featured .price-list li {
-    color:rgba(255,255,255,0.7);
-    border-bottom-color:rgba(255,255,255,0.12);
-  }
-  .price-card .price-list li:last-child { border-bottom:none; }
-  .price-card .price-list .check {
-    color:var(--accent-light); font-size:14px; flex-shrink:0;
-  }
-  .price-card.featured .price-list .check { color:var(--water); }
-
-  .price-card .price-btn {
-    display:block; width:100%; padding:12px;
-    border-radius:8px; font-size:13px; font-weight:500;
-    font-family:inherit; cursor:pointer; text-align:center;
-    border:1px solid var(--light); background:transparent;
-    color:var(--black); transition:.2s;
-  }
-  .price-card .price-btn:hover { background:var(--bg); }
-  .price-card.featured .price-btn {
-    background:#fff; color:var(--accent); border-color:#fff;
-  }
-  .price-card.featured .price-btn:hover { background:rgba(255,255,255,0.9); }
+  .pricing-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:60px;}
+  .price-card{border:1px solid var(--light);border-radius:14px;padding:36px 28px;background:var(--white);position:relative;transition:box-shadow .25s;}
+  .price-card:hover{box-shadow:0 8px 48px rgba(0,0,0,0.07);}
+  .price-card.featured{border-color:var(--accent);background:var(--accent);color:#fff;}
+  .price-card .price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--black);color:#fff;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
+  .price-card .price-tier{font-size:13px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+  .price-card.featured .price-tier{color:rgba(255,255,255,0.6);}
+  .price-card .price-list{list-style:none;margin-bottom:28px;}
+  .price-card .price-list li{font-size:13px;color:var(--mid);padding:7px 0;border-bottom:1px solid var(--light);display:flex;align-items:center;gap:10px;}
+  .price-card.featured .price-list li{color:rgba(255,255,255,0.7);border-bottom-color:rgba(255,255,255,0.12);}
+  .price-card .price-list li:last-child{border-bottom:none;}
+  .price-card .price-list .check{color:var(--accent-light);font-size:14px;flex-shrink:0;}
+  .price-card.featured .price-list .check{color:var(--water);}
+  .price-card .price-btn{display:block;width:100%;padding:12px;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;text-align:center;border:1px solid var(--light);background:transparent;color:var(--black);transition:.2s;}
+  .price-card .price-btn:hover{background:var(--bg);}
+  .price-card.featured .price-btn{background:#fff;color:var(--accent);border-color:#fff;}
+  .price-card.featured .price-btn:hover{background:rgba(255,255,255,0.9);}
 
   /* ═══════════════ CTA BANNER ═══════════════ */
-  .cta-banner {
-    margin: 0 48px 80px;
-    max-width:1060px; margin-left:auto; margin-right:auto;
-    background:var(--black); border-radius:20px;
-    padding: 80px 60px;
-    text-align:center; position:relative; overflow:hidden;
-  }
-  .cta-banner::before {
-    content:'';
-    position:absolute; top:-60%; left:50%; transform:translateX(-50%);
-    width:600px; height:600px;
-    background: radial-gradient(circle, rgba(46,134,171,0.12) 0%, transparent 70%);
-    pointer-events:none;
-  }
-  .cta-banner h2 {
-    position:relative; z-index:1;
-    font-size: clamp(28px,4vw,42px);
-    font-weight:300; color:#fff; letter-spacing:-1.5px;
-    line-height:1.2; margin-bottom:16px;
-  }
-  .cta-banner h2 em {
-    font-family:'Playfair Display',serif;
-    font-style:italic; font-weight:700; color:var(--water);
-  }
-  .cta-banner p {
-    position:relative; z-index:1;
-    font-size:15px; color:rgba(255,255,255,0.45);
-    max-width:480px; margin:0 auto 36px; line-height:1.7;
-  }
-  .cta-banner .btn-light {
-    position:relative; z-index:1;
-    display:inline-flex; align-items:center; gap:8px;
-    background:#fff; color:var(--black);
-    padding:14px 32px; border-radius:8px;
-    font-size:14px; font-weight:500; font-family:inherit;
-    border:none; cursor:pointer; text-decoration:none;
-    transition:transform .15s, box-shadow .2s;
-  }
-  .cta-banner .btn-light:hover { transform:translateY(-1px); box-shadow:0 6px 24px rgba(0,0,0,0.2); }
+  .cta-banner{margin:0 48px 80px;max-width:1060px;margin-left:auto;margin-right:auto;background:var(--black);border-radius:20px;padding:80px 60px;text-align:center;position:relative;overflow:hidden;}
+  .cta-banner::before{content:'';position:absolute;top:-60%;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(46,134,171,0.12) 0%,transparent 70%);pointer-events:none;}
+  .cta-banner h2{position:relative;z-index:1;font-size:clamp(28px,4vw,42px);font-weight:300;color:#fff;letter-spacing:-1.5px;line-height:1.2;margin-bottom:16px;}
+  .cta-banner h2 em{font-family:'Playfair Display',serif;font-style:italic;font-weight:700;color:var(--water);}
+  .cta-banner p{position:relative;z-index:1;font-size:15px;color:rgba(255,255,255,0.45);max-width:480px;margin:0 auto 36px;line-height:1.7;}
+  .cta-banner .btn-light{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--black);padding:14px 32px;border-radius:8px;font-size:14px;font-weight:500;font-family:inherit;border:none;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .2s;}
+  .cta-banner .btn-light:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,0,0,0.2);}
 
   /* ═══════════════ FOOTER ═══════════════ */
-  footer {
-    padding:60px 48px 40px;
-    border-top:1px solid var(--light);
-  }
-  .footer-inner {
-    max-width:1060px; margin:0 auto;
-    display:grid; grid-template-columns:2fr 1fr 1fr 1fr;
-    gap:48px;
-  }
-  .footer-brand .nav-logo { display:block; margin-bottom:12px; font-size:16px; }
-  .footer-brand p { font-size:12px; color:var(--dim); line-height:1.7; max-width:260px; }
-  footer h4 { font-size:11px; font-weight:600; color:var(--black); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:16px; }
-  footer ul { list-style:none; }
-  footer ul li { margin-bottom:10px; }
-  footer ul a { font-size:13px; color:var(--dim); text-decoration:none; transition:color .2s; }
-  footer ul a:hover { color:var(--black); }
-  .footer-bottom {
-    max-width:1060px; margin:40px auto 0;
-    padding-top:24px; border-top:1px solid var(--light);
-    display:flex; justify-content:space-between;
-    font-size:11px; color:var(--dim);
-  }
+  footer{padding:60px 48px 40px;border-top:1px solid var(--light);}
+  .footer-inner{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;}
+  .footer-brand .nav-logo{display:block;margin-bottom:12px;font-size:16px;}
+  .footer-brand p{font-size:12px;color:var(--dim);line-height:1.7;max-width:260px;}
+  footer h4{font-size:11px;font-weight:600;color:var(--black);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;}
+  footer ul{list-style:none;}
+  footer ul li{margin-bottom:10px;}
+  footer ul a{font-size:13px;color:var(--dim);text-decoration:none;transition:color .2s;}
+  footer ul a:hover{color:var(--black);}
+  .footer-bottom{max-width:1060px;margin:40px auto 0;padding-top:24px;border-top:1px solid var(--light);display:flex;justify-content:space-between;font-size:11px;color:var(--dim);}
+
+  /* ═══════════════ MODAL ═══════════════ */
+  .modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:1000;animation:fadeIn .2s;}
+  .modal.active{display:flex;align-items:center;justify-content:center;}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  .modal-content{background:var(--white);border-radius:16px;max-width:520px;width:90%;padding:40px;position:relative;animation:slideUp .3s;max-height:90vh;overflow-y:auto;}
+  @keyframes slideUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+  .modal-close{position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;color:var(--mid);cursor:pointer;padding:0;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s;}
+  .modal-close:hover{background:var(--bg);}
+  .modal h3{font-size:24px;font-weight:600;color:var(--black);margin-bottom:8px;}
+  .modal p{font-size:14px;color:var(--mid);margin-bottom:28px;}
+  .form-group{margin-bottom:20px;}
+  .form-group label{display:block;font-size:13px;font-weight:500;color:var(--black);margin-bottom:6px;}
+  .form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 14px;border:1px solid var(--light);border-radius:8px;font-size:14px;font-family:inherit;transition:border-color .2s;background:var(--white);}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--accent);}
+  .form-group textarea{resize:vertical;min-height:80px;}
+  .form-submit{width:100%;background:var(--black);color:#fff;border:none;padding:14px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:transform .15s,opacity .2s;}
+  .form-submit:hover{transform:translateY(-1px);}
+  .form-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+  .form-success{display:none;text-align:center;padding:40px 20px;}
+  .form-success.active{display:block;}
+  .form-success .success-icon{font-size:48px;margin-bottom:16px;}
+  .form-success h4{font-size:20px;font-weight:600;color:var(--black);margin-bottom:8px;}
+  .form-success p{font-size:14px;color:var(--mid);margin:0;}
+  .form-error{display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#991b1b;}
+  .form-error.active{display:block;}
 
   /* ═══════════════ RESPONSIVE ═══════════════ */
-  /* Modal */
-  .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-    animation: fadeIn 0.2s;
-  }
-  .modal.active { display: flex; align-items: center; justify-content: center; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .modal-content {
-    background: var(--white);
-    border-radius: 16px;
-    max-width: 520px;
-    width: 90%;
-    padding: 40px;
-    position: relative;
-    animation: slideUp 0.3s;
-  }
-
-  @keyframes slideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  .modal-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: var(--mid);
-    cursor: pointer;
-    padding: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background 0.2s;
-  }
-  .modal-close:hover { background: var(--bg); }
-
-  .modal h3 {
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--black);
-    margin-bottom: 8px;
-  }
-  .modal p {
-    font-size: 14px;
-    color: var(--mid);
-    margin-bottom: 28px;
-  }
-
-  .form-group {
-    margin-bottom: 20px;
-  }
-  .form-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--black);
-    margin-bottom: 6px;
-  }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid var(--light);
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: inherit;
-    transition: border-color 0.2s;
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-  .form-group textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-
-  .form-submit {
-    width: 100%;
-    background: var(--black);
-    color: #fff;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: inherit;
-    transition: transform 0.15s, opacity 0.2s;
-  }
-  .form-submit:hover { transform: translateY(-1px); }
-  .form-submit:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .form-success {
-    display: none;
-    text-align: center;
-    padding: 40px 20px;
-  }
-  .form-success.active { display: block; }
-  .form-success .success-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-  }
-  .form-success h4 {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--black);
-    margin-bottom: 8px;
-  }
-  .form-success p {
-    font-size: 14px;
-    color: var(--mid);
-    margin: 0;
-  }
-
-  @media(max-width:860px) {
-    nav { padding:16px 24px; }
-    .nav-links { display:none; }
-    .hero { padding:140px 24px 80px; }
-    .section { padding:80px 24px; }
-    .how-grid { grid-template-columns:1fr; gap:36px; }
-    .solve-grid { grid-template-columns:1fr; }
-    .case-strip { grid-template-columns:1fr; }
-    .case-item { border-right:none; border-bottom:1px solid var(--light); }
-    .pricing-grid { grid-template-columns:1fr; max-width:420px; margin-left:auto; margin-right:auto; }
-    .cta-banner { margin:0 24px 60px; padding:60px 32px; }
-    .footer-inner { grid-template-columns:1fr 1fr; }
-    .arch-layer { grid-template-columns:60px 1fr; }
-    .arch-layer .al-tags { grid-column:2; justify-content:flex-start; }
-    .modal-content { padding: 32px 24px; }
+  @media(max-width:860px){
+    nav{padding:16px 24px;}
+    .nav-links{display:none;}
+    .hero{padding:140px 24px 80px;}
+    .section{padding:80px 24px;}
+    .how-grid{grid-template-columns:1fr;gap:36px;}
+    .solve-grid{grid-template-columns:1fr;}
+    .case-strip{grid-template-columns:1fr;}
+    .case-item{border-right:none;border-bottom:1px solid var(--light);}
+    .pricing-grid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto;}
+    .cta-banner{margin:0 24px 60px;padding:60px 32px;}
+    .footer-inner{grid-template-columns:1fr 1fr;}
+    .arch-layer{grid-template-columns:60px 1fr;}
+    .arch-layer .al-tags{grid-column:2;justify-content:flex-start;}
+    .modal-content{padding:32px 24px;}
+    .personas-grid{grid-template-columns:1fr !important;}
+    .persona-card{border-right:none !important;border-bottom:1px solid var(--light);}
+    .persona-card:last-child{border-bottom:none;}
   }
 </style>
 <script>
@@ -626,51 +256,48 @@
   <ul class="nav-links">
     <li><a href="#how">How it works</a></li>
     <li><a href="#solve">Solutions</a></li>
+    <li><a href="about.html">About</a></li>
     <li><a href="security.html">Security</a></li>
-    <li><a href="#pricing">Pricing</a></li>
   </ul>
-  <button class="nav-cta">Talk to us</button>
+  <button class="nav-cta" onclick="openContact()">Contact us</button>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-tag">
+<section class="hero" id="hero">
+  <a href="/pilot" class="hero-tag" style="text-decoration:none;">
     <div class="tag-dot"></div>
-    <span>Now in early access — Colorado pilot utilities</span>
-  </div>
-  <h1>Finally, <em>data you can trust.</em><br>Then, intelligence you can use.</h1>
-  <p>When you look at a sensor reading, know instantly if it's real or if the probe is dying. When an alarm triggers, understand if it's genuine or false. Built for 1–5 person utilities with no time for guesswork.</p>
+    <span>Now in early access — Colorado pilot utilities →</span>
+  </a>
+  <h1>The compliance calendar that <em>runs your month.</em></h1>
+  <p>Every MOR. Every DMR. Every lab sample bottle, every permit renewal, every CEU deadline — already on your screen, already pre-filled from your own data. Built for the 1–5 person rural utility teams who answer to CDPHE personally, on both the drinking-water and wastewater sides of the plant.</p>
   <div class="hero-actions">
-    <a href="#" class="btn-primary">Request early access →</a>
+    <a href="#" class="btn-primary" onclick="openModal(); return false;">Request early access →</a>
     <a href="#how" class="btn-secondary">See how it works</a>
   </div>
 </section>
 
 <!-- MARQUEE -->
 <div class="marquee-wrap">
-  <div class="marquee-label">Integrates with the systems you already run</div>
+  <div class="marquee-label">Works with the labs, portals, and records you already use</div>
   <div class="marquee-track">
-    <span class="m-item">Ignition</span><span class="m-dot">·</span>
-    <span class="m-item">VTScada</span><span class="m-dot">·</span>
-    <span class="m-item">OSIsoft PI</span><span class="m-dot">·</span>
-    <span class="m-item">eLynx</span><span class="m-dot">·</span>
-    <span class="m-item">High Tide</span><span class="m-dot">·</span>
-    <span class="m-item">OPC UA</span><span class="m-dot">·</span>
-    <span class="m-item">MQTT</span><span class="m-dot">·</span>
-    <span class="m-item">Wonderware</span><span class="m-dot">·</span>
-    <span class="m-item">GE iFIX</span><span class="m-dot">·</span>
-    <span class="m-item">Samsara</span><span class="m-dot">·</span>
-    <!-- duplicate for seamless loop -->
-    <span class="m-item">Ignition</span><span class="m-dot">·</span>
-    <span class="m-item">VTScada</span><span class="m-dot">·</span>
-    <span class="m-item">OSIsoft PI</span><span class="m-dot">·</span>
-    <span class="m-item">eLynx</span><span class="m-dot">·</span>
-    <span class="m-item">High Tide</span><span class="m-dot">·</span>
-    <span class="m-item">OPC UA</span><span class="m-dot">·</span>
-    <span class="m-item">MQTT</span><span class="m-dot">·</span>
-    <span class="m-item">Wonderware</span><span class="m-dot">·</span>
-    <span class="m-item">GE iFIX</span><span class="m-dot">·</span>
-    <span class="m-item">Samsara</span><span class="m-dot">·</span>
+    <span class="m-item">CDPHE wqcdcompliance.com</span><span class="m-dot">·</span>
+    <span class="m-item">EPA NetDMR</span><span class="m-dot">·</span>
+    <span class="m-item">Eurofins</span><span class="m-dot">·</span>
+    <span class="m-item">Front Range Labs</span><span class="m-dot">·</span>
+    <span class="m-item">Colorado Analytical</span><span class="m-dot">·</span>
+    <span class="m-item">CDPHE MOR data sheets</span><span class="m-dot">·</span>
+    <span class="m-item">CDPS permits</span><span class="m-dot">·</span>
+    <span class="m-item">SCADA exports (CSV / XLSX)</span><span class="m-dot">·</span>
+    <span class="m-item">EPA Method 537.1</span><span class="m-dot">·</span>
+    <span class="m-item">CDPHE wqcdcompliance.com</span><span class="m-dot">·</span>
+    <span class="m-item">EPA NetDMR</span><span class="m-dot">·</span>
+    <span class="m-item">Eurofins</span><span class="m-dot">·</span>
+    <span class="m-item">Front Range Labs</span><span class="m-dot">·</span>
+    <span class="m-item">Colorado Analytical</span><span class="m-dot">·</span>
+    <span class="m-item">CDPHE MOR data sheets</span><span class="m-dot">·</span>
+    <span class="m-item">CDPS permits</span><span class="m-dot">·</span>
+    <span class="m-item">SCADA exports (CSV / XLSX)</span><span class="m-dot">·</span>
+    <span class="m-item">EPA Method 537.1</span><span class="m-dot">·</span>
   </div>
 </div>
 
@@ -678,27 +305,27 @@
 <section class="section" id="how">
   <div class="section-inner">
     <div class="section-label">How it works</div>
-    <h2 class="section-title">Trust first.<br><em>Intelligence second.</em></h2>
-    <p class="section-sub">Most vendors assume your data is clean. We know it's not. So we fix that problem first, then layer on the AI.</p>
+    <h2 class="section-title">From scattered to <em>scheduled</em><br>in one afternoon.</h2>
+    <p class="section-sub">Connect your records once. Upstream learns your facility, your permits, your sampling schedule — and starts running the month with you, drinking-water and wastewater side by side.</p>
 
     <div class="how-grid">
       <div class="how-card">
         <div class="how-num">01</div>
-        <div class="how-icon">🔌</div>
-        <h3>Connect & baseline</h3>
-        <p>Install a lightweight agent on your existing SCADA PC. It auto-discovers your sensors, pumps, and treatment systems. For the first 30 days, it just watches—learning what "normal" looks like for your specific equipment.</p>
+        <div class="how-icon">📄</div>
+        <h3>Connect your records once</h3>
+        <p>Drop in your CDPHE MOR data sheet, your CDPS discharge permit, lab return PDFs from Eurofins or Front Range Labs. We parse them so you don't have to — and we keep them current as new returns arrive each week.</p>
       </div>
       <div class="how-card">
         <div class="how-num">02</div>
-        <div class="how-icon">✓</div>
-        <h3>Score every data point</h3>
-        <p>Every sensor reading gets a trust score (0-100%) based on calibration history, drift patterns, and cross-validation. When you see "Chlorine: 2.3 ppm," you also see "Trust: 94%"—or "Trust: 47%, probe overdue for calibration."</p>
+        <div class="how-icon">📅</div>
+        <h3>See your month at a glance</h3>
+        <p>Every deadline, every sample bottle, every renewal — color-coded by preservative, traced back to the rule that requires it. MOR Friday and DMR end-of-month sit on the same calendar, with lab pickups and CEU deadlines in between.</p>
       </div>
       <div class="how-card">
         <div class="how-num">03</div>
-        <div class="how-icon">🧠</div>
-        <h3>Add intelligence you can explain</h3>
-        <p>Once you trust the data, we add predictions. But every alert shows its reasoning: "Pump 2 bearing will fail in 4-7 days (87% confident). Based on: vibration trend, temperature pattern, runtime hours." You understand the why, not just the what.</p>
+        <div class="how-icon">✓</div>
+        <h3>Submit with confidence</h3>
+        <p>MOR due the 10th, DMR due the 28th — the numbers are already there. You review, your ORC signs, you submit through wqcdcompliance.com or NetDMR. The math is shown. The source samples are linked. You stay the responsible party.</p>
       </div>
     </div>
   </div>
@@ -708,44 +335,44 @@
 <section class="section solve-section" id="solve">
   <div class="section-inner">
     <div class="section-label">Solutions</div>
-    <h2 class="section-title">The questions operators<br>ask <em>every single day.</em></h2>
-    <p class="section-sub">Can I trust this reading? Is this alarm real? Who changed that setpoint? We answer these questions first—then add intelligence on top.</p>
+    <h2 class="section-title">The four questions operators<br>answer <em>every month.</em></h2>
+    <p class="section-sub">Compliance work is recurring, deadline-driven, and personally accountable. Upstream takes the patchwork — the fridge calendar, the lab spreadsheet, the half-remembered DMR date — and turns it into one screen, without taking the responsibility away from you.</p>
 
     <div class="solve-grid">
       <div class="solve-card">
-        <div class="solve-tag">Data Trust</div>
-        <h3>"Is this sensor reading real?"</h3>
-        <p>Every value gets a trust score. "Chlorine: 2.3 ppm (Trust: 94%)" means act on it. "Chlorine: 2.3 ppm (Trust: 38%, probe overdue calibration)" means verify manually. No more guessing whether to drive out at 3 AM.</p>
+        <div class="solve-tag">Deadlines</div>
+        <h3>"When is my next report due — and is the data ready?"</h3>
+        <p>Live compliance home for both sides of the plant. <strong>MOR:</strong> 31/31 sampling days complete, lowest Cl₂ residual 0.82 mg/L, all TT criteria met. <strong>DMR:</strong> lagoon BOD₅, TSS, ammonia, and E. coli all logged, draft at 60% with the missing pieces named. You see the status before the deadline sees you.</p>
         <div class="solve-stat">
-          <span class="stat-num">0-100%</span>
-          <span class="stat-label">trust score on every data point</span>
+          <span class="stat-num">Apr 10 / Apr 28</span>
+          <span class="stat-label">MOR &amp; DMR due dates — both tracked</span>
         </div>
       </div>
       <div class="solve-card">
-        <div class="solve-tag">Transparent Logic</div>
-        <h3>"How did the system get this number?"</h3>
-        <p>Click any calculated value to see the formula, source data, and assumptions. "Energy efficiency 78%" isn't mysterious—you see exactly which sensors contributed and how it was computed. No black boxes.</p>
+        <div class="solve-tag">Lab Sampling</div>
+        <h3>"Which bottle, which preservative, which hold time?"</h3>
+        <p>Orange-cap BOD₅ and TSS, 48-hour critical hold. Yellow-cap H₂SO₄ for effluent ammonia and TKN, 28-day hold. Red-cap HNO₃ for lead and copper. Purple-cap PFAS, 14-day hold, no Teflon contact. The right bottle, the right method, the right courier window — by sample, in one view.</p>
         <div class="solve-stat">
-          <span class="stat-num">100%</span>
-          <span class="stat-label">of calculations documented and explainable</span>
+          <span class="stat-num">7+</span>
+          <span class="stat-label">sample types · color-coded by preservative</span>
         </div>
       </div>
       <div class="solve-card">
-        <div class="solve-tag">Audit Trails</div>
-        <h3>"Who changed that setpoint last night?"</h3>
-        <p>Full audit trail for every manual override, setpoint change, and equipment start/stop. "Pump 3 stopped at 2:47 AM by Operator Tim for bearing inspection." When your manager asks what happened, you have answers.</p>
+        <div class="solve-tag">Weekly Pull</div>
+        <h3>"What changed this week?"</h3>
+        <p>Friday morning automated pull: new lab returns ingested, anomalies surfaced (tight Cl₂ margin, BOD₅ trending up, Bear Creek effluent temperature climbing into the salmonid window), this week's tasks pre-populated. You catch up over coffee — not in the truck.</p>
         <div class="solve-stat">
-          <span class="stat-num">Every</span>
-          <span class="stat-label">action logged with who, what, when, why</span>
+          <span class="stat-num">Fri 7:30 AM</span>
+          <span class="stat-label">weekly compliance pull · automatic</span>
         </div>
       </div>
       <div class="solve-card">
-        <div class="solve-tag">Intelligent Alerts</div>
-        <h3>"Pump 2 bearing will fail in 4-7 days"</h3>
-        <p>Once you trust the data, predictions become valuable. But we show our work: "87% confident. Based on: vibration trend +15% over 5 days, temperature +8°F, runtime 2,847 hrs." You understand why, not just what.</p>
+        <div class="solve-tag">Trust the Math</div>
+        <h3>"Can I trust the calculation before I sign?"</h3>
+        <p>Every result on the MOR and the DMR clicks through to its source sample. The calculation aid shows its work — the limit, the rule, the sampling method, the row in the data sheet. Upstream is an aid; you stay the responsible party. Audit-ready by design, not by scramble.</p>
         <div class="solve-stat">
-          <span class="stat-num">48-72hr</span>
-          <span class="stat-label">advance warning before failures</span>
+          <span class="stat-num">Every cell</span>
+          <span class="stat-label">traceable to source readings</span>
         </div>
       </div>
     </div>
@@ -758,142 +385,167 @@
     <div class="case-strip">
       <div class="case-item">
         <div class="case-utility">Pilot utility — Colorado mountains</div>
-        <blockquote>"For the first time in 12 years, I actually trust what I see on my dashboard. Every reading has a trust score. I know when to act and when to verify."</blockquote>
-        <div class="case-meta"><strong>Water & Sanitation District</strong> · 3 employees · ~1,200 connections</div>
+        <blockquote>"For the first time in twelve years, MOR Friday isn't an all-nighter. The numbers are already there, the source samples are linked, and my ORC can sign off Tuesday morning."</blockquote>
+        <div class="case-meta"><strong>Lead Operator</strong> · Drinking water + lagoon WWTP · ~1,200 connections</div>
       </div>
       <div class="case-item">
         <div class="case-utility">Early access — Western Colorado</div>
-        <blockquote>"The system flagged a chlorine probe at 42% trust score. Turned out it was drifting. Without that warning, I would've dosed based on bad data and violated our permit."</blockquote>
-        <div class="case-meta"><strong>Lead Operator</strong> · 8 years experience · ~650 connections</div>
+        <blockquote>"I used to keep the lab pickup schedule in three places — fridge calendar, spreadsheet, my head. Now I open the screen and the bottles for next week are right there, color-coded by preservative."</blockquote>
+        <div class="case-meta"><strong>District Manager</strong> · 8 years experience · ~650 connections</div>
       </div>
       <div class="case-item">
         <div class="case-utility">Advisory board member</div>
-        <blockquote>"This is what the industry has been missing. Not more dashboards—confidence in the data behind them. Operators finally have answers, not just more questions."</blockquote>
+        <blockquote>"This is what the industry has been missing. Not more dashboards — one screen that holds the calendar, prepares the MOR and DMR, and makes the audit trail obvious to a state reviewer."</blockquote>
         <div class="case-meta"><strong>Former utility manager</strong> · 30 years in water · Now on advisory board</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ARCHITECTURE -->
+<!-- YOUR DASHBOARD -->
 <section class="section arch-section" id="architecture">
   <div class="section-inner">
-    <div class="section-label">Platform</div>
-    <h2 class="section-title" style="color:#fff">Five layers, one platform,<br><em>zero IT required.</em></h2>
-    <p class="section-sub">From your SCADA historian to your phone — the full data path that turns raw sensor noise into decisions your team can act on.</p>
+    <div class="section-label">Your Dashboard</div>
+    <h2 class="section-title" style="color:#fff">Seven views. One screen.<br><em>The whole month in one place.</em></h2>
+    <p class="section-sub">The same dashboard adapts to your facility — drinking water, wastewater, or both. Here's what you see when you log in, in the order an operator actually uses them.</p>
 
     <div class="arch-layers">
       <div class="arch-layer">
-        <div class="al-num">Layer 1</div>
+        <div class="al-num">Home</div>
+        <div class="al-content">
+          <div class="al-dot" style="background:#5bc8f5"></div>
+          <div><div class="al-name">Compliance Home</div><div class="al-desc">The landing view. Active reports (MOR, DMR, PFAS quarterly), this week's tasks, recently submitted documents — and a hero status line that tells you immediately whether the month is on track. "March MOR ready. 31/31 days complete. Lowest Cl₂ 0.82 mg/L."</div></div>
+        </div>
+        <div class="al-tags"><span class="al-tag">MOR + DMR status</span><span class="al-tag">This week's tasks</span><span class="al-tag">Hero status line</span></div>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer">
+        <div class="al-num">Calendar</div>
         <div class="al-content">
           <div class="al-dot" style="background:#4dc98a"></div>
-          <div><div class="al-name">Ingest & Connect</div><div class="al-desc">Read-only pull from your SCADA via OPC UA, MQTT, SQL, or cloud API</div></div>
+          <div><div class="al-name">Compliance Calendar</div><div class="al-desc">The month at a glance. MOR data lock, DMR submission deadline, lab pickup days color-coded by preservative (orange BOD₅, yellow ammonia, red lead/copper, purple PFAS), CEU windows, permit renewals. Click any event for the full source and procedure.</div></div>
         </div>
-        <div class="al-tags"><span class="al-tag">OPC UA</span><span class="al-tag">MQTT</span><span class="al-tag">Read-only</span></div>
+        <div class="al-tags"><span class="al-tag">Color-coded by preservative</span><span class="al-tag">Click any event</span><span class="al-tag">Drinking + Wastewater</span></div>
       </div>
       <div class="arch-arrow">↓</div>
       <div class="arch-layer">
-        <div class="al-num">Layer 2</div>
+        <div class="al-num">Reports</div>
         <div class="al-content">
           <div class="al-dot" style="background:#2ec4e8"></div>
-          <div><div class="al-name">Normalize & Enrich</div><div class="al-desc">Unified schema, denoising, gap-fill, and free weather + soil enrichment</div></div>
+          <div><div class="al-name">MOR &amp; DMR Prep</div><div class="al-desc">Monthly Operating Reports and Discharge Monitoring Reports — pre-filled, math shown, source samples linked. Tight margins flagged in yellow. ORC certification language ready. Submit through wqcdcompliance.com or NetDMR with confidence the calculation is traceable.</div></div>
         </div>
-        <div class="al-tags"><span class="al-tag">Kinesis</span><span class="al-tag">TimescaleDB</span><span class="al-tag">Auto-map</span></div>
+        <div class="al-tags"><span class="al-tag">Pre-filled</span><span class="al-tag">Source-linked</span><span class="al-tag">Audit-ready</span></div>
       </div>
       <div class="arch-arrow">↓</div>
       <div class="arch-layer">
-        <div class="al-num">Layer 3</div>
-        <div class="al-content">
-          <div class="al-dot" style="background:#8b6de8"></div>
-          <div><div class="al-name">ML & Prediction</div><div class="al-desc">Per-utility anomaly detection, RUL estimation, and pipe risk scoring</div></div>
-        </div>
-        <div class="al-tags"><span class="al-tag">LSTM</span><span class="al-tag">XGBoost</span><span class="al-tag">MLflow</span></div>
-      </div>
-      <div class="arch-arrow">↓</div>
-      <div class="arch-layer">
-        <div class="al-num">Layer 4</div>
+        <div class="al-num">Inputs</div>
         <div class="al-content">
           <div class="al-dot" style="background:#f0a840"></div>
-          <div><div class="al-name">Smart Alerts</div><div class="al-desc">Confidence-scored, grouped notifications via SMS, push, or email</div></div>
+          <div><div class="al-name">Daily Log</div><div class="al-desc">Replace paper logs and spreadsheets. CFE turbidity, disinfection residual, wastewater lagoon or activated-sludge readings — entered once, with guardrails flagging out-of-range values the moment you type them. Syncs into the MOR and DMR automatically.</div></div>
         </div>
-        <div class="al-tags"><span class="al-tag">SMS-first</span><span class="al-tag">Grouped</span><span class="al-tag">Feedback loop</span></div>
+        <div class="al-tags"><span class="al-tag">Paper → digital</span><span class="al-tag">Real-time guardrails</span><span class="al-tag">Auto-syncs to reports</span></div>
       </div>
       <div class="arch-arrow">↓</div>
       <div class="arch-layer">
-        <div class="al-num">Layer 5</div>
+        <div class="al-num">Trends</div>
         <div class="al-content">
-          <div class="al-dot" style="background:#e8625e"></div>
-          <div><div class="al-name">Dashboard & Compliance</div><div class="al-desc">Asset health scores, ROI tracking, auto-generated EPA reports, and grant guidance</div></div>
+          <div class="al-dot" style="background:#8b6de8"></div>
+          <div><div class="al-name">Trends &amp; Anomalies</div><div class="al-desc">Daily highest, daily lowest, month-over-month. Cl₂ residual trending tight. BOD₅ creeping up. GAC bed approaching mid-life. Bear Creek effluent temperature climbing into the salmonid window. Patterns surfaced before they become violations.</div></div>
         </div>
-        <div class="al-tags"><span class="al-tag">React SPA</span><span class="al-tag">Auto-reports</span><span class="al-tag">ROI tracker</span></div>
+        <div class="al-tags"><span class="al-tag">Multi-parameter</span><span class="al-tag">Anomalies flagged</span><span class="al-tag">Permit-aware</span></div>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer">
+        <div class="al-num">Records</div>
+        <div class="al-content">
+          <div class="al-dot" style="background:#5bc8f5"></div>
+          <div><div class="al-name">Document Library</div><div class="al-desc">Your CDPS permit, MOR data sheets, lab return PDFs, O&amp;M manuals, sampling SOPs — indexed and linked to the rows on the MOR and DMR they support. Plus a global library of CDPHE Reg 11, 31, 61, 85, EPA PFAS rule, LCRR — kept current centrally.</div></div>
+        </div>
+        <div class="al-tags"><span class="al-tag">Facility + global</span><span class="al-tag">Linked to reports</span><span class="al-tag">Always current</span></div>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer">
+        <div class="al-num">AI</div>
+        <div class="al-content">
+          <div class="al-dot" style="background:#9b7ae8"></div>
+          <div><div class="al-name">AI Briefing &amp; Chat</div><div class="al-desc">Friday morning compliance pull: what was ingested, what's anomalous, what's due in 14 days. Plus on-demand chat — "How tight was Cl₂ this month?" or "How much GAC bed life is left?" — answered with citations to your own samples, never from a black box.</div></div>
+        </div>
+        <div class="al-tags"><span class="al-tag">Weekly pull</span><span class="al-tag">Explainable</span><span class="al-tag">Source-cited</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
+<!-- WHO IT'S FOR -->
+<section class="section" id="personas" style="background:var(--bg);">
+  <div class="section-inner">
+    <p class="section-label">Who It's For</p>
+    <h2 class="section-title" id="personas-title">Built for small utility teams.<br><em>Every role covered.</em></h2>
+    <p class="section-sub">Whether you're an operator on the floor, a manager watching the budget, or a board member protecting the community — Upstream AI speaks your language.</p>
+
+    <div class="personas-grid" style="margin-top:56px;border:1px solid var(--light);border-radius:16px;overflow:hidden;background:var(--white);gap:0;">
+      <a href="for-operators.html" class="persona-card" style="padding:40px 32px;border-right:1px solid var(--light);border-radius:0;border:none;">
+        <div class="persona-icon" aria-hidden="true">🔧</div>
+        <h3 style="font-size:20px;font-weight:600;">For Operators</h3>
+        <p>Walk into MOR Friday with the report already drafted. Know which lab bottle is due Tuesday. See your CDPS permit margins before the state does — and keep your ORC signoff straightforward.</p>
+        <span class="persona-link" aria-hidden="true">Learn more →</span>
+      </a>
+      <a href="for-managers.html" class="persona-card" style="padding:40px 32px;border-right:1px solid var(--light);border-radius:0;border:none;">
+        <div class="persona-icon" aria-hidden="true">📊</div>
+        <h3 style="font-size:20px;font-weight:600;">For Managers</h3>
+        <p>The whole compliance calendar in one place — not in someone's head. Plan staffing around real deadlines, see permit renewals 11 months out, hand off cleanly when an operator retires.</p>
+        <span class="persona-link" aria-hidden="true">Learn more →</span>
+      </a>
+      <a href="for-boards.html" class="persona-card" style="padding:40px 32px;border-radius:0;border:none;">
+        <div class="persona-icon" aria-hidden="true">🏛️</div>
+        <h3 style="font-size:20px;font-weight:600;">For Board Members</h3>
+        <p>Same data the operator sees, framed for governance. "All TT criteria met. DMR submitted on time. GAC bed at 68% of life, changeout scheduled for Q3." Stewardship you can print and bring to the meeting.</p>
+        <span class="persona-link" aria-hidden="true">Learn more →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE OFFER -->
 <section class="section" id="pricing">
   <div class="section-inner">
-    <div class="section-label">Pricing</div>
-    <h2 class="section-title">Two tiers.<br><em>Trust first, then intelligence.</em></h2>
-    <p class="section-sub">Start with data you can trust. Upgrade to AI co-pilot when you're ready. No per-sensor fees. No hidden costs. Cancel anytime.</p>
+    <div class="section-label">What we offer</div>
+    <h2 class="section-title">Two tiers.<br><em>Calendar first, then co-pilot.</em></h2>
+    <p class="section-sub">Start with the compliance calendar that runs your month. Add the AI co-pilot when you're ready. No per-sample fees. No hidden costs. Cancel anytime.</p>
 
-    <div class="pricing-grid">
+    <div class="pricing-grid" style="grid-template-columns:1fr 1fr;max-width:780px;">
       <div class="price-card">
-        <div class="price-tier">Trust Foundation</div>
-        <div class="price-amount">$600</div>
-        <div class="price-period">per month · billed annually</div>
+        <div class="price-tier">Compliance Foundation</div>
+        <h3 style="font-size:22px;font-weight:300;letter-spacing:-0.5px;margin-bottom:16px;line-height:1.3;">One screen for the whole <em style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;color:var(--accent);">month</em></h3>
         <ul class="price-list">
-          <li><span class="check">✓</span>Real-time data quality scoring (0-100%)</li>
-          <li><span class="check">✓</span>Automated event documentation</li>
-          <li><span class="check">✓</span>Transparent calculations (click to see formula)</li>
-          <li><span class="check">✓</span>Intelligent exception alerts</li>
-          <li><span class="check">✓</span>Full audit trails (who, what, when, why)</li>
-          <li><span class="check">✓</span>Basic asset health dashboard</li>
+          <li><span class="check">✓</span>Live compliance home — MOR &amp; DMR status at a glance</li>
+          <li><span class="check">✓</span>Color-coded sample &amp; deadline calendar (drinking + WW)</li>
+          <li><span class="check">✓</span>MOR &amp; DMR draft prep — math shown, source-linked</li>
+          <li><span class="check">✓</span>Daily log — replaces paper, with real-time guardrails</li>
+          <li><span class="check">✓</span>Trends &amp; anomaly view — Cl₂, BOD₅, GAC bed life, more</li>
+          <li><span class="check">✓</span>Document library — permits, lab returns, SOPs, regs</li>
+          <li><span class="check">✓</span>Weekly automated pull from your records</li>
           <li><span class="check">✓</span>Email + SMS support</li>
         </ul>
-        <div style="margin-top:16px; padding:12px; background:#f7f7f7; border-radius:6px; font-size:12px; color:#6b6b6b; line-height:1.6;">
-          <strong style="color:#0a0a0a;">Perfect for:</strong> Utilities that need to trust their data before adding AI predictions. Solves alarm fatigue and sensor uncertainty.
-        </div>
-        <button class="price-btn">Get started</button>
+        <button class="price-btn" onclick="openModal()" style="margin-top:20px;">Contact us →</button>
       </div>
 
       <div class="price-card featured">
-        <div class="price-badge">Most operators upgrade within 6 months</div>
+        <div class="price-badge">Most popular</div>
         <div class="price-tier">Operator Co-Pilot</div>
-        <div class="price-amount">$1,800</div>
-        <div class="price-period">per month · billed annually</div>
+        <h3 style="font-size:22px;font-weight:300;letter-spacing:-0.5px;margin-bottom:16px;line-height:1.3;color:#fff;">Add the <em style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;color:var(--water);">explainable</em> AI assistant</h3>
         <ul class="price-list">
-          <li><span class="check">✓</span>Everything in Trust Foundation</li>
-          <li><span class="check">✓</span>Predictive alerts with confidence scores</li>
-          <li><span class="check">✓</span>Decision support with tradeoff analysis</li>
-          <li><span class="check">✓</span>What-if scenario modeling</li>
-          <li><span class="check">✓</span>Explainable AI recommendations</li>
-          <li><span class="check">✓</span>Compliance report automation</li>
-          <li><span class="check">✓</span>ROI & savings tracker</li>
+          <li><span class="check">✓</span>Everything in Compliance Foundation</li>
+          <li><span class="check">✓</span>Friday morning AI briefing — what changed, what's due</li>
+          <li><span class="check">✓</span>Anomaly explanations with source citations</li>
+          <li><span class="check">✓</span>On-demand chat — "How tight was Cl₂ last month?"</li>
+          <li><span class="check">✓</span>Forward-looking deadlines (90-day horizon)</li>
+          <li><span class="check">✓</span>Board-ready monthly summary export</li>
+          <li><span class="check">✓</span>Cross-system anomaly correlation</li>
           <li><span class="check">✓</span>Priority phone support</li>
+          <li><span class="check">✓</span>Onboarding assistance for new operators</li>
         </ul>
-        <div style="margin-top:16px; padding:12px; background:#e8f4f8; border-radius:6px; font-size:12px; color:#1a5276; line-height:1.6;">
-          <strong style="color:#0a0a0a;">Perfect for:</strong> Utilities ready for AI assistance after establishing data trust. AI shows its work—you stay in control.
-        </div>
-        <button class="price-btn">Get started</button>
-      </div>
-
-      <div class="price-card">
-        <div class="price-tier">Add-On Services</div>
-        <div class="price-amount">Custom</div>
-        <div class="price-period">complementary offerings</div>
-        <ul class="price-list">
-          <li><span class="check">✓</span><strong>Energy Optimization:</strong> 30% of savings (no monthly fee)</li>
-          <li><span class="check">✓</span><strong>Managed Operations:</strong> $4,500-6,500/month</li>
-          <li><span class="check">✓</span><strong>Compliance Guarantee:</strong> +$800/month</li>
-          <li><span class="check">✓</span><strong>Grant Writing:</strong> 10% of funded amount</li>
-          <li><span class="check">✓</span><strong>Cooperative Platform:</strong> $500/utility/month</li>
-        </ul>
-        <div style="margin-top:16px; padding:12px; background:#f7f7f7; border-radius:6px; font-size:12px; color:#6b6b6b; line-height:1.6;">
-          <strong style="color:#0a0a0a;">Mix and match:</strong> Combine services based on your specific challenges. Talk to us about what you need.
-        </div>
-        <button class="price-btn">Contact sales</button>
+        <button class="price-btn" onclick="openModal()" style="margin-top:20px;">Contact us →</button>
       </div>
     </div>
   </div>
@@ -901,9 +553,9 @@
 
 <!-- CTA BANNER -->
 <div class="cta-banner">
-  <h2>Stop guessing.<br><em>Start trusting your data.</em></h2>
-  <p>Join the Colorado utilities already using Upstream AI. Setup takes one afternoon. Data trust starts on day one. Intelligence builds over 30 days.</p>
-  <a href="#" class="btn-light">Request early access →</a>
+  <h2>Stop juggling.<br><em>Start running your month.</em></h2>
+  <p>Join the Colorado utilities already piloting Upstream AI. One screen for MOR, DMR, lab sample logistics, permit renewals, and the deadlines you used to keep in your head. Live in one afternoon. No IT staff required.</p>
+  <a href="#" class="btn-light" onclick="openModal(); return false;">Get in touch →</a>
 </div>
 
 <!-- FOOTER -->
@@ -911,39 +563,40 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <a href="index.html" class="nav-logo"><span class="upstream">Upstream</span> AI</a>
-      <p>Data trust and operator intelligence for small water utilities. Built by people who understand that operators need confidence in their decisions, not black-box algorithms.</p>
+      <p>The compliance calendar for small water and wastewater utilities. MOR and DMR prep, lab sample logistics, permit tracking, and an explainable AI co-pilot — built for 1–5 person operations that answer to CDPHE personally.</p>
     </div>
     <div>
       <h4>Product</h4>
       <ul>
         <li><a href="#how">How it works</a></li>
         <li><a href="#architecture">Platform</a></li>
-        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#pricing">What we offer</a></li>
         <li><a href="security.html">Security</a></li>
       </ul>
     </div>
     <div>
       <h4>Company</h4>
       <ul>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Careers</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Press</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="epa-finder.html">EPA Grant Finder</a></li>
       </ul>
     </div>
     <div>
-      <h4>Resources</h4>
+      <h4>Case Studies</h4>
       <ul>
-        <li><a href="#">Documentation</a></li>
-        <li><a href="#">EPA grant finder</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="security.html">Security Overview</a></li>
+        <li><a href="case-study-crestone.html">Crestone W&S District</a></li>
+        <li><a href="case-study-round-mountain.html">Round Mountain W&SD</a></li>
+      </ul>
+      <h4 style="margin-top:20px;">Connect</h4>
+      <ul>
+        <li><a href="#" id="emailLink">hello@getupstream.ai</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 Upstream AI. All rights reserved.</span>
-    <span>Denver, Colorado</span>
+    <span>Glenwood Springs, Colorado</span>
   </div>
 </footer>
 
@@ -956,25 +609,27 @@
       <h3>Request Early Access</h3>
       <p>Join the small utilities already piloting Upstream AI. We'll reach out within 24 hours to schedule a discovery call.</p>
       
-      <form id="earlyAccessForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <div class="form-error" id="formError"></div>
+      
+      <form id="earlyAccessForm" autocomplete="on">
         <div class="form-group">
           <label for="name">Name *</label>
-          <input type="text" id="name" name="name" required>
+          <input type="text" id="name" name="name" required autocomplete="name">
         </div>
         
         <div class="form-group">
           <label for="email">Email *</label>
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="email" name="email" required autocomplete="email">
         </div>
         
         <div class="form-group">
           <label for="phone">Phone</label>
-          <input type="tel" id="phone" name="phone">
+          <input type="tel" id="phone" name="phone" autocomplete="tel">
         </div>
         
         <div class="form-group">
           <label for="utility">Utility Name *</label>
-          <input type="text" id="utility" name="utility" required placeholder="e.g., Crestone Water & Sewer District">
+          <input type="text" id="utility" name="utility" required placeholder="e.g., Crestone Water & Sewer District" autocomplete="organization">
         </div>
         
         <div class="form-group">
@@ -991,21 +646,32 @@
         </div>
         
         <div class="form-group">
-          <label for="connections">Approximate Connections Served</label>
-          <select id="connections" name="connections">
-            <option value="">Select range</option>
-            <option value="<500">&lt; 500</option>
-            <option value="500-1000">500 - 1,000</option>
-            <option value="1000-2500">1,000 - 2,500</option>
-            <option value="2500-5000">2,500 - 5,000</option>
-            <option value="5000-10000">5,000 - 10,000</option>
-            <option value=">10000">&gt; 10,000</option>
+          <label for="capacity">Plant Capacity</label>
+          <select id="capacity" name="capacity">
+            <option value="">Select capacity</option>
+            <option value="<0.1 MGD">&lt; 0.1 MGD</option>
+            <option value="0.1-0.5 MGD">0.1 – 0.5 MGD</option>
+            <option value="0.5-1 MGD">0.5 – 1 MGD</option>
+            <option value="1-5 MGD">1 – 5 MGD</option>
+            <option value="5-10 MGD">5 – 10 MGD</option>
+            <option value=">10 MGD">&gt; 10 MGD</option>
           </select>
         </div>
         
         <div class="form-group">
           <label for="message">Tell us about your biggest operational challenge (optional)</label>
           <textarea id="message" name="message" placeholder="e.g., Pump failures, alarm fatigue, compliance reporting..."></textarea>
+        </div>
+        
+        <!-- Honeypot for spam bots -->
+        <div style="position:absolute;left:-9999px;" aria-hidden="true">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+        </div>
+        
+        <!-- Human verification — simple math -->
+        <div class="form-group" id="captchaGroup">
+          <label id="captchaLabel">Verify you're human: What is 3 + 4? *</label>
+          <input type="text" id="captchaAnswer" name="_captcha_answer" required autocomplete="off" inputmode="numeric" placeholder="Your answer">
         </div>
         
         <button type="submit" class="form-submit" id="submitBtn">Request Early Access</button>
@@ -1015,103 +681,353 @@
     <div class="form-success" id="successMessage">
       <div class="success-icon">✓</div>
       <h4>Thanks for your interest!</h4>
-      <p>We'll reach out within 24 hours to schedule a discovery call. In the meantime, feel free to email us at hello@getupstream.ai with any questions.</p>
+      <p>We'll reach out within 24 hours to schedule a discovery call. In the meantime, feel free to email us at <a id="successEmail" href="#">hello@getupstream.ai</a> with any questions.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT MODAL (simple form for nav "Contact us") -->
+<div class="modal" id="contactModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeContact()">×</button>
+    
+    <div id="contactFormContainer">
+      <h3>Get in touch</h3>
+      <p>Have a question about Upstream AI? Drop us a line and we'll get back to you.</p>
+      
+      <div class="form-error" id="contactFormError"></div>
+      
+      <form id="contactForm" autocomplete="on">
+        <div class="form-group">
+          <label for="contactName">Name *</label>
+          <input type="text" id="contactName" name="name" required autocomplete="name">
+        </div>
+        
+        <div class="form-group">
+          <label for="contactEmail">Email *</label>
+          <input type="email" id="contactEmail" name="email" required autocomplete="email">
+        </div>
+        
+        <div class="form-group">
+          <label for="contactMessage">Message *</label>
+          <textarea id="contactMessage" name="message" required placeholder="What can we help with?"></textarea>
+        </div>
+        
+        <!-- Honeypot -->
+        <div style="position:absolute;left:-9999px;" aria-hidden="true">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+        </div>
+        
+        <!-- Human verification -->
+        <div class="form-group" id="contactCaptchaGroup">
+          <label id="contactCaptchaLabel">Verify you're human: What is 5 + 2? *</label>
+          <input type="text" id="contactCaptchaAnswer" name="_captcha_answer" required autocomplete="off" inputmode="numeric" placeholder="Your answer">
+        </div>
+        
+        <button type="submit" class="form-submit" id="contactSubmitBtn">Send message</button>
+      </form>
+    </div>
+    
+    <div class="form-success" id="contactSuccess">
+      <div class="success-icon">✓</div>
+      <h4>Message sent!</h4>
+      <p>We'll get back to you soon.</p>
     </div>
   </div>
 </div>
 
 <script>
-// Open modal
-function openModal() {
-  document.getElementById('earlyAccessModal').classList.add('active');
-  document.body.style.overflow = 'hidden'; // Prevent background scroll
+// Formspree endpoints
+var FORMSPREE_EARLY_ACCESS = 'https://formspree.io/f/xaqpdgaj';
+var FORMSPREE_CONTACT      = 'https://formspree.io/f/meerlbdr';
+
+// Build email at runtime (anti-scraping)
+var _ep = ['hello','getupstream','ai'].join('@').replace('@getupstream','@getupstream.');
+var emailLink = document.getElementById('emailLink');
+if(emailLink) emailLink.href = 'mailto:' + _ep;
+
+// ═══════════════════════════════════════════════════════════════
+// MATH CAPTCHA — generates random problems, validates answers
+// ═══════════════════════════════════════════════════════════════
+function generateCaptcha(labelId) {
+  var a = Math.floor(Math.random() * 9) + 1;
+  var b = Math.floor(Math.random() * 9) + 1;
+  var label = document.getElementById(labelId);
+  if (label) label.textContent = 'Verify you\'re human: What is ' + a + ' + ' + b + '? *';
+  return a + b;
 }
 
-// Close modal
-function closeModal() {
-  document.getElementById('earlyAccessModal').classList.remove('active');
-  document.body.style.overflow = ''; // Restore scroll
-  
-  // Reset form after close
-  setTimeout(() => {
-    document.getElementById('formContainer').style.display = 'block';
-    document.getElementById('successMessage').classList.remove('active');
-    document.getElementById('earlyAccessForm').reset();
-  }, 300);
+var captchaAnswer = generateCaptcha('captchaLabel');
+var contactCaptchaAnswer = generateCaptcha('contactCaptchaLabel');
+
+function validateCaptcha(inputId, expected) {
+  var val = parseInt(document.getElementById(inputId).value, 10);
+  return val === expected;
 }
 
-// Close modal when clicking outside
-document.getElementById('earlyAccessModal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeModal();
-  }
-});
+// ═══════════════════════════════════════════════════════════════
+// POSTHOG EVENT TRACKING
+// ═══════════════════════════════════════════════════════════════
+var ph = function(){ return window.posthog; };
 
-// Handle form submission
-document.getElementById('earlyAccessForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  
-  const submitBtn = document.getElementById('submitBtn');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Sending...';
-  
-  const formData = new FormData(this);
-  
-  try {
-    // Using Formspree - replace YOUR_FORM_ID with your actual Formspree form ID
-    // Or use the mailto fallback below
-    const response = await fetch(this.action, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Accept': 'application/json'
+// Scroll depth
+(function(){
+  var thresholds = [25,50,75,100];
+  var fired = {};
+  window.addEventListener('scroll',function(){
+    requestAnimationFrame(function(){
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+      thresholds.forEach(function(t){
+        if(pct >= t && !fired[t]){
+          fired[t] = true;
+          if(ph()) ph().capture('scroll_depth',{ percent: t });
+        }
+      });
+    });
+  },{ passive: true });
+})();
+
+// Section visibility
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  var sections = document.querySelectorAll('section[id], .cta-banner');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = entry.target.id || entry.target.className.split(' ')[0];
+        if(ph()) ph().capture('section_viewed',{ section: id });
+        observer.unobserve(entry.target);
       }
     });
-    
-    if (response.ok) {
-      // Show success message
-      document.getElementById('formContainer').style.display = 'none';
-      document.getElementById('successMessage').classList.add('active');
-      
-      // Auto-close after 5 seconds
-      setTimeout(() => {
-        closeModal();
-      }, 5000);
-    } else {
-      throw new Error('Form submission failed');
-    }
-  } catch (error) {
-    // Fallback: open email client
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const phone = formData.get('phone');
-    const utility = formData.get('utility');
-    const role = formData.get('role');
-    const connections = formData.get('connections');
-    const message = formData.get('message');
-    
-    const emailBody = `Name: ${name}%0D%0AEmail: ${email}%0D%0APhone: ${phone}%0D%0AUtility: ${utility}%0D%0ARole: ${role}%0D%0AConnections: ${connections}%0D%0A%0D%0AMessage:%0D%0A${message}`;
-    
-    window.location.href = `mailto:hello@getupstream.ai?subject=Early Access Request - ${utility}&body=${emailBody}`;
-    
-    closeModal();
-  }
-  
-  submitBtn.disabled = false;
-  submitBtn.textContent = 'Request Early Access';
-});
+  },{ threshold: 0.5 });
+  sections.forEach(function(s){ observer.observe(s); });
+})();
 
-// Attach modal open to all CTAs
-document.addEventListener('DOMContentLoaded', function() {
-  const ctaButtons = document.querySelectorAll('.btn-primary, .nav-cta, .btn-light');
-  ctaButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-      openModal();
+// Time on page
+(function(){
+  var marks = [30,60,120,300];
+  var idx = 0;
+  var elapsed = 0;
+  var timer = setInterval(function(){
+    elapsed++;
+    if(idx < marks.length && elapsed === marks[idx]){
+      if(ph()) ph().capture('time_on_page',{ seconds: marks[idx] });
+      idx++;
+      if(idx >= marks.length) clearInterval(timer);
+    }
+  },1000);
+})();
+
+// CTA + nav + persona + pricing + footer click tracking
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('[onclick*="openModal"],[onclick*="openContact"]').forEach(function(el){
+    el.addEventListener('click',function(){
+      var section = el.closest('section') || el.closest('.cta-banner') || el.closest('nav');
+      var loc = (section && section.id) || (section && section.className.split(' ')[0]) || 'unknown';
+      if(ph()) ph().capture('cta_clicked',{ location: loc, button_text: el.textContent.trim().substring(0,50) });
     });
   });
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    a.addEventListener('click',function(){ if(ph()) ph().capture('nav_clicked',{ link: a.textContent.trim(), href: a.getAttribute('href') }); });
+  });
+  document.querySelectorAll('.persona-card').forEach(function(card){
+    card.addEventListener('click',function(){
+      var persona = card.querySelector('h3');
+      if(ph()) ph().capture('persona_clicked',{ persona: persona ? persona.textContent.trim() : 'unknown' });
+    });
+  });
+  document.querySelectorAll('.price-card .price-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var card = btn.closest('.price-card');
+      var tier = card ? card.querySelector('.price-tier') : null;
+      if(ph()) ph().capture('pricing_cta_clicked',{ tier: tier ? tier.textContent.trim() : 'unknown' });
+    });
+  });
+  document.querySelectorAll('footer a').forEach(function(a){
+    a.addEventListener('click',function(){ if(ph()) ph().capture('footer_link_clicked',{ text: a.textContent.trim(), href: a.getAttribute('href') }); });
+  });
 });
-</script>
 
+// Form field engagement + abandonment tracking
+(function(){
+  var fields = ['name','email','phone','utility','role','capacity','message'];
+  var touched = {};
+  var formEl = document.getElementById('earlyAccessForm');
+  if(!formEl) return;
+  fields.forEach(function(f){
+    var el = formEl.querySelector('[name="'+f+'"]');
+    if(!el) return;
+    el.addEventListener('focus',function(){
+      if(!touched[f]){ touched[f] = true; if(ph()) ph().capture('form_field_focused',{ field: f }); }
+    });
+  });
+  var submitted = false;
+  formEl.addEventListener('submit',function(){ submitted = true; });
+  var modalEl = document.getElementById('earlyAccessModal');
+  if(modalEl){
+    var obs = new MutationObserver(function(mutations){
+      mutations.forEach(function(m){
+        if(m.attributeName==='class'){
+          var wasActive = m.oldValue && m.oldValue.indexOf('active')!==-1;
+          var isActive = modalEl.classList.contains('active');
+          if(wasActive && !isActive && !submitted){
+            var touchedFields = Object.keys(touched);
+            if(touchedFields.length > 0 && ph()) ph().capture('form_abandoned',{ fields_touched: touchedFields, fields_touched_count: touchedFields.length });
+          }
+          if(!isActive){ submitted = false; touched = {}; }
+        }
+      });
+    });
+    obs.observe(modalEl,{ attributes: true, attributeOldValue: true });
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// MODAL MECHANICS
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('earlyAccessModal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+document.getElementById('contactModal').addEventListener('click',function(e){ if(e.target===this) closeContact(); });
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){ closeModal(); closeContact(); }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// EARLY ACCESS FORM → Formspree
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('earlyAccessForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  
+  // Honeypot check
+  if(this._gotcha && this._gotcha.value) return;
+  
+  // CAPTCHA check
+  if(!validateCaptcha('captchaAnswer', captchaAnswer)){
+    var errEl = document.getElementById('formError');
+    errEl.textContent = 'Incorrect answer. Please try again.';
+    errEl.classList.add('active');
+    captchaAnswer = generateCaptcha('captchaLabel');
+    document.getElementById('captchaAnswer').value = '';
+    return;
+  }
+  
+  var btn = document.getElementById('submitBtn');
+  var errEl = document.getElementById('formError');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  errEl.classList.remove('active');
+
+  var payload = {
+    name:    this.name.value.trim(),
+    email:   this.email.value.trim(),
+    phone:   this.phone.value.trim(),
+    utility: this.utility.value.trim(),
+    role:    this.role.value,
+    capacity: this.capacity.value,
+    message: this.message.value.trim(),
+    _subject: 'Early Access Request — ' + (this.utility.value.trim() || 'New Inquiry'),
+    _replyto: this.email.value.trim()
+  };
+
+  try {
+    var res = await fetch(FORMSPREE_EARLY_ACCESS, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    
+    if(res.ok){
+      if(ph()){
+        ph().capture('form_submitted',{
+          form: 'early_access',
+          role: payload.role,
+          capacity: payload.capacity,
+          utility: payload.utility,
+          has_phone: !!payload.phone,
+          has_message: !!payload.message
+        });
+        ph().identify(payload.email,{
+          name: payload.name, role: payload.role,
+          utility: payload.utility, capacity: payload.capacity
+        });
+      }
+      showSuccess('formContainer','successMessage', closeModal);
+      return;
+    }
+    throw new Error('Formspree returned ' + res.status);
+  } catch(err) {
+    console.error('Form error:', err);
+    if(ph()) ph().capture('form_submission_failed',{ error: err.message || 'unknown' });
+    // Fallback mailto
+    var body = ['Name: '+payload.name,'Email: '+payload.email,'Phone: '+payload.phone,'Utility: '+payload.utility,'Role: '+payload.role,'Capacity: '+payload.capacity,'','Message:',payload.message].join('%0D%0A');
+    window.open('mailto:'+_ep+'?subject='+encodeURIComponent(payload._subject)+'&body='+body,'_blank');
+    showSuccess('formContainer','successMessage', closeModal);
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// CONTACT FORM → Formspree
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('contactForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  
+  if(this._gotcha && this._gotcha.value) return;
+  
+  if(!validateCaptcha('contactCaptchaAnswer', contactCaptchaAnswer)){
+    var errEl = document.getElementById('contactFormError');
+    errEl.textContent = 'Incorrect answer. Please try again.';
+    errEl.classList.add('active');
+    contactCaptchaAnswer = generateCaptcha('contactCaptchaLabel');
+    document.getElementById('contactCaptchaAnswer').value = '';
+    return;
+  }
+  
+  var btn = document.getElementById('contactSubmitBtn');
+  var errEl = document.getElementById('contactFormError');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+  errEl.classList.remove('active');
+
+  var payload = {
+    name:    this.name.value.trim(),
+    email:   this.email.value.trim(),
+    message: this.message.value.trim(),
+    _subject: 'Contact from ' + this.name.value.trim(),
+    _replyto: this.email.value.trim()
+  };
+
+  try {
+    var res = await fetch(FORMSPREE_CONTACT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if(res.ok){
+      if(ph()) ph().capture('contact_form_submitted',{ has_message: !!payload.message });
+      showSuccess('contactFormContainer','contactSuccess', closeContact);
+      return;
+    }
+    throw new Error('Formspree returned ' + res.status);
+  } catch(err) {
+    console.error('Contact form error:', err);
+    window.open('mailto:'+_ep+'?subject='+encodeURIComponent(payload._subject)+'&body='+encodeURIComponent(payload.message),'_blank');
+    showSuccess('contactFormContainer','contactSuccess', closeContact);
+  }
+});
+function showSuccess(containerId, successId, closeFn) {
+  var container = document.getElementById(containerId);
+  var success = document.getElementById(successId);
+  if (container) container.style.display = 'none';
+  if (success) success.classList.add('active');
+  setTimeout(function() { if (closeFn) closeFn(); }, 5000);
+}
+
+// Set success message email href at runtime
+(function(){
+  var el = document.getElementById('successEmail');
+  if (el) el.href = 'mailto:' + ['hello','getupstream','ai'].join('@').replace('@getupstream','@getupstream.');
+})();
+</script>
 </body>
 </html>

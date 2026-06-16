@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Security meta tags for GitHub Pages -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://us-assets.i.posthog.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://formspree.io https://us.i.posthog.com https://us-assets.i.posthog.com; frame-ancestors 'none'">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+<title>Careers — Upstream AI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --black: #0a0a0a; --dark: #1a1a1a; --mid: #6b6b6b;
+    --dim: #a3a3a3; --light: #e8e8e8; --bg: #f7f7f7;
+    --white: #ffffff; --accent: #1a5276; --accent-light: #2e86ab;
+    --water: #a8e6cf;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif; color: var(--black);
+    background: var(--white); -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display: flex; align-items:center; justify-content:space-between;
+    padding: 20px 48px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .nav-logo {
+    font-size: 18px; font-weight: 600; color: var(--black);
+    letter-spacing: -0.5px; text-decoration:none;
+  }
+  .nav-logo .upstream { color: var(--accent-light); font-weight: 400; }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { text-decoration:none; color:var(--mid); font-size:13px; font-weight:500; transition: color .2s; }
+  .nav-links a:hover { color:var(--black); }
+  .nav-links a.active { color:var(--black); }
+  .nav-cta {
+    background: var(--black); color:#fff; border:none; padding: 10px 22px;
+    border-radius:6px; font-size:13px; font-weight:500; cursor:pointer;
+    font-family:inherit; text-decoration:none;
+  }
+
+  .section-label {
+    font-size:11px; font-weight:600; color:var(--accent-light);
+    text-transform:uppercase; letter-spacing:2px; margin-bottom: 16px;
+  }
+
+  .page-hero {
+    padding: 160px 48px 80px;
+    max-width: 800px; margin: 0 auto;
+  }
+  .page-hero h1 {
+    font-size: clamp(38px, 5vw, 56px);
+    font-weight: 300; line-height: 1.1;
+    letter-spacing: -2px; margin-bottom: 24px;
+  }
+  .page-hero h1 em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-weight: 700; color: var(--accent);
+  }
+  .page-hero .lead {
+    font-size: 17px; color: var(--mid); line-height: 1.8;
+    font-weight: 300; max-width: 560px;
+  }
+
+  .content { padding: 0 48px 100px; }
+  .content-inner { max-width: 800px; margin: 0 auto; }
+
+  /* ═══ WHY ═══ */
+  .why-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; margin-bottom: 80px;
+  }
+  .why-card {
+    border: 1px solid var(--light); border-radius: 14px;
+    padding: 32px; background: var(--white);
+  }
+  .why-card h3 {
+    font-size: 16px; font-weight: 600; color: var(--black);
+    margin-bottom: 8px; letter-spacing: -0.2px;
+  }
+  .why-card p {
+    font-size: 13px; color: var(--mid); line-height: 1.7;
+  }
+  .why-icon {
+    font-size: 24px; margin-bottom: 16px;
+  }
+
+  /* ═══ OPENINGS ═══ */
+  .openings-header {
+    margin-bottom: 32px;
+  }
+  .openings-header h2 {
+    font-size: 28px; font-weight: 300; letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .openings-header h2 em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-weight: 700; color: var(--accent);
+  }
+  .openings-header p {
+    font-size: 14px; color: var(--mid); font-weight: 300; line-height: 1.7;
+  }
+
+  .open-roles { margin-bottom: 80px; }
+  .role-card {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--light);
+    transition: padding-left .2s;
+  }
+  .role-card:first-child { border-top: 1px solid var(--light); }
+  .role-card:hover { padding-left: 8px; }
+  .role-info h3 {
+    font-size: 16px; font-weight: 600; color: var(--black);
+    margin-bottom: 4px;
+  }
+  .role-meta {
+    display: flex; gap: 16px;
+    font-size: 12px; color: var(--dim);
+  }
+  .role-meta span {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .role-apply {
+    font-size: 13px; font-weight: 500; color: var(--accent-light);
+    text-decoration: none; white-space: nowrap;
+    transition: color .2s;
+  }
+  .role-apply:hover { color: var(--accent); }
+
+  /* ═══ NO ROLES NOTICE ═══ */
+  .no-roles {
+    border: 1px solid var(--light); border-radius: 14px;
+    padding: 48px; text-align: center;
+    background: var(--bg); margin-bottom: 80px;
+  }
+  .no-roles p {
+    font-size: 15px; color: var(--mid); line-height: 1.7; font-weight: 300;
+    max-width: 420px; margin: 0 auto;
+  }
+  .no-roles p strong { color: var(--black); font-weight: 500; }
+  .no-roles a {
+    color: var(--accent-light); text-decoration: none; font-weight: 500;
+  }
+  .no-roles a:hover { text-decoration: underline; }
+
+  /* ═══ CTA ═══ */
+  .page-cta {
+    text-align: center; padding: 80px 0;
+    border-top: 1px solid var(--light);
+  }
+  .page-cta h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 300; letter-spacing: -1px; margin-bottom: 12px;
+  }
+  .page-cta h2 em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-weight: 700; color: var(--accent);
+  }
+  .page-cta p {
+    font-size: 14px; color: var(--mid); font-weight: 300;
+    margin-bottom: 28px; line-height: 1.7;
+  }
+  .btn-primary {
+    background: var(--black); color: #fff; padding: 14px 32px;
+    border-radius: 8px; font-size: 14px; font-weight: 500;
+    font-family: inherit; border: none; cursor: pointer;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+    transition: transform .15s, box-shadow .2s;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+
+  footer {
+    padding: 40px 48px; border-top: 1px solid var(--light);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; color: var(--dim); max-width: 1160px; margin: 0 auto;
+  }
+  footer a { color: var(--dim); text-decoration: none; }
+  footer a:hover { color: var(--black); }
+
+  @media(max-width:860px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .page-hero { padding: 140px 24px 60px; }
+    .content { padding: 0 24px 80px; }
+    .why-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="upstream">Upstream</span> AI</a>
+  <ul class="nav-links">
+    <li><a href="index.html#how">How it works</a></li>
+    <li><a href="index.html#solve">Solutions</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="security.html">Security</a></li>
+  </ul>
+  <a href="mailto:hello@getupstream.ai" class="nav-cta">Contact us</a>
+</nav>
+
+<div class="page-hero">
+  <div class="section-label">Careers</div>
+  <h1>Help rural communities <em>thrive.</em></h1>
+  <p class="lead">We're building the infrastructure intelligence platform that small water utilities have been waiting for. If you care about impact over optics, we'd love to hear from you.</p>
+</div>
+
+<div class="content">
+  <div class="content-inner">
+
+    <!-- WHY JOIN -->
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">⛰️</div>
+        <h3>Work from the mountains</h3>
+        <p>We're headquartered in Glenwood Springs, CO. Remote-friendly, but if you're nearby — world-class trails are 10 minutes from the office.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🎯</div>
+        <h3>Real impact, small team</h3>
+        <p>Every feature you ship is used by real operators in real communities. No vanity metrics. No layers of bureaucracy. You see the result of your work.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔧</div>
+        <h3>Hard problems, elegant solutions</h3>
+        <p>SCADA systems, ML on noisy sensor data, explainable AI for non-technical users. These are meaningful engineering challenges.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🌱</div>
+        <h3>Ground-floor opportunity</h3>
+        <p>Early-stage startup with real traction. Meaningful equity. The chance to shape not just the product, but the company culture.</p>
+      </div>
+    </div>
+
+    <!-- OPEN ROLES -->
+    <div class="openings-header">
+      <h2>Open <em>roles</em></h2>
+      <p>We're a small team and we hire carefully. If you don't see a perfect fit, send us a note anyway — we're always open to exceptional people.</p>
+    </div>
+
+    <!--
+    <div class="open-roles">
+      <div class="role-card">
+        <div class="role-info">
+          <h3>Full-Stack Engineer</h3>
+          <div class="role-meta">
+            <span>Remote / Glenwood Springs</span>
+            <span>Full-time</span>
+          </div>
+        </div>
+        <a href="mailto:careers@getupstream.ai?subject=Full-Stack Engineer" class="role-apply">Apply →</a>
+      </div>
+      <div class="role-card">
+        <div class="role-info">
+          <h3>ML Engineer — Sensor Data</h3>
+          <div class="role-meta">
+            <span>Remote / Glenwood Springs</span>
+            <span>Full-time</span>
+          </div>
+        </div>
+        <a href="mailto:careers@getupstream.ai?subject=ML Engineer" class="role-apply">Apply →</a>
+      </div>
+    </div>
+    -->
+
+    <div class="no-roles">
+      <p><strong>No open roles right now.</strong><br><br>We're a small team and hire as we grow. If you're passionate about infrastructure, AI, or rural communities, drop us a line at <a href="mailto:careers@getupstream.ai">careers@getupstream.ai</a> — we keep every application on file.</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="page-cta">
+      <h2>Think you're a <em>fit?</em></h2>
+      <p>Send us your story — tell us what you'd build and why you care.</p>
+      <a href="mailto:careers@getupstream.ai">Reach out →</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" class="nav-logo"><span class="upstream">Upstream</span> AI</a>
+  <span>© 2026 Upstream AI · Glenwood Springs, Colorado</s
